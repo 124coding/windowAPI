@@ -1,0 +1,34 @@
+#include "CEndingScene.h"
+
+void CEndingScene::OnCreate()
+{
+	CScene::OnCreate();
+}
+
+void CEndingScene::OnDestroy()
+{
+	CScene::OnDestroy();
+}
+
+void CEndingScene::OnUpdate(float tDeltaTime)
+{
+	CScene::OnUpdate(tDeltaTime);
+}
+
+void CEndingScene::OnLateUpdate(float tDeltaTime)
+{
+	CScene::OnLateUpdate(tDeltaTime);
+}
+
+void CEndingScene::Render(HDC hDC)
+{
+	CScene::Render(hDC);
+}
+
+void CEndingScene::OnEnter()
+{
+}
+
+void CEndingScene::OnExit()
+{
+}
