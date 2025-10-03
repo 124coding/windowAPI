@@ -7,7 +7,7 @@
 class CTransform : public CComponent
 {
 public:
-	CTransform() {}
+	CTransform() : mPosition(SVector2D(0.0f, 0.0f)), mVelocity(SVector2D(0.0f, 0.0f)), mRadius(0.0f) { }
 	~CTransform() {}
 
 	void OnCreate() override;

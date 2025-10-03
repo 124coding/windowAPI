@@ -1,6 +1,6 @@
 #include "CScene.h"
 
-void CScene::OnCreate()
+void CScene::OnCreate(CAPIEngine* tEngine)
 {
 	for (auto it = mLayers.begin(); it != mLayers.end(); it++) {
 		if (*it == nullptr) {

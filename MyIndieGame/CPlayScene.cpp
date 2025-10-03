@@ -1,20 +1,25 @@
 #include "CPlayScene.h"
+
+#include "CLayer.h"
 #include "CInputMgr.h"
 #include "CSceneMgr.h"
-#include "CTitleScene.h"
-#include "CLayer.h"
-#include "Enums.h"
+#include "CResourceMgr.h"
 
-void CPlayScene::OnCreate()
+#include "CTitleScene.h"
+
+#include "Enums.h"
+#include "Object.h"
+
+void CPlayScene::OnCreate(CAPIEngine* tEngine)
 {
 	/*CInputMgr::GetInst()->AddKeyInfo("DoMoveLt", 'A');
 	CInputMgr::GetInst()->AddKeyInfo("DoMoveRt", 'D');
 	CInputMgr::GetInst()->AddKeyInfo("DoMoveFt", 'W');
 	CInputMgr::GetInst()->AddKeyInfo("DoMoveBt", 'S');*/
 
-	CScene::OnCreate();
+	CScene::OnCreate(tEngine);
 
-	CPlayer* bg = new CPlayer();
+	/*CPlayer* bg = new CPlayer();
 	CTransform* tr = bg->AddComponent<CTransform>();
 	tr->SetPos(SVector2D(0.0f, 0.0f));
 
@@ -24,7 +29,10 @@ void CPlayScene::OnCreate()
 	sr->SetName(L"SR");
 	sr->ImageLoad(L"../resources/blue_sky.jpg");
 
-	AddGameObject(bg, eLayerType::BackGround);
+	AddGameObject(bg, eLayerType::BackGround);*/
+
+	CPlayer* bg;
+	bg = Instantiate<CPlayer>(tEngine, eLayerType::BackGround, SVector2D(100.0f, 100.0f), L"../resources/blue_sky.png");
 }
 
 void CPlayScene::OnDestroy()

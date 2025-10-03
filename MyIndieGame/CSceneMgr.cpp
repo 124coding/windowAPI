@@ -5,9 +5,9 @@
 std::map< std::wstring, CScene*> CSceneMgr::mScene = {};
 CScene* CSceneMgr::mActiveScene = nullptr;
 
-void CSceneMgr::OnCreate()
+void CSceneMgr::OnCreate(CAPIEngine* tEngine)
 {
-	mActiveScene->OnCreate();
+	mActiveScene->OnCreate(tEngine);
 }
 
 void CSceneMgr::OnDestroy()

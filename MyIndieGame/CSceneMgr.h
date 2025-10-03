@@ -7,10 +7,11 @@ class CSceneMgr
 {
 public:
 	template<typename T>
-	static CScene* CreateScene(const std::wstring& tName) {
+	static CScene* CreateScene(CAPIEngine* tEngine, const std::wstring& tName) {
 		T* scene = new T();
 		scene->SetName(tName);
-		scene->OnCreate();
+		mActiveScene = scene;
+		scene->OnCreate(tEngine);
 
 		mScene.insert(make_pair(tName, scene));
 
@@ -33,7 +34,11 @@ public:
 		return it->second;
 	}
 
-	static void OnCreate();
+	static CScene* GetActiveScene() {
+		return mActiveScene;
+	}
+
+	static void OnCreate(CAPIEngine* tEngine);
 	static void OnDestroy();
 	static void OnUpdate(float tDeltaTime);
 	static void OnLateUpdate(float tDeltaTime);

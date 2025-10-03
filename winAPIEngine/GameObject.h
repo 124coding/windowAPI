@@ -1,12 +1,16 @@
 #pragma once
 
 #include "framework.h"
-#include "winMacro.h"
 #include "CTexture.h"
 #include "SVector2D.h"
+
 #include "CComponent.h"
+#include "CTransform.h"
+#include "CSpriteRenderer.h"
 
 #include <vector>
+
+#include "winMacro.h"
 
 
 class CTexture;
@@ -44,6 +48,9 @@ public:
 
 		return component;
 	}
+
+private:
+	void InitializeComponent();
 
 private:
 

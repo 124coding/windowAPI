@@ -5,7 +5,7 @@
 
 GameObject::GameObject()
 {
-
+	InitializeComponent();
 }
 
 GameObject::~GameObject()
@@ -51,4 +51,10 @@ void GameObject::Render(HDC hDC)
 	for (CComponent* comp : mComponents) {
 		comp->Render(hDC);
 	}
+}
+
+void GameObject::InitializeComponent()
+{
+	AddComponent<CTransform>();
+	AddComponent<CSpriteRenderer>();
 }

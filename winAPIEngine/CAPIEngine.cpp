@@ -81,7 +81,7 @@ MSG CAPIEngine::Run() {
     CInputMgr::ReleaseInst();
 
     if (mBackBuffer != nullptr) {
-        mBackBuffer->UnLoadTexture();
+        mBackBuffer->UnLoad();
         SAFE_DELETE(mBackBuffer);
     }
 

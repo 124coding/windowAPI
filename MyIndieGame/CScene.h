@@ -18,7 +18,7 @@ public:
 	}
 	~CScene() {};
 
-	virtual void OnCreate();
+	virtual void OnCreate(CAPIEngine* tEngine);
 	virtual void OnDestroy();
 	virtual void OnUpdate(float tDeltaTime);
 	virtual void OnLateUpdate(float tDeltaTime);
@@ -28,6 +28,7 @@ public:
 	virtual void OnExit();
 
 	void AddGameObject(GameObject* tGameObj, eLayerType tType);
+	CLayer* GetLayer(eLayerType tType) { return mLayers[(UINT)tType]; }
 
 private:
 	std::vector<CLayer*> mLayers;

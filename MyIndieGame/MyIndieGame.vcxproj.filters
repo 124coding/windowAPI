@@ -22,6 +22,9 @@
     <Filter Include="Layer">
       <UniqueIdentifier>{39b07a1c-73b9-4f0d-a658-c525f0aa3b17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{30623cd1-44c2-4835-b85f-db48cfc2da39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -57,6 +60,9 @@
     <ClCompile Include="CLayer.cpp">
       <Filter>Layer</Filter>
     </ClCompile>
+    <ClCompile Include="CResourceMgr.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -88,6 +94,15 @@
     </ClInclude>
     <ClInclude Include="CLayer.h">
       <Filter>Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CResourceMgr.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

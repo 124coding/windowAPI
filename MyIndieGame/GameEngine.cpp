@@ -8,12 +8,14 @@
 #include "CTitleScene.h"
 #include "CEndingScene.h"
 #include "CSceneMgr.h"
+#include "CResourceMgr.h"
 
 void GameEngine::OnCreate() {
+	LoadResources();
 	LoadScenes();
 	CInputMgr::GetInst()->AddKeyInfo("ChangeScene", 'N');
 
-	CSceneMgr::OnCreate();
+	CSceneMgr::OnCreate(this);
 }
 
 void GameEngine::OnDestroy() {
@@ -39,9 +41,14 @@ void GameEngine::Render() {
 
 void GameEngine::LoadScenes()
 {
-	CSceneMgr::CreateScene<CTitleScene>(L"TitleScene");
-	CSceneMgr::CreateScene<CPlayScene>(L"PlayScene");
-	CSceneMgr::CreateScene<CEndingScene>(L"EndingScene");
+	CSceneMgr::CreateScene<CTitleScene>(this, L"TitleScene");
+	CSceneMgr::CreateScene<CPlayScene>(this, L"PlayScene");
+	CSceneMgr::CreateScene<CEndingScene>(this, L"EndingScene");
 
 	CSceneMgr::LoadScene(L"PlayScene");
+}
+
+void GameEngine::LoadResources()
+{
+	CResourceMgr::Load<CTexture>(this, L"BG", L"../resources/blue_sky.png");
 }

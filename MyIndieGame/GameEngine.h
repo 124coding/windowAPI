@@ -22,4 +22,5 @@ public:
 	void Render() override;
 
 	void LoadScenes();
+	void LoadResources();
 };

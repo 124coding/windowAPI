@@ -1,5 +1,7 @@
 #pragma once
 #include "CComponent.h"
+#include "CTexture.h"
+#include "SVector2D.h"
 
 #include <ole2.h>
 #include <gdiplus.h>
@@ -10,7 +12,8 @@
 class CSpriteRenderer : public CComponent
 {
 public:
-	CSpriteRenderer() {}
+	CSpriteRenderer() 
+		: CComponent(), mTexture(nullptr), mSize(SVector2D(1.0f, 1.0f)) {}
 	~CSpriteRenderer() {}
 
 	void OnCreate() override;
@@ -19,11 +22,16 @@ public:
 	void OnLateUpdate(float tDeltaTime) override;
 	void Render(HDC hDC) override;
 
-	void ImageLoad(const std::wstring& path);
+	void SetTexture(CTexture* tTexture) {
+		this->mTexture = tTexture;
+	}
+
+	void SetSize(SVector2D tSize) {
+		this->mSize = tSize;
+	}
 
 private:
-	Gdiplus::Image* mImage;
-	UINT mWidth;
-	UINT mHeight;
+	CTexture* mTexture;
+	SVector2D mSize;
 };
 

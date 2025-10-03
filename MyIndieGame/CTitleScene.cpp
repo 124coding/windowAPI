@@ -3,9 +3,9 @@
 #include "CSceneMgr.h"
 #include "CPlayScene.h"
 
-void CTitleScene::OnCreate()
+void CTitleScene::OnCreate(CAPIEngine* tEngine)
 {
-	CScene::OnCreate();
+	CScene::OnCreate(tEngine);
 }
 
 void CTitleScene::OnDestroy()

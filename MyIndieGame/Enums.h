@@ -6,3 +6,12 @@ enum class eLayerType {
 	Player,
 	MAX = 16
 };
+
+enum class eResourceType {
+	Texture,
+	// Mesh,
+	// Shader
+	AudioClip,
+	Prefab,
+	End
+};

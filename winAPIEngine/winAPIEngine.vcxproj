@@ -135,6 +135,7 @@
     <ClInclude Include="CAPIEngine.h" />
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CEntity.h" />
+    <ClInclude Include="CResource.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="CInputMgr.h" />
@@ -149,6 +150,7 @@
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CEntity.cpp" />
     <ClCompile Include="CInputMgr.cpp" />
+    <ClCompile Include="CResource.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="GameObject.cpp" />
   </ItemGroup>

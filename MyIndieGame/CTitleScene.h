@@ -11,7 +11,7 @@ public:
 	CTitleScene() {}
 	virtual ~CTitleScene() {}
 
-	void OnCreate() override;
+	void OnCreate(CAPIEngine* tEngine) override;
 	void OnDestroy() override;
 	void OnUpdate(float tDeltaTime) override;
 	void OnLateUpdate(float tDeltaTime) override;
