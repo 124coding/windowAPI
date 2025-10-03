@@ -44,6 +44,14 @@ public:
 		return tResult;
 	}
 
+	SVector2D operator/(const float& t) {
+		SVector2D tResult;
+		tResult.mX = this->mX * (1 / t);
+		tResult.mY = this->mY * (1 / t);
+
+		return tResult;
+	}
+
 	// 내적, 내적의 결과는 스칼라
 	float Dot(const SVector2D& t) {
 		return this->mX * t.mX + this->mY * t.mY;

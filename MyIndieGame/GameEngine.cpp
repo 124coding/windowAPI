@@ -50,5 +50,5 @@ void GameEngine::LoadScenes()
 
 void GameEngine::LoadResources()
 {
-	CResourceMgr::Load<CTexture>(this, L"BG", L"../resources/blue_sky.png");
+	CResourceMgr::Load<CTexture>(this, L"MAP", L"../resources/blue_sky.png");
 }

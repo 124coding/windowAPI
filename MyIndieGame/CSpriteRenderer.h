@@ -1,7 +1,6 @@
 #pragma once
 #include "CComponent.h"
 #include "CTexture.h"
-#include "SVector2D.h"
 
 #include <ole2.h>
 #include <gdiplus.h>
@@ -13,7 +12,7 @@ class CSpriteRenderer : public CComponent
 {
 public:
 	CSpriteRenderer() 
-		: CComponent(), mTexture(nullptr), mSize(SVector2D(1.0f, 1.0f)) {}
+		: CComponent(eComponentType::SpriteRenderer), mTexture(nullptr), mSize(SVector2D(1.0f, 1.0f)) {}
 	~CSpriteRenderer() {}
 
 	void OnCreate() override;

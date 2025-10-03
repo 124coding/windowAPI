@@ -1,13 +1,12 @@
 #pragma once
 #include "CComponent.h"
-#include "SVector2D.h"
 
 #include <Windows.h>
 
 class CTransform : public CComponent
 {
 public:
-	CTransform() : mPosition(SVector2D(0.0f, 0.0f)), mVelocity(SVector2D(0.0f, 0.0f)), mRadius(0.0f) { }
+	CTransform() : CComponent(eComponentType::Transform), mPosition(SVector2D(0.0f, 0.0f)), mVelocity(SVector2D(0.0f, 0.0f)), mRadius(0.0f) {}
 	~CTransform() {}
 
 	void OnCreate() override;

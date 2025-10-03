@@ -4,7 +4,8 @@
 
 HRESULT CTexture::Load(CAPIEngine* tEngine, const std::wstring& tPath)
 {
-	std::wstring ext = tPath.substr(tPath.find_last_of(L".") + 1);
+	std::wstring ext = L"";
+	if (tPath != L"") ext = tPath.substr(tPath.find_last_of(L".") + 1);
 
 	// bmp
 	if (ext == L"bmp") {

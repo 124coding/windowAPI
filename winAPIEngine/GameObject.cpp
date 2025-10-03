@@ -5,6 +5,7 @@
 
 GameObject::GameObject()
 {
+	mComponents.resize((UINT)eComponentType::End);
 	InitializeComponent();
 }
 
@@ -17,6 +18,7 @@ void GameObject::OnCreate()
 {
 
 	for (CComponent* comp : mComponents) {
+		if (comp == nullptr) continue;
 		comp->OnCreate();
 	}
 }
@@ -25,7 +27,9 @@ void GameObject::OnDestroy()
 {
 
 	for (CComponent* comp : mComponents) {
+		if (comp == nullptr) continue;
 		comp->OnDestroy();
+		SAFE_DELETE(comp);
 	}
 
 	SAFE_DELETE(mTexture);
@@ -35,6 +39,7 @@ void GameObject::OnUpdate(float tDeltaTime)
 {
 
 	for (CComponent* comp : mComponents) {
+		if (comp == nullptr) continue;
 		comp->OnUpdate(tDeltaTime);
 	}
 }
@@ -42,6 +47,7 @@ void GameObject::OnUpdate(float tDeltaTime)
 void GameObject::OnLateUpdate(float tDeltaTime)
 {
 	for (CComponent* comp : mComponents) {
+		if (comp == nullptr) continue;
 		comp->OnLateUpdate(tDeltaTime);
 	}
 }
@@ -49,6 +55,7 @@ void GameObject::OnLateUpdate(float tDeltaTime)
 void GameObject::Render(HDC hDC)
 {
 	for (CComponent* comp : mComponents) {
+		if (comp == nullptr) continue;
 		comp->Render(hDC);
 	}
 }

@@ -1,6 +1,9 @@
 #include "CSpriteRenderer.h"
 #include "GameObject.h"
+
 #include "CTransform.h"
+
+#include "CRenderer.h"
 
 #include "winMacro.h"
 
@@ -26,10 +29,11 @@ void CSpriteRenderer::OnLateUpdate(float tDeltaTime)
 void CSpriteRenderer::Render(HDC hDC)
 {
 	if (mTexture == nullptr) {
-		assert(false);
+		return;
 	}
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 	SVector2D pos = tr->GetPos();
+	pos = mainCamera->CaluatePosition(pos);
 
 	if (mTexture->GetTextureType() == CTexture::eTextureType::Bmp) {
 		TransparentBlt(hDC, pos.mX, pos.mY, 

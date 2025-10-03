@@ -40,7 +40,27 @@ public:
 
 		tKeyInfo->mStrName = tStrKey;
 
-		this->mMapKeyInfos.insert(make_pair(tStrKey, tKeyInfo));
+		mMapKeyInfos.insert(make_pair(tStrKey, tKeyInfo));
+
+		return true;
+	}
+
+	template<typename T>
+	bool ChangeKeyInfo(const std::string& tStrKey, const T& tData) {
+		SKeyInfo* tKeyInfo = new SKeyInfo();
+
+		const char* tTypeName = typeid(T).name();
+
+		if (strcmp(tTypeName, "char") == 0 || strcmp(tTypeName, "int")) {
+			auto it = mMapKeyInfos.find(tStrKey);
+			if (it == mMapKeyInfos.end()) {
+				return false;
+			}
+			else {
+				it->second->mKeyInput = tStrKey;
+			}
+		}
+		else return false;
 
 		return true;
 	}

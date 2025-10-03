@@ -33,7 +33,8 @@ public:
 
 		comp->OnCreate();
 		comp->SetOwner(this);
-		mComponents.push_back(comp);
+
+		mComponents[(UINT)comp->GetType()] = comp;
 
 		return comp;
 	}

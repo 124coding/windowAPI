@@ -1,8 +1,6 @@
 #pragma once
 #include "CScene.h"
 #include "CPlayer.h"
-#include "CTransform.h"
-#include "CSpriteRenderer.h"
 
 class CPlayScene : public CScene
 {
