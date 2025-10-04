@@ -3,6 +3,7 @@
 enum class eComponentType {
 	Transform,
 	SpriteRenderer,
+	Animator,
 	Script,
 	Camera,
 	End
@@ -20,6 +21,7 @@ enum class eResourceType {
 	// Mesh,
 	// Shader
 	AudioClip,
+	Animation,
 	Prefab,
 	End
 };

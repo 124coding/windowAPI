@@ -48,4 +48,3 @@ private:
 	static std::map<std::wstring, CScene*> mScene;
 	static CScene* mActiveScene;
 };
-

@@ -22,7 +22,7 @@ static T* Instantiate(eLayerType tType) {
 }
 
 template<typename T>
-static T* Instantiate(CAPIEngine* tEngine, eLayerType tType, SVector2D tPosition = SVector2D(0.0f, 0.0f), std::wstring tKey = L"") {
+static T* Instantiate(CAPIEngine* tEngine, eLayerType tType, SVector2D tPosition = SVector2D(0.0f, 0.0f)) {
 	T* gameObject = new T();
 	CScene* activeScene = CSceneMgr::GetActiveScene();
 
@@ -32,13 +32,6 @@ static T* Instantiate(CAPIEngine* tEngine, eLayerType tType, SVector2D tPosition
 	CTransform* tr = gameObject->GetComponent<CTransform>();
 	tr->SetPos(tPosition);
 	tr->SetName(L"TR");
-
-	CSpriteRenderer* sr = gameObject->GetComponent<CSpriteRenderer>();
-
-	CTexture* img = CResourceMgr::Find<CTexture>(tKey);
-	sr->SetTexture(img);
-	sr->SetName(L"SR");
-	sr->SetSize(SVector2D(3.0f, 3.0f));
 
 	return gameObject;
 }

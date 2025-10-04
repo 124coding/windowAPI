@@ -109,6 +109,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\MyIndieGame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -132,10 +133,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CAnimation.h" />
     <ClInclude Include="CAPIEngine.h" />
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CEntity.h" />
     <ClInclude Include="CResource.h" />
+    <ClInclude Include="CResourceMgr.h" />
+    <ClInclude Include="CSceneMgr.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="CInputMgr.h" />
@@ -146,11 +150,14 @@
     <ClInclude Include="SVector2D.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CAnimation.cpp" />
     <ClCompile Include="CAPIEngine.cpp" />
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CEntity.cpp" />
     <ClCompile Include="CInputMgr.cpp" />
     <ClCompile Include="CResource.cpp" />
+    <ClCompile Include="CResourceMgr.cpp" />
+    <ClCompile Include="CSceneMgr.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="GameObject.cpp" />
   </ItemGroup>
@@ -160,6 +167,10 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="winAPIEngine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -25,6 +25,6 @@ public:
 
 private:
 	const eResourceType mType;
-	std::wstring mPath;
+	std::wstring mPath; 
 };
 

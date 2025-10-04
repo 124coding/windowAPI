@@ -46,6 +46,9 @@
     <Filter Include="Renderer">
       <UniqueIdentifier>{381b3c58-ad62-42ec-b8c9-c12026579c6b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\Animatior">
+      <UniqueIdentifier>{0e985bfe-5c74-42cf-8dd4-d0b6d680edb8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -55,9 +58,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CScene.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="CSceneMgr.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CPlayScene.cpp">
@@ -71,9 +71,6 @@
     </ClCompile>
     <ClCompile Include="CLayer.cpp">
       <Filter>Layer</Filter>
-    </ClCompile>
-    <ClCompile Include="CResourceMgr.cpp">
-      <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CPlayerScript.cpp">
       <Filter>Component\Script\Scripts</Filter>
@@ -96,15 +93,15 @@
     <ClCompile Include="CRenderer.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="CAnimator.cpp">
+      <Filter>Component\Animatior</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CScene.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="CSceneMgr.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CPlayScene.h">
@@ -123,9 +120,6 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="CResourceMgr.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CPlayerScript.h">
@@ -149,5 +143,12 @@
     <ClInclude Include="CRenderer.h">
       <Filter>Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="CAnimator.h">
+      <Filter>Component\Animatior</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>

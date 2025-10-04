@@ -109,6 +109,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\winAPIEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -133,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CAnimator.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CEndingScene.cpp" />
     <ClCompile Include="CLayer.cpp" />
@@ -140,9 +142,7 @@
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CPlayScene.cpp" />
     <ClCompile Include="CRenderer.cpp" />
-    <ClCompile Include="CResourceMgr.cpp" />
     <ClCompile Include="CScene.cpp" />
-    <ClCompile Include="CSceneMgr.cpp" />
     <ClCompile Include="CScript.cpp" />
     <ClCompile Include="CSpriteRenderer.cpp" />
     <ClCompile Include="CTitleScene.cpp" />
@@ -151,6 +151,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CAnimator.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CEndingScene.h" />
     <ClInclude Include="CLayer.h" />
@@ -158,9 +159,7 @@
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CPlayScene.h" />
     <ClInclude Include="CRenderer.h" />
-    <ClInclude Include="CResourceMgr.h" />
     <ClInclude Include="CScene.h" />
-    <ClInclude Include="CSceneMgr.h" />
     <ClInclude Include="CScript.h" />
     <ClInclude Include="CSpriteRenderer.h" />
     <ClInclude Include="CTitleScene.h" />
@@ -168,6 +167,10 @@
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Object.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

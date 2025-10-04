@@ -1,6 +1,7 @@
 #pragma once
 #include "CScene.h"
-#include "CPlayer.h"
+
+class CPlayer;
 
 class CPlayScene : public CScene
 {
@@ -16,5 +17,8 @@ public:
 
 	void OnEnter() override;
 	void OnExit() override;
+
+private:
+	CPlayer* mPlayer;
 };
 

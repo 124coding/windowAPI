@@ -51,4 +51,5 @@ void GameEngine::LoadScenes()
 void GameEngine::LoadResources()
 {
 	CResourceMgr::Load<CTexture>(this, L"MAP", L"../resources/blue_sky.png");
+	CResourceMgr::Load<CTexture>(this, L"Chicken", L"../resources/Sprites/ChickenAlpha.bmp");
 }
