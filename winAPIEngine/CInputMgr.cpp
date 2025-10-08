@@ -91,3 +91,15 @@ bool CInputMgr::GetKeyUp(const std::string& tStrKey)
 	if (tInfo->mState == eKeyState::Up) return true;
 	return false;
 }
+
+bool CInputMgr::GetKeyNone(const std::string& tStrKey)
+{
+	SKeyInfo* tInfo = FindKeyInfo(tStrKey);
+
+	if (tInfo == nullptr) {
+		return false;
+	}
+
+	if (tInfo->mState == eKeyState::None) return true;
+	return false;
+}

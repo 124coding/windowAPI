@@ -49,7 +49,7 @@ public:
 	}
 	
 	Gdiplus::Image* GetImage() {
-		return mImage;
+		return this->mImage;
 	}
 
 private:

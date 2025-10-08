@@ -2,10 +2,19 @@
 
 #include "CScript.h"
 
+class CAnimator;
+
 class CPlayerScript : public CScript
 {
 public:
-	CPlayerScript() : CScript() {}
+	enum class eState {
+		SitDown,
+		Walk,
+		Sleep,
+		Attack
+	};
+
+	CPlayerScript() : CScript(), mState(eState::SitDown), mAnimator(nullptr) {}
 	~CPlayerScript() {}
 
 	void OnCreate() override;
@@ -13,7 +22,13 @@ public:
 	void OnUpdate(float tDeltaTime) override;
 	void OnLateUpdate(float tDeltaTime) override;
 	void Render(HDC hDC) override;
-private:
 
+private:
+	void SitDown();
+	void Move();
+
+private:
+	eState mState;
+	CAnimator* mAnimator;
 };
 

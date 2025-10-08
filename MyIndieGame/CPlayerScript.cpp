@@ -2,9 +2,11 @@
 #include "CInputMgr.h"
 #include "CTransform.h"
 #include "GameObject.h"
+#include "CAnimator.h"
 
 void CPlayerScript::OnCreate()
 {
+	
 }
 
 void CPlayerScript::OnDestroy()
@@ -13,21 +15,76 @@ void CPlayerScript::OnDestroy()
 
 void CPlayerScript::OnUpdate(float tDeltaTime)
 {
-	SVector2D CurrentVelocity;
+	if (mAnimator == nullptr) {
+		mAnimator = GetOwner()->GetComponent<CAnimator>();
+	}
+	switch (mState) {
+	case eState::SitDown:
+		SitDown();
+		break;
+	case eState::Walk:
+		Move();
+		break;
+	case eState::Sleep:
+		break;
+	case eState::Attack:
+		break;
+	default:
+		break;
+	}
+}
 
-	if (CInputMgr::GetInst()->GetKeyPressed("DoMoveLt")) {
+void CPlayerScript::OnLateUpdate(float tDeltaTime)
+{
+}
+
+void CPlayerScript::Render(HDC hDC)
+{
+}
+
+void CPlayerScript::SitDown()
+{
+	CInputMgr* inputMgr = CInputMgr::GetInst();
+
+	if (inputMgr->GetKeyPressed("DoMoveLt")) {
+		mState = eState::Walk;
+		mAnimator->PlayAnimation(L"LeftWalk");
+	}
+
+	if (inputMgr->GetKeyPressed("DoMoveRt")) {
+		mState = eState::Walk;
+		mAnimator->PlayAnimation(L"RightWalk");
+	}
+
+	if (inputMgr->GetKeyPressed("DoMoveFt")) {
+		mState = eState::Walk;
+		mAnimator->PlayAnimation(L"DownWalk");
+	}
+
+	if (inputMgr->GetKeyPressed("DoMoveBt")) {
+		mState = eState::Walk;
+		mAnimator->PlayAnimation(L"UpWalk");
+	}
+}
+
+void CPlayerScript::Move()
+{
+	SVector2D CurrentVelocity;
+	CInputMgr* inputMgr = CInputMgr::GetInst();
+
+	if (inputMgr->GetKeyPressed("DoMoveLt")) {
 		CurrentVelocity.mX += -1.0f;
 	}
 
-	if (CInputMgr::GetInst()->GetKeyPressed("DoMoveRt")) {
+	if (inputMgr->GetKeyPressed("DoMoveRt")) {
 		CurrentVelocity.mX += 1.0f;
 	}
 
-	if (CInputMgr::GetInst()->GetKeyPressed("DoMoveFt")) {
+	if (inputMgr->GetKeyPressed("DoMoveFt")) {
 		CurrentVelocity.mY += -1.0f;
 	}
 
-	if (CInputMgr::GetInst()->GetKeyPressed("DoMoveBt")) {
+	if (inputMgr->GetKeyPressed("DoMoveBt")) {
 		CurrentVelocity.mY += 1.0f;
 	}
 
@@ -38,12 +95,12 @@ void CPlayerScript::OnUpdate(float tDeltaTime)
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 
 	tr->SetVelocity(CurrentVelocity * 300.0f);
-}
 
-void CPlayerScript::OnLateUpdate(float tDeltaTime)
-{
-}
-
-void CPlayerScript::Render(HDC hDC)
-{
+	if ((inputMgr->GetKeyUp("DoMoveLt") || inputMgr->GetKeyNone("DoMoveLt")) &&
+		(inputMgr->GetKeyUp("DoMoveRt") || inputMgr->GetKeyNone("DoMoveRt")) &&
+		(inputMgr->GetKeyUp("DoMoveFt") || inputMgr->GetKeyNone("DoMoveFt")) &&
+		(inputMgr->GetKeyUp("DoMoveBt") || inputMgr->GetKeyNone("DoMoveBt"))) {
+		mState = eState::SitDown;
+		mAnimator->PlayAnimation(L"SitDown", false);
+	}
 }

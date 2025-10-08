@@ -68,6 +68,7 @@ public:
 	bool GetKeyDown(const std::string& tStrKey);
 	bool GetKeyPressed(const std::string& tStrKey);
 	bool GetKeyUp(const std::string& tStrKey);
+	bool GetKeyNone(const std::string& tStrKey);
 
 private:
 	static CInputMgr* mInst;
@@ -87,7 +88,4 @@ private:
 
 private:
 	std::unordered_map<std::string, SKeyInfo*> mMapKeyInfos;
-
-
 };
-

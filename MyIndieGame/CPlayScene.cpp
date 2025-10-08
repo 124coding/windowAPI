@@ -33,11 +33,17 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	mPlayer->AddComponent<CPlayerScript>();
 
 	CTexture* plImg = CResourceMgr::Find<CTexture>(L"Chicken");
-	
-	CAnimator* anim = mPlayer->AddComponent<CAnimator>();
-	anim->CreateAnimation(L"CatFrontMove", plImg, SVector2D(0.0f, 0.0f), SVector2D(32.0f, 32.0f), SVector2D(0.0f, 0.0f), 4, 0.5f);
 
-	anim->PlayAnimation(L"CatFrontMove", true);
+	CAnimator* anim = mPlayer->AddComponent<CAnimator>();
+	anim->CreateAnimation(L"UpWalk", plImg, SVector2D(0.0f, 0.0f), SVector2D(32.0f, 32.0f), SVector2D(0.0f, 0.0f), 4, 0.5f);
+	anim->CreateAnimation(L"RightWalk", plImg, SVector2D(0.0f, 32.0f), SVector2D(32.0f, 32.0f), SVector2D(0.0f, 0.0f), 4, 0.5f);
+	anim->CreateAnimation(L"DownWalk", plImg, SVector2D(0.0f, 64.0f), SVector2D(32.0f, 32.0f), SVector2D(0.0f, 0.0f), 4, 0.5f);
+	anim->CreateAnimation(L"LeftWalk", plImg, SVector2D(0.0f, 96.0f), SVector2D(32.0f, 32.0f), SVector2D(0.0f, 0.0f), 4, 0.5f);
+	anim->CreateAnimation(L"SitDown", plImg, SVector2D(0.0f, 128.0f), SVector2D(32.0f, 32.0f), SVector2D(0.0f, 0.0f), 4, 0.5f);
+	anim->CreateAnimation(L"Grooming", plImg, SVector2D(0.0f, 160.0f), SVector2D(32.0f, 32.0f), SVector2D(0.0f, 0.0f), 4, 0.5f);
+	anim->CreateAnimation(L"FrontWalk", plImg, SVector2D(0.0f, 0.0f), SVector2D(32.0f, 32.0f), SVector2D(0.0f, 0.0f), 4, 0.5f);
+
+	anim->PlayAnimation(L"SitDown", false);
 
 	GameObject* bg;
 	bg = Instantiate<GameObject>(tEngine, eLayerType::BackGround, SVector2D(0.0f, 0.0f));
@@ -64,9 +70,9 @@ void CPlayScene::OnLateUpdate(float tDeltaTime)
 {
 	CScene::OnLateUpdate(tDeltaTime);
 
-	if (CInputMgr::GetInst()->GetKeyDown("ChangeScene")) {
+	/*if (CInputMgr::GetInst()->GetKeyDown("ChangeScene")) {
 		CSceneMgr::LoadScene(L"TitleScene");
-	}
+	}*/
 }
 
 void CPlayScene::Render(HDC hDC)

@@ -13,6 +13,7 @@ enum class eLayerType {
 	None,
 	BackGround,
 	Player,
+	Particle,
 	MAX = 16
 };
 

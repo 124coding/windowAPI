@@ -6,7 +6,7 @@
 class CTransform : public CComponent
 {
 public:
-	CTransform() : CComponent(eComponentType::Transform), mPosition(SVector2D(0.0f, 0.0f)), mVelocity(SVector2D(0.0f, 0.0f)), mRadius(0.0f) {}
+	CTransform() : CComponent(eComponentType::Transform), mPosition(SVector2D(0.0f, 0.0f)), mVelocity(SVector2D(0.0f, 0.0f)), mScale(SVector2D(1.0f, 1.0f)), mRotation(0.0f) {}
 	~CTransform() {}
 
 	void OnCreate() override;
@@ -32,10 +32,27 @@ public:
 		return this->mVelocity;
 	}
 
+	void SetScale(SVector2D tScale) {
+		this->mScale = tScale;
+	}
+
+	SVector2D GetScale() {
+		return this->mScale;
+	}
+
+	void SetRot(float tRotaiton) {
+		this->mRotation = tRotaiton;
+	}
+
+	float GetRot() {
+		return this->mRotation;
+	}
+
 private:
 	SVector2D mPosition;
 	SVector2D mVelocity;
+	SVector2D mScale;
 
-	float mRadius;
+	float mRotation;
 };
 
