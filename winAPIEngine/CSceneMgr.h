@@ -42,7 +42,7 @@ public:
 	static void OnDestroy();
 	static void OnUpdate(float tDeltaTime);
 	static void OnLateUpdate(float tDeltaTime);
-	static void Render(HDC hDC);
+	static void Render(HDC tHDC);
 
 private:
 	static std::map<std::wstring, CScene*> mScene;

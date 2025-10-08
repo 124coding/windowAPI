@@ -98,7 +98,7 @@ void CAnimation::CreateAnimation(const std::wstring& tName, CTexture* tSpriteShe
 }
 
 void CAnimation::Reset() {
-    mTime = 0.0f;
-    mIndex = 0;
-    mbComplete = false;
+    this->mTime = 0.0f;
+    this->mIndex = 0;
+    this->mbComplete = false;
 }

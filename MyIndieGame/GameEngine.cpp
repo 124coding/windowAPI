@@ -9,8 +9,11 @@
 #include "CEndingScene.h"
 #include "CSceneMgr.h"
 #include "CResourceMgr.h"
+#include "time.h"
 
 void GameEngine::OnCreate() {
+	int a = 0;
+	srand((unsigned int)(&a));
 	LoadResources();
 	LoadScenes();
 	CInputMgr::GetInst()->AddKeyInfo("ChangeScene", 'N');
@@ -51,5 +54,5 @@ void GameEngine::LoadScenes()
 void GameEngine::LoadResources()
 {
 	CResourceMgr::Load<CTexture>(this, L"MAP", L"../resources/blue_sky.png");
-	CResourceMgr::Load<CTexture>(this, L"Chicken", L"../resources/Sprites/ChickenAlpha.bmp");
+	CResourceMgr::Load<CTexture>(this, L"Cat", L"../resources/Sprites/ChickenAlpha.bmp");
 }

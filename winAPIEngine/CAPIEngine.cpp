@@ -193,7 +193,7 @@ INT_PTR CALLBACK CAPIEngine::About(HWND hDlg, UINT message, WPARAM wParam, LPARA
 
 void CAPIEngine::Clear(float tR, float tG, float tB)
 {
-    HDC thDC = mBackBuffer->GetDCMem();
+    HDC tHDC = mBackBuffer->GetDCMem();
 
     HPEN thOldPen = NULL;
     HBRUSH thOldBrush = NULL;
@@ -204,13 +204,13 @@ void CAPIEngine::Clear(float tR, float tG, float tB)
     thPen = CreatePen(PS_SOLID, 2, RGB(tR * 255, tG * 255, tB * 255));
     thBrush = CreateSolidBrush(RGB(tR * 255, tG * 255, tB * 255));
 
-    thOldPen = (HPEN)SelectObject(thDC, thPen);
-    thOldBrush = (HBRUSH)SelectObject(thDC, thBrush);
+    thOldPen = (HPEN)SelectObject(tHDC, thPen);
+    thOldBrush = (HBRUSH)SelectObject(tHDC, thBrush);
 
-    Rectangle(thDC, 0, 0, windowWidth, windowHeight);
+    Rectangle(tHDC, 0, 0, windowWidth, windowHeight);
 
-    SelectObject(thDC, thOldPen);
-    SelectObject(thDC, thOldBrush);
+    SelectObject(tHDC, thOldPen);
+    SelectObject(tHDC, thOldBrush);
 
     DeleteObject(thPen);
     DeleteObject(thBrush);

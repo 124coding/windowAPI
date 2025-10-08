@@ -27,6 +27,6 @@ void CCamera::OnLateUpdate(float tDeltaTime)
 {
 }
 
-void CCamera::Render(HDC hDC)
+void CCamera::Render(HDC tHDC)
 {
 }

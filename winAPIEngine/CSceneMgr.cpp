@@ -7,7 +7,6 @@ CScene* CSceneMgr::mActiveScene = nullptr;
 
 void CSceneMgr::OnCreate(CAPIEngine* tEngine)
 {
-	mActiveScene->OnCreate(tEngine);
 }
 
 void CSceneMgr::OnDestroy()
@@ -27,7 +26,7 @@ void CSceneMgr::OnLateUpdate(float tDeltaTime)
 	mActiveScene->OnLateUpdate(tDeltaTime);
 }
 
-void CSceneMgr::Render(HDC hDC)
+void CSceneMgr::Render(HDC tHDC)
 {
-	mActiveScene->Render(hDC);
+	mActiveScene->Render(tHDC);
 }

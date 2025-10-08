@@ -26,7 +26,7 @@ void CSpriteRenderer::OnLateUpdate(float tDeltaTime)
 {
 }
 
-void CSpriteRenderer::Render(HDC hDC)
+void CSpriteRenderer::Render(HDC tHDC)
 {
 	if (mTexture == nullptr) {
 		return;
@@ -39,7 +39,7 @@ void CSpriteRenderer::Render(HDC hDC)
 	pos = mainCamera->CaluatePosition(pos);
 
 	if (mTexture->GetTextureType() == CTexture::eTextureType::Bmp) {
-		TransparentBlt(hDC, pos.mX, pos.mY, 
+		TransparentBlt(tHDC, pos.mX, pos.mY, 
 			mTexture->GetWidth() * mSize.mX * scale.mX, mTexture->GetHeight() * mSize.mY * scale.mY, 
 			mTexture->GetDCMem(), 
 			0, 0, 
@@ -52,7 +52,7 @@ void CSpriteRenderer::Render(HDC hDC)
 		// 투명화 시킬 픽셀의 색 범위
 		imgAtt.SetColorKey(Gdiplus::Color(100, 100, 100), Gdiplus::Color(255, 255, 255));
 
-		Gdiplus::Graphics graphics(hDC);
+		Gdiplus::Graphics graphics(tHDC);
 
 		graphics.TranslateTransform(pos.mX, pos.mY);
 		graphics.RotateTransform(rot);
@@ -67,7 +67,7 @@ void CSpriteRenderer::Render(HDC hDC)
 			nullptr
 		);
 	}
-	// Gdiplus::Graphics graphics(hDC);
+	// Gdiplus::Graphics graphics(tHDC);
 	// graphics.DrawImage(mImage, Gdiplus::Rect(pos.mX, pos.mY, mWidth, mHeight));
-	// Rectangle(hDC, pos.mX, pos.mY, pos.mX + 100, pos.mY + 100);
+	// Rectangle(tHDC, pos.mX, pos.mY, pos.mX + 100, pos.mY + 100);
 }

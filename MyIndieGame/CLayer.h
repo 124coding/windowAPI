@@ -15,7 +15,7 @@ public:
 	virtual void OnDestroy();
 	virtual void OnUpdate(float tDeltaTime);
 	virtual void OnLateUpdate(float tDeltaTime);
-	virtual void Render(HDC hDC);
+	virtual void Render(HDC tHDC);
 
 	void AddGameObject(GameObject* tGameObject);
 

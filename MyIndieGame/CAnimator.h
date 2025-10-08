@@ -19,7 +19,7 @@ public:
 	void OnDestroy() override;
 	void OnUpdate(float tDeltaTime) override;
 	void OnLateUpdate(float tDeltaTime) override;
-	void Render(HDC hDC) override;
+	void Render(HDC tHDC) override;
 
 	void CreateAnimation(const std::wstring& tName, CTexture* tSpriteSheet, SVector2D tLeftTop, SVector2D tSize, SVector2D tOffset, UINT tSpriteLength, float tDuration);
 	CAnimation* FindAnimation(const std::wstring& tName);

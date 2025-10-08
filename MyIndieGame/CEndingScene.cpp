@@ -20,9 +20,9 @@ void CEndingScene::OnLateUpdate(float tDeltaTime)
 	CScene::OnLateUpdate(tDeltaTime);
 }
 
-void CEndingScene::Render(HDC hDC)
+void CEndingScene::Render(HDC tHDC)
 {
-	CScene::Render(hDC);
+	CScene::Render(tHDC);
 }
 
 void CEndingScene::OnEnter()

@@ -15,6 +15,7 @@ void CPlayerScript::OnDestroy()
 
 void CPlayerScript::OnUpdate(float tDeltaTime)
 {
+
 	if (mAnimator == nullptr) {
 		mAnimator = GetOwner()->GetComponent<CAnimator>();
 	}
@@ -32,13 +33,14 @@ void CPlayerScript::OnUpdate(float tDeltaTime)
 	default:
 		break;
 	}
+
 }
 
 void CPlayerScript::OnLateUpdate(float tDeltaTime)
 {
 }
 
-void CPlayerScript::Render(HDC hDC)
+void CPlayerScript::Render(HDC tHDC)
 {
 }
 

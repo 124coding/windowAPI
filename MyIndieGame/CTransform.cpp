@@ -17,6 +17,6 @@ void CTransform::OnLateUpdate(float tDeltaTime)
 {
 }
 
-void CTransform::Render(HDC hDC)
+void CTransform::Render(HDC tHDC)
 {
 }

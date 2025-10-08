@@ -34,8 +34,8 @@ private:
 	float mDeltaTime = 0.0f;
 
 public:
-	void SetmhDC(HDC thDC) {
-		this->mhDC = thDC;
+	void SetmhDC(HDC tHDC) {
+		this->mhDC = tHDC;
 	}
 
 	HDC GetmhDC() {

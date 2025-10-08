@@ -16,6 +16,6 @@ void CScript::OnLateUpdate(float tDeltaTime)
 {
 }
 
-void CScript::Render(HDC hDC)
+void CScript::Render(HDC tHDC)
 {
 }

@@ -52,11 +52,11 @@ void GameObject::OnLateUpdate(float tDeltaTime)
 	}
 }
 
-void GameObject::Render(HDC hDC)
+void GameObject::Render(HDC tHDC)
 {
 	for (CComponent* comp : mComponents) {
 		if (comp == nullptr) continue;
-		comp->Render(hDC);
+		comp->Render(tHDC);
 	}
 }
 

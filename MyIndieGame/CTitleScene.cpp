@@ -27,11 +27,11 @@ void CTitleScene::OnLateUpdate(float tDeltaTime)
 	}
 }
 
-void CTitleScene::Render(HDC hDC)
+void CTitleScene::Render(HDC tHDC)
 {
-	CScene::Render(hDC);
+	CScene::Render(tHDC);
 	/*wchar_t str[50] = L"Title Scene";
-	TextOut(hDC, 0, 0, str, 10);*/
+	TextOut(tHDC, 0, 0, str, 10);*/
 }
 
 void CTitleScene::OnEnter()

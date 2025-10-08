@@ -17,7 +17,7 @@ public:
 	virtual void OnDestroy() = 0;
 	virtual void OnUpdate(float tDeltaTime) = 0;
 	virtual void OnLateUpdate(float tDeltaTime) = 0;
-	virtual void Render(HDC hDC) = 0;
+	virtual void Render(HDC tHDC) = 0;
 
 	void SetOwner(GameObject* tOwner) {
 		mOwner = tOwner;

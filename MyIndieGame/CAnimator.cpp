@@ -23,10 +23,10 @@ void CAnimator::OnLateUpdate(float tDeltaTime)
 {
 }
 
-void CAnimator::Render(HDC hDC)
+void CAnimator::Render(HDC tHDC)
 {
 	if (mActiveAnimation) {
-		mActiveAnimation->Render(hDC);
+		mActiveAnimation->Render(tHDC);
 	}
 }
 

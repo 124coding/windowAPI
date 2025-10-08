@@ -13,7 +13,7 @@ public:
 	void OnDestroy() override;
 	void OnUpdate(float tDeltaTime) override;
 	void OnLateUpdate(float tDeltaTime) override;
-	void Render(HDC hDC) override;
+	void Render(HDC tHDC) override;
 
 	void SetPos(SVector2D tPosition) {
 		this->mPosition.mX = tPosition.mX;

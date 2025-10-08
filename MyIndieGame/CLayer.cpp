@@ -36,12 +36,12 @@ void CLayer::OnLateUpdate(float tDeltaTime) {
 	}
 }
 
-void CLayer::Render(HDC hDC) {
+void CLayer::Render(HDC tHDC) {
 	for (auto it = mGameObjects.begin(); it != mGameObjects.end(); it++) {
 		if (*it == nullptr) {
 			continue;
 		}
-		(*it)->Render(hDC);
+		(*it)->Render(tHDC);
 	}
 }
 

@@ -19,7 +19,7 @@ public:
 	void OnDestroy() override;
 	void OnUpdate(float tDeltaTime) override;
 	void OnLateUpdate(float tDeltaTime) override;
-	void Render(HDC hDC) override;
+	void Render(HDC tHDC) override;
 
 	void SetTexture(CTexture* tTexture) {
 		this->mTexture = tTexture;

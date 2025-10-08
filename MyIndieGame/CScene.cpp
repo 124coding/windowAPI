@@ -40,13 +40,13 @@ void CScene::OnLateUpdate(float tDeltaTime)
 	}
 }
 
-void CScene::Render(HDC hDC)
+void CScene::Render(HDC tHDC)
 {
 	for (auto it = mLayers.begin(); it != mLayers.end(); it++) {
 		if (*it == nullptr) {
 			continue;
 		}
-		(*it)->Render(hDC);
+		(*it)->Render(tHDC);
 	}
 }
 

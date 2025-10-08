@@ -17,8 +17,8 @@ void CPlayer::OnLateUpdate(float tDeltaTime)
 	GameObject::OnLateUpdate(tDeltaTime);
 }
 
-void CPlayer::Render(HDC hDC)
+void CPlayer::Render(HDC tHDC)
 {
-	GameObject::Render(hDC);
+	GameObject::Render(tHDC);
 
 }
