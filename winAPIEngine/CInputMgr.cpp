@@ -2,6 +2,7 @@
 #include "winMacro.h"
 
 CInputMgr* CInputMgr::mInst = nullptr;
+SVector2D CInputMgr::mMousePosition = SVector2D(0.0f, 0.0f);
 
 CInputMgr::~CInputMgr()
 {
@@ -12,33 +13,63 @@ CInputMgr::~CInputMgr()
 	mMapKeyInfos.clear();
 }
 
-void CInputMgr::Update()
+void CInputMgr::KeyClear()
 {
-	for (auto it = mMapKeyInfos.begin(); it != mMapKeyInfos.end(); it++) {
-		int tPushCount = 0;
-		if (GetAsyncKeyState(it->second->mKeyInput) & 0x8000)
-		{
-			tPushCount++;
+	for (auto& it : mMapKeyInfos) {
+		if (it.second->mState == eKeyState::Down || it.second->mState == eKeyState::Pressed) {
+			it.second->mState = eKeyState::Up;
+		}
+		else if (it.second->mState == eKeyState::Up) {
+			it.second->mState = eKeyState::None;
 		}
 
-		if (tPushCount == 1) {
-			if (it->second->mState == eKeyState::None) {
-				it->second->mState = eKeyState::Down;
+		it.second->bPressed = false;
+	}
+}
+
+void CInputMgr::GetMousePositionByWindow(HWND tHWND)
+{
+	POINT mousePos = {};
+	GetCursorPos(&mousePos);
+	ScreenToClient(tHWND, &mousePos);
+
+	mMousePosition.mX = mousePos.x;
+	mMousePosition.mY = mousePos.y;
+}
+
+void CInputMgr::Update(HWND tHWND)
+{
+	if (GetFocus()) {
+		for (auto it = mMapKeyInfos.begin(); it != mMapKeyInfos.end(); it++) {
+			int tPushCount = 0;
+			if (GetAsyncKeyState(it->second->mKeyInput) & 0x8000)
+			{
+				tPushCount++;
 			}
-			else if (it->second->mState == eKeyState::Down && !it->second->bPressed) {
-				it->second->mState = eKeyState::Pressed;
-				it->second->bPressed = true;
+
+			if (tPushCount == 1) {
+				if (it->second->mState == eKeyState::None) {
+					it->second->mState = eKeyState::Down;
+				}
+				else if (it->second->mState == eKeyState::Down && !it->second->bPressed) {
+					it->second->mState = eKeyState::Pressed;
+					it->second->bPressed = true;
+				}
+			}
+			else {
+				if (it->second->mState == eKeyState::Down || it->second->mState == eKeyState::Pressed) {
+					it->second->mState = eKeyState::Up;
+					it->second->bPressed = false;
+				}
+				else if (it->second->mState == eKeyState::Up) {
+					it->second->mState = eKeyState::None;
+				}
 			}
 		}
-		else {
-			if (it->second->mState == eKeyState::Down || it->second->mState == eKeyState::Pressed) {
-				it->second->mState = eKeyState::Up;
-				it->second->bPressed = false;
-			}
-			else if (it->second->mState == eKeyState::Up) {
-				it->second->mState = eKeyState::None;
-			}
-		}
+		GetMousePositionByWindow(tHWND);
+	}
+	else {
+		KeyClear();
 	}
 }
 

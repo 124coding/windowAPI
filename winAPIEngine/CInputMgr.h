@@ -5,6 +5,8 @@
 #include <string>
 #include <typeinfo>
 
+#include "SVector2D.h"
+
 enum class eKeyState {
 	Down,
 	Pressed,
@@ -22,7 +24,7 @@ struct SKeyInfo {
 class CInputMgr
 {
 public:
-	void Update();
+	void Update(HWND tHWND);
 
 	static CInputMgr* GetInst();
 	static void ReleaseInst();
@@ -33,7 +35,7 @@ public:
 
 		const char* tTypeName = typeid(T).name();
 
-		if (strcmp(tTypeName, "char") == 0 || strcmp(tTypeName, "int")) {
+		if (strcmp(tTypeName, "char") == 0 || strcmp(tTypeName, "int") == 0) {
 			tKeyInfo->mKeyInput = (DWORD)tData;
 		}
 		else return false;
@@ -70,8 +72,17 @@ public:
 	bool GetKeyUp(const std::string& tStrKey);
 	bool GetKeyNone(const std::string& tStrKey);
 
+	static SVector2D GetMousePosition() {
+		return mMousePosition;
+	}
+
+private:
+	void KeyClear();
+	void GetMousePositionByWindow(HWND tHWND);
+
 private:
 	static CInputMgr* mInst;
+	static SVector2D mMousePosition;
 
 	CInputMgr() {};
 	~CInputMgr();

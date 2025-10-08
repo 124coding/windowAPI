@@ -1,20 +1,23 @@
 #pragma once
 
 #include "CScript.h"
+#include "CInputMgr.h"
 
 class CAnimator;
+class CTransform;
 
 class CPlayerScript : public CScript
 {
 public:
 	enum class eState {
-		SitDown,
+		Idle,
 		Walk,
+		GiveWater,
 		Sleep,
 		Attack
 	};
 
-	CPlayerScript() : CScript(), mState(eState::SitDown), mAnimator(nullptr) {}
+	CPlayerScript() : CScript(), mState(eState::Idle), mAnimator(nullptr) {}
 	~CPlayerScript() {}
 
 	void OnCreate() override;
@@ -24,11 +27,18 @@ public:
 	void Render(HDC tHDC) override;
 
 private:
-	void SitDown();
+	void Idle();
 	void Move();
+	void Translate(CTransform* tr);
+	void GiveWater();
 
 private:
 	eState mState;
 	CAnimator* mAnimator;
+	CInputMgr* mInputMgr = CInputMgr::GetInst();
+
+	void (*StartEvent)();
+	void (*CompleteEvent)();
+	void (*EndEvent)();
 };
 

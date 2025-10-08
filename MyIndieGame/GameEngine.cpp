@@ -16,7 +16,6 @@ void GameEngine::OnCreate() {
 	srand((unsigned int)(&a));
 	LoadResources();
 	LoadScenes();
-	CInputMgr::GetInst()->AddKeyInfo("ChangeScene", 'N');
 
 	CSceneMgr::OnCreate(this);
 }
@@ -53,6 +52,6 @@ void GameEngine::LoadScenes()
 
 void GameEngine::LoadResources()
 {
-	CResourceMgr::Load<CTexture>(this, L"MAP", L"../resources/blue_sky.png");
 	CResourceMgr::Load<CTexture>(this, L"Cat", L"../resources/Sprites/ChickenAlpha.bmp");
+	CResourceMgr::Load<CTexture>(this, L"Player", L"../resources/Sprites/Player.bmp");
 }

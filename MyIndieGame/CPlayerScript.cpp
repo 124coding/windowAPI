@@ -20,11 +20,14 @@ void CPlayerScript::OnUpdate(float tDeltaTime)
 		mAnimator = GetOwner()->GetComponent<CAnimator>();
 	}
 	switch (mState) {
-	case eState::SitDown:
-		SitDown();
+	case eState::Idle:
+		Idle();
 		break;
 	case eState::Walk:
 		Move();
+		break;
+	case eState::GiveWater:
+		GiveWater();
 		break;
 	case eState::Sleep:
 		break;
@@ -44,49 +47,69 @@ void CPlayerScript::Render(HDC tHDC)
 {
 }
 
-void CPlayerScript::SitDown()
+void CPlayerScript::Idle()
 {
-	CInputMgr* inputMgr = CInputMgr::GetInst();
-
-	if (inputMgr->GetKeyPressed("DoMoveLt")) {
+	if (mInputMgr->GetKeyPressed("DoMoveLt")) {
 		mState = eState::Walk;
 		mAnimator->PlayAnimation(L"LeftWalk");
 	}
 
-	if (inputMgr->GetKeyPressed("DoMoveRt")) {
+	if (mInputMgr->GetKeyPressed("DoMoveRt")) {
 		mState = eState::Walk;
 		mAnimator->PlayAnimation(L"RightWalk");
 	}
 
-	if (inputMgr->GetKeyPressed("DoMoveFt")) {
+	if (mInputMgr->GetKeyPressed("DoMoveFt")) {
 		mState = eState::Walk;
 		mAnimator->PlayAnimation(L"DownWalk");
 	}
 
-	if (inputMgr->GetKeyPressed("DoMoveBt")) {
+	if (mInputMgr->GetKeyPressed("DoMoveBt")) {
 		mState = eState::Walk;
 		mAnimator->PlayAnimation(L"UpWalk");
+	}
+
+	if (mInputMgr->GetKeyDown("MouseLeftClick")) {
+		SVector2D mousePos = CInputMgr::GetMousePosition();
+
+		mState = eState::GiveWater;
+		mAnimator->PlayAnimation(L"FrontGiveWater", false);
 	}
 }
 
 void CPlayerScript::Move()
 {
-	SVector2D CurrentVelocity;
-	CInputMgr* inputMgr = CInputMgr::GetInst();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 
-	if (inputMgr->GetKeyPressed("DoMoveLt")) {
+	Translate(tr);
+
+	if ((mInputMgr->GetKeyUp("DoMoveLt") || mInputMgr->GetKeyNone("DoMoveLt")) &&
+		(mInputMgr->GetKeyUp("DoMoveRt") || mInputMgr->GetKeyNone("DoMoveRt")) &&
+		(mInputMgr->GetKeyUp("DoMoveFt") || mInputMgr->GetKeyNone("DoMoveFt")) &&
+		(mInputMgr->GetKeyUp("DoMoveBt") || mInputMgr->GetKeyNone("DoMoveBt"))) {
+		mState = eState::Idle;
+		tr->SetVelocity(SVector2D(0.0f, 0.0f));
+		mAnimator->PlayAnimation(L"SitDown", false);
+	}
+}
+
+void CPlayerScript::Translate(CTransform* tr)
+{
+	SVector2D CurrentVelocity;
+
+	if (mInputMgr->GetKeyPressed("DoMoveLt")) {
 		CurrentVelocity.mX += -1.0f;
 	}
 
-	if (inputMgr->GetKeyPressed("DoMoveRt")) {
+	if (mInputMgr->GetKeyPressed("DoMoveRt")) {
 		CurrentVelocity.mX += 1.0f;
 	}
 
-	if (inputMgr->GetKeyPressed("DoMoveFt")) {
+	if (mInputMgr->GetKeyPressed("DoMoveFt")) {
 		CurrentVelocity.mY += -1.0f;
 	}
 
-	if (inputMgr->GetKeyPressed("DoMoveBt")) {
+	if (mInputMgr->GetKeyPressed("DoMoveBt")) {
 		CurrentVelocity.mY += 1.0f;
 	}
 
@@ -94,15 +117,14 @@ void CPlayerScript::Move()
 		CurrentVelocity.Normalize();
 	}
 
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	tr->SetVelocity(CurrentVelocity * 100.0f);
+}
 
-	tr->SetVelocity(CurrentVelocity * 300.0f);
-
-	if ((inputMgr->GetKeyUp("DoMoveLt") || inputMgr->GetKeyNone("DoMoveLt")) &&
-		(inputMgr->GetKeyUp("DoMoveRt") || inputMgr->GetKeyNone("DoMoveRt")) &&
-		(inputMgr->GetKeyUp("DoMoveFt") || inputMgr->GetKeyNone("DoMoveFt")) &&
-		(inputMgr->GetKeyUp("DoMoveBt") || inputMgr->GetKeyNone("DoMoveBt"))) {
-		mState = eState::SitDown;
-		mAnimator->PlayAnimation(L"SitDown", false);
+void CPlayerScript::GiveWater()
+{
+	if (mAnimator->IsCompleteAnimation()) {
+		mState = eState::Idle;
+		mAnimator->PlayAnimation(L"Idle", false);
 	}
 }
+

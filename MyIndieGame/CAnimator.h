@@ -3,10 +3,29 @@
 #include "CAnimation.h"
 
 #include <map>
+#include <functional>
 
 class CAnimator : public CComponent
 {
 public:
+	struct SEvent {
+		std::function<void()> mEvent;
+
+		void operator=(std::function<void()> func) {
+			this->mEvent = std::move(func);
+		}
+
+		void operator()() {
+			if (mEvent) mEvent;
+		}
+	};
+
+	struct SEvents {
+		SEvent mStartEvent;
+		SEvent mCompleteEvent;
+		SEvent mEndEvent;
+	};
+
 	CAnimator() : 
 		CComponent(eComponentType::Animator),
 		mAnimations{},
@@ -25,9 +44,15 @@ public:
 	CAnimation* FindAnimation(const std::wstring& tName);
 	void PlayAnimation(const std::wstring& tName, bool tLoop = true);
 
+	bool IsCompleteAnimation() {
+		return this->mActiveAnimation->IsComplete();
+	};
+
 private:
 	std::map<std::wstring, CAnimation*> mAnimations;
 	CAnimation* mActiveAnimation;
 	bool mbLoop;
+
+	std::map < std::wstring, SEvents*> mEvents;
 };
 

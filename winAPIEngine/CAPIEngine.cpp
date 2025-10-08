@@ -70,7 +70,7 @@ MSG CAPIEngine::Run() {
             mDeltaTime = (float)(mCurrentTime.QuadPart - mPrevTime.QuadPart) / mSecond.QuadPart;
             mPrevTime = mCurrentTime;
 
-            CInputMgr::GetInst()->Update();
+            CInputMgr::GetInst()->Update(mhWnd);
             OnUpdate(mDeltaTime);
             OnLateUpdate(mDeltaTime);
         }
