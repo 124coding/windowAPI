@@ -21,10 +21,16 @@ void CLayer::OnDestroy() {
 
 void CLayer::OnUpdate(float tDeltaTime) {
 	for (auto it = mGameObjects.begin(); it != mGameObjects.end(); it++) {
-		if (*it == nullptr) {
+		if (*it == nullptr){
 			continue;
 		}
-		(*it)->OnUpdate(tDeltaTime);
+		
+		if (DontSeeObjects(*it)) {
+			continue;
+		}
+		else {
+			(*it)->OnUpdate(tDeltaTime);
+		}
 	}
 }
 
@@ -33,7 +39,13 @@ void CLayer::OnLateUpdate(float tDeltaTime) {
 		if (*it == nullptr) {
 			continue;
 		}
-		(*it)->OnLateUpdate(tDeltaTime);
+
+		if (DontSeeObjects(*it)) {
+			continue;
+		}
+		else {
+			(*it)->OnLateUpdate(tDeltaTime);
+		}
 	}
 }
 
@@ -42,7 +54,45 @@ void CLayer::Render(HDC tHDC) {
 		if (*it == nullptr) {
 			continue;
 		}
-		(*it)->Render(tHDC);
+
+		if (DontSeeObjects(*it)) {
+			continue;
+		}
+		else {
+			(*it)->Render(tHDC);
+		}
+	}
+}
+
+bool CLayer::DontSeeObjects(GameObject* tObj)
+{
+	if (tObj->GetState() == GameObject::eState::Paused || tObj->GetState() == GameObject::eState::Dead) {
+		return true;
+	}
+	return false;
+}
+
+void CLayer::RemoveDeadObjects()
+{
+	for (auto it = mGameObjects.begin(); it != mGameObjects.end();) {
+		if (*it == nullptr) {
+			continue;
+		}
+
+		GameObject::eState active = (*it)->GetState();
+
+		if (active == GameObject::eState::Dead) {
+			
+			GameObject* deadObj = (*it);
+
+			it = mGameObjects.erase(it);
+
+			SAFE_DELETE(deadObj);
+
+			continue;
+		}
+
+		it++;
 	}
 }
 

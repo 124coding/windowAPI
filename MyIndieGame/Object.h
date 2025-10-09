@@ -35,3 +35,7 @@ static T* Instantiate(CAPIEngine* tEngine, eLayerType tType, SVector2D tPosition
 
 	return gameObject;
 }
+
+static void Destroy(GameObject* tObj) {
+	tObj->Death();
+}

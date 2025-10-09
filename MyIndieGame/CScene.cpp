@@ -59,6 +59,12 @@ void CScene::OnExit()
 {
 }
 
+void CScene::RemoveDeadObjects() {
+	for (auto& layer : mLayers) {
+		layer->RemoveDeadObjects();
+	}
+}
+
 void CScene::AddGameObject(GameObject* tGameObj, eLayerType tType)
 {
 	mLayers[(UINT)tType]->AddGameObject(tGameObj);

@@ -2,6 +2,7 @@
 #include "CTransform.h"
 #include "GameObject.h"
 #include "CAnimator.h"
+#include "Object.h"
 
 void CCatScript::OnCreate()
 {
@@ -14,6 +15,11 @@ void CCatScript::OnDestroy()
 
 void CCatScript::OnUpdate(float tDeltaTime)
 {
+	mDeathTime += tDeltaTime;
+
+	if (mDeathTime > 6.0f) {
+		Destroy(GetOwner());
+	}
 
 	if (mAnimator == nullptr) {
 		mAnimator = GetOwner()->GetComponent<CAnimator>();

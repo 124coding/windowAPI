@@ -18,6 +18,15 @@ class CTexture;
 class GameObject
 {
 public:
+	friend void Destroy(GameObject* tObj);
+
+	enum class eState {
+		Active,
+		Paused,
+		Dead,
+		End
+	};
+
 	GameObject();
 	virtual ~GameObject();
 
@@ -50,11 +59,28 @@ public:
 		return component;
 	}
 
+public:
+	void SetState(bool tPower) {
+		if (tPower) {
+			mState = eState::Active;
+		}
+		else {
+			mState = eState::Paused;
+		}
+	}
+
+	eState GetState() {
+		return this->mState;
+	}
+
 private:
 	void InitializeComponent();
+	void Death() {
+		this->mState = eState::Dead;
+	}
 
 private:
-
+	eState mState;
 	CTexture* mTexture = nullptr;
 
 	std::vector<CComponent*> mComponents;

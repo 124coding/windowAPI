@@ -1,5 +1,9 @@
 #include "CAnimator.h"
+#include "CResource.h"
 #include "winMacro.h"
+#include "CResourceMgr.h"
+
+#include <filesystem>
 
 void CAnimator::OnCreate()
 {
@@ -67,6 +71,47 @@ void CAnimator::CreateAnimation(const std::wstring& tName,
 	mEvents.insert(std::make_pair(tName, events));
 
 	mAnimations.insert(std::make_pair(tName, animation));
+}
+
+void CAnimator::CreateAnimationByFolder(CAPIEngine* tEngine, const std::wstring& tName, 
+	const std::wstring& tPath, 
+	SVector2D tOffset, 
+	float tDuration)
+{
+	CAnimation* animation = nullptr;
+	animation = FindAnimation(tName);
+
+	if (animation != nullptr) return;
+
+	int fileCount = 0;
+
+	std::filesystem::path fs(tPath);
+	std::vector<CTexture*> images = {};
+
+	for (auto& p : std::filesystem::recursive_directory_iterator(fs)) {
+		std::wstring fileName = p.path().filename();
+		std::wstring fullName = p.path();
+
+		CTexture* texture = CResourceMgr::Load<CTexture>(tEngine, fileName, fullName);
+		images.push_back(texture);
+		fileCount++;
+	}
+
+	UINT sheetWidth = images[0]->GetWidth() * fileCount;
+	UINT sheetHeight = images[0]->GetHeight();
+
+	CTexture* spriteSheet = CTexture::Create(tEngine, tName, sheetWidth, sheetHeight);
+
+	UINT imageWidth = images[0]->GetWidth();
+	UINT imageHeight = images[0]->GetHeight();
+
+	for (size_t i = 0; i < images.size(); i++) {
+		BitBlt(spriteSheet->GetDCMem(), i * imageWidth, 0,
+			imageWidth, imageHeight,
+			images[i]->GetDCMem(), 0, 0, SRCCOPY);
+	}
+
+	CreateAnimation(tName, spriteSheet, SVector2D(), SVector2D(imageWidth, imageHeight), tOffset, fileCount, tDuration);
 }
 
 CAnimation* CAnimator::FindAnimation(const std::wstring& tName)

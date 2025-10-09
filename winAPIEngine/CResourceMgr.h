@@ -34,6 +34,18 @@ public:
 		return resource;
 	}
 
+	static void Insert(const std::wstring& tKey, CResource* tResource) {
+		if (tKey == L"") {
+			return;
+		}
+
+		if (tResource == nullptr) {
+			return;
+		}
+
+		mResources.insert(std::make_pair(tKey, tResource));
+	}
+
 	static void OnDestroy();
 
 private:

@@ -23,7 +23,7 @@ public:
 		End
 	};
 
-	CCatScript() : CScript(), mState(eState::SitDown), mAnimator(nullptr), mDirection(eDirection::End), mTime(0.0f) {}
+	CCatScript() : CScript(), mState(eState::SitDown), mAnimator(nullptr), mDirection(eDirection::End), mTime(0.0f), mDeathTime(0.0f) {}
 	~CCatScript() {}
 
 	void OnCreate() override;
@@ -46,4 +46,5 @@ private:
 	CAnimator* mAnimator;
 
 	float mTime;
+	float mDeathTime;
 };

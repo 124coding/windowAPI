@@ -50,13 +50,24 @@ void CAnimation::Render(HDC tHDC) {
 
         HDC imgHDC = mTexture->GetDCMem();
 
-        AlphaBlend(tHDC,
-            pos.mX - (sprite.size.mX / 2.0f), pos.mY - (sprite.size.mY / 2.0f),
-            sprite.size.mX * scale.mX, sprite.size.mY * scale.mY,
-            imgHDC,
-            sprite.leftTop.mX, sprite.leftTop.mY,
-            sprite.size.mX, sprite.size.mY,
-            func);
+        if (mTexture->GetbAlpha()) {
+            AlphaBlend(tHDC,
+                pos.mX - (sprite.size.mX / 2.0f), pos.mY - (sprite.size.mY / 2.0f),
+                sprite.size.mX * scale.mX, sprite.size.mY * scale.mY,
+                imgHDC,
+                sprite.leftTop.mX, sprite.leftTop.mY,
+                sprite.size.mX, sprite.size.mY,
+                func);
+        }
+        else {
+            TransparentBlt(tHDC,
+                pos.mX - (sprite.size.mX / 2.0f), pos.mY - (sprite.size.mY / 2.0f),
+                sprite.size.mX * scale.mX, sprite.size.mY * scale.mY,
+                imgHDC,
+                sprite.leftTop.mX, sprite.leftTop.mY,
+                sprite.size.mX, sprite.size.mY,
+                RGB(255, 0, 255));
+        }
     }
     else if (type == CTexture::eTextureType::Png) {
         Gdiplus::ImageAttributes imgAtt = {};

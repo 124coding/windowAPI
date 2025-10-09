@@ -1,6 +1,31 @@
 #include "GameEngine.h"
 #include "CTexture.h"
 #include "winMacro.h"
+#include "CResourceMgr.h"
+
+CTexture* CTexture::Create(CAPIEngine* tEngine, const std::wstring& tName, UINT tWidth, UINT tHeight)
+{
+	CTexture* image = CResourceMgr::Find<CTexture>(tName);
+
+	if (image) return image;
+
+	image = new CTexture();
+	image->SetName(tName);
+	image->SetWidth(tWidth);
+	image->SetHeight(tHeight);
+
+	HDC hDC = tEngine->GetmhDC();
+	HWND hWND = tEngine->GetmhWnd();
+	
+	image->mhBitmap = CreateCompatibleBitmap(hDC, tWidth, tHeight);
+	image->mhDCMem = CreateCompatibleDC(hDC);
+
+	image->mhOldBitmap = (HBITMAP)SelectObject(image->mhDCMem, image->mhBitmap);
+
+	CResourceMgr::Insert(tName, image);
+
+	return image;
+}
 
 HRESULT CTexture::Load(CAPIEngine* tEngine, const std::wstring& tPath)
 {
@@ -18,6 +43,12 @@ HRESULT CTexture::Load(CAPIEngine* tEngine, const std::wstring& tPath)
 
 		mWidth = mBitmapInfo.bmWidth;
 		mHeight = mBitmapInfo.bmHeight;
+		if (mBitmapInfo.bmBitsPixel == 32) {
+			mbAlpha = true;
+		}
+		else {
+			mbAlpha = false;
+		}
 
 		HDC mainDC = tEngine->GetmhDC();
 		mhDCMem = CreateCompatibleDC(mainDC);

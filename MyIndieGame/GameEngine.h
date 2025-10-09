@@ -26,4 +26,6 @@ public:
 
 	void DestroyScenes();
 	void DestroyResources();
+
+	void RemoveDeadObjects();
 };

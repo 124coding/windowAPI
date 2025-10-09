@@ -13,7 +13,7 @@ public:
 		mActiveScene = scene;
 		scene->OnCreate(tEngine);
 
-		mScene.insert(make_pair(tName, scene));
+		mScenes.insert(make_pair(tName, scene));
 
 		return scene;
 	}
@@ -21,9 +21,9 @@ public:
 	static CScene* LoadScene(const std::wstring& tName) {
 		if (mActiveScene) mActiveScene->OnExit();
 
-		auto it = mScene.find(tName);
+		auto it = mScenes.find(tName);
 
-		if (it == mScene.end()) {
+		if (it == mScenes.end()) {
 			return nullptr;
 		}
 
@@ -44,7 +44,9 @@ public:
 	static void OnLateUpdate(float tDeltaTime);
 	static void Render(HDC tHDC);
 
+	static void RemoveDeadObjects();
+
 private:
-	static std::map<std::wstring, CScene*> mScene;
+	static std::map<std::wstring, CScene*> mScenes;
 	static CScene* mActiveScene;
 };

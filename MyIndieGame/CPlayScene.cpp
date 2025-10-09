@@ -51,8 +51,18 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 	mPlayer->GetComponent<CTransform>()->SetScale(SVector2D(0.5f, 0.5f));
 
-	// CAT
 	CCat* Cat = Instantiate<CCat>(tEngine, eLayerType::Animal, SVector2D(200.0f, 200.0f));
+	Cat->AddComponent<CCatScript>();
+
+	CTexture* catImg = CResourceMgr::Find<CTexture>(L"Cat");
+
+	CAnimator* catAnim = Cat->AddComponent<CAnimator>();
+
+	catAnim->CreateAnimationByFolder(tEngine, L"MushroomIdle", L"../resources/Sprites/Mushrooms", SVector2D(), 0.5f);
+	catAnim->PlayAnimation(L"MushroomIdle");
+
+	// CAT
+	/*CCat* Cat = Instantiate<CCat>(tEngine, eLayerType::Animal, SVector2D(200.0f, 200.0f));
 	Cat->AddComponent<CCatScript>();
 
 	CTexture* catImg = CResourceMgr::Find<CTexture>(L"Cat");
@@ -69,7 +79,7 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 	catAnim->PlayAnimation(L"SitDown", false);
 
-	Cat->GetComponent<CTransform>()->SetScale(SVector2D(1.5f, 1.5f));
+	Cat->GetComponent<CTransform>()->SetScale(SVector2D(1.5f, 1.5f));*/
 }
 
 void CPlayScene::OnDestroy()

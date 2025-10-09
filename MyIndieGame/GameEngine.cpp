@@ -31,6 +31,8 @@ void GameEngine::OnUpdate(float tDeltaTime) {
 	Render();
 
 	CSceneMgr::OnUpdate(tDeltaTime);
+
+	RemoveDeadObjects();
 }
 
 void GameEngine::OnLateUpdate(float tDeltaTime) {
@@ -66,4 +68,9 @@ void GameEngine::DestroyScenes()
 void GameEngine::DestroyResources()
 {
 	CResourceMgr::OnDestroy();
+}
+
+void GameEngine::RemoveDeadObjects()
+{
+	CSceneMgr::RemoveDeadObjects();
 }

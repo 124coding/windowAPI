@@ -3,7 +3,7 @@
 
 #include "winMacro.h"
 
-GameObject::GameObject()
+GameObject::GameObject() : mState(eState::Active)
 {
 	mComponents.resize((UINT)eComponentType::End);
 	InitializeComponent();

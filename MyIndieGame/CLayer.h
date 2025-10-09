@@ -17,7 +17,10 @@ public:
 	virtual void OnLateUpdate(float tDeltaTime);
 	virtual void Render(HDC tHDC);
 
+	bool DontSeeObjects(GameObject* tObj);
+
 	void AddGameObject(GameObject* tGameObject);
+	void RemoveDeadObjects();
 
 private:
 	eLayerType mType;

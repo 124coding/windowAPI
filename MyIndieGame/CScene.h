@@ -28,6 +28,8 @@ public:
 	virtual void OnExit();
 
 	void AddGameObject(GameObject* tGameObj, eLayerType tType);
+	void RemoveDeadObjects();
+
 	CLayer* GetLayer(eLayerType tType) { return mLayers[(UINT)tType]; }
 
 private:

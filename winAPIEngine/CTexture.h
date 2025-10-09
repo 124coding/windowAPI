@@ -18,7 +18,9 @@ public:
 		None
 	};
 
-	CTexture() : CResource(eResourceType::Texture) { 
+	static CTexture* Create(CAPIEngine* tEngine, const std::wstring& tName, UINT tWidth, UINT tHeight);
+
+	CTexture() : CResource(eResourceType::Texture), mbAlpha(false) { 
 		memset(&mBitmapInfo, 0, sizeof(BITMAP));
 	}
 	~CTexture(){}
@@ -28,6 +30,10 @@ public:
 
 	HRESULT CreateBackBuffer(HINSTANCE tInst, HDC tDC);
 
+	bool GetbAlpha() {
+		return this->mbAlpha;
+	}
+
 	HDC GetDCMem() {
 		return this->mhDCMem;
 	}
@@ -36,8 +42,16 @@ public:
 		return this->mBitmapInfo;
 	}
 
+	void SetWidth(UINT tWidth) {
+		this->mWidth = tWidth;
+	}
+
 	UINT GetWidth() {
 		return this->mWidth;
+	}
+
+	void SetHeight(UINT tHeight) {
+		this->mHeight = tHeight;
 	}
 
 	UINT GetHeight() {
@@ -53,7 +67,8 @@ public:
 	}
 
 private:
-	eTextureType mType = eTextureType::None;
+	bool mbAlpha;
+	eTextureType mType;
 
 	HDC mhDCMem = nullptr;
 	HBITMAP mhBitmap = nullptr;
