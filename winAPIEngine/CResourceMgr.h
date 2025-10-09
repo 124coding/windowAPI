@@ -34,6 +34,8 @@ public:
 		return resource;
 	}
 
+	static void OnDestroy();
+
 private:
 	static std::map<std::wstring, CResource*> mResources;
 };

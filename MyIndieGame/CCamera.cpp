@@ -16,9 +16,10 @@ void CCamera::OnUpdate(float tDeltaTime)
 		CTransform* tr = mTarget->GetComponent<CTransform>();
 		mLookPosition = tr->GetPos();
 	}
-
-	CTransform* cameraTr = GetOwner()->GetComponent<CTransform>();
-	mLookPosition = cameraTr->GetPos();
+	else {
+		CTransform* cameraTr = GetOwner()->GetComponent<CTransform>();
+		mLookPosition = cameraTr->GetPos();
+	}
 
 	mDistance = mLookPosition - (mResolution / 2.0f);
 }

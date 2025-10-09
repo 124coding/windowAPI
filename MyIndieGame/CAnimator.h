@@ -16,14 +16,14 @@ public:
 		}
 
 		void operator()() {
-			if (mEvent) mEvent;
+			if (mEvent) mEvent();
 		}
 	};
 
 	struct SEvents {
-		SEvent mStartEvent;
-		SEvent mCompleteEvent;
-		SEvent mEndEvent;
+		SEvent startEvent;
+		SEvent completeEvent;
+		SEvent endEvent;
 	};
 
 	CAnimator() : 
@@ -43,6 +43,11 @@ public:
 	void CreateAnimation(const std::wstring& tName, CTexture* tSpriteSheet, SVector2D tLeftTop, SVector2D tSize, SVector2D tOffset, UINT tSpriteLength, float tDuration);
 	CAnimation* FindAnimation(const std::wstring& tName);
 	void PlayAnimation(const std::wstring& tName, bool tLoop = true);
+
+	SEvents* FindEvents(const std::wstring tName);
+	std::function<void()>& GetStartEvent(const std::wstring& tName);
+	std::function<void()>& GetCompleteEvent(const std::wstring& tName);
+	std::function<void()>& GetEndEvent(const std::wstring& tName);
 
 	bool IsCompleteAnimation() {
 		return this->mActiveAnimation->IsComplete();

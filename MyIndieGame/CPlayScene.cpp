@@ -37,6 +37,8 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	mPlayer = Instantiate<CPlayer>(tEngine, eLayerType::Player, SVector2D(100.0f, 100.0f));
 	mPlayer->AddComponent<CPlayerScript>();
 
+	cameraComp->SetTarget(mPlayer);
+
 	CTexture* plImg = CResourceMgr::Find<CTexture>(L"Player");
 
 	CAnimator* plAnim = mPlayer->AddComponent<CAnimator>();
@@ -44,6 +46,8 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	plAnim->CreateAnimation(L"FrontGiveWater", plImg, SVector2D(0.0f, 2000.0f), SVector2D(250.0f, 250.0f), SVector2D(), 12, 0.1f);
 
 	plAnim->PlayAnimation(L"Idle", false);
+
+	// plAnim->GetCompleteEvent(L"FrontGiveWater");
 
 	mPlayer->GetComponent<CTransform>()->SetScale(SVector2D(0.5f, 0.5f));
 

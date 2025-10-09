@@ -22,7 +22,9 @@ void GameEngine::OnCreate() {
 
 void GameEngine::OnDestroy() {
 
-	CSceneMgr::OnDestroy();
+	DestroyScenes();
+	DestroyResources();
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 }
 
 void GameEngine::OnUpdate(float tDeltaTime) {
@@ -54,4 +56,14 @@ void GameEngine::LoadResources()
 {
 	CResourceMgr::Load<CTexture>(this, L"Cat", L"../resources/Sprites/ChickenAlpha.bmp");
 	CResourceMgr::Load<CTexture>(this, L"Player", L"../resources/Sprites/Player.bmp");
+}
+
+void GameEngine::DestroyScenes()
+{
+	CSceneMgr::OnDestroy();
+}
+
+void GameEngine::DestroyResources()
+{
+	CResourceMgr::OnDestroy();
 }

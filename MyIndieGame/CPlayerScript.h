@@ -36,9 +36,5 @@ private:
 	eState mState;
 	CAnimator* mAnimator;
 	CInputMgr* mInputMgr = CInputMgr::GetInst();
-
-	void (*StartEvent)();
-	void (*CompleteEvent)();
-	void (*EndEvent)();
 };
 

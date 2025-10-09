@@ -15,6 +15,7 @@ void CLayer::OnDestroy() {
 			continue;
 		}
 		(*it)->OnDestroy();
+		SAFE_DELETE(*it);
 	}
 }
 

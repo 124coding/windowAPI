@@ -25,7 +25,9 @@ public:
 	void OnLateUpdate(float tDeltaTime) override;
 	void Render(HDC tHDC) override;
 
-
+	void SetTarget(GameObject* tTarget) {
+		this->mTarget = tTarget;
+	}
 
 private:
 	// std::vector<GameObject*> mGameObjects;

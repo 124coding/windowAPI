@@ -17,6 +17,7 @@ void CScene::OnDestroy()
 			continue;
 		}
 		(*it)->OnDestroy();
+		SAFE_DELETE(*it);
 	}
 }
 

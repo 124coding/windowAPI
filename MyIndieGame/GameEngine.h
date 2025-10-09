@@ -23,4 +23,7 @@ public:
 
 	void LoadScenes();
 	void LoadResources();
+
+	void DestroyScenes();
+	void DestroyResources();
 };

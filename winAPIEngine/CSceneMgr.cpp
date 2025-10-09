@@ -11,9 +11,10 @@ void CSceneMgr::OnCreate(CAPIEngine* tEngine)
 
 void CSceneMgr::OnDestroy()
 {
-	mActiveScene->OnDestroy();
-
-	SAFE_DELETE(mActiveScene);
+	for (auto& it : mScene) {
+		it.second->OnDestroy();
+		SAFE_DELETE(it.second);
+	}
 }
 
 void CSceneMgr::OnUpdate(float tDeltaTime)
