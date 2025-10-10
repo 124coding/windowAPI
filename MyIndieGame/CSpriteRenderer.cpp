@@ -39,12 +39,28 @@ void CSpriteRenderer::Render(HDC tHDC)
 	pos = mainCamera->CaluatePosition(pos);
 
 	if (mTexture->GetTextureType() == CTexture::eTextureType::Bmp) {
-		TransparentBlt(tHDC, pos.mX, pos.mY, 
-			mTexture->GetWidth() * mSize.mX * scale.mX, mTexture->GetHeight() * mSize.mY * scale.mY, 
-			mTexture->GetDCMem(), 
-			0, 0, 
-			mTexture->GetWidth(), mTexture->GetHeight(), 
-			RGB(255, 0, 255));
+
+		if (mTexture->GetbAlpha()) {
+			BLENDFUNCTION func = {};
+			func.BlendOp = AC_SRC_OVER;
+			func.BlendFlags = 0;
+			func.AlphaFormat = AC_SRC_ALPHA;
+
+			func.SourceConstantAlpha = 255;
+			AlphaBlend(tHDC, pos.mX, pos.mY,
+				mTexture->GetWidth() * mSize.mX * scale.mX, mTexture->GetHeight() * mSize.mY * scale.mY,
+				mTexture->GetDCMem(),
+				0, 0,
+				mTexture->GetWidth(), mTexture->GetHeight(), func);
+		}
+		else {
+			TransparentBlt(tHDC, pos.mX, pos.mY,
+				mTexture->GetWidth() * mSize.mX * scale.mX, mTexture->GetHeight() * mSize.mY * scale.mY,
+				mTexture->GetDCMem(),
+				0, 0,
+				mTexture->GetWidth(), mTexture->GetHeight(),
+				RGB(255, 0, 255));
+		}
 	}
 	else if (mTexture->GetTextureType() == CTexture::eTextureType::Png) {
 		Gdiplus::ImageAttributes imgAtt = {};

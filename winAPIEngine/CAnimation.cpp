@@ -42,17 +42,18 @@ void CAnimation::Render(HDC tHDC) {
     SSprite sprite = mAnimationSheet[mIndex];
 
     if (type == CTexture::eTextureType::Bmp) {
-        BLENDFUNCTION func = {};
-        func.BlendOp = AC_SRC_OVER;
-        func.BlendFlags = 0;
-        func.AlphaFormat = AC_SRC_ALPHA;
-        func.SourceConstantAlpha = 255;
 
         HDC imgHDC = mTexture->GetDCMem();
 
         if (mTexture->GetbAlpha()) {
+            BLENDFUNCTION func = {};
+            func.BlendOp = AC_SRC_OVER;
+            func.BlendFlags = 0;
+            func.AlphaFormat = AC_SRC_ALPHA;
+            func.SourceConstantAlpha = 255;
+
             AlphaBlend(tHDC,
-                pos.mX - (sprite.size.mX / 2.0f), pos.mY - (sprite.size.mY / 2.0f),
+                pos.mX - (sprite.size.mX / 2.0f) + sprite.offset.mX, pos.mY - (sprite.size.mY / 2.0f) + sprite.offset.mY,
                 sprite.size.mX * scale.mX, sprite.size.mY * scale.mY,
                 imgHDC,
                 sprite.leftTop.mX, sprite.leftTop.mY,
@@ -61,7 +62,7 @@ void CAnimation::Render(HDC tHDC) {
         }
         else {
             TransparentBlt(tHDC,
-                pos.mX - (sprite.size.mX / 2.0f), pos.mY - (sprite.size.mY / 2.0f),
+                pos.mX - (sprite.size.mX / 2.0f) + sprite.offset.mX, pos.mY - (sprite.size.mY / 2.0f) + sprite.offset.mY,
                 sprite.size.mX * scale.mX, sprite.size.mY * scale.mY,
                 imgHDC,
                 sprite.leftTop.mX, sprite.leftTop.mY,
