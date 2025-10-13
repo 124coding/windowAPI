@@ -51,7 +51,7 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 	mPlayer->GetComponent<CTransform>()->SetScale(SVector2D(0.5f, 0.5f));
 
-	CCat* Cat = Instantiate<CCat>(tEngine, eLayerType::Animal, SVector2D(200.0f, 200.0f));
+	CCat* Cat = Instantiate<CCat>(tEngine, eLayerType::Animal, mPlayer->GetComponent<CTransform>()->GetPos());
 	Cat->AddComponent<CCatScript>();
 
 	CTexture* catImg = CResourceMgr::Find<CTexture>(L"Cat");

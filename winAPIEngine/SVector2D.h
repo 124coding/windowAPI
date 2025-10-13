@@ -2,6 +2,8 @@
 #include <math.h>
 #include <cfloat>
 
+#define PI 3.141592f
+
 struct SVector2D {
 public:
 	float mX = 0.0f;
@@ -74,5 +76,16 @@ public:
 		}
 
 		return (*this) * (1.0f / tLength);
+	}
+
+	// È¸Àü
+	SVector2D Rotate(float tDegree) {
+		float radian = (tDegree / 180.0f) * PI;
+
+		this->Normalize();
+		float x = cosf(radian) * this->mX - sinf(radian) * this->mY;
+		float y = sinf(radian) * this->mX + cosf(radian) * this->mY;
+
+		return SVector2D(x, y);
 	}
 };

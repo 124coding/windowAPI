@@ -1,7 +1,7 @@
 #pragma once
 
-#define windowWidth 672
-#define windowHeight 846
+#define windowWidth 1600
+#define windowHeight 800
 
 #define SAFE_DELETE(p) \
 if (p != nullptr) \

@@ -1,5 +1,6 @@
 #pragma once
 #include "CScript.h"
+#include "CInputMgr.h"
 
 class CAnimator;
 class CTransform;
@@ -23,7 +24,7 @@ public:
 		End
 	};
 
-	CCatScript() : CScript(), mState(eState::SitDown), mAnimator(nullptr), mDirection(eDirection::End), mTime(0.0f), mDeathTime(0.0f) {}
+	CCatScript() : CScript(), mState(eState::SitDown), mAnimator(nullptr), mDirection(eDirection::End), mTime(0.0f), mDeathTime(0.0f), mRadian(0.0f) {}
 	~CCatScript() {}
 
 	void OnCreate() override;
@@ -45,6 +46,9 @@ private:
 
 	CAnimator* mAnimator;
 
+	CInputMgr* mInputMgr = CInputMgr::GetInst();
+
 	float mTime;
 	float mDeathTime;
+	float mRadian;
 };

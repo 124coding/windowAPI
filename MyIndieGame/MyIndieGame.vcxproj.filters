@@ -16,38 +16,14 @@
     <Filter Include="Scenes">
       <UniqueIdentifier>{072388ff-d4ff-448b-8ab0-4b6ef76b6c54}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component">
-      <UniqueIdentifier>{d6c6add0-fa55-4c49-87b5-e5f5825eafb0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Layer">
-      <UniqueIdentifier>{39b07a1c-73b9-4f0d-a658-c525f0aa3b17}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{30623cd1-44c2-4835-b85f-db48cfc2da39}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Script">
-      <UniqueIdentifier>{b92d7bd2-2e21-4333-bc11-bc69016da9ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\SpriteRenderer">
-      <UniqueIdentifier>{d641f8b2-814a-4122-bb0c-806067e588fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Transform">
-      <UniqueIdentifier>{de3724ad-591e-4f59-82b7-7cad1b52155e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Objects">
       <UniqueIdentifier>{329e3485-f847-4156-b662-4c863bb7b867}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Camera">
-      <UniqueIdentifier>{93d4dcce-4f19-4f1b-80f8-16a5e6323988}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Script\Scripts">
+    <Filter Include="Scripts">
       <UniqueIdentifier>{305146c9-a3a3-48da-a522-15ccca85ada8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Renderer">
-      <UniqueIdentifier>{381b3c58-ad62-42ec-b8c9-c12026579c6b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Animatior">
-      <UniqueIdentifier>{0e985bfe-5c74-42cf-8dd4-d0b6d680edb8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -57,41 +33,17 @@
     <ClCompile Include="GameEngine.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CScene.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="CTitleScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="CEndingScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="CLayer.cpp">
-      <Filter>Layer</Filter>
-    </ClCompile>
     <ClCompile Include="CPlayerScript.cpp">
-      <Filter>Component\Script\Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="CScript.cpp">
-      <Filter>Component\Script</Filter>
-    </ClCompile>
-    <ClCompile Include="CSpriteRenderer.cpp">
-      <Filter>Component\SpriteRenderer</Filter>
-    </ClCompile>
-    <ClCompile Include="CTransform.cpp">
-      <Filter>Component\Transform</Filter>
+      <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CPlayer.cpp">
       <Filter>Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="CCamera.cpp">
-      <Filter>Component\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="CRenderer.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="CAnimator.cpp">
-      <Filter>Component\Animatior</Filter>
     </ClCompile>
     <ClCompile Include="CPlayScene.cpp">
       <Filter>Scenes</Filter>
@@ -100,14 +52,14 @@
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="CCatScript.cpp">
-      <Filter>Component\Script\Scripts</Filter>
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CTitleObjectScript.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="CScene.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CPlayScene.h">
@@ -119,44 +71,23 @@
     <ClInclude Include="CEndingScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="CLayer.h">
-      <Filter>Layer</Filter>
-    </ClInclude>
     <ClInclude Include="Enums.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="CPlayerScript.h">
-      <Filter>Component\Script\Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="CScript.h">
-      <Filter>Component\Script</Filter>
-    </ClInclude>
-    <ClInclude Include="CSpriteRenderer.h">
-      <Filter>Component\SpriteRenderer</Filter>
-    </ClInclude>
-    <ClInclude Include="CTransform.h">
-      <Filter>Component\Transform</Filter>
+      <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="CPlayer.h">
       <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="CCamera.h">
-      <Filter>Component\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="CRenderer.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="CAnimator.h">
-      <Filter>Component\Animatior</Filter>
     </ClInclude>
     <ClInclude Include="CCat.h">
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="CCatScript.h">
-      <Filter>Component\Script\Scripts</Filter>
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CTitleObjectScript.h">
+      <Filter>Scripts</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

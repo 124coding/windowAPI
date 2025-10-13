@@ -1,7 +1,10 @@
 #include "CPlayerScript.h"
+
 #include "CInputMgr.h"
-#include "CTransform.h"
+
 #include "GameObject.h"
+
+#include "CTransform.h"
 #include "CAnimator.h"
 
 void CPlayerScript::OnCreate()
@@ -89,7 +92,7 @@ void CPlayerScript::Move()
 		(mInputMgr->GetKeyUp("DoMoveBt") || mInputMgr->GetKeyNone("DoMoveBt"))) {
 		mState = eState::Idle;
 		tr->SetVelocity(SVector2D(0.0f, 0.0f));
-		mAnimator->PlayAnimation(L"SitDown", false);
+		mAnimator->PlayAnimation(L"Idle", false);
 	}
 }
 

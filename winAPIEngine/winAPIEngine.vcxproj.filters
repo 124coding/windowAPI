@@ -25,6 +25,33 @@
     <Filter Include="Resource\Animation">
       <UniqueIdentifier>{5cda2420-151b-4704-825a-3682e1a206c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Layer">
+      <UniqueIdentifier>{8cbe2e41-c7c1-4f2c-b1a3-accc5ca817b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{6c9fad16-4130-49d4-84dd-692524da2403}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script">
+      <UniqueIdentifier>{ace411cb-b8fe-40e8-b41d-b899312ad7a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\SpriteRenderer">
+      <UniqueIdentifier>{59ec80a3-1ffa-4950-b8c2-064bcd535cf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Transform">
+      <UniqueIdentifier>{0771c6c1-a072-4c58-9803-3ae6915c8b2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Camera">
+      <UniqueIdentifier>{e36f0fc6-eb40-41df-b3a6-da928790e842}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{72de44e4-c4ba-4485-9a02-71e1e6f2bf43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{9cf68546-2c4f-4145-abfe-ecb9d3801827}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Animator">
+      <UniqueIdentifier>{b6c45387-5268-44ff-9659-43f3d6dc182e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -51,9 +78,6 @@
     <ClInclude Include="CEntity.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CComponent.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="CResource.h">
       <Filter>Resource</Filter>
     </ClInclude>
@@ -72,6 +96,36 @@
     <ClInclude Include="CAnimation.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="CCamera.h">
+      <Filter>Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CLayer.h">
+      <Filter>Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="CRenderer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="CScript.h">
+      <Filter>Component\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="CTransform.h">
+      <Filter>Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpriteRenderer.h">
+      <Filter>Component\SpriteRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="CComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimator.h">
+      <Filter>Component\Animator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAPIEngine.cpp">
@@ -81,9 +135,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CEntity.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="CComponent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CResource.cpp">
@@ -103,6 +154,33 @@
     </ClCompile>
     <ClCompile Include="CAnimation.cpp">
       <Filter>Resource\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="CCamera.cpp">
+      <Filter>Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="CLayer.cpp">
+      <Filter>Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="CScript.cpp">
+      <Filter>Component\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpriteRenderer.cpp">
+      <Filter>Component\SpriteRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="CTransform.cpp">
+      <Filter>Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="CComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimator.cpp">
+      <Filter>Component\Animator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

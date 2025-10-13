@@ -73,6 +73,22 @@ public:
 		return this->mState;
 	}
 
+	void SetSize(SVector2D tSize) {
+		this->mSize = SVector2D(this->mSize.mX * tSize.mX, this->mSize.mY * tSize.mY);
+	}
+
+	SVector2D GetSize() {
+		return this->mSize;
+	}
+
+	void SetAnchorPoint(SVector2D tAnchor) {
+		this->mAnchorPoint = tAnchor;
+	}
+
+	SVector2D GetAnchorPoint() {
+		return this->mAnchorPoint;
+	}
+
 private:
 	void InitializeComponent();
 	void Death() {
@@ -82,6 +98,9 @@ private:
 private:
 	eState mState;
 	CTexture* mTexture = nullptr;
+
+	SVector2D mSize;
+	SVector2D mAnchorPoint;
 
 	std::vector<CComponent*> mComponents;
 };

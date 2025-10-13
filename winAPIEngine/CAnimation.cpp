@@ -74,7 +74,7 @@ void CAnimation::Render(HDC tHDC) {
         Gdiplus::ImageAttributes imgAtt = {};
 
         // 투명화 시킬 픽셀의 색 범위
-        imgAtt.SetColorKey(Gdiplus::Color(100, 100, 100), Gdiplus::Color(255, 255, 255));
+        imgAtt.SetColorKey(Gdiplus::Color(245, 0, 245), Gdiplus::Color(255, 0, 255));
         
         Gdiplus::Graphics graphics(tHDC);
 

@@ -51,11 +51,23 @@ void GameEngine::LoadScenes()
 	CSceneMgr::CreateScene<CPlayScene>(this, L"PlayScene");
 	CSceneMgr::CreateScene<CEndingScene>(this, L"EndingScene");
 
-	CSceneMgr::LoadScene(L"PlayScene");
+	CSceneMgr::LoadScene(L"TitleScene");
 }
 
 void GameEngine::LoadResources()
 {
+	// Maps
+	CResourceMgr::Load<CTexture>(this, L"TitleMap", L"../resources/Maps/Brotato_Title_Screen_Map.png");
+	CResourceMgr::Load<CTexture>(this, L"TitleMob1", L"../resources/Maps/Brotato_Title_Screen_Mobs_1.png");
+	CResourceMgr::Load<CTexture>(this, L"TitleMob2", L"../resources/Maps/Brotato_Title_Screen_Mobs_2.png");
+	CResourceMgr::Load<CTexture>(this, L"TitleMob3", L"../resources/Maps/Brotato_Title_Screen_Mobs_3.png");
+	CResourceMgr::Load<CTexture>(this, L"TitleLight", L"../resources/Maps/Brotato_Title_Screen_Light.png");
+	CResourceMgr::Load<CTexture>(this, L"TitleLogo", L"../resources/Maps/Logo.png");
+	CResourceMgr::Load<CTexture>(this, L"TitleBrotato", L"../resources/Maps/splash_art_brotato.png");
+
+
+
+	// Sprites
 	CResourceMgr::Load<CTexture>(this, L"Cat", L"../resources/Sprites/ChickenAlpha.bmp");
 	CResourceMgr::Load<CTexture>(this, L"Player", L"../resources/Sprites/Player.bmp");
 }

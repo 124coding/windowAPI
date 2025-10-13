@@ -2,6 +2,7 @@
 #include "CTransform.h"
 #include "GameObject.h"
 #include "CAnimator.h"
+
 #include "Object.h"
 
 void CCatScript::OnCreate()
@@ -53,13 +54,31 @@ void CCatScript::Render(HDC tHDC)
 void CCatScript::SitDown(float tDeltaTime)
 {
 	mTime += tDeltaTime;
-	if (mTime > 2.0f) {
+
+	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	SVector2D pos = tr->GetPos();
+
+	//SVector2D mousePos = SVector2D();
+
+	//if (mInputMgr->GetKeyDown("MouseLeftClick")) {
+	//	mousePos = CInputMgr::GetMousePosition(); // 마우스 위치를 여기서 말고 따로 받아오는게 좋음. <-- 작동을 제대로 안할 것임 (벡터의 뺄셈 활용한 버전)
+	//}
+
+	//SVector2D destVec = mousePos - pos;
+	//destVec = destVec.Normalize();
+
+	// 삼각함수를 이용한 버전 (수류탄의 움직임 등)
+	/*mRadian += 5.0f * tDeltaTime;
+
+	tr->SetVelocity(SVector2D(3.0f, -4.0f * cosf(mRadian)) * 100.0f);*/
+	
+	/*if (mTime > 2.0f) {
 		mState = eState::Walk;
 		int direction = rand() % 4;
 		mDirection = (eDirection)direction;
 		PlayWalkAnimationByDirection(mDirection);
 		mTime = 0.0f;
-	}
+	}*/
 }
 
 void CCatScript::Move(float tDeltaTime)
