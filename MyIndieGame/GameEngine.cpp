@@ -2,18 +2,24 @@
 
 #include "GameEngine.h"
 #include "GameObject.h"
+
 #include "CInputMgr.h"
-#include "SVector2D.h"
+#include "CSceneMgr.h"
+#include "CResourceMgr.h"
+#include "CCollisionMgr.h"
+
 #include "CPlayScene.h"
 #include "CTitleScene.h"
 #include "CEndingScene.h"
-#include "CSceneMgr.h"
-#include "CResourceMgr.h"
+
+#include "SVector2D.h"
 #include "time.h"
 
 void GameEngine::OnCreate() {
 	int a = 0;
 	srand((unsigned int)(&a));
+
+	CCollisionMgr::OnCreate(this);
 	LoadResources();
 	LoadScenes();
 
@@ -21,7 +27,7 @@ void GameEngine::OnCreate() {
 }
 
 void GameEngine::OnDestroy() {
-
+	CCollisionMgr::OnDestroy();
 	DestroyScenes();
 	DestroyResources();
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -30,17 +36,20 @@ void GameEngine::OnDestroy() {
 void GameEngine::OnUpdate(float tDeltaTime) {
 	Render();
 
+	CCollisionMgr::OnUpdate(tDeltaTime);
 	CSceneMgr::OnUpdate(tDeltaTime);
 
 	RemoveDeadObjects();
 }
 
 void GameEngine::OnLateUpdate(float tDeltaTime) {
+	CCollisionMgr::OnLateUpdate(tDeltaTime);
 	CSceneMgr::OnLateUpdate(tDeltaTime);
 }
 
 void GameEngine::Render() {
 	this->Clear(0.5f, 0.5f, 0.5f);
+	CCollisionMgr::Render(mBackBuffer->GetDCMem());
 	CSceneMgr::Render(mBackBuffer->GetDCMem());
 	this->Present();
 }
@@ -51,7 +60,7 @@ void GameEngine::LoadScenes()
 	CSceneMgr::CreateScene<CPlayScene>(this, L"PlayScene");
 	CSceneMgr::CreateScene<CEndingScene>(this, L"EndingScene");
 
-	CSceneMgr::LoadScene(L"TitleScene");
+	CSceneMgr::LoadScene(L"PlayScene");
 }
 
 void GameEngine::LoadResources()

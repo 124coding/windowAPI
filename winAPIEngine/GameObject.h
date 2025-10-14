@@ -73,6 +73,14 @@ public:
 		return this->mState;
 	}
 
+	bool IsActive() {
+		return this->mState == eState::Active;
+	}
+
+	bool IsDead() {
+		return this->mState == eState::Dead;
+	}
+
 	void SetSize(SVector2D tSize) {
 		this->mSize = SVector2D(this->mSize.mX * tSize.mX, this->mSize.mY * tSize.mY);
 	}

@@ -20,6 +20,14 @@ CTexture* CTexture::Create(CAPIEngine* tEngine, const std::wstring& tName, UINT 
 	image->mhBitmap = CreateCompatibleBitmap(hDC, tWidth, tHeight);
 	image->mhDCMem = CreateCompatibleDC(hDC);
 
+	HBRUSH transparentBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
+	HBRUSH oldBrush = (HBRUSH)SelectObject(hDC, transparentBrush);
+
+	Rectangle(hDC,
+		-1, -1, image->GetWidth() + 1, image->GetHeight() + 1);
+
+	SelectObject(hDC, oldBrush);
+
 	image->mhOldBitmap = (HBITMAP)SelectObject(image->mhDCMem, image->mhBitmap);
 
 	CResourceMgr::Insert(tName, image);

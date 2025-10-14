@@ -3,11 +3,14 @@
 
 #include "CPlayer.h"
 #include "CCat.h"
+
 #include "CLayer.h"
 #include "CInputMgr.h"
 #include "CSceneMgr.h"
 #include "CResourceMgr.h"
+#include "CCollisionMgr.h"
 
+#include "CBoxCollider2D.h"
 #include "CAnimator.h"
 #include "CCamera.h"
 #include "CPlayerScript.h"
@@ -27,17 +30,21 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	CInputMgr::GetInst()->AddKeyInfo("MouseRightClick", VK_RBUTTON);
 	CInputMgr::GetInst()->AddKeyInfo("MouseWheelClick", VK_MBUTTON);
 
+	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Animal, true);
+
 	CScene::OnCreate(tEngine);
 
-	GameObject* camera = Instantiate<GameObject>(tEngine, eLayerType::None, SVector2D(336.0f, 423.0f));
+	/*GameObject* camera = Instantiate<GameObject>(tEngine, eLayerType::None, SVector2D(336.0f, 423.0f));
 	CCamera* cameraComp = camera->AddComponent<CCamera>();
 
-	mainCamera = cameraComp;
+	mainCamera = cameraComp;*/
 
 	mPlayer = Instantiate<CPlayer>(tEngine, eLayerType::Player, SVector2D(100.0f, 100.0f));
 	mPlayer->AddComponent<CPlayerScript>();
+	CBoxCollider2D* bPlCollider = mPlayer->AddComponent<CBoxCollider2D>();
+	bPlCollider->SetOffset(SVector2D(-50.0f, -50.0f));
 
-	cameraComp->SetTarget(mPlayer);
+	// cameraComp->SetTarget(mPlayer);
 
 	CTexture* plImg = CResourceMgr::Find<CTexture>(L"Player");
 
@@ -49,10 +56,12 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 	// plAnim->GetCompleteEvent(L"FrontGiveWater");
 
-	mPlayer->GetComponent<CTransform>()->SetScale(SVector2D(0.5f, 0.5f));
+	mPlayer->GetComponent<CTransform>()->SetScale(SVector2D(1.0f, 1.0f));
 
-	CCat* Cat = Instantiate<CCat>(tEngine, eLayerType::Animal, mPlayer->GetComponent<CTransform>()->GetPos());
+	CCat* Cat = Instantiate<CCat>(tEngine, eLayerType::Animal, SVector2D(300.0f, 300.0f));
 	Cat->AddComponent<CCatScript>();
+	CBoxCollider2D* bCatCollider = Cat->AddComponent<CBoxCollider2D>();
+	bCatCollider->SetOffset(SVector2D(-50.0f, -50.0f));
 
 	CTexture* catImg = CResourceMgr::Find<CTexture>(L"Cat");
 

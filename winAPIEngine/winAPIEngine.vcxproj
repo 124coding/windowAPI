@@ -136,7 +136,11 @@
     <ClInclude Include="CAnimation.h" />
     <ClInclude Include="CAnimator.h" />
     <ClInclude Include="CAPIEngine.h" />
+    <ClInclude Include="CBoxCollider2D.h" />
     <ClInclude Include="CCamera.h" />
+    <ClInclude Include="CCircleCollider2D.h" />
+    <ClInclude Include="CCollider.h" />
+    <ClInclude Include="CCollisionMgr.h" />
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CEntity.h" />
     <ClInclude Include="CLayer.h" />
@@ -162,7 +166,11 @@
     <ClCompile Include="CAnimation.cpp" />
     <ClCompile Include="CAnimator.cpp" />
     <ClCompile Include="CAPIEngine.cpp" />
+    <ClCompile Include="CBoxCollider2D.cpp" />
     <ClCompile Include="CCamera.cpp" />
+    <ClCompile Include="CCircleCollider2D.cpp" />
+    <ClCompile Include="CCollider.cpp" />
+    <ClCompile Include="CCollisionMgr.cpp" />
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CEntity.cpp" />
     <ClCompile Include="CInputMgr.cpp" />

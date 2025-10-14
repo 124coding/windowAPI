@@ -69,6 +69,7 @@ void CAnimation::Render(HDC tHDC) {
                 sprite.size.mX, sprite.size.mY,
                 RGB(255, 0, 255));
         }
+
     }
     else if (type == CTexture::eTextureType::Png) {
         Gdiplus::ImageAttributes imgAtt = {};

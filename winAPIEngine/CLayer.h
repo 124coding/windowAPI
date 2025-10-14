@@ -22,6 +22,10 @@ public:
 	void AddGameObject(GameObject* tGameObject);
 	void RemoveDeadObjects();
 
+	const std::vector<GameObject*> GetGameObjects() {
+		return this->mGameObjects;
+	}
+
 private:
 	eLayerType mType;
 	std::vector<GameObject*> mGameObjects;

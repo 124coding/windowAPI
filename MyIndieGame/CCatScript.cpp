@@ -18,9 +18,9 @@ void CCatScript::OnUpdate(float tDeltaTime)
 {
 	mDeathTime += tDeltaTime;
 
-	if (mDeathTime > 6.0f) {
+	/*if (mDeathTime > 6.0f) {
 		Destroy(GetOwner());
-	}
+	}*/
 
 	if (mAnimator == nullptr) {
 		mAnimator = GetOwner()->GetComponent<CAnimator>();
@@ -86,7 +86,7 @@ void CCatScript::Move(float tDeltaTime)
 	mTime += tDeltaTime;
 
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
-	Translate(tr);
+	// Translate(tr);
 
 	if (mTime > 2.0f) {
 		int isLayDown = rand() % 2;

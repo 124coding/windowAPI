@@ -28,6 +28,12 @@
     <Filter Include="Layer">
       <UniqueIdentifier>{8cbe2e41-c7c1-4f2c-b1a3-accc5ca817b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{72de44e4-c4ba-4485-9a02-71e1e6f2bf43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{9cf68546-2c4f-4145-abfe-ecb9d3801827}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Component">
       <UniqueIdentifier>{6c9fad16-4130-49d4-84dd-692524da2403}</UniqueIdentifier>
     </Filter>
@@ -43,14 +49,11 @@
     <Filter Include="Component\Camera">
       <UniqueIdentifier>{e36f0fc6-eb40-41df-b3a6-da928790e842}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Renderer">
-      <UniqueIdentifier>{72de44e4-c4ba-4485-9a02-71e1e6f2bf43}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{9cf68546-2c4f-4145-abfe-ecb9d3801827}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Component\Animator">
       <UniqueIdentifier>{b6c45387-5268-44ff-9659-43f3d6dc182e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Collider">
+      <UniqueIdentifier>{ac641a08-d8b6-40aa-8a3d-8626b6933096}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -126,6 +129,18 @@
     <ClInclude Include="CAnimator.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
+    <ClInclude Include="CCollider.h">
+      <Filter>Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoxCollider2D.h">
+      <Filter>Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="CCircleCollider2D.h">
+      <Filter>Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="CCollisionMgr.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAPIEngine.cpp">
@@ -181,6 +196,18 @@
     </ClCompile>
     <ClCompile Include="CAnimator.cpp">
       <Filter>Component\Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollider.cpp">
+      <Filter>Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="CBoxCollider2D.cpp">
+      <Filter>Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="CCircleCollider2D.cpp">
+      <Filter>Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollisionMgr.cpp">
+      <Filter>Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
