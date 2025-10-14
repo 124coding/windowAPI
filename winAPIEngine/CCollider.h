@@ -5,7 +5,7 @@
 class CCollider : public CComponent
 {
 public:
-	CCollider() : CComponent(eComponentType::Collider) {}
+	CCollider(eColliderType tType) : CComponent(eComponentType::Collider), mID(mCollisionID++), mSize(SVector2D(1.0f, 1.0f)), mType(tType) {}
 	virtual ~CCollider() {}
 
 	void OnCreate() override;
@@ -13,6 +13,10 @@ public:
 	void OnUpdate(float tDeltaTime) override;
 	void OnLateUpdate(float tDeltaTime) override;
 	void Render(HDC tHDC) override;
+
+	virtual void OnCollisionEnter(CCollider* tOther);
+	virtual void OnCollisionStay(CCollider* tOther);
+	virtual void OnCollisionExit(CCollider* tOther);
 
 	void SetOffset(SVector2D tOffset) {
 		this->mOffset = tOffset;
@@ -22,7 +26,27 @@ public:
 		return this->mOffset;
 	}
 
+	UINT32 GetID() {
+		return this->mID;
+	}
+
+	void SetSize(SVector2D tSize) {
+		this->mSize = tSize;
+	}
+
+	SVector2D GetSize() {
+		return this->mSize;
+	}
+
+	eColliderType GetColliderType() {
+		return this->mType;
+	}
+
 private:
+	static UINT32 mCollisionID;
+	UINT32 mID;
 	SVector2D mOffset;
+	SVector2D mSize;
+	eColliderType mType;
 };
 

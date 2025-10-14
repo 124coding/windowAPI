@@ -1,5 +1,7 @@
 #include "CScript.h"
 
+#include "CCollider.h"
+
 void CScript::OnCreate()
 {
 }
@@ -18,4 +20,16 @@ void CScript::OnLateUpdate(float tDeltaTime)
 
 void CScript::Render(HDC tHDC)
 {
+}
+
+void CScript::OnCollisionEnter(CCollider* tOther) {
+
+}
+
+void CScript::OnCollisionStay(CCollider* tOther) {
+
+}
+
+void CScript::OnCollisionExit(CCollider* tOther) {
+
 }

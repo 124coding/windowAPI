@@ -11,6 +11,7 @@
 #include "CCollisionMgr.h"
 
 #include "CBoxCollider2D.h"
+#include "CCircleCollider2D.h"
 #include "CAnimator.h"
 #include "CCamera.h"
 #include "CPlayerScript.h"
@@ -41,8 +42,8 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 	mPlayer = Instantiate<CPlayer>(tEngine, eLayerType::Player, SVector2D(100.0f, 100.0f));
 	mPlayer->AddComponent<CPlayerScript>();
-	CBoxCollider2D* bPlCollider = mPlayer->AddComponent<CBoxCollider2D>();
-	bPlCollider->SetOffset(SVector2D(-50.0f, -50.0f));
+	CCircleCollider2D* cPlCollider = mPlayer->AddComponent<CCircleCollider2D>();
+	cPlCollider->SetOffset(SVector2D(-50.0f, -50.0f));
 
 	// cameraComp->SetTarget(mPlayer);
 

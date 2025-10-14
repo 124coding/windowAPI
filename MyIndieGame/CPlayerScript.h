@@ -5,6 +5,7 @@
 
 class CAnimator;
 class CTransform;
+class CCollider;
 
 class CPlayerScript : public CScript
 {
@@ -25,6 +26,10 @@ public:
 	void OnUpdate(float tDeltaTime) override;
 	void OnLateUpdate(float tDeltaTime) override;
 	void Render(HDC tHDC) override;
+
+	void OnCollisionEnter(CCollider* tOther) override;
+	void OnCollisionStay(CCollider* tOther) override;
+	void OnCollisionExit(CCollider* tOther) override;
 
 private:
 	void Idle();

@@ -2,6 +2,8 @@
 
 #include "CComponent.h"
 
+class CCollider;
+
 class CScript : public CComponent
 {
 public:
@@ -13,6 +15,10 @@ public:
 	void OnUpdate(float tDeltaTime) override;
 	void OnLateUpdate(float tDeltaTime) override;
 	void Render(HDC tHDC) override;
+
+	virtual void OnCollisionEnter(CCollider* tOther);
+	virtual void OnCollisionStay(CCollider* tOther);
+	virtual void OnCollisionExit(CCollider* tOther);
 private:
 
 };

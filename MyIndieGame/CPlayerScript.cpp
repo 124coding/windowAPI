@@ -6,6 +6,7 @@
 
 #include "CTransform.h"
 #include "CAnimator.h"
+#include "CCollider.h"
 
 void CPlayerScript::OnCreate()
 {
@@ -131,3 +132,14 @@ void CPlayerScript::GiveWater()
 	}
 }
 
+void CPlayerScript::OnCollisionEnter(CCollider* tOther) {
+
+}
+
+void CPlayerScript::OnCollisionStay(CCollider* tOther) {
+
+}
+
+void CPlayerScript::OnCollisionExit(CCollider* tOther) {
+
+}

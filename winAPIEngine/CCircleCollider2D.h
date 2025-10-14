@@ -5,7 +5,7 @@
 class CCircleCollider2D : public CCollider
 {
 public:
-	CCircleCollider2D() : CCollider(), mRadius(1.0f) {}
+	CCircleCollider2D() : CCollider(eColliderType::Circle2D), mRadius(1.0f) {}
 	virtual ~CCircleCollider2D() {}
 
 	void OnCreate() override;
