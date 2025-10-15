@@ -18,7 +18,7 @@ class CTexture;
 class GameObject
 {
 public:
-	friend void Destroy(GameObject* tObj);
+	friend void ObjDestroy(GameObject* tObj);
 
 	enum class eState {
 		Active,
@@ -97,6 +97,14 @@ public:
 		return this->mAnchorPoint;
 	}
 
+	void SetLayerType(eLayerType tLayerType) {
+		this->mLayerType = tLayerType;
+	}
+
+	eLayerType GetLayerType() {
+		return this->mLayerType;
+	}
+
 private:
 	void InitializeComponent();
 	void Death() {
@@ -111,4 +119,5 @@ private:
 	SVector2D mAnchorPoint;
 
 	std::vector<CComponent*> mComponents;
+	eLayerType mLayerType;
 };

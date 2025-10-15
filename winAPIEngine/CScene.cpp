@@ -69,3 +69,9 @@ void CScene::AddGameObject(GameObject* tGameObj, eLayerType tType)
 {
 	mLayers[(UINT)tType]->AddGameObject(tGameObj);
 }
+
+void CScene::EraseGameObject(GameObject* tGameObj)
+{
+	eLayerType layerType = tGameObj->GetLayerType();
+	mLayers[(UINT)layerType]->EraseGameObject(tGameObj);
+}

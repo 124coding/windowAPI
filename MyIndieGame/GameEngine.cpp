@@ -20,10 +20,9 @@ void GameEngine::OnCreate() {
 	srand((unsigned int)(&a));
 
 	CCollisionMgr::OnCreate(this);
+	CSceneMgr::OnCreate(this);
 	LoadResources();
 	LoadScenes();
-
-	CSceneMgr::OnCreate(this);
 }
 
 void GameEngine::OnDestroy() {

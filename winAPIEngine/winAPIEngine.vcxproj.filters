@@ -141,6 +141,9 @@
     <ClInclude Include="CCollisionMgr.h">
       <Filter>Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="CDontDestroyOnLoad.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAPIEngine.cpp">
@@ -208,6 +211,9 @@
     </ClCompile>
     <ClCompile Include="CCollisionMgr.cpp">
       <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="CDontDestroyOnLoad.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

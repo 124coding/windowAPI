@@ -41,7 +41,10 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	mainCamera = cameraComp;*/
 
 	mPlayer = Instantiate<CPlayer>(tEngine, eLayerType::Player, SVector2D(100.0f, 100.0f));
+	DontDestroyOnLoad(mPlayer);
+
 	mPlayer->AddComponent<CPlayerScript>();
+
 	CCircleCollider2D* cPlCollider = mPlayer->AddComponent<CCircleCollider2D>();
 	cPlCollider->SetOffset(SVector2D(-50.0f, -50.0f));
 

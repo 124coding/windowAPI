@@ -13,9 +13,11 @@
 template<typename T>
 static T* Instantiate(eLayerType tType) {
 	T* gameObject = new T();
-	CScene* activeScene = CSceneMgr::GetActiveScene();
+	gameObject->SetLayerType(tType);
 
+	CScene* activeScene = CSceneMgr::GetActiveScene();
 	CLayer* layer = activeScene->GetLayer(tType);
+
 	layer->AddGameObject(gameObject);
 
 	return gameObject;
@@ -24,6 +26,8 @@ static T* Instantiate(eLayerType tType) {
 template<typename T>
 static T* Instantiate(CAPIEngine* tEngine, eLayerType tType, SVector2D tPosition = SVector2D()) {
 	T* gameObject = new T();
+	gameObject->SetLayerType(tType);
+
 	CScene* activeScene = CSceneMgr::GetActiveScene();
 
 	CLayer* layer = activeScene->GetLayer(tType);
@@ -36,6 +40,15 @@ static T* Instantiate(CAPIEngine* tEngine, eLayerType tType, SVector2D tPosition
 	return gameObject;
 }
 
-static void Destroy(GameObject* tObj) {
+static void ObjDestroy(GameObject* tObj) {
 	tObj->Death();
+}
+
+static void DontDestroyOnLoad(GameObject* tObj) {
+	CScene* activeScene = CSceneMgr::GetActiveScene();
+	activeScene->EraseGameObject(tObj);
+
+	CScene* dontDestroyOnLoad = CSceneMgr::GetDontDestroyOnLoad();
+	dontDestroyOnLoad->AddGameObject(tObj, tObj->GetLayerType());
+
 }

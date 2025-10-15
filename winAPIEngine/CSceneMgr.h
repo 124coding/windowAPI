@@ -38,6 +38,10 @@ public:
 		return mActiveScene;
 	}
 
+	static CScene* GetDontDestroyOnLoad() { 
+		return mDontDestroyOnLoadScene; 
+	}
+
 	static void OnCreate(CAPIEngine* tEngine);
 	static void OnDestroy();
 	static void OnUpdate(float tDeltaTime);
@@ -49,4 +53,5 @@ public:
 private:
 	static std::map<std::wstring, CScene*> mScenes;
 	static CScene* mActiveScene;
+	static CScene* mDontDestroyOnLoadScene;
 };

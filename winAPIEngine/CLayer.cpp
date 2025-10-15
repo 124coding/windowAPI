@@ -72,6 +72,30 @@ bool CLayer::DontSeeObjects(GameObject* tObj)
 	return false;
 }
 
+void CLayer::AddGameObject(GameObject* tGameObject)
+{
+	if (tGameObject == nullptr) {
+		return;
+	}
+	mGameObjects.push_back(tGameObject);
+}
+
+void CLayer::EraseGameObject(GameObject* tGameObject) {
+	for (auto it = mGameObjects.begin(); it != mGameObjects.end();) {
+		if (*it == nullptr) {
+			continue;
+		}
+
+		if (*it == tGameObject) {
+			it = mGameObjects.erase(it);
+
+			continue;
+		}
+
+		it++;
+	}
+}
+
 void CLayer::RemoveDeadObjects()
 {
 	for (auto it = mGameObjects.begin(); it != mGameObjects.end();) {
@@ -94,12 +118,4 @@ void CLayer::RemoveDeadObjects()
 
 		it++;
 	}
-}
-
-void CLayer::AddGameObject(GameObject* tGameObject)
-{
-	if (tGameObject == nullptr) {
-		return;
-	}
-	mGameObjects.push_back(tGameObject);
 }

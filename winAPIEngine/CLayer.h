@@ -20,6 +20,7 @@ public:
 	bool DontSeeObjects(GameObject* tObj);
 
 	void AddGameObject(GameObject* tGameObject);
+	void EraseGameObject(GameObject* tGameObject);
 	void RemoveDeadObjects();
 
 	const std::vector<GameObject*> GetGameObjects() {

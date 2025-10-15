@@ -3,7 +3,7 @@
 
 #include "winMacro.h"
 
-GameObject::GameObject() : mState(eState::Active), mSize(SVector2D(1.0f, 1.0f)), mAnchorPoint(SVector2D())
+GameObject::GameObject() : mState(eState::Active), mSize(SVector2D(1.0f, 1.0f)), mAnchorPoint(SVector2D()), mLayerType(eLayerType::None)
 {
 	mComponents.resize((UINT)eComponentType::End);
 	InitializeComponent();
@@ -63,5 +63,4 @@ void GameObject::Render(HDC tHDC)
 void GameObject::InitializeComponent()
 {
 	AddComponent<CTransform>();
-	AddComponent<CSpriteRenderer>();
 }

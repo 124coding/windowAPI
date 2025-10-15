@@ -16,7 +16,7 @@ public:
 			*it = new CLayer();
 		}
 	}
-	~CScene() {};
+	virtual ~CScene() {};
 
 	virtual void OnCreate(CAPIEngine* tEngine);
 	virtual void OnDestroy();
@@ -28,6 +28,7 @@ public:
 	virtual void OnExit();
 
 	void AddGameObject(GameObject* tGameObj, eLayerType tType);
+	void EraseGameObject(GameObject* tGameObj);
 	void RemoveDeadObjects();
 
 	CLayer* GetLayer(eLayerType tType) { return mLayers[(UINT)tType]; }
