@@ -5,6 +5,7 @@ enum class eComponentType {
 	Collider,
 	Script,
 	SpriteRenderer,
+	TileRenderer,
 	Animator,
 	Camera,
 	End

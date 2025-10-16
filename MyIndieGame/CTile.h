@@ -10,6 +10,8 @@ public:
 	void OnLateUpdate(float tDeltaTime) override;
 	void Render(HDC tHDC) override;
 
+	void SetPosition(SVector2D tPos);
+
 private:
 
 };

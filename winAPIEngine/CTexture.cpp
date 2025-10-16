@@ -91,7 +91,7 @@ void CTexture::UnLoad()
 	DeleteDC(mhDCMem);
 }
 
-HRESULT CTexture::CreateBackBuffer(HINSTANCE tInst, HDC tDC)
+HRESULT CTexture::CreateBackBuffer(HDC tDC)
 {
 	mhDCMem = CreateCompatibleDC(tDC);
 

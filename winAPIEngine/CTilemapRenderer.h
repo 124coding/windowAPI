@@ -2,6 +2,7 @@
 
 #include "CComponent.h"
 #include "CTexture.h"
+#include "GameObject.h"
 
 #include <ole2.h>
 #include <gdiplus.h>
@@ -13,7 +14,8 @@ class CTilemapRenderer : public CComponent
 {
 public:
 	CTilemapRenderer()
-		: CComponent(eComponentType::SpriteRenderer), mTexture(nullptr), mIndex(SVector2D()), mTileSize(16.0f, 16.0f) {
+		: CComponent(eComponentType::TileRenderer), mTexture(nullptr), mIndex(SVector2D()), mTileSize(SVector2D(16.0f, 16.0f)) {
+
 	}
 	~CTilemapRenderer() {}
 
@@ -27,7 +29,11 @@ public:
 		this->mTexture = tTexture;
 	}
 
+public:
+	static SVector2D TileSize;
+
 private:
+
 	SVector2D mTileSize;
 
 	CTexture* mTexture;

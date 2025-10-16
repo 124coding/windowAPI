@@ -39,9 +39,8 @@ public:
 	template <typename T>
 	T* AddComponent() {
 		T* comp = new T();
-
-		comp->OnCreate();
 		comp->SetOwner(this);
+		comp->OnCreate();
 
 		mComponents[(UINT)comp->GetType()] = comp;
 

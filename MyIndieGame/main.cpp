@@ -2,6 +2,8 @@
 #include "Resource.h"
 #include "GameEngine.h"
 
+#include "CSceneMgr.h"
+
 #pragma comment(lib,"winAPIEngine.lib")
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,

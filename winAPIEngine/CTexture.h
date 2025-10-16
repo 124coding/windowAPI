@@ -28,7 +28,7 @@ public:
 	HRESULT Load(CAPIEngine* tEngine, const std::wstring& tPath) override;
 	void UnLoad();
 
-	HRESULT CreateBackBuffer(HINSTANCE tInst, HDC tDC);
+	HRESULT CreateBackBuffer(HDC tDC);
 
 	bool GetbAlpha() {
 		return this->mbAlpha;

@@ -22,8 +22,17 @@ void GameEngine::OnCreate() {
 
 	CCollisionMgr::OnCreate(this);
 	CSceneMgr::OnCreate(this);
+
 	LoadResources();
 	LoadScenes();
+
+	CInputMgr::GetInst()->AddKeyInfo("DoMoveLt", 'A');
+	CInputMgr::GetInst()->AddKeyInfo("DoMoveRt", 'D');
+	CInputMgr::GetInst()->AddKeyInfo("DoMoveFt", 'W');
+	CInputMgr::GetInst()->AddKeyInfo("DoMoveBt", 'S');
+	CInputMgr::GetInst()->AddKeyInfo("MouseLeftClick", VK_LBUTTON);
+	CInputMgr::GetInst()->AddKeyInfo("MouseRightClick", VK_RBUTTON);
+	CInputMgr::GetInst()->AddKeyInfo("MouseWheelClick", VK_MBUTTON);
 }
 
 void GameEngine::OnDestroy() {

@@ -46,8 +46,7 @@ void CScene::Render(HDC tHDC)
 	for (auto it = mLayers.begin(); it != mLayers.end(); it++) {
 		if (*it == nullptr) {
 			continue;
-		}
-		(*it)->Render(tHDC);
+		}		(*it)->Render(tHDC);
 	}
 }
 

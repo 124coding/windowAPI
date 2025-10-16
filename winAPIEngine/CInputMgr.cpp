@@ -95,6 +95,7 @@ bool CInputMgr::GetKeyDown(const std::string& tStrKey)
 		return false;
 	}
 
+	if (!GetFocus()) return false;
 	if (tInfo->mState == eKeyState::Down) return true;
 	return false;
 }
@@ -107,6 +108,7 @@ bool CInputMgr::GetKeyPressed(const std::string& tStrKey)
 		return false;
 	}
 
+	if (!GetFocus()) return false;
 	if (tInfo->mState == eKeyState::Pressed) return true;
 	return false;
 }
@@ -119,6 +121,7 @@ bool CInputMgr::GetKeyUp(const std::string& tStrKey)
 		return false;
 	}
 
+	if (!GetFocus()) return false;
 	if (tInfo->mState == eKeyState::Up) return true;
 	return false;
 }
@@ -131,6 +134,7 @@ bool CInputMgr::GetKeyNone(const std::string& tStrKey)
 		return false;
 	}
 
+	if (!GetFocus()) return false;
 	if (tInfo->mState == eKeyState::None) return true;
 	return false;
 }

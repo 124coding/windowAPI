@@ -13,18 +13,21 @@ class CTexture;
 
 class CAPIEngine
 {
+	friend class CToolScene;
 private:
 	static HINSTANCE hInst;                                // 현재 인스턴스입니다.
 	WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 	WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
 	HDC mhDC = nullptr; // DC 핸들
+	// HDC mhToolDC = nullptr;
 
 	HWND mhWnd = nullptr; // 윈도우 핸들
-	HWND mhToolWnd = nullptr; // 툴용 윈도우 핸들
+	// HWND mhToolWnd = nullptr; // 툴용 윈도우 핸들
 
 protected:
 	CTexture* mBackBuffer = nullptr; // 백 버퍼
+	// CTexture* mTileBackBuffer = nullptr; // 타일맵 백 버퍼
 
 	// 시간 관련 변수
 private:
@@ -51,8 +54,9 @@ public:
 protected:
 	ATOM                MyRegisterClass(HINSTANCE hInstance, const wchar_t* tName, WNDPROC tProc);
 	BOOL                InitInstance(HINSTANCE, int);
+	// BOOL                InitInstanceTileWIndow(HINSTANCE, int);
 	static LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
-	static LRESULT CALLBACK WndTileProc(HWND, UINT, WPARAM, LPARAM);
+	// static LRESULT CALLBACK	   WndTileProc(HWND, UINT, WPARAM, LPARAM);
 	static INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 public:
@@ -63,6 +67,7 @@ public:
 	CAPIEngine operator=(const CAPIEngine& t) = delete;
 
 	BOOL Create(HINSTANCE hInstance, int nCmdShow);
+	// BOOL CreateTileWindow(HINSTANCE hInstance, int nCmdShow);
 	MSG Run();
 
 	virtual void OnCreate() = 0;

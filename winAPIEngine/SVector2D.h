@@ -38,6 +38,14 @@ public:
 		return tResult;
 	}
 
+	SVector2D operator*(const SVector2D& t) {
+		SVector2D tResult;
+		tResult.mX = this->mX * t.mX;
+		tResult.mY = this->mY * t.mY;
+
+		return tResult;
+	}
+
 	SVector2D operator*(const float& t) {
 		SVector2D tResult;
 		tResult.mX = this->mX * t;
@@ -50,6 +58,14 @@ public:
 		SVector2D tResult;
 		tResult.mX = this->mX * (1 / t);
 		tResult.mY = this->mY * (1 / t);
+
+		return tResult;
+	}
+
+	SVector2D operator/(const SVector2D& t) {
+		SVector2D tResult;
+		tResult.mX = this->mX / t.mX;
+		tResult.mY = this->mY / t.mY;
 
 		return tResult;
 	}

@@ -1,8 +1,12 @@
 #include "CAPIEngine.h"
+
 #include "Resource.h"
-#include "winMacro.h"
-#include "CInputMgr.h"
 #include "CTexture.h"
+
+#include "CResourceMgr.h"
+#include "CInputMgr.h"
+
+#include "winMacro.h"
 
 HINSTANCE CAPIEngine::hInst = nullptr;
 
@@ -19,7 +23,6 @@ BOOL CAPIEngine::Create(HINSTANCE hInstance, int nCmdShow) {
     wcscpy_s(szWindowClass, L"MyTestClass");
 
     MyRegisterClass(hInstance, szWindowClass, WndProc);
-    MyRegisterClass(hInstance, L"TILEWINDOW", WndTileProc);
 
     RECT rect = { 0, 0, windowWidth, windowHeight };
     AdjustWindowRect(&rect, WS_OVERLAPPED, false);
@@ -44,7 +47,7 @@ MSG CAPIEngine::Run() {
     mhDC = GetDC(mhWnd);
 
     mBackBuffer = new CTexture();
-    mBackBuffer->CreateBackBuffer(hInst, mhDC);
+    mBackBuffer->CreateBackBuffer(mhDC);
 
     CInputMgr::GetInst();
 
@@ -119,13 +122,8 @@ BOOL CAPIEngine::InitInstance(HINSTANCE hInstance, int nCmdShow)
     hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
     mhWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, 0, 
+        0, 0, 
         windowWidth, windowHeight, 
-        nullptr, nullptr, hInstance, nullptr);
-
-    mhToolWnd = CreateWindowW(L"TILEWINDOW",L"TileWindow", WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, 0,
-        windowWidth, windowHeight,
         nullptr, nullptr, hInstance, nullptr);
 
     if (!mhWnd)
@@ -136,51 +134,10 @@ BOOL CAPIEngine::InitInstance(HINSTANCE hInstance, int nCmdShow)
     ShowWindow(mhWnd, nCmdShow);
     UpdateWindow(mhWnd);
 
-    ShowWindow(mhToolWnd, nCmdShow);
-    UpdateWindow(mhToolWnd);
-
     return TRUE;
 }
 
 LRESULT CALLBACK CAPIEngine::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-    switch (message)
-    {
-    case WM_COMMAND:
-    {
-        int wmId = LOWORD(wParam);
-        // 메뉴 선택을 구문 분석합니다:
-        switch (wmId)
-        {
-        case IDM_ABOUT:
-            DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-            break;
-        case IDM_EXIT:
-            DestroyWindow(hWnd);
-            break;
-        default:
-            return DefWindowProc(hWnd, message, wParam, lParam);
-        }
-    }
-    break;
-    case WM_PAINT:
-    {
-        PAINTSTRUCT ps;
-        HDC hdc = BeginPaint(hWnd, &ps);
-
-        EndPaint(hWnd, &ps);
-    }
-    break;
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        break;
-    default:
-        return DefWindowProc(hWnd, message, wParam, lParam);
-    }
-    return 0;
-}
-
-LRESULT CALLBACK CAPIEngine::WndTileProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {

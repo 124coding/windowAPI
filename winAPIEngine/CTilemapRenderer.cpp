@@ -1,5 +1,4 @@
 #include "CTilemapRenderer.h"
-#include "GameObject.h"
 
 #include "CTransform.h"
 
@@ -9,9 +8,11 @@
 
 #include <assert.h>
 
+SVector2D CTilemapRenderer::TileSize = SVector2D(1.0f, 1.0f);
+
 void CTilemapRenderer::OnCreate()
 {
-
+	TileSize = mTileSize * GetOwner()->GetSize();
 }
 
 void CTilemapRenderer::OnDestroy()

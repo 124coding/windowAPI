@@ -1,4 +1,5 @@
 #pragma once
+#include "framework.h"
 
 #include "CScene.h"
 
@@ -18,5 +19,17 @@ public:
 	void OnExit() override;
 
 private:
+	CAPIEngine* mEngine = nullptr;
+
+	HDC mhToolDC = nullptr;
+	HWND mhToolWnd = nullptr;
+
+	CTexture* mTileBackBuffer = nullptr;
+
+private:
+	BOOL                InitInstanceTileWIndow(HINSTANCE, int);
+	static LRESULT CALLBACK	   WndTileProc(HWND, UINT, WPARAM, LPARAM);
+
+	BOOL CreateTileWindow(HINSTANCE hInstance, int nCmdShow);
 };
 
