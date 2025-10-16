@@ -13,6 +13,7 @@ enum class eComponentType {
 enum class eLayerType {
 	None,
 	BackGround,
+	Tile,
 	Animal,
 	Player,
 	Particle,

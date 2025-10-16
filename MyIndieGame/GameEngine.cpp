@@ -11,6 +11,7 @@
 #include "CPlayScene.h"
 #include "CTitleScene.h"
 #include "CEndingScene.h"
+#include "CToolScene.h"
 
 #include "SVector2D.h"
 #include "time.h"
@@ -55,11 +56,13 @@ void GameEngine::Render() {
 
 void GameEngine::LoadScenes()
 {
-	CSceneMgr::CreateScene<CTitleScene>(this, L"TitleScene");
+	/*CSceneMgr::CreateScene<CTitleScene>(this, L"TitleScene");
 	CSceneMgr::CreateScene<CPlayScene>(this, L"PlayScene");
-	CSceneMgr::CreateScene<CEndingScene>(this, L"EndingScene");
+	CSceneMgr::CreateScene<CEndingScene>(this, L"EndingScene");*/
+	CSceneMgr::CreateScene<CToolScene>(this, L"ToolScene");
+	
 
-	CSceneMgr::LoadScene(L"PlayScene");
+	CSceneMgr::LoadScene(L"ToolScene");
 }
 
 void GameEngine::LoadResources()
@@ -78,6 +81,11 @@ void GameEngine::LoadResources()
 	// Sprites
 	CResourceMgr::Load<CTexture>(this, L"Cat", L"../resources/Sprites/ChickenAlpha.bmp");
 	CResourceMgr::Load<CTexture>(this, L"Player", L"../resources/Sprites/Player.bmp");
+
+
+
+	CResourceMgr::Load<CTexture>(this, L"SpringFloor", L"../resources/SpringFloor.bmp");
+
 }
 
 void GameEngine::DestroyScenes()

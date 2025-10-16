@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
-class CPlayer :public GameObject
+class CTile :public GameObject
 {
 public:
 	void OnCreate() override;
@@ -13,4 +13,3 @@ public:
 private:
 
 };
-

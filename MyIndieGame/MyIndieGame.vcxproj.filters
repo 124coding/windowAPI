@@ -57,6 +57,12 @@
     <ClCompile Include="CTitleObjectScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="CToolScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="CTile.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -88,6 +94,12 @@
     </ClInclude>
     <ClInclude Include="CTitleObjectScript.h">
       <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CToolScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="CTile.h">
+      <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

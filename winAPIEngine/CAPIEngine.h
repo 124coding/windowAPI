@@ -21,6 +21,7 @@ private:
 	HDC mhDC = nullptr; // DC 핸들
 
 	HWND mhWnd = nullptr; // 윈도우 핸들
+	HWND mhToolWnd = nullptr; // 툴용 윈도우 핸들
 
 protected:
 	CTexture* mBackBuffer = nullptr; // 백 버퍼
@@ -48,9 +49,10 @@ public:
 
 	// 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 protected:
-	ATOM                MyRegisterClass(HINSTANCE hInstance);
+	ATOM                MyRegisterClass(HINSTANCE hInstance, const wchar_t* tName, WNDPROC tProc);
 	BOOL                InitInstance(HINSTANCE, int);
 	static LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
+	static LRESULT CALLBACK WndTileProc(HWND, UINT, WPARAM, LPARAM);
 	static INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 public:

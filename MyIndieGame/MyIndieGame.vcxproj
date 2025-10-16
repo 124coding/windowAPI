@@ -140,8 +140,10 @@
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CPlayScene.cpp" />
+    <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTitleObjectScript.cpp" />
     <ClCompile Include="CTitleScene.cpp" />
+    <ClCompile Include="CToolScene.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -152,8 +154,10 @@
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CPlayScene.h" />
+    <ClInclude Include="CTile.h" />
     <ClInclude Include="CTitleObjectScript.h" />
     <ClInclude Include="CTitleScene.h" />
+    <ClInclude Include="CToolScene.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="Enums.h" />
   </ItemGroup>

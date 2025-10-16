@@ -7,6 +7,10 @@ void CPlayer::OnCreate()
 	AddComponent<CPlayerScript>();
 }
 
+void CPlayer::OnDestroy() {
+	GameObject::OnDestroy();
+}
+
 void CPlayer::OnUpdate(float tDeltaTime)
 {
 	GameObject::OnUpdate(tDeltaTime);

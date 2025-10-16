@@ -55,6 +55,9 @@
     <Filter Include="Component\Collider">
       <UniqueIdentifier>{ac641a08-d8b6-40aa-8a3d-8626b6933096}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\TileMapRenderer">
+      <UniqueIdentifier>{2b674b5e-b7d9-4e48-a517-58020405e714}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -144,6 +147,9 @@
     <ClInclude Include="CDontDestroyOnLoad.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="CTilemapRenderer.h">
+      <Filter>Component\TileMapRenderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAPIEngine.cpp">
@@ -214,6 +220,9 @@
     </ClCompile>
     <ClCompile Include="CDontDestroyOnLoad.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CTilemapRenderer.cpp">
+      <Filter>Component\TileMapRenderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

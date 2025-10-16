@@ -153,6 +153,7 @@
     <ClInclude Include="CScript.h" />
     <ClInclude Include="CSpriteRenderer.h" />
     <ClInclude Include="CTexture.h" />
+    <ClInclude Include="CTilemapRenderer.h" />
     <ClInclude Include="CTransform.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="CInputMgr.h" />
@@ -185,6 +186,7 @@
     <ClCompile Include="CScript.cpp" />
     <ClCompile Include="CSpriteRenderer.cpp" />
     <ClCompile Include="CTexture.cpp" />
+    <ClCompile Include="CTilemapRenderer.cpp" />
     <ClCompile Include="CTransform.cpp" />
     <ClCompile Include="GameObject.cpp" />
   </ItemGroup>

@@ -18,7 +18,8 @@ BOOL CAPIEngine::Create(HINSTANCE hInstance, int nCmdShow) {
     wcscpy_s(szTitle, L"MyTestClass");
     wcscpy_s(szWindowClass, L"MyTestClass");
 
-    MyRegisterClass(hInstance);
+    MyRegisterClass(hInstance, szWindowClass, WndProc);
+    MyRegisterClass(hInstance, L"TILEWINDOW", WndTileProc);
 
     RECT rect = { 0, 0, windowWidth, windowHeight };
     AdjustWindowRect(&rect, WS_OVERLAPPED, false);
@@ -92,14 +93,14 @@ MSG CAPIEngine::Run() {
     return msg;
 }
 
-ATOM CAPIEngine::MyRegisterClass(HINSTANCE hInstance)
+ATOM CAPIEngine::MyRegisterClass(HINSTANCE hInstance, const wchar_t* tName, WNDPROC tProc)
 {
     WNDCLASSEXW wcex;
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
     wcex.style = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc = WndProc;
+    wcex.lpfnWndProc = tProc;
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
     wcex.hInstance = hInstance;
@@ -107,7 +108,7 @@ ATOM CAPIEngine::MyRegisterClass(HINSTANCE hInstance)
     wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
     wcex.lpszMenuName = nullptr;
-    wcex.lpszClassName = szWindowClass;
+    wcex.lpszClassName = tName;
     wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
     return RegisterClassExW(&wcex);
@@ -122,6 +123,11 @@ BOOL CAPIEngine::InitInstance(HINSTANCE hInstance, int nCmdShow)
         windowWidth, windowHeight, 
         nullptr, nullptr, hInstance, nullptr);
 
+    mhToolWnd = CreateWindowW(L"TILEWINDOW",L"TileWindow", WS_OVERLAPPEDWINDOW,
+        CW_USEDEFAULT, 0,
+        windowWidth, windowHeight,
+        nullptr, nullptr, hInstance, nullptr);
+
     if (!mhWnd)
     {
         return FALSE;
@@ -130,10 +136,51 @@ BOOL CAPIEngine::InitInstance(HINSTANCE hInstance, int nCmdShow)
     ShowWindow(mhWnd, nCmdShow);
     UpdateWindow(mhWnd);
 
+    ShowWindow(mhToolWnd, nCmdShow);
+    UpdateWindow(mhToolWnd);
+
     return TRUE;
 }
 
 LRESULT CALLBACK CAPIEngine::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    switch (message)
+    {
+    case WM_COMMAND:
+    {
+        int wmId = LOWORD(wParam);
+        // 메뉴 선택을 구문 분석합니다:
+        switch (wmId)
+        {
+        case IDM_ABOUT:
+            DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+            break;
+        case IDM_EXIT:
+            DestroyWindow(hWnd);
+            break;
+        default:
+            return DefWindowProc(hWnd, message, wParam, lParam);
+        }
+    }
+    break;
+    case WM_PAINT:
+    {
+        PAINTSTRUCT ps;
+        HDC hdc = BeginPaint(hWnd, &ps);
+
+        EndPaint(hWnd, &ps);
+    }
+    break;
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        break;
+    default:
+        return DefWindowProc(hWnd, message, wParam, lParam);
+    }
+    return 0;
+}
+
+LRESULT CALLBACK CAPIEngine::WndTileProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
