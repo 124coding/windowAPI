@@ -29,6 +29,14 @@ public:
 		this->mTexture = tTexture;
 	}
 
+	void SetIndex(SVector2D tIndex) {
+		this->mIndex = tIndex;
+	}
+
+	SVector2D GetIndex() {
+		return this->mIndex;
+	}
+
 public:
 	static SVector2D TileSize;
 

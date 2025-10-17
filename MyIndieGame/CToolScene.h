@@ -3,6 +3,8 @@
 
 #include "CScene.h"
 
+class CTile;
+
 class CToolScene : public CScene
 {
 public:
@@ -17,6 +19,13 @@ public:
 
 	void OnEnter() override;
 	void OnExit() override;
+
+	void Save();
+	void Load();
+
+private:
+	static SVector2D mIndex;
+	std::vector<CTile*> mTiles;
 
 private:
 	CAPIEngine* mEngine = nullptr;

@@ -17,7 +17,7 @@ void CTilemapRenderer::OnCreate()
 
 void CTilemapRenderer::OnDestroy()
 {
-
+	mTexture = nullptr;
 }
 
 void CTilemapRenderer::OnUpdate(float tDeltaTime)

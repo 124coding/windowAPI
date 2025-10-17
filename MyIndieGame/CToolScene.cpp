@@ -1,4 +1,5 @@
 #include "CToolScene.h"
+
 #include "CTile.h"
 #include "CTexture.h"
 
@@ -11,6 +12,10 @@
 #include "CRenderer.h"
 #include "Object.h"
 
+#include <commdlg.h>
+
+SVector2D CToolScene::mIndex;
+
 void CToolScene::OnCreate(CAPIEngine* tEngine)
 {
 	CScene::OnCreate(tEngine);
@@ -22,11 +27,10 @@ void CToolScene::OnCreate(CAPIEngine* tEngine)
 
 	mainCamera = cameraComp;
 
-	CTile* tile = Instantiate<CTile>(eLayerType::Tile);
-	tile->SetSize(SVector2D(3.0f, 3.0f));
+	CTile* tile = Instantiate<CTile>(mEngine, eLayerType::Tile, SVector2D());
+	tile->SetSize(SVector2D(2.0f, 2.0f));
 
 	CTilemapRenderer* tmr = tile->AddComponent<CTilemapRenderer>();
-	tmr->SetTexture(CResourceMgr::Find<CTexture>(L"SpringFloor"));
 }
 
 void CToolScene::OnDestroy()
@@ -54,20 +58,24 @@ void CToolScene::OnLateUpdate(float tDeltaTime)
 		index.mX = (int)index.mX;
 		index.mY = (int)index.mY;
 
-		CTile* tile = Instantiate<CTile>(eLayerType::Tile);
-		tile->SetSize(SVector2D(3.0f, 3.0f));
+		CTile* tile = Instantiate<CTile>(mEngine, eLayerType::Tile);
+		tile->SetSize(SVector2D(2.0f, 2.0f));
 
 		CTilemapRenderer* tmr = tile->AddComponent<CTilemapRenderer>();
 		tmr->SetTexture(CResourceMgr::Find<CTexture>(L"SpringFloor"));
+		tmr->SetIndex(mIndex);
 
 		tile->SetPosition(index);
+		mTiles.push_back(tile);
 	}
 
-	/*CInputMgr::GetInst()->Update(mhToolWnd);
+	if (CInputMgr::GetInst()->GetKeyDown("DoMoveBt")) {
+		Save();
+	}
 
-	if (CInputMgr::GetInst()->GetKeyDown("MouseLeftClick")) {
-		int a = 0;
-	}*/
+	if (CInputMgr::GetInst()->GetKeyDown("DoLoad")) {
+		Load();
+	}
 }
 
 void CToolScene::Render(HDC tHDC)
@@ -87,7 +95,7 @@ void CToolScene::Render(HDC tHDC)
 	CTexture* texture = CResourceMgr::Load<CTexture>(mEngine, L"SpringFloor", L"../resources/SpringFloor.bmp");
 
 	TransparentBlt(mhToolDC, 0, 0,
-		texture->GetWidth(), texture->GetHeight(),
+		texture->GetWidth() * 2, texture->GetHeight() * 2,
 		texture->GetDCMem(),
 		0, 0,
 		texture->GetWidth(), texture->GetHeight(),
@@ -120,6 +128,103 @@ void CToolScene::OnExit()
     DestroyWindow(mhToolWnd);
 }
 
+void CToolScene::Save()
+{
+	OPENFILENAME ofn = {};
+
+	wchar_t szFilePath[256] = {};
+
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = NULL;
+	ofn.lpstrFile = szFilePath;
+	ofn.lpstrFile[0] = '\0';
+	ofn.nMaxFile = 256;
+	ofn.lpstrFilter = L"Tile\0*.tile\0";
+	ofn.nFilterIndex = 1;
+	ofn.lpstrFileTitle = NULL;
+	ofn.nMaxFileTitle = 0;
+	ofn.lpstrInitialDir = NULL;
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+	if (false == GetSaveFileName(&ofn))
+		return;
+
+	FILE* pFile = nullptr;
+	_wfopen_s(&pFile, szFilePath, L"wb");
+
+	for (CTile* t : mTiles) {
+		CTilemapRenderer* tmr = t->GetComponent<CTilemapRenderer>();
+		CTransform* tr = t->GetComponent<CTransform>();
+
+		SVector2D sourceIndex = tmr->GetIndex();
+		SVector2D pos = tr->GetPos();
+
+		int x = (int)sourceIndex.mX;
+		fwrite(&x, sizeof(int), 1, pFile);
+		int y = (int)sourceIndex.mY;
+		fwrite(&y, sizeof(int), 1, pFile);
+
+		x = (int)pos.mX;
+		fwrite(&x, sizeof(int), 1, pFile);
+		y = (int)pos.mY;
+		fwrite(&y, sizeof(int), 1, pFile);
+	}
+
+	fclose(pFile);
+}
+
+void CToolScene::Load()
+{
+	OPENFILENAME ofn = {};
+
+	wchar_t szFilePath[256] = {};
+
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = NULL;
+	ofn.lpstrFile = szFilePath;
+	ofn.lpstrFile[0] = '\0';
+	ofn.nMaxFile = 256;
+	ofn.lpstrFilter = L"All\0*.*\0Text\0*.TXT\0";
+	ofn.nFilterIndex = 1;
+	ofn.lpstrFileTitle = NULL;
+	ofn.nMaxFileTitle = 0;
+	ofn.lpstrInitialDir = NULL;
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+	if (false == GetOpenFileName(&ofn))
+		return;
+
+	FILE* pFile = nullptr;
+	_wfopen_s(&pFile, szFilePath, L"wb");
+
+	while (true) {
+		int idxX = 0;
+		int idxY = 0;
+
+		int posX = 0;
+		int posY = 0;
+
+		if (fread(&idxX, sizeof(int), 1, pFile) == NULL) break;
+		if (fread(&idxY, sizeof(int), 1, pFile) == NULL) break;
+		if (fread(&posX, sizeof(int), 1, pFile) == NULL) break;
+		if (fread(&posY, sizeof(int), 1, pFile) == NULL) break;
+
+		CTile* tile = Instantiate<CTile>(mEngine, eLayerType::Tile);
+		tile->SetSize(SVector2D(2.0f, 2.0f));
+
+		CTilemapRenderer* tmr = tile->AddComponent<CTilemapRenderer>();
+		tmr->SetTexture(CResourceMgr::Find<CTexture>(L"SpringFloor"));
+		tmr->SetIndex(SVector2D(idxX, idxY));
+
+		tile->SetPosition(SVector2D(posX, posY));
+		mTiles.push_back(tile);
+	}
+
+	fclose(pFile);
+}
+
 BOOL CToolScene::CreateTileWindow(HINSTANCE hInstance, int nCmdShow)
 {
     mEngine->MyRegisterClass(hInstance, L"TILEWINDOW", WndTileProc);
@@ -148,7 +253,7 @@ BOOL CToolScene::InitInstanceTileWIndow(HINSTANCE hInstance, int nCmdShow)
 
     CTexture* texture = CResourceMgr::Load<CTexture>(mEngine, L"SpringFloor", L"../resources/SpringFloor.bmp");
 
-    RECT rect = { 0, 0, texture->GetWidth(), texture->GetHeight() };
+    RECT rect = { 0, 0, texture->GetWidth() * 2, texture->GetHeight() * 2 };
     AdjustWindowRect(&rect, WS_OVERLAPPED, false);
 
     SetWindowPos(mhToolWnd, nullptr,
@@ -167,8 +272,21 @@ LRESULT CALLBACK CToolScene::WndTileProc(HWND hWnd, UINT message, WPARAM wParam,
 {
     switch (message)
     {
-    case WM_COMMAND:
+    case WM_LBUTTONDOWN:
     {
+		CInputMgr::GetInst()->Update(hWnd);
+
+		if (CInputMgr::GetInst()->GetKeyDown("MouseLeftClick")) {
+			SVector2D pos = CInputMgr::GetMousePosition();
+
+			SVector2D index;
+			index = pos / CTilemapRenderer::TileSize;
+
+			index.mX = (int)index.mX;
+			index.mY = (int)index.mY;
+
+			mIndex = index;
+		}
     }
     break;
     case WM_PAINT:
