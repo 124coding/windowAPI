@@ -26,6 +26,8 @@ public:
 	static void OnLateUpdate(float tDeltaTime);
 	static void Render(HDC tHDC);
 
+	static void CollisionClear();
+
 	static void CollisionLayerCheck(eLayerType tLeft, eLayerType tRight, bool tEnable);
 	static void LayerCollision(CScene* tScene, eLayerType tLeft, eLayerType tRight);
 	static void ColliderCollision(CCollider* tLeft, CCollider* tRight);

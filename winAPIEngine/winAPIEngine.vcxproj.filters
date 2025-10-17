@@ -22,9 +22,6 @@
     <Filter Include="Helpers">
       <UniqueIdentifier>{571faa9c-7dfb-49d7-b6c5-e33f56c953c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource\Animation">
-      <UniqueIdentifier>{5cda2420-151b-4704-825a-3682e1a206c8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Layer">
       <UniqueIdentifier>{8cbe2e41-c7c1-4f2c-b1a3-accc5ca817b8}</UniqueIdentifier>
     </Filter>
@@ -57,6 +54,12 @@
     </Filter>
     <Filter Include="Component\TileMapRenderer">
       <UniqueIdentifier>{2b674b5e-b7d9-4e48-a517-58020405e714}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Animation">
+      <UniqueIdentifier>{5cda2420-151b-4704-825a-3682e1a206c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\RigidBody">
+      <UniqueIdentifier>{4dd2d10f-f11c-4b3c-bd20-af8c738cbbd2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -100,7 +103,7 @@
       <Filter>Helpers</Filter>
     </ClInclude>
     <ClInclude Include="CAnimation.h">
-      <Filter>Resource\Animation</Filter>
+      <Filter>Component\Animation</Filter>
     </ClInclude>
     <ClInclude Include="CCamera.h">
       <Filter>Component\Camera</Filter>
@@ -150,6 +153,9 @@
     <ClInclude Include="CTilemapRenderer.h">
       <Filter>Component\TileMapRenderer</Filter>
     </ClInclude>
+    <ClInclude Include="CRigidbody.h">
+      <Filter>Component\RigidBody</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAPIEngine.cpp">
@@ -177,7 +183,7 @@
       <Filter>Helpers</Filter>
     </ClCompile>
     <ClCompile Include="CAnimation.cpp">
-      <Filter>Resource\Animation</Filter>
+      <Filter>Component\Animation</Filter>
     </ClCompile>
     <ClCompile Include="CCamera.cpp">
       <Filter>Component\Camera</Filter>
@@ -223,6 +229,9 @@
     </ClCompile>
     <ClCompile Include="CTilemapRenderer.cpp">
       <Filter>Component\TileMapRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="CRigidbody.cpp">
+      <Filter>Component\RigidBody</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

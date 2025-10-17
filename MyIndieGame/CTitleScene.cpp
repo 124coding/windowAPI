@@ -155,8 +155,10 @@ void CTitleScene::Render(HDC tHDC)
 
 void CTitleScene::OnEnter()
 {
+	CScene::OnEnter();
 }
 
 void CTitleScene::OnExit()
 {
+	CScene::OnExit();
 }

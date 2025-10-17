@@ -30,6 +30,10 @@ public:
 		return tResult;
 	}
 
+	SVector2D operator-() {
+		return SVector2D(-this->mX, -this->mY);
+	}
+
 	SVector2D operator-(const SVector2D& t) {
 		SVector2D tResult;
 		tResult.mX = this->mX - t.mX;

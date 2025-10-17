@@ -18,6 +18,7 @@
 #include "CPlayerScript.h"
 #include "CCatScript.h"
 #include "CTilemapRenderer.h"
+#include "CRigidbody.h"
 
 #include "CRenderer.h"
 #include "Enums.h"
@@ -25,8 +26,6 @@
 
 void CPlayScene::OnCreate(CAPIEngine* tEngine)
 {
-
-	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Animal, true);
 
 	CScene::OnCreate(tEngine);
 
@@ -41,6 +40,7 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	DontDestroyOnLoad(mPlayer);
 
 	mPlayer->AddComponent<CPlayerScript>();
+	mPlayer->AddComponent<CRigidbody>();
 
 	CCircleCollider2D* cPlCollider = mPlayer->AddComponent<CCircleCollider2D>();
 	cPlCollider->SetOffset(SVector2D(-50.0f, -50.0f));
@@ -116,10 +116,13 @@ void CPlayScene::Render(HDC tHDC)
 
 void CPlayScene::OnEnter()
 {
+	CScene::OnEnter();
+	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Animal, true);
 }
 
 void CPlayScene::OnExit()
 {
+	CScene::OnExit();
 }
 
 void CPlayScene::LoadMap(CAPIEngine* tEngine, const wchar_t* tPath)

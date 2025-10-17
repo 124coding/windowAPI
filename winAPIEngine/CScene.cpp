@@ -1,5 +1,7 @@
 #include "CScene.h"
 
+#include "CCollisionMgr.h"
+
 void CScene::OnCreate(CAPIEngine* tEngine)
 {
 	for (auto it = mLayers.begin(); it != mLayers.end(); it++) {
@@ -56,6 +58,7 @@ void CScene::OnEnter()
 
 void CScene::OnExit()
 {
+	CCollisionMgr::CollisionClear();
 }
 
 void CScene::RemoveDeadObjects() {

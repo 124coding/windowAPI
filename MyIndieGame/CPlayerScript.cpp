@@ -5,6 +5,7 @@
 #include "CTransform.h"
 #include "CAnimator.h"
 #include "CCollider.h"
+#include "CRigidbody.h"
 
 void CPlayerScript::OnCreate()
 {
@@ -90,36 +91,30 @@ void CPlayerScript::Move()
 		(mInputMgr->GetKeyUp("DoMoveFt") || mInputMgr->GetKeyNone("DoMoveFt")) &&
 		(mInputMgr->GetKeyUp("DoMoveBt") || mInputMgr->GetKeyNone("DoMoveBt"))) {
 		mState = eState::Idle;
-		tr->SetVelocity(SVector2D(0.0f, 0.0f));
 		mAnimator->PlayAnimation(L"Idle", false);
 	}
 }
 
 void CPlayerScript::Translate(CTransform* tr)
 {
-	SVector2D CurrentVelocity;
+	CRigidbody* rb = GetOwner()->GetComponent<CRigidbody>();
 
 	if (mInputMgr->GetKeyPressed("DoMoveLt")) {
-		CurrentVelocity.mX += -1.0f;
+		rb->AddForce(SVector2D(-50.0f, 0.0f));
 	}
 
 	if (mInputMgr->GetKeyPressed("DoMoveRt")) {
-		CurrentVelocity.mX += 1.0f;
+		rb->AddForce(SVector2D(50.0f, 0.0f));
 	}
 
 	if (mInputMgr->GetKeyPressed("DoMoveFt")) {
-		CurrentVelocity.mY += -1.0f;
+		rb->AddForce(SVector2D(0.0f, -50.0f));
+
 	}
 
 	if (mInputMgr->GetKeyPressed("DoMoveBt")) {
-		CurrentVelocity.mY += 1.0f;
+		rb->AddForce(SVector2D(0.0f, 50.0f));
 	}
-
-	if (CurrentVelocity.Length() > 0.0f) {
-		CurrentVelocity.Normalize();
-	}
-
-	tr->SetVelocity(CurrentVelocity * 100.0f);
 }
 
 void CPlayerScript::GiveWater()

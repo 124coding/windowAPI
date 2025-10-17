@@ -35,6 +35,12 @@ void CCollisionMgr::Render(HDC tHDC) {
 
 }
 
+void CCollisionMgr::CollisionClear()
+{
+	mCollisionMap.clear();
+	mCollisionLayerMtrix->reset();
+}
+
 void CCollisionMgr::CollisionLayerCheck(eLayerType tLeft, eLayerType tRight, bool tEnable) {
 	int row = 0;
 	int col = 0;
