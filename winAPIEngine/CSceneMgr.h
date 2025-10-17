@@ -42,6 +42,8 @@ public:
 		return mDontDestroyOnLoadScene; 
 	}
 
+	static std::vector<GameObject*> GetGameObjects(eLayerType tLayer);
+
 	static void OnCreate(CAPIEngine* tEngine);
 	static void OnDestroy();
 	static void OnUpdate(float tDeltaTime);

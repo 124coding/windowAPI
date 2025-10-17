@@ -52,8 +52,8 @@ void CCollisionMgr::CollisionLayerCheck(eLayerType tLeft, eLayerType tRight, boo
 }
 
 void CCollisionMgr::LayerCollision(CScene* tScene, eLayerType tLeft, eLayerType tRight) {
-	const std::vector<GameObject*>& lefts = tScene->GetLayer(tLeft)->GetGameObjects();
-	const std::vector<GameObject*>& rights = tScene->GetLayer(tRight)->GetGameObjects();
+	const std::vector<GameObject*>& lefts = CSceneMgr::GetGameObjects(tLeft);
+	const std::vector<GameObject*>& rights = CSceneMgr::GetGameObjects(tRight);
 
 	for (GameObject* left : lefts) {
 		if (left->IsActive() == false) continue;
