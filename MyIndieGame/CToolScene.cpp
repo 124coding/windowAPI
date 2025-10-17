@@ -7,6 +7,7 @@
 #include "CInputMgr.h"
 
 #include "CCamera.h"
+#include "CCameraScript.h"
 #include "CTilemapRenderer.h"
 
 #include "CRenderer.h"
@@ -24,6 +25,7 @@ void CToolScene::OnCreate(CAPIEngine* tEngine)
 
 	GameObject* camera = Instantiate<GameObject>(tEngine, eLayerType::None, SVector2D(800, 400));
 	CCamera* cameraComp = camera->AddComponent<CCamera>();
+	camera->AddComponent<CCameraScript>();
 
 	mainCamera = cameraComp;
 
@@ -52,24 +54,31 @@ void CToolScene::OnLateUpdate(float tDeltaTime)
 	if (CInputMgr::GetInst()->GetKeyDown("MouseLeftClick")) {
 		SVector2D pos = CInputMgr::GetMousePosition();
 
-		SVector2D index;
-		index = pos / CTilemapRenderer::TileSize;
+		pos = mainCamera->CaluateTilePosition(pos);
 
-		index.mX = (int)index.mX;
-		index.mY = (int)index.mY;
+		if (pos.mX >= 0.0f && pos.mY >= 0.0f) {
+			SVector2D index;
+			index = pos / CTilemapRenderer::TileSize;
 
-		CTile* tile = Instantiate<CTile>(mEngine, eLayerType::Tile);
-		tile->SetSize(SVector2D(2.0f, 2.0f));
+			index.mX = (int)index.mX;
+			index.mY = (int)index.mY;
 
-		CTilemapRenderer* tmr = tile->AddComponent<CTilemapRenderer>();
-		tmr->SetTexture(CResourceMgr::Find<CTexture>(L"SpringFloor"));
-		tmr->SetIndex(mIndex);
+			CTile* tile = Instantiate<CTile>(mEngine, eLayerType::Tile);
+			tile->SetSize(SVector2D(2.0f, 2.0f));
 
-		tile->SetPosition(index);
-		mTiles.push_back(tile);
+			CTilemapRenderer* tmr = tile->AddComponent<CTilemapRenderer>();
+			tmr->SetTexture(CResourceMgr::Find<CTexture>(L"SpringFloor"));
+			tmr->SetIndex(mIndex);
+
+			tile->SetIndexPosition(index);
+			mTiles.push_back(tile);
+		}
+		else {
+			int a = 0;
+		}
 	}
 
-	if (CInputMgr::GetInst()->GetKeyDown("DoMoveBt")) {
+	if (CInputMgr::GetInst()->GetKeyDown("DoSave")) {
 		Save();
 	}
 
@@ -83,13 +92,18 @@ void CToolScene::Render(HDC tHDC)
 	CScene::Render(tHDC);
 
 	for (size_t i = 0; i < 200; i++) {
-		MoveToEx(tHDC, CTilemapRenderer::TileSize.mX * i, 0, NULL);
-		LineTo(tHDC, CTilemapRenderer::TileSize.mX * i, 1000);
+		SVector2D pos = mainCamera->CaluatePosition(SVector2D(CTilemapRenderer::TileSize.mX * i, 0.0f));
+		
+		MoveToEx(tHDC, pos.mX, 0, NULL);
+		LineTo(tHDC, pos.mX, 1000);		
 	}
 
 	for (size_t i = 0; i < 200; i++) {
-		MoveToEx(tHDC, 0, CTilemapRenderer::TileSize.mY * i, NULL);
-		LineTo(tHDC, 2000, CTilemapRenderer::TileSize.mY * i);
+		SVector2D pos = mainCamera->CaluatePosition(SVector2D(0.0f, CTilemapRenderer::TileSize.mY * i));
+
+		MoveToEx(tHDC, 0, pos.mY, NULL);
+		LineTo(tHDC, 2000, pos.mY);
+
 	}
 
 	CTexture* texture = CResourceMgr::Load<CTexture>(mEngine, L"SpringFloor", L"../resources/SpringFloor.bmp");
@@ -197,7 +211,7 @@ void CToolScene::Load()
 		return;
 
 	FILE* pFile = nullptr;
-	_wfopen_s(&pFile, szFilePath, L"wb");
+	_wfopen_s(&pFile, szFilePath, L"rb");
 
 	while (true) {
 		int idxX = 0;
@@ -211,14 +225,14 @@ void CToolScene::Load()
 		if (fread(&posX, sizeof(int), 1, pFile) == NULL) break;
 		if (fread(&posY, sizeof(int), 1, pFile) == NULL) break;
 
-		CTile* tile = Instantiate<CTile>(mEngine, eLayerType::Tile);
+		CTile* tile = Instantiate<CTile>(mEngine, eLayerType::Tile, SVector2D(posX, posY));
 		tile->SetSize(SVector2D(2.0f, 2.0f));
 
 		CTilemapRenderer* tmr = tile->AddComponent<CTilemapRenderer>();
 		tmr->SetTexture(CResourceMgr::Find<CTexture>(L"SpringFloor"));
 		tmr->SetIndex(SVector2D(idxX, idxY));
 
-		tile->SetPosition(SVector2D(posX, posY));
+		// tile->SetIndexPosition(SVector2D(posX, posY) / CTilemapRenderer::TileSize);
 		mTiles.push_back(tile);
 	}
 

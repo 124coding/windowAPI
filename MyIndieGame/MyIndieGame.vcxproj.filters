@@ -63,6 +63,9 @@
     <ClCompile Include="CTile.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="CCameraScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -100,6 +103,9 @@
     </ClInclude>
     <ClInclude Include="CTile.h">
       <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="CCameraScript.h">
+      <Filter>Scripts</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

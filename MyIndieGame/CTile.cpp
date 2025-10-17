@@ -26,7 +26,7 @@ void CTile::Render(HDC tHDC)
 	GameObject::Render(tHDC);
 }
 
-void CTile::SetPosition(SVector2D tPos)
+void CTile::SetIndexPosition(SVector2D tPos)
 {
 	CTransform* tr = GetComponent<CTransform>();
 

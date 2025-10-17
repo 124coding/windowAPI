@@ -1,7 +1,5 @@
 #include "CPlayerScript.h"
 
-#include "CInputMgr.h"
-
 #include "GameObject.h"
 
 #include "CTransform.h"

@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CCameraScript.cpp" />
     <ClCompile Include="CCatScript.cpp" />
     <ClCompile Include="CCat.cpp" />
     <ClCompile Include="CEndingScene.cpp" />
@@ -148,6 +149,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CCameraScript.h" />
     <ClInclude Include="CCatScript.h" />
     <ClInclude Include="CCat.h" />
     <ClInclude Include="CEndingScene.h" />

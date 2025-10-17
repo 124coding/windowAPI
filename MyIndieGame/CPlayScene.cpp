@@ -3,6 +3,7 @@
 
 #include "CPlayer.h"
 #include "CCat.h"
+#include "CTile.h"
 
 #include "CLayer.h"
 #include "CInputMgr.h"
@@ -16,6 +17,7 @@
 #include "CCamera.h"
 #include "CPlayerScript.h"
 #include "CCatScript.h"
+#include "CTilemapRenderer.h"
 
 #include "CRenderer.h"
 #include "Enums.h"
@@ -27,6 +29,8 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Animal, true);
 
 	CScene::OnCreate(tEngine);
+
+	LoadMap(tEngine, L"..\\resources\\Maps\\Here");
 
 	/*GameObject* camera = Instantiate<GameObject>(tEngine, eLayerType::None, SVector2D(336.0f, 423.0f));
 	CCamera* cameraComp = camera->AddComponent<CCamera>();
@@ -116,4 +120,32 @@ void CPlayScene::OnEnter()
 
 void CPlayScene::OnExit()
 {
+}
+
+void CPlayScene::LoadMap(CAPIEngine* tEngine, const wchar_t* tPath)
+{
+	FILE* pFile = nullptr;
+	_wfopen_s(&pFile, tPath, L"rb");
+
+	while (true) {
+		int idxX = 0;
+		int idxY = 0;
+
+		int posX = 0;
+		int posY = 0;
+
+		if (fread(&idxX, sizeof(int), 1, pFile) == NULL) break;
+		if (fread(&idxY, sizeof(int), 1, pFile) == NULL) break;
+		if (fread(&posX, sizeof(int), 1, pFile) == NULL) break;
+		if (fread(&posY, sizeof(int), 1, pFile) == NULL) break;
+
+		CTile* tile = Instantiate<CTile>(tEngine, eLayerType::Tile, SVector2D(posX, posY));
+		tile->SetSize(SVector2D(2.0f, 2.0f));
+
+		CTilemapRenderer* tmr = tile->AddComponent<CTilemapRenderer>();
+		tmr->SetTexture(CResourceMgr::Find<CTexture>(L"SpringFloor"));
+		tmr->SetIndex(SVector2D(idxX, idxY));
+	}
+
+	fclose(pFile);
 }

@@ -33,8 +33,16 @@ void CInputMgr::GetMousePositionByWindow(HWND tHWND)
 	GetCursorPos(&mousePos);
 	ScreenToClient(tHWND, &mousePos);
 
-	mMousePosition.mX = (float)mousePos.x;
-	mMousePosition.mY = (float)mousePos.y;
+	mMousePosition.mX = -1.0f;
+	mMousePosition.mY = -1.0f;
+	
+	if (mousePos.x > 0 && mousePos.x < windowWidth) {
+		mMousePosition.mX = (float)mousePos.x;
+	}
+
+	if (mousePos.y > 0 && mousePos.y < windowHeight) {
+		mMousePosition.mY = (float)mousePos.y;
+	}
 }
 
 void CInputMgr::Update(HWND tHWND)

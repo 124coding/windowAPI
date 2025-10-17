@@ -9,6 +9,7 @@ class CCamera : public CComponent
 {
 public:
 	SVector2D CaluatePosition(SVector2D pos) { return pos - mDistance; }
+	SVector2D CaluateTilePosition(SVector2D pos) { return pos + mDistance; }
 
 	CCamera()
 		: CComponent(eComponentType::Camera), 

@@ -30,6 +30,7 @@ void GameEngine::OnCreate() {
 	CInputMgr::GetInst()->AddKeyInfo("DoMoveRt", 'D');
 	CInputMgr::GetInst()->AddKeyInfo("DoMoveFt", 'W');
 	CInputMgr::GetInst()->AddKeyInfo("DoMoveBt", 'S');
+	CInputMgr::GetInst()->AddKeyInfo("DoSave", 'K');
 	CInputMgr::GetInst()->AddKeyInfo("DoLoad", 'L');
 	CInputMgr::GetInst()->AddKeyInfo("MouseLeftClick", VK_LBUTTON);
 	CInputMgr::GetInst()->AddKeyInfo("MouseRightClick", VK_RBUTTON);
@@ -66,13 +67,13 @@ void GameEngine::Render() {
 
 void GameEngine::LoadScenes()
 {
-	/*CSceneMgr::CreateScene<CTitleScene>(this, L"TitleScene");
+	// CSceneMgr::CreateScene<CTitleScene>(this, L"TitleScene");
 	CSceneMgr::CreateScene<CPlayScene>(this, L"PlayScene");
-	CSceneMgr::CreateScene<CEndingScene>(this, L"EndingScene");*/
+	// CSceneMgr::CreateScene<CEndingScene>(this, L"EndingScene");
 	CSceneMgr::CreateScene<CToolScene>(this, L"ToolScene");
 	
 
-	CSceneMgr::LoadScene(L"ToolScene");
+	CSceneMgr::LoadScene(L"PlayScene");
 }
 
 void GameEngine::LoadResources()
