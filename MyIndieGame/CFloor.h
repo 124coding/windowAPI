@@ -1,15 +1,15 @@
 #pragma once
 #include "GameObject.h"
-#include "CCatScript.h"
 
+#include "CFloorScript.h"
 
-class CCat : public GameObject
+class CFloor : public GameObject
 {
 public:
-	CCat() {
-		AddComponent<CCatScript>();
+	CFloor() {
+		AddComponent<CFloorScript>();
 	}
-	virtual ~CCat() {}
+	virtual ~CFloor() {}
 
 	void OnCreate() override;
 	void OnDestroy() override;

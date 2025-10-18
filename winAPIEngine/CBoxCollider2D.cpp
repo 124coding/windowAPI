@@ -30,8 +30,8 @@ void CBoxCollider2D::Render(HDC tHDC)
 	HPEN oldPen = (HPEN)SelectObject(tHDC, greenPen);
 
 	Rectangle(tHDC, 
-		pos.mX + GetOffset().mX, pos.mY + GetOffset().mY, 
-		pos.mX + GetOffset().mX + 100, pos.mY + GetOffset().mY + 100);
+		pos.mX + GetOffset().mX * GetSize().mX, pos.mY + GetOffset().mY * GetSize().mY,
+		pos.mX + (GetOffset().mX + 100) * GetSize().mX, pos.mY + (GetOffset().mY + 100) * GetSize().mY);
 
 	SelectObject(tHDC, oldBrush);
 	SelectObject(tHDC, oldPen);

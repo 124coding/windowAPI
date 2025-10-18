@@ -66,6 +66,12 @@
     <ClCompile Include="CCameraScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="CFloor.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="CFloorScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -105,6 +111,12 @@
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="CCameraScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CFloor.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="CFloorScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
   </ItemGroup>

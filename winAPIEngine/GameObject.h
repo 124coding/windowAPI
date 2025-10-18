@@ -15,7 +15,7 @@
 
 class CTexture;
 
-class GameObject
+class GameObject : public CEntity
 {
 public:
 	friend void ObjDestroy(GameObject* tObj);

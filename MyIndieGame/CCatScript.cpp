@@ -51,6 +51,18 @@ void CCatScript::Render(HDC tHDC)
 {
 }
 
+void CCatScript::OnCollisionEnter(CCollider* tOther)
+{
+}
+
+void CCatScript::OnCollisionStay(CCollider* tOther)
+{
+}
+
+void CCatScript::OnCollisionExit(CCollider* tOther)
+{
+}
+
 void CCatScript::SitDown(float tDeltaTime)
 {
 	mTime += tDeltaTime;

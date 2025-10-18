@@ -108,7 +108,12 @@ void CPlayerScript::Translate(CTransform* tr)
 	}
 
 	if (mInputMgr->GetKeyPressed("DoMoveFt")) {
-		rb->AddForce(SVector2D(0.0f, -50.0f));
+		// rb->AddForce(SVector2D(0.0f, -50.0f));
+
+		SVector2D velocity = tr->GetVelocity();
+		velocity.mY = -500.0f;
+		tr->SetVelocity(velocity);
+		rb->SetGround(false);
 
 	}
 

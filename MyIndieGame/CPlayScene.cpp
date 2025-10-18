@@ -4,6 +4,7 @@
 #include "CPlayer.h"
 #include "CCat.h"
 #include "CTile.h"
+#include "CFloor.h"
 
 #include "CLayer.h"
 #include "CInputMgr.h"
@@ -15,8 +16,6 @@
 #include "CCircleCollider2D.h"
 #include "CAnimator.h"
 #include "CCamera.h"
-#include "CPlayerScript.h"
-#include "CCatScript.h"
 #include "CTilemapRenderer.h"
 #include "CRigidbody.h"
 
@@ -39,11 +38,10 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	mPlayer = Instantiate<CPlayer>(tEngine, eLayerType::Player, SVector2D(100.0f, 100.0f));
 	DontDestroyOnLoad(mPlayer);
 
-	mPlayer->AddComponent<CPlayerScript>();
 	mPlayer->AddComponent<CRigidbody>();
 
-	CCircleCollider2D* cPlCollider = mPlayer->AddComponent<CCircleCollider2D>();
-	cPlCollider->SetOffset(SVector2D(-50.0f, -50.0f));
+	CBoxCollider2D* bPlCollider = mPlayer->AddComponent<CBoxCollider2D>();
+	bPlCollider->SetOffset(SVector2D(-50.0f, -50.0f));
 
 	// cameraComp->SetTarget(mPlayer);
 
@@ -60,7 +58,6 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	mPlayer->GetComponent<CTransform>()->SetScale(SVector2D(1.0f, 1.0f));
 
 	CCat* Cat = Instantiate<CCat>(tEngine, eLayerType::Animal, SVector2D(300.0f, 300.0f));
-	Cat->AddComponent<CCatScript>();
 	CBoxCollider2D* bCatCollider = Cat->AddComponent<CBoxCollider2D>();
 	bCatCollider->SetOffset(SVector2D(-50.0f, -50.0f));
 
@@ -70,6 +67,10 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 	catAnim->CreateAnimationByFolder(tEngine, L"MushroomIdle", L"../resources/Sprites/Mushrooms", SVector2D(), 0.5f);
 	catAnim->PlayAnimation(L"MushroomIdle");
+
+	CFloor * floor = Instantiate<CFloor>(tEngine, eLayerType::Particle, SVector2D(0.0f, 700.0f));
+	CBoxCollider2D* floorCol = floor->AddComponent<CBoxCollider2D>();
+	floorCol->SetSize(SVector2D(15.0f, 1.0f));
 
 	// CAT
 	/*CCat* Cat = Instantiate<CCat>(tEngine, eLayerType::Animal, SVector2D(200.0f, 200.0f));
@@ -118,6 +119,7 @@ void CPlayScene::OnEnter()
 {
 	CScene::OnEnter();
 	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Animal, true);
+	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Particle, true);
 }
 
 void CPlayScene::OnExit()
