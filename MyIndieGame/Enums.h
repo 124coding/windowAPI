@@ -37,3 +37,7 @@ enum class eColliderType {
 	Rect2D,
 	End
 };
+
+enum class eUIType {
+	End,
+};

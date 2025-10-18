@@ -61,6 +61,21 @@
     <Filter Include="Component\RigidBody">
       <UniqueIdentifier>{4dd2d10f-f11c-4b3c-bd20-af8c738cbbd2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Helpers\UI">
+      <UniqueIdentifier>{63484063-126f-436e-9901-556434cdf219}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers\Collision">
+      <UniqueIdentifier>{cfb761aa-97f1-4ed9-adb0-e141ac5b4ea1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers\Input">
+      <UniqueIdentifier>{e115d829-dcfe-4fb9-9da5-ede69cadf465}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers\Resource">
+      <UniqueIdentifier>{0b0221fb-23fe-4279-8458-18ab4ee42809}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers\Scene">
+      <UniqueIdentifier>{ee84eb7a-d402-4f72-b1ef-652e142f47ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -92,15 +107,6 @@
     </ClInclude>
     <ClInclude Include="CTexture.h">
       <Filter>Resource\Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="CInputMgr.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="CResourceMgr.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="CSceneMgr.h">
-      <Filter>Helpers</Filter>
     </ClInclude>
     <ClInclude Include="CAnimation.h">
       <Filter>Component\Animation</Filter>
@@ -144,9 +150,6 @@
     <ClInclude Include="CCircleCollider2D.h">
       <Filter>Component\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="CCollisionMgr.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="CDontDestroyOnLoad.h">
       <Filter>Scene</Filter>
     </ClInclude>
@@ -155,6 +158,24 @@
     </ClInclude>
     <ClInclude Include="CRigidbody.h">
       <Filter>Component\RigidBody</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIMgr.h">
+      <Filter>Helpers\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CInputMgr.h">
+      <Filter>Helpers\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="CCollisionMgr.h">
+      <Filter>Helpers\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="CResourceMgr.h">
+      <Filter>Helpers\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneMgr.h">
+      <Filter>Helpers\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIBase.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -172,15 +193,6 @@
     </ClCompile>
     <ClCompile Include="CTexture.cpp">
       <Filter>Resource\Texture</Filter>
-    </ClCompile>
-    <ClCompile Include="CInputMgr.cpp">
-      <Filter>Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="CResourceMgr.cpp">
-      <Filter>Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="CSceneMgr.cpp">
-      <Filter>Helpers</Filter>
     </ClCompile>
     <ClCompile Include="CAnimation.cpp">
       <Filter>Component\Animation</Filter>
@@ -221,9 +233,6 @@
     <ClCompile Include="CCircleCollider2D.cpp">
       <Filter>Component\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="CCollisionMgr.cpp">
-      <Filter>Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="CDontDestroyOnLoad.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -232,6 +241,24 @@
     </ClCompile>
     <ClCompile Include="CRigidbody.cpp">
       <Filter>Component\RigidBody</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIMgr.cpp">
+      <Filter>Helpers\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CInputMgr.cpp">
+      <Filter>Helpers\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollisionMgr.cpp">
+      <Filter>Helpers\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="CResourceMgr.cpp">
+      <Filter>Helpers\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneMgr.cpp">
+      <Filter>Helpers\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIBase.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
