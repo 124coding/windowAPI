@@ -1,12 +1,17 @@
 #include "CUIMgr.h"
 
+#include "CUIButton.h"
+
+#include "winMacro.h"
+
 std::unordered_map<eUIType, CUIBase*> CUIMgr::mUIs = {};
 std::stack<CUIBase*> CUIMgr::mUIBases = {};
 std::queue<eUIType> CUIMgr::mRequestUIQueue = {};
 CUIBase* CUIMgr::mActiveUI = nullptr;
 
 void CUIMgr::OnCreate(CAPIEngine* tEngine) {
-
+	CUIButton* button = new CUIButton();
+	mUIs.insert(std::make_pair(eUIType::Button, button));
 }
 
 void CUIMgr::OnLoad(eUIType tType, float tDeltaTime) {
@@ -21,7 +26,10 @@ void CUIMgr::OnLoad(eUIType tType, float tDeltaTime) {
 }
 
 void CUIMgr::OnDestroy() {
-
+	for (auto& it : mUIs) {
+		it.second->OnDestroy();
+		SAFE_DELETE(it.second);
+	}
 }
 
 void CUIMgr::OnUpdate(float tDeltaTime) {
@@ -34,12 +42,12 @@ void CUIMgr::OnUpdate(float tDeltaTime) {
 			uiBase->OnUpdate(tDeltaTime);
 			uiBases.pop();
 		}
+	}
 
-		if (mRequestUIQueue.size() > 0) {
-			eUIType requestUI = mRequestUIQueue.front();
-			mRequestUIQueue.pop();
-			OnLoad(requestUI, tDeltaTime);
-		}
+	if (mRequestUIQueue.size() > 0) {
+		eUIType requestUI = mRequestUIQueue.front();
+		mRequestUIQueue.pop();
+		OnLoad(requestUI, tDeltaTime);
 	}
 }
 
@@ -53,12 +61,6 @@ void CUIMgr::OnLateUpdate(float tDeltaTime) {
 			uiBase->OnLateUpdate(tDeltaTime);
 			uiBases.pop();
 		}
-
-		if (mRequestUIQueue.size() > 0) {
-			eUIType requestUI = mRequestUIQueue.front();
-			mRequestUIQueue.pop();
-			OnLoad(requestUI);
-		}
 	}
 }
 
@@ -71,12 +73,6 @@ void CUIMgr::Render(HDC tHDC) {
 		if (uiBase) {
 			uiBase->Render(tHDC);
 			uiBases.pop();
-		}
-
-		if (mRequestUIQueue.size() > 0) {
-			eUIType requestUI = mRequestUIQueue.front();
-			mRequestUIQueue.pop();
-			OnLoad(requestUI);
 		}
 	}
 }
@@ -116,14 +112,43 @@ void CUIMgr::Push(eUIType tType) {
 	mRequestUIQueue.push(tType);
 }
 
-void CUIMgr::Pop() {
+void CUIMgr::Pop(eUIType tType) {
 	if (mUIBases.size() <= 0)
 		return;
+
+	std::stack<CUIBase*> tempStack;
 
 	CUIBase* uiBase = nullptr;
 	
 	while (mUIBases.size() > 0) {
 		uiBase = mUIBases.top();
 		mUIBases.pop();
+
+		if (uiBase->GetType() != tType) {
+			tempStack.push(uiBase);
+			continue;
+		}
+
+		if (uiBase->IsFullScreen()) {
+			std::stack<CUIBase*> uiBases = mUIBases;
+
+			while (!uiBases.empty()) {
+				CUIBase* ui = uiBases.top();
+				uiBases.pop();
+
+				if (ui) {
+					ui->Active();
+					break;
+				}
+			}
+		}
+
+		uiBase->UIClear();
+	}
+
+	while (tempStack.size() > 0) {
+		uiBase = tempStack.top();
+		tempStack.pop();
+		mUIBases.push(uiBase);
 	}
 }

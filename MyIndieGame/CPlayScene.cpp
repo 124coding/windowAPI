@@ -11,6 +11,7 @@
 #include "CSceneMgr.h"
 #include "CResourceMgr.h"
 #include "CCollisionMgr.h"
+#include "CUIMgr.h"
 
 #include "CBoxCollider2D.h"
 #include "CCircleCollider2D.h"
@@ -117,14 +118,17 @@ void CPlayScene::Render(HDC tHDC)
 
 void CPlayScene::OnEnter()
 {
-	CScene::OnEnter();
 	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Animal, true);
 	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Particle, true);
+	CUIMgr::Push(eUIType::Button);
+	CScene::OnEnter();
 }
 
 void CPlayScene::OnExit()
 {
 	CScene::OnExit();
+
+	CUIMgr::Pop(eUIType::Button);
 }
 
 void CPlayScene::LoadMap(CAPIEngine* tEngine, const wchar_t* tPath)

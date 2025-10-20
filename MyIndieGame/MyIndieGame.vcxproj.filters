@@ -25,6 +25,9 @@
     <Filter Include="Scripts">
       <UniqueIdentifier>{305146c9-a3a3-48da-a522-15ccca85ada8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FMOD">
+      <UniqueIdentifier>{6102e94d-7ba5-4c97-93fd-096bf96b9c9e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -72,6 +75,9 @@
     <ClCompile Include="CFloorScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="CFMOD.cpp">
+      <Filter>FMOD</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -118,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="CFloorScript.h">
       <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CFMOD.h">
+      <Filter>FMOD</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

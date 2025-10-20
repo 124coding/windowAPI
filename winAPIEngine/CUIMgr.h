@@ -22,7 +22,7 @@ public:
 	static void OnFail();
 
 	static void Push(eUIType tType);
-	static void Pop();
+	static void Pop(eUIType tType);
 
 private:
 	static std::unordered_map<eUIType, CUIBase*> mUIs;

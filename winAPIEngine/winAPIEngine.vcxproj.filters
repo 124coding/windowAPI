@@ -76,6 +76,15 @@
     <Filter Include="Helpers\Scene">
       <UniqueIdentifier>{ee84eb7a-d402-4f72-b1ef-652e142f47ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{fb7542eb-0680-4176-a521-921642267860}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Button">
+      <UniqueIdentifier>{fe6917ab-8f63-47d1-bf35-fc840b720c52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\HUD">
+      <UniqueIdentifier>{9093d5e7-873d-4b54-a929-78e6b6250b1c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -175,7 +184,13 @@
       <Filter>Helpers\Scene</Filter>
     </ClInclude>
     <ClInclude Include="CUIBase.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIButton.h">
+      <Filter>UI\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIHUD.h">
+      <Filter>UI\HUD</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -258,7 +273,13 @@
       <Filter>Helpers\Scene</Filter>
     </ClCompile>
     <ClCompile Include="CUIBase.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIButton.cpp">
+      <Filter>UI\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIHUD.cpp">
+      <Filter>UI\HUD</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

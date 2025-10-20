@@ -39,5 +39,7 @@ enum class eColliderType {
 };
 
 enum class eUIType {
-	End,
+	HPBar,
+	Button,
+	End
 };

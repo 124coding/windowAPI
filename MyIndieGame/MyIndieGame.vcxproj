@@ -116,6 +116,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)\External\Library\FMOD\Debug\fmodL.dll" "$(SolutionDir)\bin\"
+copy "$(SolutionDir)\External\Library\FMOD\Debug\fmodstudioL.dll" "$(SolutionDir)\bin\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -132,6 +136,10 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)\External\Library\FMOD\Release\fmod.dll" "$(SolutionDir)\bin\"
+copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDir)\bin\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CCameraScript.cpp" />
@@ -140,6 +148,7 @@
     <ClCompile Include="CEndingScene.cpp" />
     <ClCompile Include="CFloor.cpp" />
     <ClCompile Include="CFloorScript.cpp" />
+    <ClCompile Include="CFMOD.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CPlayScene.cpp" />
@@ -157,6 +166,7 @@
     <ClInclude Include="CEndingScene.h" />
     <ClInclude Include="CFloor.h" />
     <ClInclude Include="CFloorScript.h" />
+    <ClInclude Include="CFMOD.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CPlayScene.h" />

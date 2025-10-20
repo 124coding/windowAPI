@@ -5,10 +5,11 @@ void CUIBase::OnCreate() {
 
 void CUIBase::Active()
 {
-}
+	mbEnabled = true;}
 
 void CUIBase::InActive()
 {
+	mbEnabled = false;
 }
 
 void CUIBase::OnDestroy() {

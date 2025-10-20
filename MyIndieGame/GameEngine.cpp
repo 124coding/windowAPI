@@ -3,10 +3,13 @@
 #include "GameEngine.h"
 #include "GameObject.h"
 
+#include "CFMOD.h"
+
 #include "CInputMgr.h"
 #include "CSceneMgr.h"
 #include "CResourceMgr.h"
 #include "CCollisionMgr.h"
+#include "CUIMgr.h"
 
 #include "CPlayScene.h"
 #include "CTitleScene.h"
@@ -20,7 +23,9 @@ void GameEngine::OnCreate() {
 	int a = 0;
 	srand((unsigned int)(&a));
 
+	CFMOD::OnCreate();
 	CCollisionMgr::OnCreate(this);
+	CUIMgr::OnCreate(this);
 	CSceneMgr::OnCreate(this);
 
 	LoadResources();
@@ -38,9 +43,10 @@ void GameEngine::OnCreate() {
 }
 
 void GameEngine::OnDestroy() {
-	CCollisionMgr::OnDestroy();
-	DestroyScenes();
 	DestroyResources();
+	DestroyScenes();
+	CUIMgr::OnDestroy();
+	CCollisionMgr::OnDestroy();
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 }
 
@@ -48,6 +54,7 @@ void GameEngine::OnUpdate(float tDeltaTime) {
 	Render();
 
 	CCollisionMgr::OnUpdate(tDeltaTime);
+	CUIMgr::OnUpdate(tDeltaTime);
 	CSceneMgr::OnUpdate(tDeltaTime);
 
 	RemoveDeadObjects();
@@ -55,12 +62,14 @@ void GameEngine::OnUpdate(float tDeltaTime) {
 
 void GameEngine::OnLateUpdate(float tDeltaTime) {
 	CCollisionMgr::OnLateUpdate(tDeltaTime);
+	CUIMgr::OnLateUpdate(tDeltaTime);
 	CSceneMgr::OnLateUpdate(tDeltaTime);
 }
 
 void GameEngine::Render() {
 	this->Clear(0.5f, 0.5f, 0.5f);
 	CCollisionMgr::Render(mBackBuffer->GetDCMem());
+	CUIMgr::Render(mBackBuffer->GetDCMem());
 	CSceneMgr::Render(mBackBuffer->GetDCMem());
 	this->Present();
 }
@@ -93,7 +102,7 @@ void GameEngine::LoadResources()
 	CResourceMgr::Load<CTexture>(this, L"Cat", L"../resources/Sprites/ChickenAlpha.bmp");
 	CResourceMgr::Load<CTexture>(this, L"Player", L"../resources/Sprites/Player.bmp");
 
-
+	CResourceMgr::Load<CTexture>(this, L"HPBar", L"../resources/Sprites/HPBar.bmp"); // 자원 없음
 
 	CResourceMgr::Load<CTexture>(this, L"SpringFloor", L"../resources/SpringFloor.bmp");
 

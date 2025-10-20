@@ -157,6 +157,8 @@
     <ClInclude Include="CTilemapRenderer.h" />
     <ClInclude Include="CTransform.h" />
     <ClInclude Include="CUIBase.h" />
+    <ClInclude Include="CUIButton.h" />
+    <ClInclude Include="CUIHUD.h" />
     <ClInclude Include="CUIMgr.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="CInputMgr.h" />
@@ -193,6 +195,8 @@
     <ClCompile Include="CTilemapRenderer.cpp" />
     <ClCompile Include="CTransform.cpp" />
     <ClCompile Include="CUIBase.cpp" />
+    <ClCompile Include="CUIButton.cpp" />
+    <ClCompile Include="CUIHUD.cpp" />
     <ClCompile Include="CUIMgr.cpp" />
     <ClCompile Include="GameObject.cpp" />
   </ItemGroup>
