@@ -19,6 +19,9 @@
 #include "CCamera.h"
 #include "CTilemapRenderer.h"
 #include "CRigidbody.h"
+#include "CAudioClip.h"
+#include "CAudioListner.h"
+#include "CAudioSource.h"
 
 #include "CRenderer.h"
 #include "Enums.h"
@@ -40,6 +43,7 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	DontDestroyOnLoad(mPlayer);
 
 	mPlayer->AddComponent<CRigidbody>();
+	mPlayer->AddComponent<CAudioListner>();
 
 	CBoxCollider2D* bPlCollider = mPlayer->AddComponent<CBoxCollider2D>();
 	bPlCollider->SetOffset(SVector2D(-50.0f, -50.0f));
@@ -70,8 +74,13 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	catAnim->PlayAnimation(L"MushroomIdle");
 
 	CFloor * floor = Instantiate<CFloor>(tEngine, eLayerType::Particle, SVector2D(0.0f, 700.0f));
+	CAudioSource* flAs = floor->AddComponent<CAudioSource>();
+
 	CBoxCollider2D* floorCol = floor->AddComponent<CBoxCollider2D>();
 	floorCol->SetSize(SVector2D(15.0f, 1.0f));
+
+	CAudioClip* ac = CResourceMgr::Load<CAudioClip>(tEngine, L"BGSound", L"../resources/Sound/smw_bonus_game_end.wav");
+	flAs->SetClip(ac);
 
 	// CAT
 	/*CCat* Cat = Instantiate<CCat>(tEngine, eLayerType::Animal, SVector2D(200.0f, 200.0f));

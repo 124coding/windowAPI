@@ -9,6 +9,8 @@ enum class eComponentType {
 	TileRenderer,
 	Animator,
 	Camera,
+	AudioListner,
+	AudioSource,
 	End
 };
 

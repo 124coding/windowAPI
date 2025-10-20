@@ -85,6 +85,15 @@
     <Filter Include="UI\HUD">
       <UniqueIdentifier>{9093d5e7-873d-4b54-a929-78e6b6250b1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{67742ad8-4619-495e-9f66-1d0192bcc142}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Audio">
+      <UniqueIdentifier>{bae6d136-fb78-4aa1-8a93-ba87247225f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Audio">
+      <UniqueIdentifier>{1ca3ed7f-d22b-4412-9e55-27bcf0764ca2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -192,6 +201,15 @@
     <ClInclude Include="CUIHUD.h">
       <Filter>UI\HUD</Filter>
     </ClInclude>
+    <ClInclude Include="CAudioListner.h">
+      <Filter>Component\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="CAudioSource.h">
+      <Filter>Component\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="CAudioClip.h">
+      <Filter>Resource\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAPIEngine.cpp">
@@ -280,6 +298,15 @@
     </ClCompile>
     <ClCompile Include="CUIHUD.cpp">
       <Filter>UI\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="CAudioListner.cpp">
+      <Filter>Component\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="CAudioSource.cpp">
+      <Filter>Component\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="CAudioClip.cpp">
+      <Filter>Resource\Audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
