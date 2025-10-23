@@ -15,13 +15,13 @@ void CTitleObjectScript::OnDestroy()
 void CTitleObjectScript::OnUpdate(float tDeltaTime)
 {
 
-	mRadian += tDeltaTime / 3;
+	mRadian += tDeltaTime;
 
 	mRegularVelocity = SVector2D(mSwing * cosf(mRadian), 0.0f);
 
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 
-	tr->SetVelocity(mRegularVelocity.Normalize() * 20.0f);
+	tr->SetVelocity(mRegularVelocity * 30.0f);
 }
 
 void CTitleObjectScript::OnLateUpdate(float tDeltaTime)

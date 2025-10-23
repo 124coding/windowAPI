@@ -1,12 +1,12 @@
 #pragma once
 
-#include "CUIBase.h"
+#include "CUIButton.h"
 
-class CUIHUD : public CUIBase
+class CUIStartButton : public CUIButton
 {
 public:
-	CUIHUD() : CUIBase(eUIType::HPBar) {}
-	virtual ~CUIHUD() {}
+	CUIStartButton() {}
+	virtual ~CUIStartButton() {}
 
 	virtual void OnCreate() override;
 	virtual void Active() override;
@@ -17,5 +17,5 @@ public:
 	virtual void Render(HDC tHDC) override;
 	virtual void UIClear() override;
 
-private:
+	virtual void ButtonClick() override;
 };

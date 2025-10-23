@@ -47,14 +47,14 @@ void CSpriteRenderer::Render(HDC tHDC)
 			func.AlphaFormat = AC_SRC_ALPHA;
 
 			func.SourceConstantAlpha = 255;
-			AlphaBlend(tHDC, pos.mX - ((int)(mTexture->GetWidth() * GetOwner()->GetSize().mX * scale.mX) / 2) + GetOwner()->GetAnchorPoint().mX, pos.mY - ((int)(mTexture->GetHeight() * GetOwner()->GetSize().mY * scale.mY)) + GetOwner()->GetAnchorPoint().mY,
+			AlphaBlend(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX, pos.mY - GetOwner()->GetAnchorPoint().mY,
 				mTexture->GetWidth() * GetOwner()->GetSize().mX * scale.mX, mTexture->GetHeight() * GetOwner()->GetSize().mY * scale.mY,
 				mTexture->GetDCMem(),
 				0, 0,
 				mTexture->GetWidth(), mTexture->GetHeight(), func);
 		}
 		else {
-			TransparentBlt(tHDC, pos.mX - ((int)(mTexture->GetWidth() * GetOwner()->GetSize().mX * scale.mX) / 2) + GetOwner()->GetAnchorPoint().mX, pos.mY - ((int)(mTexture->GetHeight() * GetOwner()->GetSize().mY * scale.mY)) + GetOwner()->GetAnchorPoint().mY,
+			TransparentBlt(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX, pos.mY - GetOwner()->GetAnchorPoint().mY,
 				mTexture->GetWidth() * GetOwner()->GetSize().mX * scale.mX, mTexture->GetHeight() * GetOwner()->GetSize().mY * scale.mY,
 				mTexture->GetDCMem(),
 				0, 0,
@@ -74,10 +74,8 @@ void CSpriteRenderer::Render(HDC tHDC)
 		graphics.RotateTransform(rot);
 		graphics.TranslateTransform(-pos.mX, -pos.mY);
 
-		int a = pos.mX - ((int)(mTexture->GetWidth() * GetOwner()->GetSize().mX * scale.mX) / 2) + GetOwner()->GetAnchorPoint().mX;
-		int b = pos.mY - ((int)(mTexture->GetHeight() * GetOwner()->GetSize().mY * scale.mY)) + GetOwner()->GetAnchorPoint().mY;
 		graphics.DrawImage(mTexture->GetImage(), Gdiplus::Rect(
-			pos.mX - ((int)(mTexture->GetWidth() * GetOwner()->GetSize().mX * scale.mX) / 2) + GetOwner()->GetAnchorPoint().mX, pos.mY - ((int)(mTexture->GetHeight() * GetOwner()->GetSize().mY * scale.mY)) + GetOwner()->GetAnchorPoint().mY,
+			pos.mX - GetOwner()->GetAnchorPoint().mX, pos.mY - GetOwner()->GetAnchorPoint().mY,
 			mTexture->GetWidth() * GetOwner()->GetSize().mX * scale.mX, mTexture->GetHeight() * GetOwner()->GetSize().mY * scale.mY),
 			0, 0,
 			mTexture->GetWidth(), mTexture->GetHeight(),

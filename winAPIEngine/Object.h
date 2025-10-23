@@ -48,7 +48,7 @@ static void DontDestroyOnLoad(GameObject* tObj) {
 	CScene* activeScene = CSceneMgr::GetActiveScene();
 	activeScene->EraseGameObject(tObj);
 
-	CScene* dontDestroyOnLoad = CSceneMgr::GetDontDestroyOnLoad();
+	CScene* dontDestroyOnLoad = CSceneMgr::GetDontDestroyOnLoadScene();
 	dontDestroyOnLoad->AddGameObject(tObj, tObj->GetLayerType());
 
 }

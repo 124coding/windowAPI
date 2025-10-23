@@ -15,6 +15,7 @@
 #include "CTitleScene.h"
 #include "CEndingScene.h"
 #include "CToolScene.h"
+#include "CSettingScene.h"
 
 #include "SVector2D.h"
 #include "time.h"
@@ -23,12 +24,13 @@ void GameEngine::OnCreate() {
 	int a = 0;
 	srand((unsigned int)(&a));
 
+	LoadResources();
+
 	CFMOD::OnCreate();
 	CCollisionMgr::OnCreate(this);
 	CUIMgr::OnCreate(this);
 	CSceneMgr::OnCreate(this);
 
-	LoadResources();
 	LoadScenes();
 
 	CInputMgr::GetInst()->AddKeyInfo("DoMoveLt", 'A');
@@ -69,16 +71,18 @@ void GameEngine::OnLateUpdate(float tDeltaTime) {
 void GameEngine::Render() {
 	this->Clear(0.5f, 0.5f, 0.5f);
 	CCollisionMgr::Render(mBackBuffer->GetDCMem());
-	CUIMgr::Render(mBackBuffer->GetDCMem());
 	CSceneMgr::Render(mBackBuffer->GetDCMem());
+	CUIMgr::Render(mBackBuffer->GetDCMem());
+
 	this->Present();
 }
 
 void GameEngine::LoadScenes()
 {
-	// CSceneMgr::CreateScene<CTitleScene>(this, L"TitleScene");
+	CSceneMgr::CreateScene<CTitleScene>(this, L"TitleScene");
+	// CSceneMgr::CreateScene<CSettingScene>(this, L"SettingScene");
 	CSceneMgr::CreateScene<CPlayScene>(this, L"PlayScene");
-	// CSceneMgr::CreateScene<CEndingScene>(this, L"EndingScene");
+	CSceneMgr::CreateScene<CEndingScene>(this, L"EndingScene");
 	CSceneMgr::CreateScene<CToolScene>(this, L"ToolScene");
 	
 
@@ -102,7 +106,8 @@ void GameEngine::LoadResources()
 	CResourceMgr::Load<CTexture>(this, L"Cat", L"../resources/Sprites/ChickenAlpha.bmp");
 	CResourceMgr::Load<CTexture>(this, L"Player", L"../resources/Sprites/Player.bmp");
 
-	CResourceMgr::Load<CTexture>(this, L"HPBar", L"../resources/Sprites/HPBar.bmp"); // 자원 없음
+	CResourceMgr::Load<CTexture>(this, L"StartOutMouse", L"../resources/ButtonImg/StartButtonOutMouse.png"); 
+	CResourceMgr::Load<CTexture>(this, L"StartInMouse", L"../resources/ButtonImg/StartButtonInMouse.png"); 
 
 	CResourceMgr::Load<CTexture>(this, L"SpringFloor", L"../resources/SpringFloor.bmp");
 

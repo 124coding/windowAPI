@@ -42,6 +42,8 @@ enum class eColliderType {
 
 enum class eUIType {
 	HPBar,
+	EXPBar,
+	StartButton,
 	Button,
 	End
 };

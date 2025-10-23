@@ -24,10 +24,14 @@ public:
 	static void Push(eUIType tType);
 	static void Pop(eUIType tType);
 
+	static CUIBase* FindUI(eUIType tType) {
+		return mUIs.find(tType)->second;
+	}
+
 private:
 	static std::unordered_map<eUIType, CUIBase*> mUIs;
 	static std::stack<CUIBase*> mUIBases;
-	static std::queue<eUIType> mRequestUIQueue;
+	static std::queue<eUIType> mRequestUIQueue; // std::pair·Î º¯°æ
 	static CUIBase* mActiveUI;
 };
 

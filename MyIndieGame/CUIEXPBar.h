@@ -1,12 +1,14 @@
 #pragma once
 
-#include "CUIBase.h"
+#include "CUIHUD.h"
 
-class CUIHUD : public CUIBase
+class CPlayer;
+
+class CUIEXPBar : public CUIHUD
 {
 public:
-	CUIHUD() : CUIBase(eUIType::HPBar) {}
-	virtual ~CUIHUD() {}
+	CUIEXPBar() {}
+	virtual ~CUIEXPBar() {}
 
 	virtual void OnCreate() override;
 	virtual void Active() override;
@@ -17,5 +19,10 @@ public:
 	virtual void Render(HDC tHDC) override;
 	virtual void UIClear() override;
 
+	void SetPlayer(CPlayer* tPlayer) {
+		this->mPlayer = tPlayer;
+	}
+
 private:
+	CPlayer* mPlayer;
 };

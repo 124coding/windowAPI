@@ -152,10 +152,14 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CPlayScene.cpp" />
+    <ClCompile Include="CSettingScene.cpp" />
     <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTitleObjectScript.cpp" />
     <ClCompile Include="CTitleScene.cpp" />
     <ClCompile Include="CToolScene.cpp" />
+    <ClCompile Include="CUIEXPBar.cpp" />
+    <ClCompile Include="CUIHPBar.cpp" />
+    <ClCompile Include="CUIStartButton.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -170,10 +174,14 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CPlayScene.h" />
+    <ClInclude Include="CSettingScene.h" />
     <ClInclude Include="CTile.h" />
     <ClInclude Include="CTitleObjectScript.h" />
     <ClInclude Include="CTitleScene.h" />
     <ClInclude Include="CToolScene.h" />
+    <ClInclude Include="CUIEXPBar.h" />
+    <ClInclude Include="CUIHPBar.h" />
+    <ClInclude Include="CUIStartButton.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="Enums.h" />
   </ItemGroup>

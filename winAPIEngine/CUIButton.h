@@ -2,6 +2,9 @@
 
 #include "CUIBase.h"
 
+#include "CTexture.h"
+#include "CResourceMgr.h"
+
 class CUIButton : public CUIBase
 {
 public:
@@ -19,7 +22,18 @@ public:
 
 	virtual void ButtonClick();
 
+	virtual void SetMouseOutTexture(const std::wstring& tKey) {
+		this->mMouseOutTexture = CResourceMgr::Find<CTexture>(tKey);
+	}
+	
+	virtual void SetMouseInTexture(const std::wstring& tKey) {
+		this->mMouseInTexture = CResourceMgr::Find<CTexture>(tKey);
+	}
+	//
+	//virtual void SetClickEvent(std::function<void()> tFunc);
+
 private:
-	CTexture* mTexture;
+	CTexture* mMouseOutTexture;
+	CTexture* mMouseInTexture;
 	SEvent mOnClick;
 };

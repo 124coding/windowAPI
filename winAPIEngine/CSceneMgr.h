@@ -38,8 +38,12 @@ public:
 		return mActiveScene;
 	}
 
-	static CScene* GetDontDestroyOnLoad() { 
+	static CScene* GetDontDestroyOnLoadScene() { 
 		return mDontDestroyOnLoadScene; 
+	}
+
+	static void SetDontDestroyOnLoad(bool tDontDestroyOnLoad) {
+		mDontDestroyOnLoad = tDontDestroyOnLoad;
 	}
 
 	static std::vector<GameObject*> GetGameObjects(eLayerType tLayer);
@@ -56,4 +60,6 @@ private:
 	static std::map<std::wstring, CScene*> mScenes;
 	static CScene* mActiveScene;
 	static CScene* mDontDestroyOnLoadScene;
+
+	static bool mDontDestroyOnLoad;
 };

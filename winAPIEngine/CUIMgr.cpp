@@ -1,6 +1,12 @@
 #include "CUIMgr.h"
 
+#include "CSceneMgr.h"
+
 #include "CUIButton.h"
+#include "CUIStartButton.h"
+#include "CUIHUD.h"
+#include "CUIHPBar.h"
+#include "CUIEXPBar.h"
 
 #include "winMacro.h"
 
@@ -10,8 +16,14 @@ std::queue<eUIType> CUIMgr::mRequestUIQueue = {};
 CUIBase* CUIMgr::mActiveUI = nullptr;
 
 void CUIMgr::OnCreate(CAPIEngine* tEngine) {
-	CUIButton* button = new CUIButton();
-	mUIs.insert(std::make_pair(eUIType::Button, button));
+	CUIStartButton* button = new CUIStartButton();
+	mUIs.insert(std::make_pair(eUIType::StartButton, button));
+
+	CUIHPBar* HPBar = new CUIHPBar();
+	mUIs.insert(std::make_pair(eUIType::HPBar, HPBar));
+
+	CUIEXPBar* EXPBar = new CUIEXPBar();
+	mUIs.insert(std::make_pair(eUIType::EXPBar, EXPBar));
 }
 
 void CUIMgr::OnLoad(eUIType tType, float tDeltaTime) {

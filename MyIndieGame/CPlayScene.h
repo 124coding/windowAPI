@@ -18,6 +18,10 @@ public:
 	void OnEnter() override;
 	void OnExit() override;
 
+	CPlayer* GetPlayer() {
+		return this->mPlayer;
+	}
+
 public:
 	void LoadMap(CAPIEngine* tEngine, const wchar_t* tPath);
 

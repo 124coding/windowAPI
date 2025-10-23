@@ -23,6 +23,9 @@
 #include "CAudioListner.h"
 #include "CAudioSource.h"
 
+#include "CUIHPBar.h"
+#include "CUIEXPBar.h"
+
 #include "CRenderer.h"
 #include "Enums.h"
 #include "Object.h"
@@ -34,21 +37,21 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 	LoadMap(tEngine, L"..\\resources\\Maps\\Here");
 
-	/*GameObject* camera = Instantiate<GameObject>(tEngine, eLayerType::None, SVector2D(336.0f, 423.0f));
+	GameObject* camera = Instantiate<GameObject>(tEngine, eLayerType::None);
 	CCamera* cameraComp = camera->AddComponent<CCamera>();
 
-	mainCamera = cameraComp;*/
+	mainCamera = cameraComp;
 
-	mPlayer = Instantiate<CPlayer>(tEngine, eLayerType::Player, SVector2D(100.0f, 100.0f));
+	mPlayer = Instantiate<CPlayer>(tEngine, eLayerType::Player, SVector2D(windowWidth / 2, windowHeight / 2));
 	DontDestroyOnLoad(mPlayer);
 
-	mPlayer->AddComponent<CRigidbody>();
+	// mPlayer->AddComponent<CRigidbody>();
 	mPlayer->AddComponent<CAudioListner>();
 
 	CBoxCollider2D* bPlCollider = mPlayer->AddComponent<CBoxCollider2D>();
 	bPlCollider->SetOffset(SVector2D(-50.0f, -50.0f));
 
-	// cameraComp->SetTarget(mPlayer);
+	cameraComp->SetTarget(mPlayer);
 
 	CTexture* plImg = CResourceMgr::Find<CTexture>(L"Player");
 
@@ -129,15 +132,20 @@ void CPlayScene::OnEnter()
 {
 	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Animal, true);
 	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Particle, true);
-	CUIMgr::Push(eUIType::Button);
+	CUIMgr::Push(eUIType::HPBar);
+	dynamic_cast<CUIHPBar*>(CUIMgr::FindUI(eUIType::HPBar))->SetPlayer(mPlayer);
+	CUIMgr::Push(eUIType::EXPBar);
+	dynamic_cast<CUIEXPBar*>(CUIMgr::FindUI(eUIType::EXPBar))->SetPlayer(mPlayer);
 	CScene::OnEnter();
+	CSceneMgr::SetDontDestroyOnLoad(true);
 }
 
 void CPlayScene::OnExit()
 {
 	CScene::OnExit();
 
-	CUIMgr::Pop(eUIType::Button);
+	CUIMgr::Pop(eUIType::HPBar);
+	CUIMgr::Pop(eUIType::EXPBar);
 }
 
 void CPlayScene::LoadMap(CAPIEngine* tEngine, const wchar_t* tPath)

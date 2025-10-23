@@ -6,6 +6,7 @@
 std::map< std::wstring, CScene*> CSceneMgr::mScenes = {};
 CScene* CSceneMgr::mActiveScene = nullptr;
 CScene* CSceneMgr::mDontDestroyOnLoadScene = nullptr;
+bool CSceneMgr::mDontDestroyOnLoad = false;
 
 std::vector<GameObject*> CSceneMgr::GetGameObjects(eLayerType tLayer)
 {
@@ -33,19 +34,25 @@ void CSceneMgr::OnDestroy()
 void CSceneMgr::OnUpdate(float tDeltaTime)
 {
 	mActiveScene->OnUpdate(tDeltaTime);
-	mDontDestroyOnLoadScene->OnUpdate(tDeltaTime);
+	if (mDontDestroyOnLoad) {
+		mDontDestroyOnLoadScene->OnUpdate(tDeltaTime);
+	}
 }
 
 void CSceneMgr::OnLateUpdate(float tDeltaTime)
 {
 	mActiveScene->OnLateUpdate(tDeltaTime);
-	mDontDestroyOnLoadScene->OnLateUpdate(tDeltaTime);
+	if (mDontDestroyOnLoad) {
+		mDontDestroyOnLoadScene->OnLateUpdate(tDeltaTime);
+	}
 }
 
 void CSceneMgr::Render(HDC tHDC)
 {
 	mActiveScene->Render(tHDC);
-	mDontDestroyOnLoadScene->Render(tHDC);
+	if (mDontDestroyOnLoad) {
+		mDontDestroyOnLoadScene->Render(tHDC);
+	}
 }
 
 void CSceneMgr::RemoveDeadObjects()

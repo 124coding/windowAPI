@@ -2,6 +2,7 @@
 
 #include "CInputMgr.h"
 #include "CSceneMgr.h"
+#include "CUIMgr.h"
 
 #include "CPlayScene.h"
 
@@ -27,9 +28,10 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 	aspectRatioY = (float)windowHeight / 1080;
 
 	tlMapTr->SetScale(SVector2D(aspectRatioX, aspectRatioY));
+	tlMapTr->SetPos(SVector2D((float)(windowWidth) / 2, (float)windowHeight));
 
 	CSpriteRenderer* tlMapSr = titleMap->GetComponent<CSpriteRenderer>();
-	titleMap->SetAnchorPoint(SVector2D(windowWidth / 2, windowHeight));
+	titleMap->SetAnchorPoint(titleMapImg, tlMapTr->GetScale(), titleMap->GetSize());
 	tlMapSr->SetTexture(titleMapImg);
 
 
@@ -40,6 +42,7 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 
 	CTransform* tlMob1Tr = titleMob1->GetComponent<CTransform>();
 	tlMob1Tr->SetScale(SVector2D(aspectRatioX, aspectRatioY));
+	tlMob1Tr->SetPos(SVector2D((float)(windowWidth) / 2, (float)windowHeight));
 
 	titleMob1->AddComponent<CTitleObjectScript>();
 
@@ -47,7 +50,7 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 	titleMob1Script->SetSwing(1.0f);
 
 	CSpriteRenderer* tlMob1Sr = titleMob1->GetComponent<CSpriteRenderer>();
-	titleMob1->SetAnchorPoint(SVector2D(windowWidth / 2, windowHeight));
+	titleMob1->SetAnchorPoint(titleMob1Img, tlMob1Tr->GetScale(), titleMob1->GetSize());
 	tlMob1Sr->SetTexture(titleMob1Img);
 
 
@@ -58,9 +61,11 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 
 	CTransform* tlMob3Tr = titleMob3->GetComponent<CTransform>();
 	tlMob3Tr->SetScale(SVector2D(aspectRatioX, aspectRatioY));
+	tlMob3Tr->SetPos(SVector2D((float)(windowWidth) / 2, (float)windowHeight));
+
 
 	CSpriteRenderer* tlMob3Sr = titleMob3->GetComponent<CSpriteRenderer>();
-	titleMob3->SetAnchorPoint(SVector2D(windowWidth / 2, windowHeight));
+	titleMob3->SetAnchorPoint(titleMob3Img, tlMob3Tr->GetScale(), titleMob3->GetSize());
 	tlMob3Sr->SetTexture(titleMob3Img);
 
 
@@ -71,6 +76,7 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 
 	CTransform* tlMob2Tr = titleMob2->GetComponent<CTransform>();
 	tlMob2Tr->SetScale(SVector2D(aspectRatioX, aspectRatioY));
+	tlMob2Tr->SetPos(SVector2D((float)(windowWidth) / 2, (float)windowHeight));
 
 	titleMob2->AddComponent<CTitleObjectScript>();
 
@@ -78,7 +84,7 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 	titleMob2Script->SetSwing(-1.0f);
 
 	CSpriteRenderer* tlMob2Sr = titleMob2->GetComponent<CSpriteRenderer>();
-	titleMob2->SetAnchorPoint(SVector2D(windowWidth / 2, windowHeight));
+	titleMob2->SetAnchorPoint(titleMob2Img, tlMob2Tr->GetScale(), titleMob2->GetSize());
 	tlMob2Sr->SetTexture(titleMob2Img);
 
 
@@ -97,7 +103,7 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 
 	CSpriteRenderer* titleBrotatoSr = titleBrotato->GetComponent<CSpriteRenderer>();
 	titleBrotato->SetSize(SVector2D(0.3f, 0.3f));
-	titleBrotato->SetAnchorPoint(SVector2D((aspectRatioX * 0.3f) / 2, aspectRatioY * 0.3f));
+	titleBrotato->SetAnchorPoint(titleBrotatoImg, titleBrotatoTr->GetScale(), titleBrotato->GetSize());
 	titleBrotatoSr->SetTexture(titleBrotatoImg);
 	
 
@@ -112,12 +118,14 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 	aspectRatioY = (float)windowHeight / titleLogoImg->GetHeight();
 
 	titleLogoTr->SetScale(SVector2D(aspectRatioX, aspectRatioY));
-	titleLogoTr->SetPos(SVector2D(windowWidth / 2, 3 * windowHeight / 7));
+	titleLogoTr->SetPos(SVector2D(windowWidth / 2, 2 * windowHeight / 5));
 
 	CSpriteRenderer* titleLogoSr = titleLogo->GetComponent<CSpriteRenderer>();
 	titleLogo->SetSize(SVector2D(0.5f, 0.3f));
-	titleLogo->SetAnchorPoint(SVector2D((aspectRatioX * 0.5f) / 2, aspectRatioY * 0.3f));
+	titleLogo->SetAnchorPoint(titleLogoImg, titleLogoTr->GetScale(), titleLogo->GetSize());
 	titleLogoSr->SetTexture(titleLogoImg);
+
+	// 최종적 : x = (titleLogoImg->GetWidth() * titleLogoTr->GetScale().mX * titleLogo->GetSize().mX), y 도 동일
 
 
 	GameObject* titleLight = Instantiate<GameObject>(tEngine, eLayerType::BackGround);
@@ -127,9 +135,10 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 
 	CTransform* tlLightTr = titleLight->GetComponent<CTransform>();
 	tlLightTr->SetScale(SVector2D((float)(windowWidth) / 1920, (float)windowHeight / 1080));
+	tlLightTr->SetPos(SVector2D((float)(windowWidth) / 2, (float)windowHeight));
 
 	CSpriteRenderer* tlLightSr = titleLight->GetComponent<CSpriteRenderer>();
-	titleLight->SetAnchorPoint(SVector2D(windowWidth / 2, windowHeight));
+	titleLight->SetAnchorPoint(titleLightImg, tlLightTr->GetScale(), titleLight->GetSize());
 	tlLightSr->SetTexture(titleLightImg);
 }
 
@@ -156,9 +165,13 @@ void CTitleScene::Render(HDC tHDC)
 void CTitleScene::OnEnter()
 {
 	CScene::OnEnter();
+	CSceneMgr::SetDontDestroyOnLoad(false);
+	CUIMgr::Push(eUIType::Button);
 }
 
 void CTitleScene::OnExit()
 {
+	CUIMgr::Pop(eUIType::Button);
 	CScene::OnExit();
+	CSceneMgr::SetDontDestroyOnLoad(true);
 }
