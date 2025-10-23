@@ -12,10 +12,7 @@ class CPlayerScript : public CScript
 public:
 	enum class eState {
 		Idle,
-		Walk,
-		GiveWater,
-		Sleep,
-		Attack
+		Walk
 	};
 
 	CPlayerScript() : CScript(), mState(eState::Idle), mAnimator(nullptr) {}
@@ -35,7 +32,7 @@ private:
 	void Idle();
 	void Move();
 	void Translate(CTransform* tr);
-	void GiveWater();
+	// void GiveWater();
 
 private:
 	eState mState;

@@ -48,7 +48,9 @@ void CUIEXPBar::Render(HDC tHDC)
     thBrush = CreateSolidBrush(RGB(0, 255, 0));
     thOldBrush = (HBRUSH)SelectObject(tHDC, thBrush);
 
-    Rectangle(tHDC, 23, 70, 23 + 295 /* * (mPlayer->GetHP() / mPlayer->GetMaxHP())*/, 110); // 여기 각 경험치에 맞게 바꿔야 함
+    int right = (int)(295 /* (*(float)mPlayer->GetHP() / mPlayer->GetMaxHP())*/) + 23; // 여기 각 경험치에 맞게 바꿔야 함
+
+    Rectangle(tHDC, 23, 70, right, 110); 
 
     SelectObject(tHDC, thPen);
     DeleteObject(thPen);

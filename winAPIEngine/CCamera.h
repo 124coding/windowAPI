@@ -15,8 +15,8 @@ public:
 		: CComponent(eComponentType::Camera), 
 		mDistance(SVector2D(0.0f, 0.0f)),
 		mResolution(SVector2D(windowWidth, windowHeight)),
-			mLookPosition(SVector2D(0.0f, 0.0f)),
-				mTarget(nullptr) {
+		mLookPosition(SVector2D(0.0f, 0.0f)),
+		mTarget(nullptr) {
 	}
 	~CCamera() {}
 

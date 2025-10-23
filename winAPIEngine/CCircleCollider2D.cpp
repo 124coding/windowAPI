@@ -1,6 +1,9 @@
 #include "CCircleCollider2D.h"
-#include "CTransform.h"
+
 #include "GameObject.h"
+
+#include "CRenderer.h"
+#include "CTransform.h"
 
 void CCircleCollider2D::OnCreate()
 {
@@ -22,6 +25,8 @@ void CCircleCollider2D::Render(HDC tHDC)
 {
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 	SVector2D pos = tr->GetPos();
+
+	pos = mainCamera->CaluatePosition(pos);
 
 	HBRUSH transparentBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
 	HBRUSH oldBrush = (HBRUSH)SelectObject(tHDC, transparentBrush);

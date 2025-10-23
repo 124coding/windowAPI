@@ -18,7 +18,7 @@ enum class eLayerType {
 	None,
 	BackGround,
 	Tile,
-	Animal,
+	Enemy,
 	Player,
 	Particle,
 	MAX = 16

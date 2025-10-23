@@ -1,11 +1,11 @@
 #include "CPlayerScript.h"
 
 #include "GameObject.h"
+#include "CPlayer.h"
 
 #include "CTransform.h"
 #include "CAnimator.h"
 #include "CCollider.h"
-#include "CRigidbody.h"
 
 void CPlayerScript::OnCreate()
 {
@@ -28,13 +28,6 @@ void CPlayerScript::OnUpdate(float tDeltaTime)
 		break;
 	case eState::Walk:
 		Move();
-		break;
-	case eState::GiveWater:
-		GiveWater();
-		break;
-	case eState::Sleep:
-		break;
-	case eState::Attack:
 		break;
 	default:
 		break;
@@ -71,13 +64,6 @@ void CPlayerScript::Idle()
 		mState = eState::Walk;
 		mAnimator->PlayAnimation(L"UpWalk");
 	}
-
-	if (mInputMgr->GetKeyDown("MouseLeftClick")) {
-		SVector2D mousePos = CInputMgr::GetMousePosition();
-
-		mState = eState::GiveWater;
-		mAnimator->PlayAnimation(L"FrontGiveWater", false);
-	}
 }
 
 void CPlayerScript::Move()
@@ -97,38 +83,38 @@ void CPlayerScript::Move()
 
 void CPlayerScript::Translate(CTransform* tr)
 {
-	CRigidbody* rb = GetOwner()->GetComponent<CRigidbody>();
+	SVector2D currentVelocity = SVector2D();
 
 	if (mInputMgr->GetKeyPressed("DoMoveLt")) {
-		rb->AddForce(SVector2D(-50.0f, 0.0f));
+		currentVelocity.mX += -1.0f;
 	}
 
 	if (mInputMgr->GetKeyPressed("DoMoveRt")) {
-		rb->AddForce(SVector2D(50.0f, 0.0f));
+		currentVelocity.mX += 1.0f;
 	}
 
 	if (mInputMgr->GetKeyPressed("DoMoveFt")) {
-		// rb->AddForce(SVector2D(0.0f, -50.0f));
-
-		SVector2D velocity = tr->GetVelocity();
-		velocity.mY = -500.0f;
-		tr->SetVelocity(velocity);
-		rb->SetGround(false);
-
+		currentVelocity.mY += -1.0f;
 	}
 
 	if (mInputMgr->GetKeyPressed("DoMoveBt")) {
-		rb->AddForce(SVector2D(0.0f, 50.0f));
+		currentVelocity.mY += 1.0f;
 	}
+
+	if (currentVelocity.Length() > 0.0f) {
+		currentVelocity = currentVelocity.Normalize();
+	}
+
+	tr->SetVelocity(currentVelocity * dynamic_cast<CPlayer*>(GetOwner())->GetSpeed());
 }
 
-void CPlayerScript::GiveWater()
-{
-	if (mAnimator->IsCompleteAnimation()) {
-		mState = eState::Idle;
-		mAnimator->PlayAnimation(L"Idle", false);
-	}
-}
+//void CPlayerScript::GiveWater()
+//{
+//	if (mAnimator->IsCompleteAnimation()) {
+//		mState = eState::Idle;
+//		mAnimator->PlayAnimation(L"Idle", false);
+//	}
+//}
 
 void CPlayerScript::OnCollisionEnter(CCollider* tOther) {
 

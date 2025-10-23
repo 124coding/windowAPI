@@ -142,10 +142,14 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CBabyAlien.cpp" />
+    <ClCompile Include="CBabyAlienScript.cpp" />
     <ClCompile Include="CCameraScript.cpp" />
     <ClCompile Include="CCatScript.cpp" />
     <ClCompile Include="CCat.cpp" />
     <ClCompile Include="CEndingScene.cpp" />
+    <ClCompile Include="CEnemy.cpp" />
+    <ClCompile Include="CEnemyScript.cpp" />
     <ClCompile Include="CFloor.cpp" />
     <ClCompile Include="CFloorScript.cpp" />
     <ClCompile Include="CFMOD.cpp" />
@@ -164,10 +168,14 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CBabyAlien.h" />
+    <ClInclude Include="CBabyAlienScript.h" />
     <ClInclude Include="CCameraScript.h" />
     <ClInclude Include="CCatScript.h" />
     <ClInclude Include="CCat.h" />
     <ClInclude Include="CEndingScene.h" />
+    <ClInclude Include="CEnemy.h" />
+    <ClInclude Include="CEnemyScript.h" />
     <ClInclude Include="CFloor.h" />
     <ClInclude Include="CFloorScript.h" />
     <ClInclude Include="CFMOD.h" />

@@ -2,6 +2,7 @@
 #include "CTitleScene.h"
 
 #include "CPlayer.h"
+#include "CBabyAlien.h"
 #include "CCat.h"
 #include "CTile.h"
 #include "CFloor.h"
@@ -23,6 +24,8 @@
 #include "CAudioListner.h"
 #include "CAudioSource.h"
 
+#include "CBabyAlienScript.h"
+
 #include "CUIHPBar.h"
 #include "CUIEXPBar.h"
 
@@ -43,7 +46,7 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	mainCamera = cameraComp;
 
 	mPlayer = Instantiate<CPlayer>(tEngine, eLayerType::Player, SVector2D(windowWidth / 2, windowHeight / 2));
-	DontDestroyOnLoad(mPlayer);
+	// DontDestroyOnLoad(mPlayer);
 
 	// mPlayer->AddComponent<CRigidbody>();
 	mPlayer->AddComponent<CAudioListner>();
@@ -65,7 +68,10 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 	mPlayer->GetComponent<CTransform>()->SetScale(SVector2D(1.0f, 1.0f));
 
-	CCat* Cat = Instantiate<CCat>(tEngine, eLayerType::Animal, SVector2D(300.0f, 300.0f));
+	CCat* Cat = Instantiate<CCat>(tEngine, eLayerType::Enemy, SVector2D(300.0f, 300.0f));
+	CBabyAlienScript* CatScript = Cat->AddComponent<CBabyAlienScript>();
+	CatScript->SetTarget(mPlayer);
+	
 	CBoxCollider2D* bCatCollider = Cat->AddComponent<CBoxCollider2D>();
 	bCatCollider->SetOffset(SVector2D(-50.0f, -50.0f));
 
@@ -130,7 +136,7 @@ void CPlayScene::Render(HDC tHDC)
 
 void CPlayScene::OnEnter()
 {
-	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Animal, true);
+	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Enemy, true);
 	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Particle, true);
 	CUIMgr::Push(eUIType::HPBar);
 	dynamic_cast<CUIHPBar*>(CUIMgr::FindUI(eUIType::HPBar))->SetPlayer(mPlayer);

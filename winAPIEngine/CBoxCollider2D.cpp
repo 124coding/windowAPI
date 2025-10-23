@@ -1,6 +1,10 @@
 #include "CBoxCollider2D.h"
-#include "CTransform.h"
+
 #include "GameObject.h"
+
+#include "CRenderer.h"
+
+#include "CTransform.h"
 
 void CBoxCollider2D::OnCreate()
 {
@@ -22,6 +26,7 @@ void CBoxCollider2D::Render(HDC tHDC)
 {
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 	SVector2D pos = tr->GetPos();
+	pos = mainCamera->CaluatePosition(pos);
 
 	HBRUSH transparentBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
 	HBRUSH oldBrush = (HBRUSH)SelectObject(tHDC, transparentBrush);

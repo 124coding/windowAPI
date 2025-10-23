@@ -37,6 +37,30 @@
     <Filter Include="UI\HUD">
       <UniqueIdentifier>{685132f6-9153-4c38-83f0-31ed5c738e01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\Enemy">
+      <UniqueIdentifier>{4fd8d6cf-6fb9-4f5b-a75f-fbad92016325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Enemy">
+      <UniqueIdentifier>{ed6b24f6-3f9f-41a3-a865-b998fa8d929c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Camera">
+      <UniqueIdentifier>{ceaa94cc-0ca2-4134-8a9a-a4d81bf0ef1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\TitleObject">
+      <UniqueIdentifier>{7ce7c726-6fcc-44ae-b318-9524abfaf556}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Player">
+      <UniqueIdentifier>{9a4a6d5d-3160-49c3-a382-26aaf9f63b8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Player">
+      <UniqueIdentifier>{38cc8927-4715-4cca-bbc7-13ddf00c4e6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Enemy\BabyAlien">
+      <UniqueIdentifier>{9228c27f-1ab7-46e7-931c-dac2782490db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Enemy\BabyAlien">
+      <UniqueIdentifier>{7b72d28e-168f-4992-a79b-abe585eea0b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -51,12 +75,6 @@
     <ClCompile Include="CEndingScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="CPlayerScript.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="CPlayer.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
     <ClCompile Include="CPlayScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
@@ -66,17 +84,11 @@
     <ClCompile Include="CCatScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="CTitleObjectScript.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="CToolScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="CTile.cpp">
       <Filter>Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="CCameraScript.cpp">
-      <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CFloor.cpp">
       <Filter>Objects</Filter>
@@ -99,6 +111,30 @@
     <ClCompile Include="CUIEXPBar.cpp">
       <Filter>UI\HUD</Filter>
     </ClCompile>
+    <ClCompile Include="CEnemy.cpp">
+      <Filter>Objects\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyScript.cpp">
+      <Filter>Scripts\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraScript.cpp">
+      <Filter>Scripts\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CTitleObjectScript.cpp">
+      <Filter>Scripts\TitleObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerScript.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayer.cpp">
+      <Filter>Objects\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CBabyAlien.cpp">
+      <Filter>Objects\Enemy\BabyAlien</Filter>
+    </ClCompile>
+    <ClCompile Include="CBabyAlienScript.cpp">
+      <Filter>Scripts\Enemy\BabyAlien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -116,19 +152,10 @@
     <ClInclude Include="Enums.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CPlayerScript.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="CPlayer.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="CCat.h">
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="CCatScript.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="CTitleObjectScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="CToolScene.h">
@@ -136,9 +163,6 @@
     </ClInclude>
     <ClInclude Include="CTile.h">
       <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="CCameraScript.h">
-      <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="CFloor.h">
       <Filter>Objects</Filter>
@@ -160,6 +184,30 @@
     </ClInclude>
     <ClInclude Include="CUIEXPBar.h">
       <Filter>UI\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemy.h">
+      <Filter>Objects\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyScript.h">
+      <Filter>Scripts\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CCameraScript.h">
+      <Filter>Scripts\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CTitleObjectScript.h">
+      <Filter>Scripts\TitleObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayer.h">
+      <Filter>Objects\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CBabyAlien.h">
+      <Filter>Objects\Enemy\BabyAlien</Filter>
+    </ClInclude>
+    <ClInclude Include="CBabyAlienScript.h">
+      <Filter>Scripts\Enemy\BabyAlien</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

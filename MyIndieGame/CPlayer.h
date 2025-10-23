@@ -7,11 +7,12 @@ class CPlayer :public GameObject
 {
 public:
 	CPlayer() : 
-		mHP(10), 
+		mHP(5), 
 		mMaxHP(10), 
 		mLevel(1), 
 		mExp(0.0f),
-		mMoney(0) {
+		mMoney(0),
+		mSpeed(100.0f) {
 		AddComponent<CPlayerScript>();
 	}
 
@@ -23,6 +24,8 @@ public:
 	void OnLateUpdate(float tDeltaTime) override;
 	void Render(HDC tHDC) override;
 
+// HP
+public:
 	void IncreaseHP(int tIncreaseAmount);
 	void DecreaseHP(int tDecreaseAmount);
 
@@ -46,13 +49,25 @@ public:
 	}
 
 	int GetMaxHP() {
-		return this->mHP;
+		return this->mMaxHP;
 	}
 
+	// Level
 	int GetLevel() {
 		return this->mLevel;
 	}
 
+// Speed
+public:
+	void SetSpeed(float tSpeed) {
+		this->mSpeed = tSpeed;
+	}
+
+	float GetSpeed() {
+		return this->mSpeed;
+	}
+
+public:
 	void SetEyesTexture(CTexture* tTexture) {
 		this->mEyesTexture = tTexture;
 	}
@@ -71,6 +86,10 @@ private:
 	int mLevel;
 	float mExp;
 	int mMoney;
+
+	float mSpeed;
+
+	float mGracePeriod = 1.5f;
 
 	CTexture* mEyesTexture = nullptr;
 	CTexture* mMouthTexture = nullptr;

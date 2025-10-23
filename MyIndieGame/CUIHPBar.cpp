@@ -51,7 +51,9 @@ void CUIHPBar::Render(HDC tHDC)
     thBrush = CreateSolidBrush(RGB(255, 0, 0));
     thOldBrush = (HBRUSH)SelectObject(tHDC, thBrush);
 
-    Rectangle(tHDC, 23, 20, 23 + 295 * (mPlayer->GetHP() / mPlayer->GetMaxHP()), 60);
+    int right = (int)(295 * ((float)mPlayer->GetHP() / mPlayer->GetMaxHP())) + 23;
+
+    Rectangle(tHDC, 23, 20, right, 60);
 
     SelectObject(tHDC, thPen);
     DeleteObject(thPen);

@@ -23,12 +23,6 @@ void CToolScene::OnCreate(CAPIEngine* tEngine)
 
 	mEngine = tEngine;
 
-	GameObject* camera = Instantiate<GameObject>(tEngine, eLayerType::None, SVector2D(800, 400));
-	CCamera* cameraComp = camera->AddComponent<CCamera>();
-	camera->AddComponent<CCameraScript>();
-
-	mainCamera = cameraComp;
-
 	CTile* tile = Instantiate<CTile>(mEngine, eLayerType::Tile, SVector2D());
 	tile->SetSize(SVector2D(2.0f, 2.0f));
 
