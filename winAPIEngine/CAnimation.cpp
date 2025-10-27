@@ -53,7 +53,7 @@ void CAnimation::Render(HDC tHDC) {
             func.SourceConstantAlpha = 255;
 
             AlphaBlend(tHDC,
-                pos.mX - (sprite.size.mX / 2.0f) + sprite.offset.mX, pos.mY - (sprite.size.mY / 2.0f) + sprite.offset.mY,
+                pos.mX - ((sprite.size.mX / 2.0f) + sprite.offset.mX) * scale.mX, pos.mY - (sprite.size.mY + sprite.offset.mY) * scale.mY,
                 sprite.size.mX * scale.mX, sprite.size.mY * scale.mY,
                 imgHDC,
                 sprite.leftTop.mX, sprite.leftTop.mY,
@@ -62,7 +62,7 @@ void CAnimation::Render(HDC tHDC) {
         }
         else {
             TransparentBlt(tHDC,
-                pos.mX - (sprite.size.mX / 2.0f) + sprite.offset.mX, pos.mY - (sprite.size.mY / 2.0f) + sprite.offset.mY,
+                pos.mX - ((sprite.size.mX / 2.0f) + sprite.offset.mX) * scale.mX, pos.mY - (sprite.size.mY + sprite.offset.mY) * scale.mY,
                 sprite.size.mX * scale.mX, sprite.size.mY * scale.mY,
                 imgHDC,
                 sprite.leftTop.mX, sprite.leftTop.mY,
@@ -78,19 +78,20 @@ void CAnimation::Render(HDC tHDC) {
         imgAtt.SetColorKey(Gdiplus::Color(245, 0, 245), Gdiplus::Color(255, 0, 255));
         
         Gdiplus::Graphics graphics(tHDC);
+        Gdiplus::GraphicsState state = graphics.Save();
 
         graphics.TranslateTransform(pos.mX, pos.mY);
+        graphics.ScaleTransform(scale.mX, scale.mY);
         graphics.RotateTransform(rot);
-        graphics.TranslateTransform(-pos.mX, -pos.mY);
+        
+        float originalWidth = sprite.size.mX;
+        float originalHeight = sprite.size.mY;
 
         graphics.DrawImage(mTexture->GetImage(),
-            Gdiplus::Rect(
-                pos.mX - (sprite.size.mX / 2.0f), pos.mY - (sprite.size.mY / 2.0f),
-                sprite.size.mX * scale.mX, sprite.size.mY * scale.mY),
-            sprite.leftTop.mX, sprite.leftTop.mY,
-            sprite.size.mX, sprite.size.mY,
-            Gdiplus::UnitPixel,
-            nullptr /*&imgAtt*/
+            -originalWidth / 2.0f,
+            -originalHeight,      
+            originalWidth,
+            originalHeight
         );
     }
 }

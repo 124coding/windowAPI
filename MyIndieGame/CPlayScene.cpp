@@ -49,11 +49,13 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	mPlayer->AddComponent<CAudioListner>();
 
 	CCircleCollider2D* cPlCollider = mPlayer->AddComponent<CCircleCollider2D>();
-	cPlCollider->SetOffset(SVector2D(-50.0f, -50.0f));
 
 	cameraComp->SetTarget(mPlayer);
 
 	CTexture* plImg = CResourceMgr::Find<CTexture>(L"Player");
+
+	CTransform* plTr = mPlayer->GetComponent<CTransform>();
+	mPlayer->SetAnchorPoint(250.0f, 250.0f, mPlayer->GetSize(), plTr->GetScale());
 
 	CAnimator* plAnim = mPlayer->AddComponent<CAnimator>();
 	plAnim->CreateAnimation(L"Idle", plImg, SVector2D(2000.0f, 250.0f), SVector2D(250.0f, 250.0f), SVector2D(), 1, 0.1f);
@@ -63,21 +65,29 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 	// plAnim->GetCompleteEvent(L"FrontGiveWater");
 
-	mPlayer->GetComponent<CTransform>()->SetScale(SVector2D(1.0f, 1.0f));
-
 	CBabyAlien* Enemy = Instantiate<CBabyAlien>(tEngine, eLayerType::Enemy, SVector2D(300.0f, 300.0f));
+
 	CBabyAlienScript* EnemyScript = Enemy->GetComponent<CBabyAlienScript>();
 	EnemyScript->SetTarget(mPlayer);
 	
 	CCircleCollider2D* cCatCollider = Enemy->AddComponent<CCircleCollider2D>();
-	cCatCollider->SetOffset(SVector2D(-50.0f, -50.0f));
 
-	CTexture* catImg = CResourceMgr::Find<CTexture>(L"Cat");
+	CTexture* babyAlienImg = CResourceMgr::Find<CTexture>(L"BabyAlien");
 
-	CAnimator* EnemyAnim = Enemy->AddComponent<CAnimator>();
+	CSpriteRenderer* enemySr = Enemy->AddComponent<CSpriteRenderer>();
+	enemySr->SetTexture(babyAlienImg);
+
+	CTransform* babyAlienTr = Enemy->GetComponent<CTransform>();
+
+	Enemy->SetSize(SVector2D(0.1f, 0.1f));
+	Enemy->SetAnchorPoint(babyAlienImg->GetWidth(), babyAlienImg->GetHeight(), babyAlienTr->GetScale(), Enemy->GetSize());
+
+
+
+	/*CAnimator* EnemyAnim = Enemy->AddComponent<CAnimator>();
 
 	EnemyAnim->CreateAnimationByFolder(tEngine, L"MushroomIdle", L"../resources/Sprites/Mushrooms", SVector2D(), 0.5f);
-	EnemyAnim->PlayAnimation(L"MushroomIdle");
+	EnemyAnim->PlayAnimation(L"MushroomIdle");*/
 
 	CScene::OnCreate(tEngine);
 

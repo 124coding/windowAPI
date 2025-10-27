@@ -134,18 +134,19 @@ bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 	eColliderType leftType = tLeft->GetColliderType();
 	eColliderType rightType = tRight->GetColliderType();
 
+	// 각 오브젝트의 중심을 기준으로 (현재 AnchorPoint는 중간 바닥)
 	if (leftType == eColliderType::Rect2D && rightType == eColliderType::Rect2D) {
 		// rect - rect
 		if (fabs(leftPos.mX - rightPos.mX) < fabs(leftSize.mX / 2.0f + rightSize.mX / 2.0f) &&
-			fabs(leftPos.mY - rightPos.mY) < fabs(leftSize.mY / 2.0f + rightSize.mY / 2.0f)) {
+			fabs((leftPos.mY - leftSize.mY / 2.0f) - (rightPos.mY - rightSize.mY / 2.0f)) < fabs(leftSize.mY / 2.0f + rightSize.mY / 2.0f)) {
 
 			return true;
 		}
 	}
 	else if (leftType == eColliderType::Circle2D && rightType == eColliderType::Circle2D) {// circle - circle
 
-		SVector2D leftCirclePos = leftPos + (leftSize / 2.0f);
-		SVector2D rightCirclePos = rightPos + (rightSize / 2.0f);
+		SVector2D leftCirclePos = leftPos;
+		SVector2D rightCirclePos = rightPos - (rightSize / 2.0f);
 
 		float distance = (leftCirclePos - rightCirclePos).Length();
 
@@ -175,8 +176,8 @@ bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 		// 클램핑(Clamping) 기법 이용 충돌 코드
 		float rectMinX = rectPos.mX - rectHalfSize.mX;
 		float rectMaxX = rectPos.mX + rectHalfSize.mX;
-		float rectMinY = rectPos.mY - rectHalfSize.mY;
-		float rectMaxY = rectPos.mY + rectHalfSize.mY;
+		float rectMinY = rectPos.mY - 2 * rectHalfSize.mY;
+		float rectMaxY = rectPos.mY;
 
 		float closestX = std::max(rectMinX, std::min(circlePos.mX, rectMaxX));
 		float closestY = std::max(rectMinY, std::min(circlePos.mY, rectMaxY));

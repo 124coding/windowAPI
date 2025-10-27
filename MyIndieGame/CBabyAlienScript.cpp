@@ -4,24 +4,30 @@
 
 void CBabyAlienScript::OnCreate()
 {
+	CEnemyScript::OnCreate();
 }
 
 void CBabyAlienScript::OnDestroy()
 {
+	CEnemyScript::OnDestroy();
 }
 
 void CBabyAlienScript::OnUpdate(float tDeltaTime)
 {
+	CEnemyScript::OnUpdate(tDeltaTime);
+
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 	Translate(tr);
 }
 
 void CBabyAlienScript::OnLateUpdate(float tDeltaTime)
 {
+	CEnemyScript::OnLateUpdate(tDeltaTime);
 }
 
 void CBabyAlienScript::Render(HDC tHDC)
 {
+	CEnemyScript::Render(tHDC);
 }
 
 void CBabyAlienScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther)
@@ -40,10 +46,6 @@ void CBabyAlienScript::OnCollisionExit(float tDeltaTime, CCollider* tOther)
 }
 
 void CBabyAlienScript::Idle()
-{
-}
-
-void CBabyAlienScript::Move(float tDeltaTime)
 {
 }
 

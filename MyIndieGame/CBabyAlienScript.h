@@ -23,7 +23,6 @@ public:
 	// Move
 private:
 	virtual void Idle() override;
-	virtual void Move(float tDeltaTime) override;
 	virtual void Translate(CTransform* tr) override;
 };
 

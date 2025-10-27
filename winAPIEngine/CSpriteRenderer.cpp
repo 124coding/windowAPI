@@ -47,14 +47,14 @@ void CSpriteRenderer::Render(HDC tHDC)
 			func.AlphaFormat = AC_SRC_ALPHA;
 
 			func.SourceConstantAlpha = 255;
-			AlphaBlend(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX, pos.mY - GetOwner()->GetAnchorPoint().mY,
+			AlphaBlend(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX * scale.mX, pos.mY - GetOwner()->GetAnchorPoint().mY * scale.mY,
 				mTexture->GetWidth() * GetOwner()->GetSize().mX * scale.mX, mTexture->GetHeight() * GetOwner()->GetSize().mY * scale.mY,
 				mTexture->GetDCMem(),
 				0, 0,
 				mTexture->GetWidth(), mTexture->GetHeight(), func);
 		}
 		else {
-			TransparentBlt(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX, pos.mY - GetOwner()->GetAnchorPoint().mY,
+			TransparentBlt(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX * scale.mX, pos.mY - GetOwner()->GetAnchorPoint().mY * scale.mY,
 				mTexture->GetWidth() * GetOwner()->GetSize().mX * scale.mX, mTexture->GetHeight() * GetOwner()->GetSize().mY * scale.mY,
 				mTexture->GetDCMem(),
 				0, 0,
@@ -70,7 +70,23 @@ void CSpriteRenderer::Render(HDC tHDC)
 
 		Gdiplus::Graphics graphics(tHDC);
 
+		float a = GetOwner()->GetSize().mX * scale.mX;
+
 		graphics.TranslateTransform(pos.mX, pos.mY);
+		graphics.ScaleTransform(GetOwner()->GetSize().mX * scale.mX, GetOwner()->GetSize().mY * scale.mY);
+		graphics.RotateTransform(rot);
+
+		float originalWidth = mTexture->GetWidth();
+		float originalHeight = mTexture->GetHeight();
+
+		graphics.DrawImage(mTexture->GetImage(),
+			-originalWidth / 2.0f,
+			-originalHeight,
+			originalWidth,
+			originalHeight
+		);
+
+		/*graphics.TranslateTransform(pos.mX, pos.mY);
 		graphics.RotateTransform(rot);
 		graphics.TranslateTransform(-pos.mX, -pos.mY);
 
@@ -81,7 +97,7 @@ void CSpriteRenderer::Render(HDC tHDC)
 			mTexture->GetWidth(), mTexture->GetHeight(),
 			Gdiplus::UnitPixel,
 			nullptr
-		);
+		);*/
 	}
 	// Gdiplus::Graphics graphics(tHDC);
 	// graphics.DrawImage(mImage, Gdiplus::Rect(pos.mX, pos.mY, mWidth, mHeight));

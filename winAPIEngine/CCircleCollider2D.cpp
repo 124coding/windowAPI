@@ -35,11 +35,11 @@ void CCircleCollider2D::Render(HDC tHDC)
 	HPEN oldPen = (HPEN)SelectObject(tHDC, greenPen);
 
 	SVector2D rightBottom;
-	rightBottom.mX = pos.mX + GetOffset().mX + 100 * GetSize().mX;
-	rightBottom.mY = pos.mY + GetOffset().mY + 100 * GetSize().mY;
+	rightBottom.mX = pos.mX + GetOwner()->GetAnchorPoint().mX * GetSize().mX + GetOffset().mX;
+	rightBottom.mY = pos.mY * GetSize().mY + GetOffset().mY;
 
 	Ellipse(tHDC,
-		pos.mX + GetOffset().mX, pos.mY + GetOffset().mY,
+		pos.mX - GetOwner()->GetAnchorPoint().mX * GetSize().mX + GetOffset().mX, pos.mY - GetOwner()->GetAnchorPoint().mY * GetSize().mY + GetOffset().mY,
 		rightBottom.mX, rightBottom.mY);
 
 	SelectObject(tHDC, oldBrush);

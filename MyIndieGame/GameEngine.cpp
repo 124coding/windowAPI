@@ -78,11 +78,11 @@ void GameEngine::Render() {
 
 void GameEngine::LoadScenes()
 {
-	CSceneMgr::CreateScene<CTitleScene>(this, L"TitleScene");
+	// CSceneMgr::CreateScene<CTitleScene>(this, L"TitleScene");
 	// CSceneMgr::CreateScene<CSettingScene>(this, L"SettingScene");
 	CSceneMgr::CreateScene<CPlayScene>(this, L"PlayScene");
-	CSceneMgr::CreateScene<CEndingScene>(this, L"EndingScene");
-	CSceneMgr::CreateScene<CToolScene>(this, L"ToolScene");
+	// CSceneMgr::CreateScene<CEndingScene>(this, L"EndingScene");
+	// CSceneMgr::CreateScene<CToolScene>(this, L"ToolScene");
 	
 
 	CSceneMgr::LoadScene(L"PlayScene");
@@ -102,7 +102,7 @@ void GameEngine::LoadResources()
 
 
 	// Sprites
-	CResourceMgr::Load<CTexture>(this, L"Cat", L"../resources/Sprites/ChickenAlpha.bmp");
+	CResourceMgr::Load<CTexture>(this, L"BabyAlien", L"../resources/Sprites/Enemy/baby_alien.png");
 	CResourceMgr::Load<CTexture>(this, L"Player", L"../resources/Sprites/Player.bmp");
 
 	CResourceMgr::Load<CTexture>(this, L"StartOutMouse", L"../resources/ButtonImg/StartButtonOutMouse.png"); 
