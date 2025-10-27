@@ -35,9 +35,6 @@
 
 void CPlayScene::OnCreate(CAPIEngine* tEngine)
 {
-
-	CScene::OnCreate(tEngine);
-
 	LoadMap(tEngine, L"..\\resources\\Maps\\Here");
 
 	GameObject* camera = Instantiate<GameObject>(tEngine, eLayerType::None);
@@ -51,8 +48,8 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	// mPlayer->AddComponent<CRigidbody>();
 	mPlayer->AddComponent<CAudioListner>();
 
-	CBoxCollider2D* bPlCollider = mPlayer->AddComponent<CBoxCollider2D>();
-	bPlCollider->SetOffset(SVector2D(-50.0f, -50.0f));
+	CCircleCollider2D* cPlCollider = mPlayer->AddComponent<CCircleCollider2D>();
+	cPlCollider->SetOffset(SVector2D(-50.0f, -50.0f));
 
 	cameraComp->SetTarget(mPlayer);
 
@@ -68,28 +65,21 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 	mPlayer->GetComponent<CTransform>()->SetScale(SVector2D(1.0f, 1.0f));
 
-	CCat* Cat = Instantiate<CCat>(tEngine, eLayerType::Enemy, SVector2D(300.0f, 300.0f));
-	CBabyAlienScript* CatScript = Cat->AddComponent<CBabyAlienScript>();
-	CatScript->SetTarget(mPlayer);
+	CBabyAlien* Enemy = Instantiate<CBabyAlien>(tEngine, eLayerType::Enemy, SVector2D(300.0f, 300.0f));
+	CBabyAlienScript* EnemyScript = Enemy->GetComponent<CBabyAlienScript>();
+	EnemyScript->SetTarget(mPlayer);
 	
-	CBoxCollider2D* bCatCollider = Cat->AddComponent<CBoxCollider2D>();
-	bCatCollider->SetOffset(SVector2D(-50.0f, -50.0f));
+	CCircleCollider2D* cCatCollider = Enemy->AddComponent<CCircleCollider2D>();
+	cCatCollider->SetOffset(SVector2D(-50.0f, -50.0f));
 
 	CTexture* catImg = CResourceMgr::Find<CTexture>(L"Cat");
 
-	CAnimator* catAnim = Cat->AddComponent<CAnimator>();
+	CAnimator* EnemyAnim = Enemy->AddComponent<CAnimator>();
 
-	catAnim->CreateAnimationByFolder(tEngine, L"MushroomIdle", L"../resources/Sprites/Mushrooms", SVector2D(), 0.5f);
-	catAnim->PlayAnimation(L"MushroomIdle");
+	EnemyAnim->CreateAnimationByFolder(tEngine, L"MushroomIdle", L"../resources/Sprites/Mushrooms", SVector2D(), 0.5f);
+	EnemyAnim->PlayAnimation(L"MushroomIdle");
 
-	CFloor * floor = Instantiate<CFloor>(tEngine, eLayerType::Particle, SVector2D(0.0f, 700.0f));
-	CAudioSource* flAs = floor->AddComponent<CAudioSource>();
-
-	CBoxCollider2D* floorCol = floor->AddComponent<CBoxCollider2D>();
-	floorCol->SetSize(SVector2D(15.0f, 1.0f));
-
-	CAudioClip* ac = CResourceMgr::Load<CAudioClip>(tEngine, L"BGSound", L"../resources/Sound/smw_bonus_game_end.wav");
-	flAs->SetClip(ac);
+	CScene::OnCreate(tEngine);
 
 	// CAT
 	/*CCat* Cat = Instantiate<CCat>(tEngine, eLayerType::Animal, SVector2D(200.0f, 200.0f));
@@ -137,12 +127,15 @@ void CPlayScene::Render(HDC tHDC)
 void CPlayScene::OnEnter()
 {
 	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Enemy, true);
-	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Particle, true);
+
 	CUIMgr::Push(eUIType::HPBar);
 	dynamic_cast<CUIHPBar*>(CUIMgr::FindUI(eUIType::HPBar))->SetPlayer(mPlayer);
+
 	CUIMgr::Push(eUIType::EXPBar);
 	dynamic_cast<CUIEXPBar*>(CUIMgr::FindUI(eUIType::EXPBar))->SetPlayer(mPlayer);
+
 	CScene::OnEnter();
+
 	CSceneMgr::SetDontDestroyOnLoad(true);
 }
 

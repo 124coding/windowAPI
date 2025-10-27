@@ -24,7 +24,6 @@ public:
 	void OnLateUpdate(float tDeltaTime) override;
 	void Render(HDC tHDC) override;
 
-// HP
 public:
 	void IncreaseHP(int tIncreaseAmount);
 	void DecreaseHP(int tDecreaseAmount);
@@ -52,19 +51,24 @@ public:
 		return this->mMaxHP;
 	}
 
-	// Level
 	int GetLevel() {
 		return this->mLevel;
 	}
 
-// Speed
-public:
 	void SetSpeed(float tSpeed) {
 		this->mSpeed = tSpeed;
 	}
 
 	float GetSpeed() {
 		return this->mSpeed;
+	}
+
+	void SetCanCollideEnemy(bool tCanCollideEnemey) {
+		this->mCanCollideEnemy = tCanCollideEnemey;
+	}
+
+	bool GetCanCollideEnemy() {
+		return this->mCanCollideEnemy;
 	}
 
 public:
@@ -89,7 +93,8 @@ private:
 
 	float mSpeed;
 
-	float mGracePeriod = 1.5f;
+	float mGracePeriod = 1.0f;
+	bool mCanCollideEnemy = true;
 
 	CTexture* mEyesTexture = nullptr;
 	CTexture* mMouthTexture = nullptr;

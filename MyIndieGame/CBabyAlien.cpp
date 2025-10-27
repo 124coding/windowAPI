@@ -1,35 +1,31 @@
 #include "CBabyAlien.h"
 
-#include "CBabyAlienScript.h"
-
 void CBabyAlien::OnCreate()
 {
-	GameObject::OnCreate();
+	CEnemy::OnCreate();
 	// stage prolportional 하게 하기.
 	SetHP(2);
 	SetButtDamage(1);
 
 	SetSpeed(50.0f);
-
-	this->AddComponent<CBabyAlienScript>();
 }
 
 void CBabyAlien::OnDestroy()
 {
-	GameObject::OnDestroy();
+	CEnemy::OnDestroy();
 }
 
 void CBabyAlien::OnUpdate(float tDeltaTime)
 {
-	GameObject::OnUpdate(tDeltaTime);
+	CEnemy::OnUpdate(tDeltaTime);
 }
 
 void CBabyAlien::OnLateUpdate(float tDeltaTime)
 {
-	GameObject::OnLateUpdate(tDeltaTime);
+	CEnemy::OnLateUpdate(tDeltaTime);
 }
 
 void CBabyAlien::Render(HDC tHDC)
 {
-	GameObject::Render(tHDC);
+	CEnemy::Render(tHDC);
 }

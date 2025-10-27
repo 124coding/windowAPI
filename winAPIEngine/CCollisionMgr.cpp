@@ -1,3 +1,4 @@
+#define NOMINMAX
 #include "CCollisionMgr.h"
 
 #include "GameObject.h"
@@ -21,7 +22,7 @@ void CCollisionMgr::OnUpdate(float tDeltaTime) {
 	for (UINT row = 0; row < (UINT)eLayerType::MAX; row++) {
 		for (UINT col = 0; col < (UINT)eLayerType::MAX; col++) {
 			if (mCollisionLayerMtrix[row][col] == true) {
-				LayerCollision(scene, (eLayerType)row, (eLayerType)col);
+				LayerCollision(tDeltaTime, scene, (eLayerType)row, (eLayerType)col);
 			}
 		}
 	}
@@ -57,7 +58,7 @@ void CCollisionMgr::CollisionLayerCheck(eLayerType tLeft, eLayerType tRight, boo
 	mCollisionLayerMtrix[row][col] = tEnable;
 }
 
-void CCollisionMgr::LayerCollision(CScene* tScene, eLayerType tLeft, eLayerType tRight) {
+void CCollisionMgr::LayerCollision(float tDeltaTime, CScene* tScene, eLayerType tLeft, eLayerType tRight) {
 	const std::vector<GameObject*>& lefts = CSceneMgr::GetGameObjects(tLeft);
 	const std::vector<GameObject*>& rights = CSceneMgr::GetGameObjects(tRight);
 
@@ -77,12 +78,12 @@ void CCollisionMgr::LayerCollision(CScene* tScene, eLayerType tLeft, eLayerType 
 				continue;
 			}
 
-			ColliderCollision(leftCollider, rightCollider);
+			ColliderCollision(tDeltaTime, leftCollider, rightCollider);
 		}
 	}
 }
 
-void CCollisionMgr::ColliderCollision(CCollider* tLeft, CCollider* tRight) {
+void CCollisionMgr::ColliderCollision(float tDeltaTime, CCollider* tLeft, CCollider* tRight) {
 	
 	// 두 충돌체 번호를 가져온 ID를 확인해서 CollisionID값 세팅
 	CollisionID id = {};
@@ -99,19 +100,19 @@ void CCollisionMgr::ColliderCollision(CCollider* tLeft, CCollider* tRight) {
 
 	if (Intersect(tLeft, tRight)) {
 		if (iter->second == false) { // 최초 충돌
-			tLeft->OnCollisionEnter(tRight);
-			tRight->OnCollisionEnter(tLeft);
+			tLeft->OnCollisionEnter(tDeltaTime, tRight);
+			tRight->OnCollisionEnter(tDeltaTime, tLeft);
 			iter->second = true;
 		}
 		else { // 충돌중
-			tLeft->OnCollisionStay(tRight);
-			tRight->OnCollisionStay(tLeft);
+			tLeft->OnCollisionStay(tDeltaTime, tRight);
+			tRight->OnCollisionStay(tDeltaTime, tLeft);
 		}
 	}
 	else {
 		if (iter->second == true) { // 충돌 빠져나감
-			tLeft->OnCollisionExit(tRight);
-			tRight->OnCollisionExit(tLeft);
+			tLeft->OnCollisionExit(tDeltaTime, tRight);
+			tRight->OnCollisionExit(tDeltaTime, tLeft);
 			iter->second = false;
 		}
 	}
@@ -155,7 +156,41 @@ bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 	else if (leftType == eColliderType::Rect2D && rightType == eColliderType::Circle2D ||
 			leftType == eColliderType::Circle2D && rightType == eColliderType::Rect2D) { // circle - rect
 
+		SVector2D circlePos, rectPos, rectHalfSize;
+		float circleRadius;
+
 		if (leftType == eColliderType::Circle2D) {
+			circlePos = leftPos;
+			circleRadius = leftSize.mX / 2.0f;
+			rectPos = rightPos;
+			rectHalfSize = SVector2D(rightSize.mX / 2.0f, rightSize.mY / 2.0f);
+		}
+		else {
+			circlePos = rightPos;
+			circleRadius = rightSize.mX / 2.0f;
+			rectPos = leftPos;
+			rectHalfSize = SVector2D(leftSize.mX / 2.0f, leftSize.mY / 2.0f);
+		}
+
+		// 클램핑(Clamping) 기법 이용 충돌 코드
+		float rectMinX = rectPos.mX - rectHalfSize.mX;
+		float rectMaxX = rectPos.mX + rectHalfSize.mX;
+		float rectMinY = rectPos.mY - rectHalfSize.mY;
+		float rectMaxY = rectPos.mY + rectHalfSize.mY;
+
+		float closestX = std::max(rectMinX, std::min(circlePos.mX, rectMaxX));
+		float closestY = std::max(rectMinY, std::min(circlePos.mY, rectMaxY));
+
+		SVector2D closestPoint(closestX, closestY);
+
+		float distanceSquared = (circlePos - closestPoint).LengthSq();
+		float radiusSquared = circleRadius * circleRadius;
+
+		if (distanceSquared < radiusSquared) {
+			return true;
+		}
+
+		/*if (leftType == eColliderType::Circle2D) {
 			SVector2D leftCirclePos = leftPos;
 
 			if (fabs(leftCirclePos.mX - rightPos.mX) < fabs(leftSize.mX / 2.0f + rightSize.mX / 2.0f) &&
@@ -181,7 +216,7 @@ bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 						return true;
 					}
 				}
-				else if (leftCirclePos.mX < rightBottomVertex.mX && leftCirclePos.mY < rightBottomVertex.mY) {
+				else if (leftCirclePos.mX > rightBottomVertex.mX && leftCirclePos.mY > rightBottomVertex.mY) {
 					if ((leftCirclePos - rightBottomVertex).Length() < leftSize.mX / 2.0f) {
 						return true;
 					}
@@ -196,7 +231,7 @@ bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 			SVector2D rightCirclePos = rightPos;
 
 			if (fabs(rightCirclePos.mX - leftPos.mX) < fabs(rightSize.mX / 2.0f + leftSize.mX / 2.0f) &&
-				fabs(rightCirclePos.mY - leftPos.mY) < fabs(rightSize.mX / 2.0f + leftSize.mY / 2.0f)) {
+				fabs(rightCirclePos.mY - leftPos.mY) < fabs(rightSize.mY / 2.0f + leftSize.mY / 2.0f)) {
 
 				SVector2D leftTopVertex = SVector2D(leftPos.mX - leftSize.mX / 2.0f, leftPos.mY - leftSize.mY / 2.0f);
 				SVector2D leftBottomVertex = SVector2D(leftPos.mX - leftSize.mX / 2.0f, leftPos.mY + leftSize.mY / 2.0f);
@@ -218,7 +253,7 @@ bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 						return true;
 					}
 				}
-				else if (rightCirclePos.mX < rightBottomVertex.mX && rightCirclePos.mY < rightBottomVertex.mY) {
+				else if (rightCirclePos.mX > rightBottomVertex.mX && rightCirclePos.mY > rightBottomVertex.mY) {
 					if ((rightCirclePos - rightBottomVertex).Length() < rightSize.mX / 2.0f) {
 						return true;
 					}
@@ -227,7 +262,7 @@ bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 					return true;
 				}
 			}
-		}
+		}*/
 	}
 	return false;
 }

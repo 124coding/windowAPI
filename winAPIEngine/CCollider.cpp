@@ -25,20 +25,20 @@ void CCollider::Render(HDC tHDC)
 {
 }
 
-void CCollider::OnCollisionEnter(CCollider* tOther)
+void CCollider::OnCollisionEnter(float tDeltaTime, CCollider* tOther)
 {
 	CScript* script = GetOwner()->GetComponent<CScript>();
-	script->OnCollisionEnter(tOther);
+	script->OnCollisionEnter(tDeltaTime, tOther);
 }
 
-void CCollider::OnCollisionStay(CCollider* tOther)
+void CCollider::OnCollisionStay(float tDeltaTime, CCollider* tOther)
 {
 	CScript* script = GetOwner()->GetComponent<CScript>();
-	script->OnCollisionStay(tOther);
+	script->OnCollisionStay(tDeltaTime, tOther);
 }
 
-void CCollider::OnCollisionExit(CCollider* tOther)
+void CCollider::OnCollisionExit(float tDeltaTime, CCollider* tOther)
 {
 	CScript* script = GetOwner()->GetComponent<CScript>();
-	script->OnCollisionExit(tOther);
+	script->OnCollisionExit(tDeltaTime, tOther);
 }

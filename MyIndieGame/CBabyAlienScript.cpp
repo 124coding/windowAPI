@@ -24,19 +24,19 @@ void CBabyAlienScript::Render(HDC tHDC)
 {
 }
 
-void CBabyAlienScript::OnCollisionEnter(CCollider* tOther)
+void CBabyAlienScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther)
 {
-	CEnemyScript::OnCollisionEnter(tOther);
+	CEnemyScript::OnCollisionEnter(tDeltaTime, tOther);
 }
 
-void CBabyAlienScript::OnCollisionStay(CCollider* tOther)
+void CBabyAlienScript::OnCollisionStay(float tDeltaTime, CCollider* tOther)
 {
-	CEnemyScript::OnCollisionStay(tOther);
+	CEnemyScript::OnCollisionStay(tDeltaTime, tOther);
 }
 
-void CBabyAlienScript::OnCollisionExit(CCollider* tOther)
+void CBabyAlienScript::OnCollisionExit(float tDeltaTime, CCollider* tOther)
 {
-	CEnemyScript::OnCollisionExit(tOther);
+	CEnemyScript::OnCollisionExit(tDeltaTime, tOther);
 }
 
 void CBabyAlienScript::Idle()

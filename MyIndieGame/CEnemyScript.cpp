@@ -1,7 +1,11 @@
 #include "CEnemyScript.h"
 
+#include "CPlayer.h"
+#include "CEnemy.h"
+
 #include "CTransform.h"
 #include "CAnimator.h"
+#include "CCollider.h"
 
 #include "Object.h"
 
@@ -38,17 +42,32 @@ void CEnemyScript::Render(HDC tHDC)
 {
 }
 
-void CEnemyScript::OnCollisionEnter(CCollider* tOther)
+void CEnemyScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther)
+{
+	if (tOther->GetOwner()->GetLayerType() == eLayerType::Player) {
+		CPlayer* player = dynamic_cast<CPlayer*>(tOther->GetOwner());
+		ButtDamageToPlayer(player);
+	}
+}
+
+void CEnemyScript::OnCollisionStay(float tDeltaTime, CCollider* tOther)
+{
+
+	if (tOther->GetOwner()->GetLayerType() == eLayerType::Player) {
+		CPlayer* player = dynamic_cast<CPlayer*>(tOther->GetOwner());
+		ButtDamageToPlayer(player);
+	}
+}
+
+void CEnemyScript::OnCollisionExit(float tDeltaTime, CCollider* tOther)
 {
 
 }
 
-void CEnemyScript::OnCollisionStay(CCollider* tOther)
+void CEnemyScript::ButtDamageToPlayer(CPlayer* tPlayer)
 {
-
-}
-
-void CEnemyScript::OnCollisionExit(CCollider* tOther)
-{
-
+	if (tPlayer->GetCanCollideEnemy()) {
+		tPlayer->DecreaseHP(dynamic_cast<CEnemy*>(this->GetOwner())->GetButtDamage());
+		tPlayer->SetCanCollideEnemy(false);
+	}
 }

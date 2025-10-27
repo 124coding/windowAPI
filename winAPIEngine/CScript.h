@@ -16,9 +16,9 @@ public:
 	void OnLateUpdate(float tDeltaTime) override;
 	void Render(HDC tHDC) override;
 
-	virtual void OnCollisionEnter(CCollider* tOther);
-	virtual void OnCollisionStay(CCollider* tOther);
-	virtual void OnCollisionExit(CCollider* tOther);
+	virtual void OnCollisionEnter(float tDeltaTime, CCollider* tOther);
+	virtual void OnCollisionStay(float tDeltaTime, CCollider* tOther);
+	virtual void OnCollisionExit(float tDeltaTime, CCollider* tOther);
 private:
 
 };

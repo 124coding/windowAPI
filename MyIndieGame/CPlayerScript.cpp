@@ -116,14 +116,14 @@ void CPlayerScript::Translate(CTransform* tr)
 //	}
 //}
 
-void CPlayerScript::OnCollisionEnter(CCollider* tOther) {
+void CPlayerScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther) {
 
 }
 
-void CPlayerScript::OnCollisionStay(CCollider* tOther) {
+void CPlayerScript::OnCollisionStay(float tDeltaTime, CCollider* tOther) {
 
 }
 
-void CPlayerScript::OnCollisionExit(CCollider* tOther) {
+void CPlayerScript::OnCollisionExit(float tDeltaTime, CCollider* tOther) {
 
 }

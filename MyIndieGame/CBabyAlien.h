@@ -2,10 +2,13 @@
 
 #include "CEnemy.h"
 
+#include "CBabyAlienScript.h"
+
 class CBabyAlien : public CEnemy
 {
 public:
 	CBabyAlien() {
+		this->AddComponent<CBabyAlienScript>();
 	}
 	virtual ~CBabyAlien() {}
 

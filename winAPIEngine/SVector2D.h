@@ -80,6 +80,12 @@ public:
 	}
 
 	// 벡터의 크기 구하기
+	float LengthSq() {
+		// 자기 자신을 내적하고 제곱근
+		return Dot(*this);
+	}
+
+	// 벡터의 크기 구하기
 	float Length() {
 		// 자기 자신을 내적하고 제곱근
 		return sqrtf(Dot(*this));

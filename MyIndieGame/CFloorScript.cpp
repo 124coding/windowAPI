@@ -31,7 +31,7 @@ void CFloorScript::Render(HDC tHDC)
 	CScript::Render(tHDC);
 }
 
-void CFloorScript::OnCollisionEnter(CCollider* tOther) {
+void CFloorScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther) {
 	CRigidbody* plRb = tOther->GetOwner()->GetComponent<CRigidbody>();
 	CTransform* plTr = tOther->GetOwner()->GetComponent<CTransform>();
 
@@ -56,10 +56,10 @@ void CFloorScript::OnCollisionEnter(CCollider* tOther) {
     plRb->SetGround(true);
 }
 
-void CFloorScript::OnCollisionStay(CCollider* tOther) {
+void CFloorScript::OnCollisionStay(float tDeltaTime, CCollider* tOther) {
 
 }
 
-void CFloorScript::OnCollisionExit(CCollider* tOther) {
+void CFloorScript::OnCollisionExit(float tDeltaTime, CCollider* tOther) {
 
 }

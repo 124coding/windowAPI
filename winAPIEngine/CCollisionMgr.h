@@ -29,8 +29,8 @@ public:
 	static void CollisionClear();
 
 	static void CollisionLayerCheck(eLayerType tLeft, eLayerType tRight, bool tEnable);
-	static void LayerCollision(CScene* tScene, eLayerType tLeft, eLayerType tRight);
-	static void ColliderCollision(CCollider* tLeft, CCollider* tRight);
+	static void LayerCollision(float tDeltaTime, CScene* tScene, eLayerType tLeft, eLayerType tRight);
+	static void ColliderCollision(float tDeltaTime, CCollider* tLeft, CCollider* tRight);
 	static bool Intersect(CCollider* tLeft, CCollider* tRight);
 
 private:

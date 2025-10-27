@@ -22,14 +22,14 @@ void CScript::Render(HDC tHDC)
 {
 }
 
-void CScript::OnCollisionEnter(CCollider* tOther) {
+void CScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther) {
 
 }
 
-void CScript::OnCollisionStay(CCollider* tOther) {
+void CScript::OnCollisionStay(float tDeltaTime, CCollider* tOther) {
 
 }
 
-void CScript::OnCollisionExit(CCollider* tOther) {
+void CScript::OnCollisionExit(float tDeltaTime, CCollider* tOther) {
 
 }

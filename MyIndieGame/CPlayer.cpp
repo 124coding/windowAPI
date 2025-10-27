@@ -12,6 +12,14 @@ void CPlayer::OnDestroy() {
 void CPlayer::OnUpdate(float tDeltaTime)
 {
 	GameObject::OnUpdate(tDeltaTime);
+
+	if (!mCanCollideEnemy) {
+		mGracePeriod -= tDeltaTime;
+		if (mGracePeriod <= 0) {
+			mCanCollideEnemy = true;
+			mGracePeriod = 1.0f;
+		}
+	}
 }
 
 void CPlayer::OnLateUpdate(float tDeltaTime)

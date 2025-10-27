@@ -29,9 +29,8 @@ void GameEngine::OnCreate() {
 	CFMOD::OnCreate();
 	CCollisionMgr::OnCreate(this);
 	CUIMgr::OnCreate(this);
-	CSceneMgr::OnCreate(this);
-
 	LoadScenes();
+	CSceneMgr::OnCreate(this);
 
 	CInputMgr::GetInst()->AddKeyInfo("DoMoveLt", 'A');
 	CInputMgr::GetInst()->AddKeyInfo("DoMoveRt", 'D');

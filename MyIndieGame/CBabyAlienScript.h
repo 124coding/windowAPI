@@ -16,9 +16,9 @@ public:
 
 	// Collision
 public:
-	virtual void OnCollisionEnter(CCollider* tOther) override;
-	virtual void OnCollisionStay(CCollider* tOther) override;
-	virtual void OnCollisionExit(CCollider* tOther) override;	
+	virtual void OnCollisionEnter(float tDeltaTime, CCollider* tOther) override;
+	virtual void OnCollisionStay(float tDeltaTime, CCollider* tOther) override;
+	virtual void OnCollisionExit(float tDeltaTime, CCollider* tOther) override;
 
 	// Move
 private:
