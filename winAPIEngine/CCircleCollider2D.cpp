@@ -36,7 +36,7 @@ void CCircleCollider2D::Render(HDC tHDC)
 
 	SVector2D rightBottom;
 	rightBottom.mX = pos.mX + GetOwner()->GetAnchorPoint().mX * GetSize().mX + GetOffset().mX;
-	rightBottom.mY = pos.mY * GetSize().mY + GetOffset().mY;
+	rightBottom.mY = pos.mY + GetOffset().mY;
 
 	Ellipse(tHDC,
 		pos.mX - GetOwner()->GetAnchorPoint().mX * GetSize().mX + GetOffset().mX, pos.mY - GetOwner()->GetAnchorPoint().mY * GetSize().mY + GetOffset().mY,

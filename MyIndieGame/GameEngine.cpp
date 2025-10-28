@@ -103,7 +103,7 @@ void GameEngine::LoadResources()
 
 	// Sprites
 	CResourceMgr::Load<CTexture>(this, L"BabyAlien", L"../resources/Sprites/Enemy/baby_alien.png");
-	CResourceMgr::Load<CTexture>(this, L"Player", L"../resources/Sprites/Player.bmp");
+	CResourceMgr::Load<CTexture>(this, L"PlayerBase", L"../resources/Sprites/Player/base.png");
 
 	CResourceMgr::Load<CTexture>(this, L"StartOutMouse", L"../resources/ButtonImg/StartButtonOutMouse.png"); 
 	CResourceMgr::Load<CTexture>(this, L"StartInMouse", L"../resources/ButtonImg/StartButtonInMouse.png"); 

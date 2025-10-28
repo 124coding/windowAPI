@@ -35,12 +35,19 @@
 
 void CPlayScene::OnCreate(CAPIEngine* tEngine)
 {
-	LoadMap(tEngine, L"..\\resources\\Maps\\Here");
+	// LoadMap(tEngine, L"..\\resources\\Maps\\Here");
 
 	GameObject* camera = Instantiate<GameObject>(tEngine, eLayerType::None);
 	CCamera* cameraComp = camera->AddComponent<CCamera>();
 
 	mainCamera = cameraComp;
+
+
+
+
+
+
+
 
 	mPlayer = Instantiate<CPlayer>(tEngine, eLayerType::Player, SVector2D(windowWidth / 2, windowHeight / 2));
 	// DontDestroyOnLoad(mPlayer);
@@ -49,21 +56,32 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	mPlayer->AddComponent<CAudioListner>();
 
 	CCircleCollider2D* cPlCollider = mPlayer->AddComponent<CCircleCollider2D>();
+	cPlCollider->SetSize(SVector2D(0.45f, 0.45f));
+	cPlCollider->SetOffset(SVector2D(0.0f, -55.0f));
 
 	cameraComp->SetTarget(mPlayer);
 
-	CTexture* plImg = CResourceMgr::Find<CTexture>(L"Player");
+	CTexture* plImg = CResourceMgr::Find<CTexture>(L"PlayerBase");
 
 	CTransform* plTr = mPlayer->GetComponent<CTransform>();
-	mPlayer->SetAnchorPoint(250.0f, 250.0f, mPlayer->GetSize(), plTr->GetScale());
+	mPlayer->SetSize(SVector2D(0.25f, 0.25f));
+	mPlayer->SetAnchorPoint(plImg->GetWidth(), plImg->GetHeight(), mPlayer->GetSize(), plTr->GetScale());
 
 	CAnimator* plAnim = mPlayer->AddComponent<CAnimator>();
-	plAnim->CreateAnimation(L"Idle", plImg, SVector2D(2000.0f, 250.0f), SVector2D(250.0f, 250.0f), SVector2D(), 1, 0.1f);
-	plAnim->CreateAnimation(L"FrontGiveWater", plImg, SVector2D(0.0f, 2000.0f), SVector2D(250.0f, 250.0f), SVector2D(), 12, 0.1f);
-
-	plAnim->PlayAnimation(L"Idle", false);
+	CSpriteRenderer* plSr = mPlayer->AddComponent<CSpriteRenderer>();
+	plSr->SetTexture(plImg);
 
 	// plAnim->GetCompleteEvent(L"FrontGiveWater");
+
+
+
+
+
+
+
+
+
+
 
 	CBabyAlien* Enemy = Instantiate<CBabyAlien>(tEngine, eLayerType::Enemy, SVector2D(300.0f, 300.0f));
 
@@ -79,7 +97,7 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 	CTransform* babyAlienTr = Enemy->GetComponent<CTransform>();
 
-	Enemy->SetSize(SVector2D(0.1f, 0.1f));
+	Enemy->SetSize(SVector2D(0.08f, 0.08f));
 	Enemy->SetAnchorPoint(babyAlienImg->GetWidth(), babyAlienImg->GetHeight(), babyAlienTr->GetScale(), Enemy->GetSize());
 
 

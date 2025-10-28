@@ -126,8 +126,8 @@ bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 	SVector2D leftPos = leftTr->GetPos() + tLeft->GetOffset();
 	SVector2D rightPos = rightTr->GetPos() + tRight->GetOffset();
 
-	SVector2D leftSize = tLeft->GetSize() * 100.0f;
-	SVector2D rightSize = tRight->GetSize() * 100.0f;
+	SVector2D leftSize = SVector2D(tLeft->GetSize().mX * tLeft->GetOwner()->GetAnchorPoint().mX * 2, tLeft->GetSize().mX * tLeft->GetOwner()->GetAnchorPoint().mY);
+	SVector2D rightSize = SVector2D(tRight->GetSize().mX * tRight->GetOwner()->GetAnchorPoint().mX * 2, tRight->GetSize().mX * tRight->GetOwner()->GetAnchorPoint().mY);
 
 	// AABB Ãæµ¹
 
@@ -145,8 +145,8 @@ bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 	}
 	else if (leftType == eColliderType::Circle2D && rightType == eColliderType::Circle2D) {// circle - circle
 
-		SVector2D leftCirclePos = leftPos;
-		SVector2D rightCirclePos = rightPos - (rightSize / 2.0f);
+		SVector2D leftCirclePos = SVector2D(leftPos.mX, leftPos.mY - leftSize.mY / 2.0f);
+		SVector2D rightCirclePos = SVector2D(rightPos.mX, rightPos.mY - rightSize.mY / 2.0f);
 
 		float distance = (leftCirclePos - rightCirclePos).Length();
 
@@ -161,15 +161,15 @@ bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 		float circleRadius;
 
 		if (leftType == eColliderType::Circle2D) {
-			circlePos = leftPos;
+			circlePos = SVector2D(leftPos.mX, leftPos.mY - leftSize.mY / 2.0f);
 			circleRadius = leftSize.mX / 2.0f;
-			rectPos = rightPos;
+			rectPos = SVector2D(rightPos.mX, rightPos.mY - rightSize.mY / 2.0f);
 			rectHalfSize = SVector2D(rightSize.mX / 2.0f, rightSize.mY / 2.0f);
 		}
 		else {
-			circlePos = rightPos;
+			circlePos = SVector2D(rightPos.mX, rightPos.mY - rightSize.mY / 2.0f);
 			circleRadius = rightSize.mX / 2.0f;
-			rectPos = leftPos;
+			rectPos = SVector2D(leftPos.mX, leftPos.mY - leftSize.mY / 2.0f);
 			rectHalfSize = SVector2D(leftSize.mX / 2.0f, leftSize.mY / 2.0f);
 		}
 

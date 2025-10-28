@@ -39,7 +39,7 @@ void GameObject::OnUpdate(float tDeltaTime)
 {
 
 	for (CComponent* comp : mComponents) {
-		if (comp == nullptr) continue;
+		if (comp == nullptr || !comp->IsActive()) continue;
 		comp->OnUpdate(tDeltaTime);
 	}
 }
@@ -47,7 +47,7 @@ void GameObject::OnUpdate(float tDeltaTime)
 void GameObject::OnLateUpdate(float tDeltaTime)
 {
 	for (CComponent* comp : mComponents) {
-		if (comp == nullptr) continue;
+		if (comp == nullptr || !comp->IsActive()) continue;
 		comp->OnLateUpdate(tDeltaTime);
 	}
 }
@@ -55,7 +55,7 @@ void GameObject::OnLateUpdate(float tDeltaTime)
 void GameObject::Render(HDC tHDC)
 {
 	for (CComponent* comp : mComponents) {
-		if (comp == nullptr) continue;
+		if (comp == nullptr || !comp->IsActive()) continue;
 		comp->Render(tHDC);
 	}
 }

@@ -1,6 +1,7 @@
 #include "CBabyAlienScript.h"
 
 #include "CBabyAlien.h"
+#include "CCollider.h"
 
 void CBabyAlienScript::OnCreate()
 {
@@ -59,7 +60,7 @@ void CBabyAlienScript::Translate(CTransform* tr)
 
 		SVector2D currentVelocity = SVector2D();
 		
-		currentVelocity = targetTr->GetPos() - tr->GetPos();
+		currentVelocity = targetTr->GetPos() + GetTarget()->GetComponent<CCollider>()->GetOffset() - tr->GetPos();
 
 		if (currentVelocity.Length() > 0.0f) {
 			currentVelocity = currentVelocity.Normalize();

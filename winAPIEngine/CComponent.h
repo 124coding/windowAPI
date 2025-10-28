@@ -10,7 +10,7 @@ class GameObject;
 class CComponent : public CEntity
 {
 public:
-	CComponent(eComponentType tType) : mType(tType) {}
+	CComponent(eComponentType tType) : mActive(true), mType(tType) {}
 	virtual ~CComponent() {}
 
 	virtual void OnCreate() = 0;
@@ -31,7 +31,16 @@ public:
 		return this->mType;
 	}
 
+	void SetActive(bool tActive) {
+		this->mActive = tActive;
+	}
+
+	bool IsActive() {
+		return this->mActive;
+	}
+
 private:
+	bool mActive;
 	GameObject* mOwner = nullptr;
 	eComponentType mType;
 };

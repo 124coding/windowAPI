@@ -36,7 +36,7 @@ void CBoxCollider2D::Render(HDC tHDC)
 
 	Rectangle(tHDC, 
 		pos.mX - GetOwner()->GetAnchorPoint().mX * GetSize().mX + GetOffset().mX, pos.mY - GetOwner()->GetAnchorPoint().mY * GetSize().mY + GetOffset().mY,
-		pos.mX * GetSize().mX + GetOffset().mX, pos.mY * GetSize().mY + GetOffset().mY);
+		pos.mX * GetSize().mX + GetOffset().mX, pos.mY + GetOffset().mY);
 
 	SelectObject(tHDC, oldBrush);
 	SelectObject(tHDC, oldPen);
