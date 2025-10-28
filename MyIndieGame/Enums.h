@@ -20,6 +20,7 @@ enum class eLayerType {
 	Tile,
 	Enemy,
 	Player,
+	Weapon,
 	Particle,
 	MAX = 16
 };

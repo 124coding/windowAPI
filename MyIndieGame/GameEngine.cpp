@@ -26,7 +26,7 @@ void GameEngine::OnCreate() {
 
 	LoadResources();
 
-	CFMOD::OnCreate();
+	// CFMOD::OnCreate();
 	CCollisionMgr::OnCreate(this);
 	CUIMgr::OnCreate(this);
 	LoadScenes();
@@ -78,19 +78,19 @@ void GameEngine::Render() {
 
 void GameEngine::LoadScenes()
 {
-	// CSceneMgr::CreateScene<CTitleScene>(this, L"TitleScene");
+	CSceneMgr::CreateScene<CTitleScene>(this, L"TitleScene");
 	// CSceneMgr::CreateScene<CSettingScene>(this, L"SettingScene");
 	CSceneMgr::CreateScene<CPlayScene>(this, L"PlayScene");
 	// CSceneMgr::CreateScene<CEndingScene>(this, L"EndingScene");
 	// CSceneMgr::CreateScene<CToolScene>(this, L"ToolScene");
 	
 
-	CSceneMgr::LoadScene(L"PlayScene");
+	CSceneMgr::LoadScene(L"TitleScene");
 }
 
 void GameEngine::LoadResources()
 {
-	// Maps
+	// TitleScene
 	CResourceMgr::Load<CTexture>(this, L"TitleMap", L"../resources/Maps/Brotato_Title_Screen_Map.png");
 	CResourceMgr::Load<CTexture>(this, L"TitleMob1", L"../resources/Maps/Brotato_Title_Screen_Mobs_1.png");
 	CResourceMgr::Load<CTexture>(this, L"TitleMob2", L"../resources/Maps/Brotato_Title_Screen_Mobs_2.png");

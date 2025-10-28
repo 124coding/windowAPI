@@ -61,5 +61,7 @@ private:
 	int mIndex;
 	float mTime;
 	bool mbComplete;
+
+	bool mFlipImage = false;
 };
 

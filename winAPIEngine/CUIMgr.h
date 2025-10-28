@@ -31,7 +31,7 @@ public:
 private:
 	static std::unordered_map<eUIType, CUIBase*> mUIs;
 	static std::stack<CUIBase*> mUIBases;
-	static std::queue<eUIType> mRequestUIQueue; // std::pair·Î º¯°æ
+	static std::queue<eUIType> mRequestUIQueue;
 	static CUIBase* mActiveUI;
 };
 

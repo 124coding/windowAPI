@@ -23,22 +23,27 @@ void CUIStartButton::InActive()
 
 void CUIStartButton::OnDestroy()
 {
+	CUIButton::OnDestroy();
 }
 
 void CUIStartButton::OnUpdate(float tDeltaTime)
 {
+	CUIButton::OnUpdate(tDeltaTime);
 }
 
 void CUIStartButton::OnLateUpdate(float tDeltaTime)
 {
+	CUIButton::OnLateUpdate(tDeltaTime);
 }
 
 void CUIStartButton::Render(HDC tHDC)
 {
+	CUIButton::Render(tHDC);
 }
 
 void CUIStartButton::UIClear()
 {
+	CUIButton::UIClear();
 }
 
 void CUIStartButton::ButtonClick()

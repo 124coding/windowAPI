@@ -28,5 +28,6 @@ public:
 
 private:
 	CTexture* mTexture;
+	bool mFlipImage = false;
 };
 

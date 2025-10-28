@@ -6,13 +6,18 @@
 
 #include "CPlayScene.h"
 
-#include"CTitleObjectScript.h"
+#include "CTitleObjectScript.h"
+#include "CTitleBrotato.h"
 
 #include "Object.h"
 
 void CTitleScene::OnCreate(CAPIEngine* tEngine)
 {
 	CScene::OnCreate(tEngine);
+
+
+
+
 
 	GameObject* titleMap = Instantiate<GameObject>(tEngine, eLayerType::BackGround);
 
@@ -35,6 +40,14 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 	tlMapSr->SetTexture(titleMapImg);
 
 
+
+
+
+
+
+
+
+
 	GameObject* titleMob1 = Instantiate<GameObject>(tEngine, eLayerType::BackGround);
 
 	CTexture* titleMob1Img = CResourceMgr::Find<CTexture>(L"TitleMob1");
@@ -42,16 +55,22 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 
 	CTransform* tlMob1Tr = titleMob1->GetComponent<CTransform>();
 	tlMob1Tr->SetScale(SVector2D(aspectRatioX, aspectRatioY));
-	tlMob1Tr->SetPos(SVector2D((float)(windowWidth) / 2, (float)windowHeight));
+	tlMob1Tr->SetPos(SVector2D((float)(windowWidth) / 2 - 10.0f, (float)windowHeight));
 
 	titleMob1->AddComponent<CTitleObjectScript>();
 
 	CTitleObjectScript* titleMob1Script = titleMob1->GetComponent<CTitleObjectScript>();
-	titleMob1Script->SetSwing(1.0f);
 
 	CSpriteRenderer* tlMob1Sr = titleMob1->GetComponent<CSpriteRenderer>();
 	titleMob1->SetAnchorPoint(titleMob1Img->GetWidth(), titleMob1Img->GetHeight(), tlMob1Tr->GetScale(), titleMob1->GetSize());
 	tlMob1Sr->SetTexture(titleMob1Img);
+
+
+
+
+
+
+
 
 
 	GameObject* titleMob3 = Instantiate<GameObject>(tEngine, eLayerType::BackGround);
@@ -63,10 +82,14 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 	tlMob3Tr->SetScale(SVector2D(aspectRatioX, aspectRatioY));
 	tlMob3Tr->SetPos(SVector2D((float)(windowWidth) / 2, (float)windowHeight));
 
-
 	CSpriteRenderer* tlMob3Sr = titleMob3->GetComponent<CSpriteRenderer>();
 	titleMob3->SetAnchorPoint(titleMob3Img->GetWidth(), titleMob3Img->GetHeight(), tlMob3Tr->GetScale(), titleMob3->GetSize());
 	tlMob3Sr->SetTexture(titleMob3Img);
+
+
+
+
+
 
 
 	GameObject* titleMob2 = Instantiate<GameObject>(tEngine, eLayerType::BackGround);
@@ -76,16 +99,22 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 
 	CTransform* tlMob2Tr = titleMob2->GetComponent<CTransform>();
 	tlMob2Tr->SetScale(SVector2D(aspectRatioX, aspectRatioY));
-	tlMob2Tr->SetPos(SVector2D((float)(windowWidth) / 2, (float)windowHeight));
+	tlMob2Tr->SetPos(SVector2D((float)(windowWidth) / 2 + 10.0f, (float)windowHeight));
 
-	titleMob2->AddComponent<CTitleObjectScript>();
+	CTitleObjectScript* mob2OS = titleMob2->AddComponent<CTitleObjectScript>();
+	mob2OS->SetSpeed(-1.0f);
 
 	CTitleObjectScript* titleMob2Script = titleMob2->GetComponent<CTitleObjectScript>();
-	titleMob2Script->SetSwing(-1.0f);
 
 	CSpriteRenderer* tlMob2Sr = titleMob2->GetComponent<CSpriteRenderer>();
 	titleMob2->SetAnchorPoint(titleMob2Img->GetWidth(), titleMob2Img->GetHeight(), tlMob2Tr->GetScale(), titleMob2->GetSize());
 	tlMob2Sr->SetTexture(titleMob2Img);
+
+
+
+
+
+
 
 
 	GameObject* titleBrotato = Instantiate<GameObject>(tEngine, eLayerType::BackGround);
@@ -98,14 +127,22 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 	aspectRatioX = (float)windowWidth / titleBrotatoImg->GetWidth();
 	aspectRatioY = (float)windowHeight / titleBrotatoImg->GetHeight();
 
-	titleBrotatoTr->SetScale(SVector2D(aspectRatioX, aspectRatioY));
 	titleBrotatoTr->SetPos(SVector2D(windowWidth / 2, 5 * windowHeight / 6));
 
 	CSpriteRenderer* titleBrotatoSr = titleBrotato->GetComponent<CSpriteRenderer>();
-	titleBrotato->SetSize(SVector2D(0.3f, 0.3f));
+	titleBrotato->SetSize(SVector2D(0.3f * aspectRatioX, 0.3f * aspectRatioY));
 	titleBrotato->SetAnchorPoint(titleBrotatoImg->GetWidth(), titleBrotatoImg->GetHeight(), titleBrotatoTr->GetScale(), titleBrotato->GetSize());
 	titleBrotatoSr->SetTexture(titleBrotatoImg);
+
+	titleBrotato->AddComponent<CTitleBrotato>();
+
 	
+
+
+
+
+
+
 
 	GameObject* titleLogo = Instantiate<GameObject>(tEngine, eLayerType::BackGround);
 
@@ -126,6 +163,12 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 	titleLogoSr->SetTexture(titleLogoImg);
 
 	// 최종적 : x = (titleLogoImg->GetWidth() * titleLogoTr->GetScale().mX * titleLogo->GetSize().mX), y 도 동일
+
+
+
+
+
+
 
 
 	GameObject* titleLight = Instantiate<GameObject>(tEngine, eLayerType::BackGround);
@@ -166,12 +209,12 @@ void CTitleScene::OnEnter()
 {
 	CScene::OnEnter();
 	CSceneMgr::SetDontDestroyOnLoad(false);
-	CUIMgr::Push(eUIType::Button);
+	CUIMgr::Push(eUIType::StartButton);
 }
 
 void CTitleScene::OnExit()
 {
-	CUIMgr::Pop(eUIType::Button);
+	CUIMgr::Pop(eUIType::StartButton);
 	CScene::OnExit();
 	CSceneMgr::SetDontDestroyOnLoad(true);
 }

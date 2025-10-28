@@ -61,6 +61,18 @@
     <Filter Include="Scripts\Enemy\BabyAlien">
       <UniqueIdentifier>{7b72d28e-168f-4992-a79b-abe585eea0b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\Weapon">
+      <UniqueIdentifier>{072fc340-3dc9-4987-b208-27b5a1a57c4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Weapon\MeleeWeapon">
+      <UniqueIdentifier>{25bfcf32-711a-4c1a-9cba-d5aefdb6f1f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Weapon\RangedWeapon">
+      <UniqueIdentifier>{46362827-f206-4e1a-b3b7-ba90bbc71e37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Weapon\RangedWeapon\Bullet">
+      <UniqueIdentifier>{46f511ab-25e1-40e2-9ba6-8a6e05967a2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -135,6 +147,15 @@
     <ClCompile Include="CBabyAlienScript.cpp">
       <Filter>Scripts\Enemy\BabyAlien</Filter>
     </ClCompile>
+    <ClCompile Include="CWeapon.cpp">
+      <Filter>Objects\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="CBullet.cpp">
+      <Filter>Objects\Weapon\RangedWeapon\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CTitleBrotato.cpp">
+      <Filter>Scripts\TitleObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -208,6 +229,15 @@
     </ClInclude>
     <ClInclude Include="CBabyAlienScript.h">
       <Filter>Scripts\Enemy\BabyAlien</Filter>
+    </ClInclude>
+    <ClInclude Include="CWeapon.h">
+      <Filter>Objects\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="CBullet.h">
+      <Filter>Objects\Weapon\RangedWeapon\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CTitleBrotato.h">
+      <Filter>Scripts\TitleObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

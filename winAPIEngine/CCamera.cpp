@@ -1,6 +1,8 @@
 #include "CCamera.h"
-#include "CTransform.h"
 #include "GameObject.h"
+
+#include "CCollider.h"
+#include "CTransform.h"
 
 void CCamera::OnCreate()
 {
@@ -13,8 +15,10 @@ void CCamera::OnDestroy()
 void CCamera::OnUpdate(float tDeltaTime)
 {
 	if (mTarget != nullptr) {
-		CTransform* tr = mTarget->GetComponent<CTransform>();
-		mLookPosition = tr->GetPos();
+		CTransform* targetTr = mTarget->GetComponent<CTransform>();
+		CCollider* targetCollider = mTarget->GetComponent<CCollider>();
+
+		mLookPosition = targetTr->GetPos() + targetCollider->GetOffset();
 	}
 	else {
 		CTransform* cameraTr = GetOwner()->GetComponent<CTransform>();

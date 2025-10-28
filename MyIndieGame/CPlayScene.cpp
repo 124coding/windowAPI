@@ -49,11 +49,11 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 
 
-	mPlayer = Instantiate<CPlayer>(tEngine, eLayerType::Player, SVector2D(windowWidth / 2, windowHeight / 2));
+	mPlayer = Instantiate<CPlayer>(tEngine, eLayerType::Player, SVector2D(windowWidth / 2, windowHeight / 2 + 55.0f));
 	// DontDestroyOnLoad(mPlayer);
 
 	// mPlayer->AddComponent<CRigidbody>();
-	mPlayer->AddComponent<CAudioListner>();
+	// mPlayer->AddComponent<CAudioListner>();
 
 	CCircleCollider2D* cPlCollider = mPlayer->AddComponent<CCircleCollider2D>();
 	cPlCollider->SetSize(SVector2D(0.45f, 0.45f));
@@ -70,8 +70,6 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	CAnimator* plAnim = mPlayer->AddComponent<CAnimator>();
 	CSpriteRenderer* plSr = mPlayer->AddComponent<CSpriteRenderer>();
 	plSr->SetTexture(plImg);
-
-	// plAnim->GetCompleteEvent(L"FrontGiveWater");
 
 
 
@@ -155,6 +153,7 @@ void CPlayScene::Render(HDC tHDC)
 void CPlayScene::OnEnter()
 {
 	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Enemy, true);
+	CCollisionMgr::CollisionLayerCheck(eLayerType::Weapon, eLayerType::Enemy, true);
 
 	CUIMgr::Push(eUIType::HPBar);
 	dynamic_cast<CUIHPBar*>(CUIMgr::FindUI(eUIType::HPBar))->SetPlayer(mPlayer);

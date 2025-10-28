@@ -15,9 +15,9 @@ void CTitleObjectScript::OnDestroy()
 void CTitleObjectScript::OnUpdate(float tDeltaTime)
 {
 
-	mRadian += tDeltaTime;
+	mTotalTime += tDeltaTime;
 
-	mRegularVelocity = SVector2D(mSwing * cosf(mRadian), 0.0f);
+	mRegularVelocity = SVector2D(mSpeed * sin(mTotalTime), 0.0f);
 
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 

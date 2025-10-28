@@ -2,12 +2,12 @@
 
 #include "CScript.h"
 
-class CTitleObjectScript : public CScript
+class CTitleBrotato : public CScript
 {
 public:
 
-	CTitleObjectScript() {}
-	~CTitleObjectScript() {}
+	CTitleBrotato() {}
+	~CTitleBrotato() {}
 
 	void OnCreate() override;
 	void OnDestroy() override;
@@ -15,14 +15,9 @@ public:
 	void OnLateUpdate(float tDeltaTime) override;
 	void Render(HDC tHDC) override;
 
-	void SetSpeed(float tSpeed) {
-		this->mSpeed = tSpeed;
-	}
-
 private:
-	SVector2D mRegularVelocity = SVector2D(0.0f, 0.0f);
 	float mTotalTime = 0.0f;
-	float mSpeed = 1.0f;
-	float mSquashMagnitude = 0.2f;
+	float mBobbingSpeed = 1.0f;
+	float mSquashMagnitude = 0.1f;
 };
 

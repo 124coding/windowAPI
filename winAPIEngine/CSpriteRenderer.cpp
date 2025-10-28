@@ -1,6 +1,8 @@
 #include "CSpriteRenderer.h"
 #include "GameObject.h"
 
+#include "CSceneMgr.h"
+
 #include "CTransform.h"
 
 #include "CRenderer.h"
@@ -70,11 +72,18 @@ void CSpriteRenderer::Render(HDC tHDC)
 
 		Gdiplus::Graphics graphics(tHDC);
 
-		float a = GetOwner()->GetSize().mX * scale.mX;
-
 		graphics.TranslateTransform(pos.mX, pos.mY);
 		graphics.ScaleTransform(GetOwner()->GetSize().mX * scale.mX, GetOwner()->GetSize().mY * scale.mY);
 		graphics.RotateTransform(rot);
+
+		if (tr->GetVelocity().mX < 0 && !mFlipImage && CSceneMgr::GetActiveScene()->GetName() == L"PlayScene") {
+			mTexture->GetImage()->RotateFlip(Gdiplus::RotateNoneFlipX);
+			mFlipImage = true;
+		}
+		else if (tr->GetVelocity().mX > 0 && mFlipImage && CSceneMgr::GetActiveScene()->GetName() == L"PlayScene") {
+			mTexture->GetImage()->RotateFlip(Gdiplus::RotateNoneFlipX);
+			mFlipImage = false;
+		}
 
 		float originalWidth = mTexture->GetWidth();
 		float originalHeight = mTexture->GetHeight();
