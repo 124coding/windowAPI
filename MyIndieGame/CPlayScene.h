@@ -1,7 +1,10 @@
 #pragma once
 #include "CScene.h"
 
+#include <vector>
+
 class CPlayer;
+class CEnemy;
 
 class CPlayScene : public CScene
 {
@@ -27,5 +30,6 @@ public:
 
 private:
 	CPlayer* mPlayer;
+	std::vector<CEnemy*> mEnemies;
 };
 

@@ -6,6 +6,7 @@
 #include "CTransform.h"
 #include "CAnimator.h"
 #include "CCollider.h"
+#include "CSpriteRenderer.h"
 
 void CPlayerScript::OnCreate()
 {
@@ -106,6 +107,15 @@ void CPlayerScript::Translate(CTransform* tr)
 	}
 
 	tr->SetVelocity(currentVelocity * dynamic_cast<CPlayer*>(GetOwner())->GetSpeed());
+
+	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
+
+	if (tr->GetVelocity().mX < 0) {
+		sr->SetFlipX(true);
+	}
+	else if (tr->GetVelocity().mX > 0) {
+		sr->SetFlipX(false);
+	}
 }
 
 //void CPlayerScript::GiveWater()

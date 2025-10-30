@@ -26,8 +26,22 @@ public:
 		this->mTexture = tTexture;
 	}
 
+	CTexture* GetTexture() {
+		return this->mTexture;
+	}
+
+	void SetFlipX(bool tFlipX) {
+		this->mbFlipX = tFlipX;
+	}
+
+	void SetFlipY(bool tFlipY) {
+		this->mbFlipY = tFlipY;
+	}
+
 private:
 	CTexture* mTexture;
-	bool mFlipImage = false;
+
+	bool mbFlipX = false;
+	bool mbFlipY = false;
 };
 

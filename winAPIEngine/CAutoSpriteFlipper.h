@@ -1,13 +1,15 @@
 #pragma once
 
-#include "CScript.h"
+#include "CComponent.h"
 
-class CTitleBrotato : public CScript
+class CAutoSpriteFlipper : public CComponent
 {
 public:
+	CAutoSpriteFlipper() :
+		CComponent(eComponentType::AutoSpriteFlipper){
+	}
 
-	CTitleBrotato() {}
-	~CTitleBrotato() {}
+	virtual ~CAutoSpriteFlipper() {}
 
 	void OnCreate() override;
 	void OnDestroy() override;
@@ -16,5 +18,6 @@ public:
 	void Render(HDC tHDC) override;
 
 private:
+	bool mFlipImage = false;
 };
 

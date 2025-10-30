@@ -64,14 +64,20 @@
     <Filter Include="Objects\Weapon">
       <UniqueIdentifier>{072fc340-3dc9-4987-b208-27b5a1a57c4e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Objects\Weapon\MeleeWeapon">
-      <UniqueIdentifier>{25bfcf32-711a-4c1a-9cba-d5aefdb6f1f1}</UniqueIdentifier>
+    <Filter Include="Scripts\Weapon">
+      <UniqueIdentifier>{613b13ee-3bfd-4d77-a2eb-30a801854da8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Objects\Weapon\RangedWeapon">
-      <UniqueIdentifier>{46362827-f206-4e1a-b3b7-ba90bbc71e37}</UniqueIdentifier>
+    <Filter Include="Scripts\Weapon\MeleeWeapon">
+      <UniqueIdentifier>{5cbc32ab-e5b7-46be-82c7-4116a60827e7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Objects\Weapon\RangedWeapon\Bullet">
+    <Filter Include="Scripts\Weapon\RangedWeapon">
+      <UniqueIdentifier>{ba1ef310-83b4-4e7f-87d1-0b849b953a07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Weapon\Bullet">
       <UniqueIdentifier>{46f511ab-25e1-40e2-9ba6-8a6e05967a2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Weapon\RangedWeapon\Bullet">
+      <UniqueIdentifier>{f3597cb1-b34d-424a-8052-7764cc0cb57e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -151,10 +157,22 @@
       <Filter>Objects\Weapon</Filter>
     </ClCompile>
     <ClCompile Include="CBullet.cpp">
-      <Filter>Objects\Weapon\RangedWeapon\Bullet</Filter>
+      <Filter>Objects\Weapon\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="CTitleBrotato.cpp">
       <Filter>Scripts\TitleObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeleeWeaponScript.cpp">
+      <Filter>Scripts\Weapon\MeleeWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="CRangedWeaponScript.cpp">
+      <Filter>Scripts\Weapon\RangedWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="CWeaponScript.cpp">
+      <Filter>Scripts\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletScript.cpp">
+      <Filter>Scripts\Weapon\RangedWeapon\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -234,10 +252,22 @@
       <Filter>Objects\Weapon</Filter>
     </ClInclude>
     <ClInclude Include="CBullet.h">
-      <Filter>Objects\Weapon\RangedWeapon\Bullet</Filter>
+      <Filter>Objects\Weapon\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="CTitleBrotato.h">
       <Filter>Scripts\TitleObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CMeleeWeaponScript.h">
+      <Filter>Scripts\Weapon\MeleeWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="CRangedWeaponScript.h">
+      <Filter>Scripts\Weapon\RangedWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="CWeaponScript.h">
+      <Filter>Scripts\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletScript.h">
+      <Filter>Scripts\Weapon\RangedWeapon\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -38,7 +38,6 @@ public:
 	virtual void OnCollisionExit(float tDeltaTime, CCollider* tOther) override;
 
 	virtual void ButtDamageToPlayer(CPlayer* tPlayer);
-	virtual void Bounce();
 
 public:
 	void SetTarget(GameObject* tTarget) {
@@ -58,9 +57,5 @@ private:
 	eState mState;
 	CAnimator* mAnimator;
 	GameObject* mTarget;
-
-	float mTotalTime = 0.0f;
-	float mBobbingSpeed = 1.0f;
-	float mSquashMagnitude = 0.2f;
 };
 

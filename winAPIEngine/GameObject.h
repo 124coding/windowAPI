@@ -88,8 +88,8 @@ public:
 		return this->mSize;
 	}
 
-	void SetAnchorPoint(float tTextureWidth, float tTextureHeight, SVector2D tScale, SVector2D tSize) {
-		this->mAnchorPoint = SVector2D((tTextureWidth * tScale.mX * tSize.mX) / 2, tTextureHeight * tScale.mY * tSize.mY);
+	void SetAnchorPoint(float tTextureWidth, float tTextureHeight, SVector2D tScale, SVector2D tSize, SVector2D tOffset) {
+		this->mAnchorPoint = SVector2D((tTextureWidth * tScale.mX * tSize.mX) / 2 + tOffset.mX, tTextureHeight * tScale.mY * tSize.mY + tOffset.mY);
 	}
 
 	SVector2D GetAnchorPoint() {

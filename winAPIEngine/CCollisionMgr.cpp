@@ -129,6 +129,11 @@ bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 	SVector2D leftSize = SVector2D(tLeft->GetSize().mX * tLeft->GetOwner()->GetAnchorPoint().mX * 2, tLeft->GetSize().mX * tLeft->GetOwner()->GetAnchorPoint().mY);
 	SVector2D rightSize = SVector2D(tRight->GetSize().mX * tRight->GetOwner()->GetAnchorPoint().mX * 2, tRight->GetSize().mX * tRight->GetOwner()->GetAnchorPoint().mY);
 
+	SVector2D leftCenterPos = SVector2D(leftPos.mX, leftPos.mY - leftSize.mY / 2.0f);
+	SVector2D rightCenterPos = SVector2D(rightPos.mX, rightPos.mY - rightSize.mY / 2.0f);
+
+	float distance = (leftCenterPos - rightCenterPos).Length();
+
 	// AABB Ãæµ¹
 
 	eColliderType leftType = tLeft->GetColliderType();
@@ -144,11 +149,6 @@ bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 		}
 	}
 	else if (leftType == eColliderType::Circle2D && rightType == eColliderType::Circle2D) {// circle - circle
-
-		SVector2D leftCirclePos = SVector2D(leftPos.mX, leftPos.mY - leftSize.mY / 2.0f);
-		SVector2D rightCirclePos = SVector2D(rightPos.mX, rightPos.mY - rightSize.mY / 2.0f);
-
-		float distance = (leftCirclePos - rightCirclePos).Length();
 
 		if (distance <= (leftSize.mX / 2.0f + rightSize.mX / 2.0f)) {
 			return true;
@@ -190,80 +190,6 @@ bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 		if (distanceSquared < radiusSquared) {
 			return true;
 		}
-
-		/*if (leftType == eColliderType::Circle2D) {
-			SVector2D leftCirclePos = leftPos;
-
-			if (fabs(leftCirclePos.mX - rightPos.mX) < fabs(leftSize.mX / 2.0f + rightSize.mX / 2.0f) &&
-				fabs(leftCirclePos.mY - rightPos.mY) < fabs(leftSize.mY / 2.0f + rightSize.mY / 2.0f)) {
-
-				SVector2D leftTopVertex = SVector2D(rightPos.mX - rightSize.mX / 2.0f, rightPos.mY - rightSize.mY / 2.0f);
-				SVector2D leftBottomVertex = SVector2D(rightPos.mX - rightSize.mX / 2.0f, rightPos.mY + rightSize.mY / 2.0f);
-				SVector2D rightTopVertex = SVector2D(rightPos.mX + rightSize.mX / 2.0f, rightPos.mY - rightSize.mY / 2.0f);
-				SVector2D rightBottomVertex = SVector2D(rightPos.mX + rightSize.mX / 2.0f, rightPos.mY + rightSize.mY / 2.0f);
-
-				if (leftCirclePos.mX < leftTopVertex.mX && leftCirclePos.mY < leftTopVertex.mY) {
-					if ((leftCirclePos - leftTopVertex).Length() < leftSize.mX / 2.0f) {
-						return true;
-					}
-				}
-				else if (leftCirclePos.mX < leftBottomVertex.mX && leftCirclePos.mY > leftBottomVertex.mY) {
-					if ((leftCirclePos - leftBottomVertex).Length() < leftSize.mX / 2.0f) {
-						return true;
-					}
-				}
-				else if (leftCirclePos.mX > rightTopVertex.mX && leftCirclePos.mY < rightTopVertex.mY) {
-					if ((leftCirclePos - rightTopVertex).Length() < leftSize.mX / 2.0f) {
-						return true;
-					}
-				}
-				else if (leftCirclePos.mX > rightBottomVertex.mX && leftCirclePos.mY > rightBottomVertex.mY) {
-					if ((leftCirclePos - rightBottomVertex).Length() < leftSize.mX / 2.0f) {
-						return true;
-					}
-				}
-				else {
-					return true;
-				}
-			}
-
-		}
-		else {
-			SVector2D rightCirclePos = rightPos;
-
-			if (fabs(rightCirclePos.mX - leftPos.mX) < fabs(rightSize.mX / 2.0f + leftSize.mX / 2.0f) &&
-				fabs(rightCirclePos.mY - leftPos.mY) < fabs(rightSize.mY / 2.0f + leftSize.mY / 2.0f)) {
-
-				SVector2D leftTopVertex = SVector2D(leftPos.mX - leftSize.mX / 2.0f, leftPos.mY - leftSize.mY / 2.0f);
-				SVector2D leftBottomVertex = SVector2D(leftPos.mX - leftSize.mX / 2.0f, leftPos.mY + leftSize.mY / 2.0f);
-				SVector2D rightTopVertex = SVector2D(leftPos.mX + leftSize.mX / 2.0f, leftPos.mY - leftSize.mY / 2.0f);
-				SVector2D rightBottomVertex = SVector2D(leftPos.mX + leftSize.mX / 2.0f, leftPos.mY + leftSize.mY / 2.0f);
-
-				if (rightCirclePos.mX < leftTopVertex.mX && rightCirclePos.mY < leftTopVertex.mY) {
-					if ((rightCirclePos - leftTopVertex).Length() < rightSize.mX / 2.0f) {
-						return true;
-					}
-				}
-				else if (rightCirclePos.mX < leftBottomVertex.mX && rightCirclePos.mY > leftBottomVertex.mY) {
-					if ((rightCirclePos - leftBottomVertex).Length() < rightSize.mX / 2.0f) {
-						return true;
-					}
-				}
-				else if (rightCirclePos.mX > rightTopVertex.mX && rightCirclePos.mY < rightTopVertex.mY) {
-					if ((rightCirclePos - rightTopVertex).Length() < rightSize.mX / 2.0f) {
-						return true;
-					}
-				}
-				else if (rightCirclePos.mX > rightBottomVertex.mX && rightCirclePos.mY > rightBottomVertex.mY) {
-					if ((rightCirclePos - rightBottomVertex).Length() < rightSize.mX / 2.0f) {
-						return true;
-					}
-				}
-				else {
-					return true;
-				}
-			}
-		}*/
 	}
 	return false;
 }

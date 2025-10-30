@@ -1,6 +1,8 @@
 #include "CScript.h"
 
-#include "CCollider.h"
+#include "GameObject.h"
+
+#include "CTransform.h"
 
 void CScript::OnCreate()
 {
@@ -32,4 +34,16 @@ void CScript::OnCollisionStay(float tDeltaTime, CCollider* tOther) {
 
 void CScript::OnCollisionExit(float tDeltaTime, CCollider* tOther) {
 
+}
+
+void CScript::Bounce() {
+	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+
+	float bobbingFactor = fabs(sin(mTotalTime * mBobbingSpeed));
+
+	float scaleY = 1.0f - (bobbingFactor * mSquashMagnitude);
+
+	float scaleX = 1.0f + (bobbingFactor * mSquashMagnitude);
+
+	tr->SetScale(SVector2D(scaleX, scaleY));
 }

@@ -37,6 +37,12 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 {
 	// LoadMap(tEngine, L"..\\resources\\Maps\\Here");
 
+	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Enemy, true);
+	CCollisionMgr::CollisionLayerCheck(eLayerType::MeleeWeapon, eLayerType::Enemy, true);
+	CCollisionMgr::CollisionLayerCheck(eLayerType::Bullet, eLayerType::Enemy, true);
+
+
+
 	GameObject* camera = Instantiate<GameObject>(tEngine, eLayerType::None);
 	CCamera* cameraComp = camera->AddComponent<CCamera>();
 
@@ -56,16 +62,16 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	// mPlayer->AddComponent<CAudioListner>();
 
 	CCircleCollider2D* cPlCollider = mPlayer->AddComponent<CCircleCollider2D>();
-	cPlCollider->SetSize(SVector2D(0.45f, 0.45f));
-	cPlCollider->SetOffset(SVector2D(0.0f, -55.0f));
+	cPlCollider->SetSize(SVector2D(0.40f, 0.40f));
+	cPlCollider->SetOffset(SVector2D(0.0f, -45.0f));
 
 	cameraComp->SetTarget(mPlayer);
 
 	CTexture* plImg = CResourceMgr::Find<CTexture>(L"PlayerBase");
 
 	CTransform* plTr = mPlayer->GetComponent<CTransform>();
-	mPlayer->SetSize(SVector2D(0.25f, 0.25f));
-	mPlayer->SetAnchorPoint(plImg->GetWidth(), plImg->GetHeight(), mPlayer->GetSize(), plTr->GetScale());
+	mPlayer->SetSize(SVector2D(0.20f, 0.20f));
+	mPlayer->SetAnchorPoint(plImg->GetWidth(), plImg->GetHeight(), mPlayer->GetSize(), plTr->GetScale(), SVector2D());
 
 	CAnimator* plAnim = mPlayer->AddComponent<CAnimator>();
 	CSpriteRenderer* plSr = mPlayer->AddComponent<CSpriteRenderer>();
@@ -95,8 +101,8 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 	CTransform* babyAlienTr = Enemy->GetComponent<CTransform>();
 
-	Enemy->SetSize(SVector2D(0.08f, 0.08f));
-	Enemy->SetAnchorPoint(babyAlienImg->GetWidth(), babyAlienImg->GetHeight(), babyAlienTr->GetScale(), Enemy->GetSize());
+	Enemy->SetSize(SVector2D(0.05f, 0.05f));
+	Enemy->SetAnchorPoint(babyAlienImg->GetWidth(), babyAlienImg->GetHeight(), babyAlienTr->GetScale(), Enemy->GetSize(), SVector2D());
 
 
 
@@ -152,9 +158,6 @@ void CPlayScene::Render(HDC tHDC)
 
 void CPlayScene::OnEnter()
 {
-	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Enemy, true);
-	CCollisionMgr::CollisionLayerCheck(eLayerType::Weapon, eLayerType::Enemy, true);
-
 	CUIMgr::Push(eUIType::HPBar);
 	dynamic_cast<CUIHPBar*>(CUIMgr::FindUI(eUIType::HPBar))->SetPlayer(mPlayer);
 

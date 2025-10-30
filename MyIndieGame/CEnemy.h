@@ -14,7 +14,6 @@ public:
 	void OnLateUpdate(float tDeltaTime) override;
 	void Render(HDC tHDC) override;
 
-// HP
 public:
 	void DecreaseHP(int tDecreaseAmount);
 
@@ -26,8 +25,6 @@ public:
 		return this->mHP;
 	}
 
-// ButtDamage
-public:
 	void SetButtDamage(int tButtDamage) {
 		this->mButtDamage = tButtDamage;
 	}
@@ -36,8 +33,6 @@ public:
 		return this->mButtDamage;
 	}
 
-// Speed
-public:
 	void SetSpeed(float tSpeed) {
 		this->mSpeed = tSpeed;
 	}
@@ -46,11 +41,21 @@ public:
 		return this->mSpeed;
 	}
 
+	void SetDistanceToPlayer(float tDistance) {
+		this->mDistanceToPlayer = tDistance;
+	}
+
+	float GetDistanceToPlayer() {
+		return this->mDistanceToPlayer;
+	}
+
 private:
 	int mHP = 0;
 
 	int mButtDamage = 0;
 
 	float mSpeed = 0.0f;
+
+	float mDistanceToPlayer = 9999.9f;
 };
 

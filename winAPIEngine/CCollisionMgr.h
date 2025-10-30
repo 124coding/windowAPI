@@ -4,6 +4,7 @@
 
 #include "CCollider.h"
 
+#include <functional>
 #include <unordered_map>
 #include <bitset>
 

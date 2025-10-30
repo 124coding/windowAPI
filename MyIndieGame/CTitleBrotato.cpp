@@ -6,6 +6,8 @@
 
 void CTitleBrotato::OnCreate()
 {
+	SetBobbingSpeed(1.0f);
+	SetSquashMagnitude(0.1f);
 }
 
 void CTitleBrotato::OnDestroy()
@@ -16,15 +18,7 @@ void CTitleBrotato::OnUpdate(float tDeltaTime)
 {
 	mTotalTime += tDeltaTime;
 
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
-
-	float bobbingFactor = fabs(sin(mTotalTime * mBobbingSpeed));
-
-	float scaleY = 1.0f - (bobbingFactor * mSquashMagnitude);
-
-	float scaleX = 1.0f + (bobbingFactor * mSquashMagnitude);
-
-	tr->SetScale(SVector2D(scaleX, scaleY));
+	Bounce();
 }
 
 void CTitleBrotato::OnLateUpdate(float tDeltaTime)

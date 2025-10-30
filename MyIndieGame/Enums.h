@@ -6,6 +6,7 @@ enum class eComponentType {
 	Rigidbody,
 	Script,
 	SpriteRenderer,
+	AutoSpriteFlipper,
 	TileRenderer,
 	Animator,
 	Camera,
@@ -20,7 +21,9 @@ enum class eLayerType {
 	Tile,
 	Enemy,
 	Player,
-	Weapon,
+	Bullet,
+	MeleeWeapon,
+	RangedWeapon,
 	Particle,
 	MAX = 16
 };

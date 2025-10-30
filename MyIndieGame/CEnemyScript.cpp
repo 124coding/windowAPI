@@ -6,12 +6,14 @@
 #include "CTransform.h"
 #include "CAnimator.h"
 #include "CCollider.h"
+#include "CSpriteRenderer.h"
 
 #include "Object.h"
 
 void CEnemyScript::OnCreate()
 {
-
+	SetBobbingSpeed(1.0f);
+	SetSquashMagnitude(0.2f);
 }
 
 void CEnemyScript::OnDestroy()
@@ -22,9 +24,24 @@ void CEnemyScript::OnUpdate(float tDeltaTime)
 {
 	mTotalTime += tDeltaTime;
 
+	CTransform* plTr = mTarget->GetComponent<CTransform>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+
+	dynamic_cast<CEnemy*>(GetOwner())->SetDistanceToPlayer((plTr->GetPos() - tr->GetPos()).Length());
+
+	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
+
+	if (tr->GetVelocity().mX < 0) {
+		sr->SetFlipX(true);
+	}
+	else if (tr->GetVelocity().mX > 0) {
+		sr->SetFlipX(false);
+	}
+
 	if (mAnimator == nullptr) {
 		mAnimator = GetOwner()->GetComponent<CAnimator>();
 	}
+
 	switch (mState) {
 	case eState::Walk:
 		Bounce();
@@ -72,16 +89,4 @@ void CEnemyScript::ButtDamageToPlayer(CPlayer* tPlayer)
 		tPlayer->DecreaseHP(dynamic_cast<CEnemy*>(this->GetOwner())->GetButtDamage());
 		tPlayer->SetCanCollideEnemy(false);
 	}
-}
-
-void CEnemyScript::Bounce() {
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
-
-	float bobbingFactor = fabs(sin(mTotalTime * mBobbingSpeed));
-
-	float scaleY = 1.0f - (bobbingFactor * mSquashMagnitude);
-
-	float scaleX = 1.0f + (bobbingFactor * mSquashMagnitude);
-
-	tr->SetScale(SVector2D(scaleX, scaleY));
 }

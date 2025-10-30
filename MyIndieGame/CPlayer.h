@@ -3,6 +3,10 @@
 
 #include "CPlayerScript.h"
 
+#include <vector>
+
+class CWeapon;
+
 class CPlayer :public GameObject
 {
 public:
@@ -84,6 +88,23 @@ public:
 		this->mBodyTexture = tTexture;
 	}
 
+	bool PlusWeapon(CWeapon* tWeapon) {
+		if (mWeapons.size() < mWeaponCount) {
+			mWeapons.push_back(tWeapon);
+			return true;
+		}
+
+		return false;
+	}
+
+	std::vector<CWeapon*> GetWeapons() {
+		return this->mWeapons;
+	}
+
+	void SetWeaponCount(int tCount) {
+		this->mWeaponCount = tCount;
+	}
+
 private:
 	int mHP;
 	int mMaxHP;
@@ -95,6 +116,9 @@ private:
 
 	float mGracePeriod = 1.0f;
 	bool mCanCollideEnemy = true;
+
+	std::vector<CWeapon*> mWeapons;
+	int mWeaponCount = 6;
 
 	CTexture* mEyesTexture = nullptr;
 	CTexture* mMouthTexture = nullptr;

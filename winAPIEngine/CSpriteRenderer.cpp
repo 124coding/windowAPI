@@ -38,6 +38,17 @@ void CSpriteRenderer::Render(HDC tHDC)
 	float rot = tr->GetRot();
 	SVector2D scale = tr->GetScale();
 
+	float fScaleX = GetOwner()->GetSize().mX * scale.mX;
+	float fScaleY = GetOwner()->GetSize().mY * scale.mY;
+
+	if (mbFlipX) {
+		fScaleX *= -1.0f;
+	}
+
+	if (mbFlipY) {
+		fScaleY *= -1.0f;
+	}
+
 	pos = mainCamera->CaluatePosition(pos);
 
 	if (mTexture->GetTextureType() == CTexture::eTextureType::Bmp) {
@@ -50,14 +61,14 @@ void CSpriteRenderer::Render(HDC tHDC)
 
 			func.SourceConstantAlpha = 255;
 			AlphaBlend(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX * scale.mX, pos.mY - GetOwner()->GetAnchorPoint().mY * scale.mY,
-				mTexture->GetWidth() * GetOwner()->GetSize().mX * scale.mX, mTexture->GetHeight() * GetOwner()->GetSize().mY * scale.mY,
+				mTexture->GetWidth() * fScaleX, mTexture->GetHeight() * fScaleY,
 				mTexture->GetDCMem(),
 				0, 0,
 				mTexture->GetWidth(), mTexture->GetHeight(), func);
 		}
 		else {
 			TransparentBlt(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX * scale.mX, pos.mY - GetOwner()->GetAnchorPoint().mY * scale.mY,
-				mTexture->GetWidth() * GetOwner()->GetSize().mX * scale.mX, mTexture->GetHeight() * GetOwner()->GetSize().mY * scale.mY,
+				mTexture->GetWidth() * fScaleX, mTexture->GetHeight() * fScaleY,
 				mTexture->GetDCMem(),
 				0, 0,
 				mTexture->GetWidth(), mTexture->GetHeight(),
@@ -73,17 +84,8 @@ void CSpriteRenderer::Render(HDC tHDC)
 		Gdiplus::Graphics graphics(tHDC);
 
 		graphics.TranslateTransform(pos.mX, pos.mY);
-		graphics.ScaleTransform(GetOwner()->GetSize().mX * scale.mX, GetOwner()->GetSize().mY * scale.mY);
+		graphics.ScaleTransform(fScaleX, fScaleY);
 		graphics.RotateTransform(rot);
-
-		if (tr->GetVelocity().mX < 0 && !mFlipImage && CSceneMgr::GetActiveScene()->GetName() == L"PlayScene") {
-			mTexture->GetImage()->RotateFlip(Gdiplus::RotateNoneFlipX);
-			mFlipImage = true;
-		}
-		else if (tr->GetVelocity().mX > 0 && mFlipImage && CSceneMgr::GetActiveScene()->GetName() == L"PlayScene") {
-			mTexture->GetImage()->RotateFlip(Gdiplus::RotateNoneFlipX);
-			mFlipImage = false;
-		}
 
 		float originalWidth = mTexture->GetWidth();
 		float originalHeight = mTexture->GetHeight();
@@ -94,21 +96,5 @@ void CSpriteRenderer::Render(HDC tHDC)
 			originalWidth,
 			originalHeight
 		);
-
-		/*graphics.TranslateTransform(pos.mX, pos.mY);
-		graphics.RotateTransform(rot);
-		graphics.TranslateTransform(-pos.mX, -pos.mY);
-
-		graphics.DrawImage(mTexture->GetImage(), Gdiplus::Rect(
-			pos.mX - GetOwner()->GetAnchorPoint().mX, pos.mY - GetOwner()->GetAnchorPoint().mY,
-			mTexture->GetWidth() * GetOwner()->GetSize().mX * scale.mX, mTexture->GetHeight() * GetOwner()->GetSize().mY * scale.mY),
-			0, 0,
-			mTexture->GetWidth(), mTexture->GetHeight(),
-			Gdiplus::UnitPixel,
-			nullptr
-		);*/
 	}
-	// Gdiplus::Graphics graphics(tHDC);
-	// graphics.DrawImage(mImage, Gdiplus::Rect(pos.mX, pos.mY, mWidth, mHeight));
-	// Rectangle(tHDC, pos.mX, pos.mY, pos.mX + 100, pos.mY + 100);
 }

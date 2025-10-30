@@ -36,7 +36,7 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 	tlMapTr->SetPos(SVector2D((float)(windowWidth) / 2, (float)windowHeight));
 
 	CSpriteRenderer* tlMapSr = titleMap->GetComponent<CSpriteRenderer>();
-	titleMap->SetAnchorPoint(titleMapImg->GetWidth(), titleMapImg->GetHeight(), tlMapTr->GetScale(), titleMap->GetSize());
+	titleMap->SetAnchorPoint(titleMapImg->GetWidth(), titleMapImg->GetHeight(), tlMapTr->GetScale(), titleMap->GetSize(), SVector2D());
 	tlMapSr->SetTexture(titleMapImg);
 
 
@@ -62,7 +62,7 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 	CTitleObjectScript* titleMob1Script = titleMob1->GetComponent<CTitleObjectScript>();
 
 	CSpriteRenderer* tlMob1Sr = titleMob1->GetComponent<CSpriteRenderer>();
-	titleMob1->SetAnchorPoint(titleMob1Img->GetWidth(), titleMob1Img->GetHeight(), tlMob1Tr->GetScale(), titleMob1->GetSize());
+	titleMob1->SetAnchorPoint(titleMob1Img->GetWidth(), titleMob1Img->GetHeight(), tlMob1Tr->GetScale(), titleMob1->GetSize(), SVector2D());
 	tlMob1Sr->SetTexture(titleMob1Img);
 
 
@@ -83,7 +83,7 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 	tlMob3Tr->SetPos(SVector2D((float)(windowWidth) / 2, (float)windowHeight));
 
 	CSpriteRenderer* tlMob3Sr = titleMob3->GetComponent<CSpriteRenderer>();
-	titleMob3->SetAnchorPoint(titleMob3Img->GetWidth(), titleMob3Img->GetHeight(), tlMob3Tr->GetScale(), titleMob3->GetSize());
+	titleMob3->SetAnchorPoint(titleMob3Img->GetWidth(), titleMob3Img->GetHeight(), tlMob3Tr->GetScale(), titleMob3->GetSize(), SVector2D());
 	tlMob3Sr->SetTexture(titleMob3Img);
 
 
@@ -107,7 +107,7 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 	CTitleObjectScript* titleMob2Script = titleMob2->GetComponent<CTitleObjectScript>();
 
 	CSpriteRenderer* tlMob2Sr = titleMob2->GetComponent<CSpriteRenderer>();
-	titleMob2->SetAnchorPoint(titleMob2Img->GetWidth(), titleMob2Img->GetHeight(), tlMob2Tr->GetScale(), titleMob2->GetSize());
+	titleMob2->SetAnchorPoint(titleMob2Img->GetWidth(), titleMob2Img->GetHeight(), tlMob2Tr->GetScale(), titleMob2->GetSize(), SVector2D());
 	tlMob2Sr->SetTexture(titleMob2Img);
 
 
@@ -131,7 +131,7 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 
 	CSpriteRenderer* titleBrotatoSr = titleBrotato->GetComponent<CSpriteRenderer>();
 	titleBrotato->SetSize(SVector2D(0.3f * aspectRatioX, 0.3f * aspectRatioY));
-	titleBrotato->SetAnchorPoint(titleBrotatoImg->GetWidth(), titleBrotatoImg->GetHeight(), titleBrotatoTr->GetScale(), titleBrotato->GetSize());
+	titleBrotato->SetAnchorPoint(titleBrotatoImg->GetWidth(), titleBrotatoImg->GetHeight(), titleBrotatoTr->GetScale(), titleBrotato->GetSize(), SVector2D());
 	titleBrotatoSr->SetTexture(titleBrotatoImg);
 
 	titleBrotato->AddComponent<CTitleBrotato>();
@@ -159,7 +159,7 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 
 	CSpriteRenderer* titleLogoSr = titleLogo->GetComponent<CSpriteRenderer>();
 	titleLogo->SetSize(SVector2D(0.5f, 0.3f));
-	titleLogo->SetAnchorPoint(titleLogoImg->GetWidth(), titleLogoImg->GetHeight(), titleLogoTr->GetScale(), titleLogo->GetSize());
+	titleLogo->SetAnchorPoint(titleLogoImg->GetWidth(), titleLogoImg->GetHeight(), titleLogoTr->GetScale(), titleLogo->GetSize(), SVector2D());
 	titleLogoSr->SetTexture(titleLogoImg);
 
 	// 최종적 : x = (titleLogoImg->GetWidth() * titleLogoTr->GetScale().mX * titleLogo->GetSize().mX), y 도 동일
@@ -181,7 +181,7 @@ void CTitleScene::OnCreate(CAPIEngine* tEngine)
 	tlLightTr->SetPos(SVector2D((float)(windowWidth) / 2, (float)windowHeight));
 
 	CSpriteRenderer* tlLightSr = titleLight->GetComponent<CSpriteRenderer>();
-	titleLight->SetAnchorPoint(titleLightImg->GetWidth(), titleLightImg->GetHeight(), tlLightTr->GetScale(), titleLight->GetSize());
+	titleLight->SetAnchorPoint(titleLightImg->GetWidth(), titleLightImg->GetHeight(), tlLightTr->GetScale(), titleLight->GetSize(), SVector2D());
 	tlLightSr->SetTexture(titleLightImg);
 }
 

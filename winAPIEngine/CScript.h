@@ -19,7 +19,22 @@ public:
 	virtual void OnCollisionEnter(float tDeltaTime, CCollider* tOther);
 	virtual void OnCollisionStay(float tDeltaTime, CCollider* tOther);
 	virtual void OnCollisionExit(float tDeltaTime, CCollider* tOther);
-private:
 
+	virtual void Bounce();
+
+	void SetBobbingSpeed(float tBobbingSpeed) {
+		this->mBobbingSpeed = tBobbingSpeed;
+	}
+
+	void SetSquashMagnitude(float tSquashMagnitude) {
+		this->mSquashMagnitude = tSquashMagnitude;
+	}
+	
+protected:
+	float mTotalTime = 0.0f;
+
+private:
+	float mBobbingSpeed;
+	float mSquashMagnitude;
 };
 
