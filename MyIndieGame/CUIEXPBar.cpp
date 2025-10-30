@@ -1,6 +1,6 @@
 #include "CUIEXPBar.h"
 
-#include "CPlayer.h"
+#include "CPlayerScript.h"
 
 void CUIEXPBar::OnCreate()
 {
@@ -75,7 +75,7 @@ void CUIEXPBar::Render(HDC tHDC)
     SetBkMode(tHDC, TRANSPARENT);
 
     TCHAR szHPText[32];
-    _stprintf_s(szHPText, 32, TEXT("Lv: %d"), mPlayer->GetLevel());
+    _stprintf_s(szHPText, 32, TEXT("Lv: %d"), mPlayer->GetComponent<CPlayerScript>()->GetLevel());
     TextOut(tHDC, 265, 82, szHPText, _tcslen(szHPText));
 }
 

@@ -2,6 +2,8 @@
 
 #include "CUIBase.h"
 
+#include "GameObject.h"
+
 class CUIHUD : public CUIBase
 {
 public:

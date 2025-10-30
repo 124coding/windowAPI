@@ -34,6 +34,14 @@ void CPlayerScript::OnUpdate(float tDeltaTime)
 		break;
 	}
 
+	if (!mCanCollideEnemy) {
+		mGracePeriod -= tDeltaTime;
+		if (mGracePeriod <= 0) {
+			mCanCollideEnemy = true;
+			mGracePeriod = 1.0f;
+		}
+	}
+
 }
 
 void CPlayerScript::OnLateUpdate(float tDeltaTime)
@@ -106,7 +114,7 @@ void CPlayerScript::Translate(CTransform* tr)
 		currentVelocity = currentVelocity.Normalize();
 	}
 
-	tr->SetVelocity(currentVelocity * dynamic_cast<CPlayer*>(GetOwner())->GetSpeed());
+	tr->SetVelocity(currentVelocity * GetSpeed());
 
 	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
 
@@ -137,3 +145,34 @@ void CPlayerScript::OnCollisionStay(float tDeltaTime, CCollider* tOther) {
 void CPlayerScript::OnCollisionExit(float tDeltaTime, CCollider* tOther) {
 
 }
+
+void CPlayerScript::IncreaseHP(int tIncreaseAmount) {
+	mHP = mHP + tIncreaseAmount;
+
+	if (mHP > mMaxHP) {
+		mHP = mMaxHP;
+	}
+}
+
+void CPlayerScript::DecreaseHP(int tDecreaseAmount) {
+	mHP = mHP - tDecreaseAmount;
+
+	if (mHP < 0) {
+		mHP = 0;
+	}
+}
+
+void CPlayerScript::IncreaseMaxHP(int tIncreaseAmount)
+{
+	mMaxHP = mMaxHP + tIncreaseAmount;
+}
+
+void CPlayerScript::DecreaseMaxHP(int tDecreaseAmount)
+{
+	mMaxHP = mMaxHP - tDecreaseAmount;
+
+	if (mMaxHP < 0) {
+		mMaxHP = 0;
+	}
+}
+

@@ -24,11 +24,3 @@ void CEnemy::Render(HDC tHDC)
 {
 	GameObject::Render(tHDC);
 }
-
-void CEnemy::DecreaseHP(int tDecreaseAmount) {
-	mHP = mHP - tDecreaseAmount;
-
-	if (mHP < 0) {
-		mHP = 0;
-	}
-}

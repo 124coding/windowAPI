@@ -110,6 +110,11 @@ void GameEngine::LoadResources()
 
 	CResourceMgr::Load<CTexture>(this, L"SpringFloor", L"../resources/SpringFloor.bmp");
 
+
+	//Weapon
+	CResourceMgr::Load<CTexture>(this, L"Dagger", L"../resources/Sprites/Weapon/dagger.png");
+
+
 }
 
 void GameEngine::DestroyScenes()

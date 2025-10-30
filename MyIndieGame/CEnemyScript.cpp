@@ -27,7 +27,7 @@ void CEnemyScript::OnUpdate(float tDeltaTime)
 	CTransform* plTr = mTarget->GetComponent<CTransform>();
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 
-	dynamic_cast<CEnemy*>(GetOwner())->SetDistanceToPlayer((plTr->GetPos() - tr->GetPos()).Length());
+	SetDistanceToPlayer((plTr->GetPos() - tr->GetPos()).Length());
 
 	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
 
@@ -83,10 +83,18 @@ void CEnemyScript::OnCollisionExit(float tDeltaTime, CCollider* tOther)
 
 }
 
-void CEnemyScript::ButtDamageToPlayer(CPlayer* tPlayer)
+void CEnemyScript::DecreaseHP(int tDecreaseAmount) {
+	mHP = mHP - tDecreaseAmount;
+
+	if (mHP < 0) {
+		mHP = 0;
+	}
+}
+
+void CEnemyScript::ButtDamageToPlayer(GameObject* tPlayer)
 {
-	if (tPlayer->GetCanCollideEnemy()) {
-		tPlayer->DecreaseHP(dynamic_cast<CEnemy*>(this->GetOwner())->GetButtDamage());
-		tPlayer->SetCanCollideEnemy(false);
+	if (tPlayer->GetComponent<CPlayerScript>()->GetCanCollideEnemy()) {
+		tPlayer->GetComponent<CPlayerScript>()->DecreaseHP(mButtDamage);
+		tPlayer->GetComponent<CPlayerScript>()->SetCanCollideEnemy(false);
 	}
 }

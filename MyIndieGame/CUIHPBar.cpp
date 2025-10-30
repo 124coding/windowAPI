@@ -1,9 +1,9 @@
 #include "CUIHPBar.h"
 
-#include "CPlayer.h"
-
 #include "CTexture.h"
 #include "CResourceMgr.h"
+
+#include "CPlayerScript.h"
 
 void CUIHPBar::OnCreate()
 {
@@ -51,7 +51,7 @@ void CUIHPBar::Render(HDC tHDC)
     thBrush = CreateSolidBrush(RGB(255, 0, 0));
     thOldBrush = (HBRUSH)SelectObject(tHDC, thBrush);
 
-    int right = (int)(295 * ((float)mPlayer->GetHP() / mPlayer->GetMaxHP())) + 23;
+    int right = (int)(295 * ((float)mPlayer->GetComponent<CPlayerScript>()->GetHP() / mPlayer->GetComponent<CPlayerScript>()->GetMaxHP())) + 23;
 
     Rectangle(tHDC, 23, 20, right, 60);
 
@@ -78,7 +78,7 @@ void CUIHPBar::Render(HDC tHDC)
     SetBkMode(tHDC, TRANSPARENT);
 
     TCHAR szHPText[32];
-    _stprintf_s(szHPText, 32, TEXT("%d   /   %d"), mPlayer->GetHP(), mPlayer->GetMaxHP());
+    _stprintf_s(szHPText, 32, TEXT("%d   /   %d"), mPlayer->GetComponent<CPlayerScript>()->GetHP(), mPlayer->GetComponent<CPlayerScript>()->GetMaxHP());
     TextOut(tHDC, 140, 30, szHPText, _tcslen(szHPText));
 }
 

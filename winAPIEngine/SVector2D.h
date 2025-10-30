@@ -102,16 +102,17 @@ public:
 		}
 
 		return (*this) * (1.0f / tLength);
+
 	}
 
-	// 회전
-	SVector2D Rotate(float tDegree) {
-		float radian = (tDegree / 180.0f) * PI;
+	//// 회전
+	//SVector2D Rotate(float tDegree) {
+	//	float radian = (tDegree / 180.0f) * PI;
 
-		this->Normalize();
-		float x = cosf(radian) * this->mX - sinf(radian) * this->mY;
-		float y = sinf(radian) * this->mX + cosf(radian) * this->mY;
+	//	this->Normalize();
+	//	float x = cosf(radian) * this->mX - sinf(radian) * this->mY;
+	//	float y = sinf(radian) * this->mX + cosf(radian) * this->mY;
 
-		return SVector2D(x, y);
-	}
+	//	return SVector2D(x, y);
+	//}
 };

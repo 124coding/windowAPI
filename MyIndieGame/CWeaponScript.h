@@ -22,7 +22,7 @@ public:
 	void OnCollisionStay(float tDeltaTime, CCollider* tOther) override;
 	void OnCollisionExit(float tDeltaTime, CCollider* tOther) override;
 
-	void ClosedEnemyWatch(std::vector<CEnemy*> tEnemies);
+	void SetRotForClosedEnemyWatch(std::vector<GameObject*> tEnemies);
 
 private:
 };

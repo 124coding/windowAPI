@@ -2,8 +2,6 @@
 
 #include "CUIHUD.h"
 
-class CPlayer;
-
 class CUIHPBar : public CUIHUD
 {
 public:
@@ -19,10 +17,10 @@ public:
 	virtual void Render(HDC tHDC) override;
 	virtual void UIClear() override;
 
-	void SetPlayer(CPlayer* tPlayer) {
+	void SetPlayer(GameObject* tPlayer) {
 		this->mPlayer = tPlayer;
 	}
 
 private:
-	CPlayer* mPlayer;
+	GameObject* mPlayer;
 };

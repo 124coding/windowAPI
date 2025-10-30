@@ -6,6 +6,13 @@
 void CBabyAlienScript::OnCreate()
 {
 	CEnemyScript::OnCreate();
+
+	// stage prolportional 하게 하기.
+
+	SetHP(2);
+	SetButtDamage(1);
+
+	SetSpeed(50.0f);
 }
 
 void CBabyAlienScript::OnDestroy()

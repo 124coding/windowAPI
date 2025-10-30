@@ -6,6 +6,7 @@
 #include "CCat.h"
 #include "CTile.h"
 #include "CFloor.h"
+#include "CWeapon.h"
 
 #include "CLayer.h"
 #include "CInputMgr.h"
@@ -24,6 +25,7 @@
 #include "CAudioListner.h"
 #include "CAudioSource.h"
 
+#include "CMeleeWeaponScript.h"
 #include "CBabyAlienScript.h"
 
 #include "CUIHPBar.h"
@@ -70,7 +72,7 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	CTexture* plImg = CResourceMgr::Find<CTexture>(L"PlayerBase");
 
 	CTransform* plTr = mPlayer->GetComponent<CTransform>();
-	mPlayer->SetSize(SVector2D(0.20f, 0.20f));
+	mPlayer->SetSize(SVector2D(0.20f, 0.20f)); 
 	mPlayer->SetAnchorPoint(plImg->GetWidth(), plImg->GetHeight(), mPlayer->GetSize(), plTr->GetScale(), SVector2D());
 
 	CAnimator* plAnim = mPlayer->AddComponent<CAnimator>();
@@ -79,6 +81,22 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 
 
+
+
+
+
+	CWeapon* weapon = Instantiate<CWeapon>(tEngine, eLayerType::MeleeWeapon, SVector2D(plTr->GetPos().mX - 10.0f, plTr->GetPos().mY));
+
+	CTransform* wpTr = weapon->GetComponent<CTransform>();
+	CSpriteRenderer* wpSr = weapon->AddComponent<CSpriteRenderer>();
+
+	weapon->SetPlayer(mPlayer);
+	weapon->AddComponent<CMeleeWeaponScript>();
+
+	CTexture* wpImg = CResourceMgr::Find<CTexture>(L"Dagger");
+	weapon->SetSize(SVector2D(0.20f, 0.20f));
+	wpSr->SetTexture(wpImg);
+	weapon->SetAnchorPoint(wpImg->GetWidth(), wpImg->GetHeight(), weapon->GetSize(), wpTr->GetScale(), SVector2D());
 
 
 

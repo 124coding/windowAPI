@@ -30,6 +30,4 @@ public:
 
 private:
 	CPlayer* mPlayer;
-	std::vector<CEnemy*> mEnemies;
 };
-
