@@ -60,14 +60,14 @@ void CSpriteRenderer::Render(HDC tHDC)
 			func.AlphaFormat = AC_SRC_ALPHA;
 
 			func.SourceConstantAlpha = 255;
-			AlphaBlend(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX * scale.mX, pos.mY - GetOwner()->GetAnchorPoint().mY * scale.mY,
+			AlphaBlend(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX * GetOwner()->GetSize().mX * scale.mX, pos.mY - GetOwner()->GetAnchorPoint().mY * GetOwner()->GetSize().mY * scale.mY,
 				mTexture->GetWidth() * fScaleX, mTexture->GetHeight() * fScaleY,
 				mTexture->GetDCMem(),
 				0, 0,
 				mTexture->GetWidth(), mTexture->GetHeight(), func);
 		}
 		else {
-			TransparentBlt(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX * scale.mX, pos.mY - GetOwner()->GetAnchorPoint().mY * scale.mY,
+			TransparentBlt(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX * GetOwner()->GetSize().mX * scale.mX, pos.mY - GetOwner()->GetAnchorPoint().mY * GetOwner()->GetSize().mY * scale.mY,
 				mTexture->GetWidth() * fScaleX, mTexture->GetHeight() * fScaleY,
 				mTexture->GetDCMem(),
 				0, 0,
@@ -84,15 +84,15 @@ void CSpriteRenderer::Render(HDC tHDC)
 		Gdiplus::Graphics graphics(tHDC);
 
 		graphics.TranslateTransform(pos.mX, pos.mY);
-		graphics.ScaleTransform(fScaleX, fScaleY);
 		graphics.RotateTransform(rot);
+		graphics.ScaleTransform(fScaleX, fScaleY);
 
 		float originalWidth = mTexture->GetWidth();
 		float originalHeight = mTexture->GetHeight();
 
 		graphics.DrawImage(mTexture->GetImage(),
-			-originalWidth / 2.0f,
-			-originalHeight,
+			-GetOwner()->GetAnchorPoint().mX,
+			-GetOwner()->GetAnchorPoint().mY,
 			originalWidth,
 			originalHeight
 		);

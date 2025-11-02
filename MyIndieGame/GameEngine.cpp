@@ -54,23 +54,23 @@ void GameEngine::OnDestroy() {
 void GameEngine::OnUpdate(float tDeltaTime) {
 	Render();
 
-	CCollisionMgr::OnUpdate(tDeltaTime);
 	CUIMgr::OnUpdate(tDeltaTime);
+	CCollisionMgr::OnUpdate(tDeltaTime);
 	CSceneMgr::OnUpdate(tDeltaTime);
 
 	RemoveDeadObjects();
 }
 
 void GameEngine::OnLateUpdate(float tDeltaTime) {
-	CCollisionMgr::OnLateUpdate(tDeltaTime);
 	CUIMgr::OnLateUpdate(tDeltaTime);
+	CCollisionMgr::OnLateUpdate(tDeltaTime);
 	CSceneMgr::OnLateUpdate(tDeltaTime);
 }
 
 void GameEngine::Render() {
 	this->Clear(0.5f, 0.5f, 0.5f);
-	CCollisionMgr::Render(mBackBuffer->GetDCMem());
 	CSceneMgr::Render(mBackBuffer->GetDCMem());
+	CCollisionMgr::Render(mBackBuffer->GetDCMem());
 	CUIMgr::Render(mBackBuffer->GetDCMem());
 
 	this->Present();

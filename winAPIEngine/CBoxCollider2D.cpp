@@ -6,6 +6,8 @@
 
 #include "CTransform.h"
 
+#include "Object.h"
+
 void CBoxCollider2D::OnCreate()
 {
 }
@@ -25,6 +27,7 @@ void CBoxCollider2D::OnLateUpdate(float tDeltaTime)
 void CBoxCollider2D::Render(HDC tHDC)
 {
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
 	SVector2D pos = tr->GetPos();
 	pos = mainCamera->CaluatePosition(pos);
 
@@ -34,9 +37,15 @@ void CBoxCollider2D::Render(HDC tHDC)
 	HPEN greenPen = CreatePen(PS_SOLID, 2, RGB(0, 255, 0));
 	HPEN oldPen = (HPEN)SelectObject(tHDC, greenPen);
 
+	SVector2D leftTop;
+	leftTop.mX = pos.mX - GetOwner()->GetAnchorPoint().mX * GetOwner()->GetSize().mX * tr->GetScale().mX * GetSize().mX + GetOffset().mX;
+	leftTop.mY = pos.mY - GetOwner()->GetAnchorPoint().mY * GetOwner()->GetSize().mY * tr->GetScale().mY * GetSize().mY + GetOffset().mY;
+
+	SVector2D rightBottom = leftTop + (ObjectSize(GetOwner()) * GetSize());
+
 	Rectangle(tHDC, 
-		pos.mX - GetOwner()->GetAnchorPoint().mX * GetSize().mX + GetOffset().mX, pos.mY - GetOwner()->GetAnchorPoint().mY * GetSize().mY + GetOffset().mY,
-		pos.mX * GetSize().mX + GetOffset().mX, pos.mY + GetOffset().mY);
+		leftTop.mX, leftTop.mY,
+		rightBottom.mX, rightBottom.mY);
 
 	SelectObject(tHDC, oldBrush);
 	SelectObject(tHDC, oldPen);

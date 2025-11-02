@@ -5,6 +5,8 @@
 
 #include "CSceneMgr.h"
 
+#include "Object.h"
+
 std::bitset <(UINT)eLayerType::MAX> CCollisionMgr::mCollisionLayerMtrix[(UINT)eLayerType::MAX] = {};
 std::unordered_map<UINT64, bool> CCollisionMgr::mCollisionMap = {};
 
@@ -122,35 +124,44 @@ bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 {
 	CTransform* leftTr = tLeft->GetOwner()->GetComponent<CTransform>();
 	CTransform* rightTr = tRight->GetOwner()->GetComponent<CTransform>();
+
+	CSpriteRenderer* leftSr = tLeft->GetOwner()->GetComponent<CSpriteRenderer>();
+	CSpriteRenderer* rightSr = tRight->GetOwner()->GetComponent<CSpriteRenderer>();
 	
 	SVector2D leftPos = leftTr->GetPos() + tLeft->GetOffset();
 	SVector2D rightPos = rightTr->GetPos() + tRight->GetOffset();
 
-	SVector2D leftSize = SVector2D(tLeft->GetSize().mX * tLeft->GetOwner()->GetAnchorPoint().mX * 2, tLeft->GetSize().mX * tLeft->GetOwner()->GetAnchorPoint().mY);
-	SVector2D rightSize = SVector2D(tRight->GetSize().mX * tRight->GetOwner()->GetAnchorPoint().mX * 2, tRight->GetSize().mX * tRight->GetOwner()->GetAnchorPoint().mY);
+	SVector2D leftSize = ObjectSize(tLeft->GetOwner());
+	leftSize.mX = leftSize.mX * tLeft->GetSize().mX;
+	leftSize.mY = leftSize.mY * tLeft->GetSize().mY;
 
-	SVector2D leftCenterPos = SVector2D(leftPos.mX, leftPos.mY - leftSize.mY / 2.0f);
-	SVector2D rightCenterPos = SVector2D(rightPos.mX, rightPos.mY - rightSize.mY / 2.0f);
+	SVector2D rightSize = ObjectSize(tRight->GetOwner());
+	rightSize.mX = rightSize.mX * tRight->GetSize().mX;
+	rightSize.mY = rightSize.mY * tRight->GetSize().mY;
 
-	float distance = (leftCenterPos - rightCenterPos).Length();
+	SVector2D leftCenterPos = ObjectCenterPos(tLeft->GetOwner());
+	SVector2D rightCenterPos = ObjectCenterPos(tRight->GetOwner()); // SVector2D(rightPos.mX - tRight->GetOwner()->GetAnchorPoint().mX * tRight->GetSize().mX * tRight->GetOwner()->GetSize().mX * rightTr->GetScale().mX + rightSize.mX, rightPos.mY - tRight->GetOwner()->GetAnchorPoint().mY * tRight->GetSize().mY * tRight->GetOwner()->GetSize().mY * rightTr->GetScale().mY + rightSize.mY);
+
+	float distance = (leftCenterPos - rightCenterPos).LengthSq();
 
 	// AABB 충돌
 
 	eColliderType leftType = tLeft->GetColliderType();
 	eColliderType rightType = tRight->GetColliderType();
 
-	// 각 오브젝트의 중심을 기준으로 (현재 AnchorPoint는 중간 바닥)
+	// 각 오브젝트의 중심을 기준으로
+	// 수정 필요
 	if (leftType == eColliderType::Rect2D && rightType == eColliderType::Rect2D) {
 		// rect - rect
-		if (fabs(leftPos.mX - rightPos.mX) < fabs(leftSize.mX / 2.0f + rightSize.mX / 2.0f) &&
-			fabs((leftPos.mY - leftSize.mY / 2.0f) - (rightPos.mY - rightSize.mY / 2.0f)) < fabs(leftSize.mY / 2.0f + rightSize.mY / 2.0f)) {
+		if (fabs(leftCenterPos.mX - rightCenterPos.mX) < fabs(leftSize.mX / 2.0f + rightSize.mX / 2.0f) &&
+			fabs((leftCenterPos.mY - rightCenterPos.mY) < fabs(leftSize.mY / 2.0f + rightSize.mY / 2.0f))) {
 
 			return true;
 		}
 	}
 	else if (leftType == eColliderType::Circle2D && rightType == eColliderType::Circle2D) {// circle - circle
 
-		if (distance <= (leftSize.mX / 2.0f + rightSize.mX / 2.0f)) {
+		if (distance <= (leftSize.mX / 2.0f + rightSize.mX / 2.0f) * (leftSize.mX / 2.0f + rightSize.mX / 2.0f)) {
 			return true;
 		}
 	}
@@ -161,15 +172,15 @@ bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 		float circleRadius;
 
 		if (leftType == eColliderType::Circle2D) {
-			circlePos = SVector2D(leftPos.mX, leftPos.mY - leftSize.mY / 2.0f);
+			circlePos = SVector2D(leftCenterPos.mX, leftCenterPos.mY);
 			circleRadius = leftSize.mX / 2.0f;
-			rectPos = SVector2D(rightPos.mX, rightPos.mY - rightSize.mY / 2.0f);
+			rectPos = SVector2D(rightCenterPos.mX, rightCenterPos.mY);
 			rectHalfSize = SVector2D(rightSize.mX / 2.0f, rightSize.mY / 2.0f);
 		}
 		else {
-			circlePos = SVector2D(rightPos.mX, rightPos.mY - rightSize.mY / 2.0f);
+			circlePos = SVector2D(rightCenterPos.mX, rightCenterPos.mY);
 			circleRadius = rightSize.mX / 2.0f;
-			rectPos = SVector2D(leftPos.mX, leftPos.mY - leftSize.mY / 2.0f);
+			rectPos = SVector2D(leftCenterPos.mX, leftCenterPos.mY);
 			rectHalfSize = SVector2D(leftSize.mX / 2.0f, leftSize.mY / 2.0f);
 		}
 

@@ -52,3 +52,16 @@ static void DontDestroyOnLoad(GameObject* tObj) {
 	dontDestroyOnLoad->AddGameObject(tObj, tObj->GetLayerType());
 
 }
+
+static SVector2D ObjectSize(GameObject* tObj) {
+	CTransform* tr = tObj->GetComponent<CTransform>();
+	CSpriteRenderer* sr = tObj->GetComponent<CSpriteRenderer>();
+
+	return SVector2D(tObj->GetSize().mX * tr->GetScale().mX * sr->GetTexture()->GetWidth(), tObj->GetSize().mY * tr->GetScale().mY * sr->GetTexture()->GetHeight());
+}
+
+static SVector2D ObjectCenterPos(GameObject* tObj) {
+	CTransform* tr = tObj->GetComponent<CTransform>();
+
+	return SVector2D(tr->GetPos().mX - tObj->GetAnchorPoint().mX * tObj->GetSize().mX * tr->GetScale().mX + ObjectSize(tObj).mX / 2, tr->GetPos().mY - tObj->GetAnchorPoint().mY * tObj->GetSize().mY * tr->GetScale().mY + ObjectSize(tObj).mY / 2);
+}

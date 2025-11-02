@@ -144,6 +144,7 @@ private:
 	std::vector<CWeapon*> mWeapons;
 	int mWeaponCount = 6;
 
+	CTexture* mBaseTexture = nullptr;
 	CTexture* mEyesTexture = nullptr;
 	CTexture* mMouthTexture = nullptr;
 	CTexture* mBodyTexture = nullptr;
