@@ -59,18 +59,19 @@ void CWeaponScript::SetRotForClosedEnemyWatch(std::vector<GameObject*> tEnemies)
 	}
 
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
 	CTransform* enemyTr = closedEnemy->GetComponent<CTransform>();
 
-	if (tr->GetPos().mX > enemyTr->GetPos().mX && tr->GetPos().mY > enemyTr->GetPos().mX) {
-		tr->SetRot(atan(fabs(tr->GetPos().mY - enemyTr->GetPos().mY) / fabs(tr->GetPos().mX - enemyTr->GetPos().mX)) - 180.0f);
+	if (tr->GetPos().mX > enemyTr->GetPos().mX && tr->GetPos().mY > enemyTr->GetPos().mY) {
+		tr->SetRot(atan(fabs(tr->GetPos().mY - enemyTr->GetPos().mY) / fabs(tr->GetPos().mX - enemyTr->GetPos().mX)) * 180 / PI  - 180.0f);
 	}
-	else if (tr->GetPos().mX < enemyTr->GetPos().mX && tr->GetPos().mY > enemyTr->GetPos().mX){
-		tr->SetRot(atan(fabs(tr->GetPos().mY - enemyTr->GetPos().mY) / fabs(tr->GetPos().mX - enemyTr->GetPos().mX)) * -1.0f);
+	else if (tr->GetPos().mX < enemyTr->GetPos().mX && tr->GetPos().mY > enemyTr->GetPos().mY){
+		tr->SetRot(atan(fabs(tr->GetPos().mY - enemyTr->GetPos().mY) / fabs(tr->GetPos().mX - enemyTr->GetPos().mX)) * 180 / PI * -1.0f);
 	}
-	else if (tr->GetPos().mX > enemyTr->GetPos().mX && tr->GetPos().mY < enemyTr->GetPos().mX) {
-		tr->SetRot(180.0f - atan(fabs(tr->GetPos().mY - enemyTr->GetPos().mY) / fabs(tr->GetPos().mX - enemyTr->GetPos().mX)));
+	else if (tr->GetPos().mX > enemyTr->GetPos().mX && tr->GetPos().mY < enemyTr->GetPos().mY) {
+		tr->SetRot(180.0f - atan(fabs(tr->GetPos().mY - enemyTr->GetPos().mY) / fabs(tr->GetPos().mX - enemyTr->GetPos().mX)) * 180 / PI);
 	}
-	else if (tr->GetPos().mX < enemyTr->GetPos().mX && tr->GetPos().mY < enemyTr->GetPos().mX) {
-		tr->SetRot(atan(fabs(tr->GetPos().mY - enemyTr->GetPos().mY) / fabs(tr->GetPos().mX - enemyTr->GetPos().mX)));
+	else if (tr->GetPos().mX < enemyTr->GetPos().mX && tr->GetPos().mY < enemyTr->GetPos().mY) {
+		tr->SetRot(atan(fabs(tr->GetPos().mY - enemyTr->GetPos().mY) / fabs(tr->GetPos().mX - enemyTr->GetPos().mX)) * 180 / PI);
 	}
 }

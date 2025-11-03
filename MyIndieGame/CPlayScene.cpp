@@ -92,6 +92,7 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 	weapon->SetPlayer(mPlayer);
 	weapon->AddComponent<CMeleeWeaponScript>();
+	weapon->AddComponent<CBoxCollider2D>();
 
 	CTexture* wpImg = CResourceMgr::Find<CTexture>(L"Dagger");
 	weapon->SetSize(SVector2D(0.20f, 0.20f));
