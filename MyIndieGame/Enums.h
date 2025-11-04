@@ -2,13 +2,13 @@
 
 enum class eComponentType {
 	Transform,
-	Collider,
 	Rigidbody,
 	Script,
 	SpriteRenderer,
 	AutoSpriteFlipper,
 	TileRenderer,
 	Animator,
+	Collider,
 	Camera,
 	AudioListner,
 	AudioSource,

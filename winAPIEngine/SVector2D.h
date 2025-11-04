@@ -1,8 +1,9 @@
 #pragma once
+
+#include "winMacro.h"
+
 #include <math.h>
 #include <cfloat>
-
-#define PI 3.141592f
 
 struct SVector2D {
 public:
@@ -81,7 +82,6 @@ public:
 
 	// 벡터의 크기 구하기
 	float LengthSq() {
-		// 자기 자신을 내적하고 제곱근
 		return Dot(*this);
 	}
 
@@ -103,6 +103,34 @@ public:
 
 		return (*this) * (1.0f / tLength);
 
+	}
+
+	// 높이 벡터
+	SVector2D GetHeightVector(float tRotate) {
+		SVector2D tResult;
+		tResult.mX = this->mY * cosf(DegToRad(tRotate - 90.0f)) / 2;
+		tResult.mY = this->mY * sinf(DegToRad(tRotate - 90.0f)) / 2;
+
+		return tResult;
+	}
+
+	// 너비 벡터
+	SVector2D GetWidthVector(float tRotate) {
+		SVector2D tResult;
+		tResult.mX = this->mX * cosf(DegToRad(tRotate)) / 2;
+		tResult.mY = this->mX * sinf(DegToRad(tRotate)) / 2;
+
+		return tResult;
+	}
+
+	// 거리 벡터
+	SVector2D GetDistanceVector(const SVector2D& t) {
+		SVector2D tResult;
+
+		tResult.mX = t.mX - this->mX;
+		tResult.mY = t.mY - this->mY;
+
+		return tResult;
 	}
 
 	//// 회전

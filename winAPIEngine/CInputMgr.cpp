@@ -1,6 +1,8 @@
 #include "CInputMgr.h"
 #include "winMacro.h"
 
+#include "CRenderer.h"
+
 CInputMgr* CInputMgr::mInst = nullptr;
 SVector2D CInputMgr::mMousePosition = SVector2D(0.0f, 0.0f);
 

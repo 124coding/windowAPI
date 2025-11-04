@@ -35,7 +35,7 @@ void CAnimation::Render(HDC tHDC) {
     SVector2D scale = tr->GetScale();
 
     if (mainCamera) {
-        pos = mainCamera->CaluatePosition(pos);
+        pos = mainCamera->CalculatePosition(pos);
     }
 
     CTexture::eTextureType type = mTexture->GetTextureType();

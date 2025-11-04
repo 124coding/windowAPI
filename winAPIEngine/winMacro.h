@@ -1,7 +1,12 @@
 #pragma once
 
+#define PI 3.141592f
+
 #define windowWidth 1280
 #define windowHeight 900
+
+#define DegToRad(p) ((p) * (PI / 180.0f))
+#define RadToDeg(p) ((p) * (180.0f / PI))
 
 #define SAFE_DELETE(p) \
 if (p != nullptr) \

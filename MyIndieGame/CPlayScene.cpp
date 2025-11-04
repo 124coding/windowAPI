@@ -73,7 +73,7 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 	CTransform* plTr = mPlayer->GetComponent<CTransform>();
 	mPlayer->SetSize(SVector2D(0.20f, 0.20f)); 
-	mPlayer->SetAnchorPoint(plImg->GetWidth(), plImg->GetHeight(), mPlayer->GetSize(), plTr->GetScale(), SVector2D());
+	mPlayer->SetAnchorPoint(plImg->GetWidth() / 2, plImg->GetHeight());
 
 	CAnimator* plAnim = mPlayer->AddComponent<CAnimator>();
 	CSpriteRenderer* plSr = mPlayer->AddComponent<CSpriteRenderer>();
@@ -90,16 +90,18 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	CTransform* wpTr = weapon->GetComponent<CTransform>();
 	CSpriteRenderer* wpSr = weapon->AddComponent<CSpriteRenderer>();
 
-	weapon->SetPlayer(mPlayer);
 	weapon->AddComponent<CMeleeWeaponScript>();
-	weapon->AddComponent<CBoxCollider2D>();
+	
+	CBoxCollider2D* wpCl = weapon->AddComponent<CBoxCollider2D>();
+	wpCl->SetSize(SVector2D(0.6f, 0.5f));
 
 	CTexture* wpImg = CResourceMgr::Find<CTexture>(L"Dagger");
 	weapon->SetSize(SVector2D(0.20f, 0.20f));
 	wpSr->SetTexture(wpImg);
-	weapon->SetAnchorPoint(wpImg->GetWidth(), wpImg->GetHeight(), weapon->GetSize(), wpTr->GetScale(), SVector2D());
+	weapon->SetAnchorPoint((wpImg->GetWidth() / 2) - 100.0f, wpImg->GetHeight() / 2);
 
-
+	CMeleeWeaponScript* wpScript = weapon->GetComponent<CMeleeWeaponScript>();
+	wpScript->SetPlayer(mPlayer);
 
 
 
@@ -121,7 +123,7 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	CTransform* babyAlienTr = Enemy->GetComponent<CTransform>();
 
 	Enemy->SetSize(SVector2D(0.05f, 0.05f));
-	Enemy->SetAnchorPoint(babyAlienImg->GetWidth(), babyAlienImg->GetHeight(), babyAlienTr->GetScale(), Enemy->GetSize(), SVector2D());
+	Enemy->SetAnchorPoint(babyAlienImg->GetWidth() / 2, babyAlienImg->GetHeight());
 
 
 

@@ -42,6 +42,10 @@ void CEnemyScript::OnUpdate(float tDeltaTime)
 		mAnimator = GetOwner()->GetComponent<CAnimator>();
 	}
 
+	if (mHP == 0) {
+		ObjDestroy(GetOwner());
+	}
+
 	switch (mState) {
 	case eState::Walk:
 		Bounce();

@@ -18,6 +18,13 @@ public:
 	void OnCollisionStay(float tDeltaTime, CCollider* tOther) override;
 	void OnCollisionExit(float tDeltaTime, CCollider* tOther) override;
 
+public:
+	void CanAttackCheck();
+
+	void AttackEndCheck();
+	void BackToPlayer();
+
 private:
+	SVector2D AttackStartPos;
 };
 

@@ -5,6 +5,8 @@
 
 #include "CSceneMgr.h"
 
+#include "Object.h"
+
 std::bitset <(UINT)eLayerType::MAX> CCollisionMgr::mCollisionLayerMtrix[(UINT)eLayerType::MAX] = {};
 std::unordered_map<UINT64, bool> CCollisionMgr::mCollisionMap = {};
 
@@ -122,74 +124,108 @@ bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 {
 	CTransform* leftTr = tLeft->GetOwner()->GetComponent<CTransform>();
 	CTransform* rightTr = tRight->GetOwner()->GetComponent<CTransform>();
-	
-	SVector2D leftPos = leftTr->GetPos() + tLeft->GetOffset();
-	SVector2D rightPos = rightTr->GetPos() + tRight->GetOffset();
 
-	SVector2D leftSize = SVector2D(tLeft->GetSize().mX * tLeft->GetOwner()->GetAnchorPoint().mX * 2, tLeft->GetSize().mX * tLeft->GetOwner()->GetAnchorPoint().mY);
-	SVector2D rightSize = SVector2D(tRight->GetSize().mX * tRight->GetOwner()->GetAnchorPoint().mX * 2, tRight->GetSize().mX * tRight->GetOwner()->GetAnchorPoint().mY);
+	CSpriteRenderer* leftSr = tLeft->GetOwner()->GetComponent<CSpriteRenderer>();
+	CSpriteRenderer* rightSr = tRight->GetOwner()->GetComponent<CSpriteRenderer>();
 
-	SVector2D leftCenterPos = SVector2D(leftPos.mX, leftPos.mY - leftSize.mY / 2.0f);
-	SVector2D rightCenterPos = SVector2D(rightPos.mX, rightPos.mY - rightSize.mY / 2.0f);
+	SVector2D leftSize = ObjectSize(tLeft->GetOwner()) * tLeft->GetSize();
 
-	float distance = (leftCenterPos - rightCenterPos).Length();
+	SVector2D rightSize = ObjectSize(tRight->GetOwner()) * tRight->GetSize();
+
+	SVector2D leftCenterPos = ObjectCenterPos(tLeft->GetOwner());
+	SVector2D rightCenterPos = ObjectCenterPos(tRight->GetOwner()); // SVector2D(rightPos.mX - tRight->GetOwner()->GetAnchorPoint().mX * tRight->GetSize().mX * tRight->GetOwner()->GetSize().mX * rightTr->GetScale().mX + rightSize.mX, rightPos.mY - tRight->GetOwner()->GetAnchorPoint().mY * tRight->GetSize().mY * tRight->GetOwner()->GetSize().mY * rightTr->GetScale().mY + rightSize.mY);
+
+	float distanceSq = (leftCenterPos - rightCenterPos).LengthSq();
 
 	// AABB 충돌
 
 	eColliderType leftType = tLeft->GetColliderType();
 	eColliderType rightType = tRight->GetColliderType();
 
-	// 각 오브젝트의 중심을 기준으로 (현재 AnchorPoint는 중간 바닥)
-	if (leftType == eColliderType::Rect2D && rightType == eColliderType::Rect2D) {
-		// rect - rect
-		if (fabs(leftPos.mX - rightPos.mX) < fabs(leftSize.mX / 2.0f + rightSize.mX / 2.0f) &&
-			fabs((leftPos.mY - leftSize.mY / 2.0f) - (rightPos.mY - rightSize.mY / 2.0f)) < fabs(leftSize.mY / 2.0f + rightSize.mY / 2.0f)) {
+	// 각 오브젝트의 중심을 기준으로
+	// 수정 필요
+	if (leftTr->GetRot() == 0.0f && rightTr->GetRot() == 0.0f) {
+		if (leftType == eColliderType::Rect2D && rightType == eColliderType::Rect2D) {
+			// rect - rect
+			if (fabs(leftCenterPos.mX - rightCenterPos.mX) < fabs(leftSize.mX / 2.0f + rightSize.mX / 2.0f) &&
+				fabs((leftCenterPos.mY - rightCenterPos.mY) < fabs(leftSize.mY / 2.0f + rightSize.mY / 2.0f))) {
 
-			return true;
+				return true;
+			}
 		}
-	}
-	else if (leftType == eColliderType::Circle2D && rightType == eColliderType::Circle2D) {// circle - circle
+		else if (leftType == eColliderType::Circle2D && rightType == eColliderType::Circle2D) {// circle - circle
 
-		if (distance <= (leftSize.mX / 2.0f + rightSize.mX / 2.0f)) {
-			return true;
+			if (distanceSq <= (leftSize.mX / 2.0f + rightSize.mX / 2.0f) * (leftSize.mX / 2.0f + rightSize.mX / 2.0f)) {
+				return true;
+			}
 		}
-	}
-	else if (leftType == eColliderType::Rect2D && rightType == eColliderType::Circle2D ||
+		else if (leftType == eColliderType::Rect2D && rightType == eColliderType::Circle2D ||
 			leftType == eColliderType::Circle2D && rightType == eColliderType::Rect2D) { // circle - rect
 
-		SVector2D circlePos, rectPos, rectHalfSize;
-		float circleRadius;
+			SVector2D circlePos, rectPos, rectHalfSize;
+			float circleRadius;
 
-		if (leftType == eColliderType::Circle2D) {
-			circlePos = SVector2D(leftPos.mX, leftPos.mY - leftSize.mY / 2.0f);
-			circleRadius = leftSize.mX / 2.0f;
-			rectPos = SVector2D(rightPos.mX, rightPos.mY - rightSize.mY / 2.0f);
-			rectHalfSize = SVector2D(rightSize.mX / 2.0f, rightSize.mY / 2.0f);
-		}
-		else {
-			circlePos = SVector2D(rightPos.mX, rightPos.mY - rightSize.mY / 2.0f);
-			circleRadius = rightSize.mX / 2.0f;
-			rectPos = SVector2D(leftPos.mX, leftPos.mY - leftSize.mY / 2.0f);
-			rectHalfSize = SVector2D(leftSize.mX / 2.0f, leftSize.mY / 2.0f);
-		}
+			if (leftType == eColliderType::Circle2D) {
+				circlePos = leftCenterPos;
+				circleRadius = leftSize.mX / 2.0f;
+				rectPos = rightCenterPos;
+				rectHalfSize = rightSize / 2.0f;
+			}
+			else {
+				circlePos = rightCenterPos;
+				circleRadius = rightSize.mX / 2.0f;
+				rectPos = leftCenterPos;
+				rectHalfSize = leftSize / 2.0f;
+			}
 
-		// 클램핑(Clamping) 기법 이용 충돌 코드
-		float rectMinX = rectPos.mX - rectHalfSize.mX;
-		float rectMaxX = rectPos.mX + rectHalfSize.mX;
-		float rectMinY = rectPos.mY - 2 * rectHalfSize.mY;
-		float rectMaxY = rectPos.mY;
+			// 클램핑(Clamping) 기법 이용 충돌 코드
+			SVector2D rectMin = rectPos - rectHalfSize;
+			SVector2D rectMax = rectPos + rectHalfSize;
 
-		float closestX = std::max(rectMinX, std::min(circlePos.mX, rectMaxX));
-		float closestY = std::max(rectMinY, std::min(circlePos.mY, rectMaxY));
+			float closestX = std::max(rectMin.mX, std::min(circlePos.mX, rectMax.mX));
+			float closestY = std::max(rectMin.mY, std::min(circlePos.mY, rectMax.mY));
 
-		SVector2D closestPoint(closestX, closestY);
+			SVector2D closestPoint(closestX, closestY);
 
-		float distanceSquared = (circlePos - closestPoint).LengthSq();
-		float radiusSquared = circleRadius * circleRadius;
+			float distanceSquared = (circlePos - closestPoint).LengthSq();
+			float radiusSquared = circleRadius * circleRadius;
 
-		if (distanceSquared < radiusSquared) {
-			return true;
+			if (distanceSquared < radiusSquared) {
+				return true;
+			}
 		}
 	}
+	// OBB 충돌
+	else {
+		char buff[100];
+		sprintf_s(buff, "left: %f, %f, leftSize: %f, %f\n", leftCenterPos.mX, leftCenterPos.mY, leftSize.mX, leftSize.mY);
+		OutputDebugStringA(buff);
+
+		char tbuff[100];
+		sprintf_s(tbuff, "right: %f, %f, rightSize: %f, %f\n", rightCenterPos.mX, rightCenterPos.mY, rightSize.mX, rightSize.mY);
+		OutputDebugStringA(tbuff);
+
+		SVector2D dist = leftCenterPos.GetDistanceVector(rightCenterPos);
+
+		SVector2D vec[4] = { leftSize.GetWidthVector(leftTr->GetRot()), leftSize.GetHeightVector(leftTr->GetRot()), rightSize.GetWidthVector(rightTr->GetRot()), rightSize.GetHeightVector(rightTr->GetRot()) };
+
+		for (int i = 0; i < 4; i++) {
+			float sum = 0.0f;
+			SVector2D unit = vec[i].Normalize();
+
+			for (int j = 0; j < 4; j++) {
+				sum += (vec[j].Dot(unit) > 0) ? vec[j].Dot(unit) : -vec[j].Dot(unit);
+			}
+
+			float dot = (dist.Dot(unit) > 0) ? dist.Dot(unit) : -dist.Dot(unit);
+
+			if (dot > sum) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	return false;
 }

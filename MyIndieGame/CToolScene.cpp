@@ -48,7 +48,7 @@ void CToolScene::OnLateUpdate(float tDeltaTime)
 	if (CInputMgr::GetInst()->GetKeyDown("MouseLeftClick")) {
 		SVector2D pos = CInputMgr::GetMousePosition();
 
-		pos = mainCamera->CaluateTilePosition(pos);
+		pos = mainCamera->CalculateTilePosition(pos);
 
 		if (pos.mX >= 0.0f && pos.mY >= 0.0f) {
 			SVector2D index;
@@ -86,14 +86,14 @@ void CToolScene::Render(HDC tHDC)
 	CScene::Render(tHDC);
 
 	for (size_t i = 0; i < 200; i++) {
-		SVector2D pos = mainCamera->CaluatePosition(SVector2D(CTilemapRenderer::TileSize.mX * i, 0.0f));
+		SVector2D pos = mainCamera->CalculatePosition(SVector2D(CTilemapRenderer::TileSize.mX * i, 0.0f));
 		
 		MoveToEx(tHDC, pos.mX, 0, NULL);
 		LineTo(tHDC, pos.mX, 1000);		
 	}
 
 	for (size_t i = 0; i < 200; i++) {
-		SVector2D pos = mainCamera->CaluatePosition(SVector2D(0.0f, CTilemapRenderer::TileSize.mY * i));
+		SVector2D pos = mainCamera->CalculatePosition(SVector2D(0.0f, CTilemapRenderer::TileSize.mY * i));
 
 		MoveToEx(tHDC, 0, pos.mY, NULL);
 		LineTo(tHDC, 2000, pos.mY);

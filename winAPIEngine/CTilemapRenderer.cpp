@@ -38,7 +38,7 @@ void CTilemapRenderer::Render(HDC tHDC)
 	float rot = tr->GetRot();
 	SVector2D scale = tr->GetScale();
 
-	pos = mainCamera->CaluatePosition(pos);
+	pos = mainCamera->CalculatePosition(pos);
 
 	if (mTexture->GetTextureType() == CTexture::eTextureType::Bmp) {
 
