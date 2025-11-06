@@ -9,6 +9,9 @@ public:
 	CCat() {}
 	virtual ~CCat() {}
 
+	CCat(const CCat& tObj);
+	CCat& operator=(const CCat& tObj);
+
 	void OnCreate() override;
 	void OnDestroy() override;
 	void OnUpdate(float tDeltaTime) override;

@@ -14,6 +14,54 @@ GameObject::~GameObject()
 
 }
 
+GameObject::GameObject(const GameObject& tObj) : 
+	mState(tObj.mState), 
+	mTexture(tObj.mTexture), 
+	mSize(tObj.mSize), 
+	mAnchorPoint(tObj.mAnchorPoint), 
+	mLayerType(tObj.mLayerType) 
+{
+	mComponents.resize((UINT)eComponentType::End);
+
+	for (CComponent* tObjComponent : tObj.mComponents) {
+		if (tObjComponent == nullptr) continue;
+		CComponent* newComp = tObjComponent->Clone();
+		newComp->SetOwner(this);
+
+		mComponents[(UINT)newComp->GetType()] = newComp;
+	}
+}
+
+GameObject& GameObject::operator=(const GameObject& tObj) {
+	if (this == &tObj)
+	{
+		return *this;
+	}
+
+	mState = tObj.mState;
+	mTexture = tObj.mTexture;
+	mSize = tObj.mSize;
+	mAnchorPoint = tObj.mAnchorPoint;
+	mLayerType = tObj.mLayerType;
+
+	for (CComponent* pComp : mComponents)
+	{
+		if (pComp == nullptr) continue;
+		pComp->OnDestroy();
+		SAFE_DELETE(pComp);
+	}
+
+	for (CComponent* tObjComponent : tObj.mComponents) {
+		if (tObjComponent == nullptr) continue;
+		CComponent* newComp = tObjComponent->Clone();
+		newComp->SetOwner(this);
+
+		mComponents[(UINT)newComp->GetType()] = newComp;
+	}
+
+	return *this;
+}
+
 void GameObject::OnCreate()
 {
 
@@ -32,7 +80,7 @@ void GameObject::OnDestroy()
 		SAFE_DELETE(comp);
 	}
 
-	SAFE_DELETE(mTexture);
+	mComponents.clear();
 }
 
 void GameObject::OnUpdate(float tDeltaTime)

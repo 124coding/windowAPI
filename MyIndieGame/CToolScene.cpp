@@ -23,7 +23,7 @@ void CToolScene::OnCreate(CAPIEngine* tEngine)
 
 	mEngine = tEngine;
 
-	CTile* tile = Instantiate<CTile>(mEngine, eLayerType::Tile, SVector2D());
+	CTile* tile = Instantiate<CTile>(eLayerType::Tile, SVector2D());
 	tile->SetSize(SVector2D(2.0f, 2.0f));
 
 	CTilemapRenderer* tmr = tile->AddComponent<CTilemapRenderer>();
@@ -57,7 +57,7 @@ void CToolScene::OnLateUpdate(float tDeltaTime)
 			index.mX = (int)index.mX;
 			index.mY = (int)index.mY;
 
-			CTile* tile = Instantiate<CTile>(mEngine, eLayerType::Tile);
+			CTile* tile = Instantiate<CTile>(eLayerType::Tile);
 			tile->SetSize(SVector2D(2.0f, 2.0f));
 
 			CTilemapRenderer* tmr = tile->AddComponent<CTilemapRenderer>();
@@ -219,7 +219,7 @@ void CToolScene::Load()
 		if (fread(&posX, sizeof(int), 1, pFile) == NULL) break;
 		if (fread(&posY, sizeof(int), 1, pFile) == NULL) break;
 
-		CTile* tile = Instantiate<CTile>(mEngine, eLayerType::Tile, SVector2D(posX, posY));
+		CTile* tile = Instantiate<CTile>(eLayerType::Tile, SVector2D(posX, posY));
 		tile->SetSize(SVector2D(2.0f, 2.0f));
 
 		CTilemapRenderer* tmr = tile->AddComponent<CTilemapRenderer>();

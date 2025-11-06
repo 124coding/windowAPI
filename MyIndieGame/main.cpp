@@ -11,6 +11,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _In_ LPWSTR    lpCmdLine,
     _In_ int       nCmdShow)
 {
+    
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
@@ -19,6 +20,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg = { 0 };
     msg = tEngine.Run();
+
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_CHECK_ALWAYS_DF | _CRTDBG_LEAK_CHECK_DF);
 
     // TODO: 여기에 코드를 입력합니다.
 

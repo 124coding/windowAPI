@@ -29,6 +29,10 @@ void CSceneMgr::OnDestroy()
 		it.second->OnDestroy();
 		SAFE_DELETE(it.second);
 	}
+
+	mActiveScene = nullptr;
+	mDontDestroyOnLoadScene = nullptr;
+	mScenes.clear();
 }
 
 void CSceneMgr::OnUpdate(float tDeltaTime)

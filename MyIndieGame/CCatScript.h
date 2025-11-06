@@ -25,7 +25,11 @@ public:
 	};
 
 	CCatScript() : CScript(), mState(eState::SitDown), mAnimator(nullptr), mDirection(eDirection::End), mTime(0.0f), mDeathTime(0.0f), mRadian(0.0f) {}
-	~CCatScript() {}
+	virtual ~CCatScript() {}
+
+	virtual CComponent* Clone() override {
+		return new CCatScript(*this);
+	}
 
 	void OnCreate() override;
 	void OnDestroy() override;

@@ -1,6 +1,17 @@
 #include "CWeapon.h"
 
-#include "CPlayer.h"
+CWeapon::CWeapon(const CWeapon& tWeapon) : GameObject(tWeapon)
+{
+}
+
+CWeapon& CWeapon::operator=(const CWeapon& tWeapon) {
+	if (this == &tWeapon)
+	{
+		return *this;
+	}
+
+	GameObject::operator=(tWeapon);
+}
 
 void CWeapon::OnCreate()
 {

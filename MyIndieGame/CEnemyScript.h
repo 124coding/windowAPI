@@ -37,6 +37,7 @@ public:
 	virtual void OnCollisionExit(float tDeltaTime, CCollider* tOther) override;
 
 	virtual void ButtDamageToPlayer(GameObject* tPlayer);
+	virtual void DamageByWeapon(GameObject* tWeapon);
 
 public:
 	void SetTarget(GameObject* tTarget) {
@@ -87,6 +88,9 @@ private:
 	virtual void Idle() = 0;
 	virtual void Translate(CTransform* tr) = 0;
 
+protected:
+	float mTextureChangeDelay = 0.5f;
+
 private:
 	eState mState;
 	CAnimator* mAnimator;
@@ -95,6 +99,7 @@ private:
 	int mHP = 0;
 	int mButtDamage = 0;
 	float mSpeed = 0.0f;
+
 	float mDistanceToPlayer = 9999.9f;
 };
 

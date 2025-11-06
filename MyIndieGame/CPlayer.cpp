@@ -1,5 +1,18 @@
 #include "CPlayer.h"
 
+CPlayer::CPlayer(const CPlayer& tPlayer) : GameObject(tPlayer)
+{
+}
+
+CPlayer& CPlayer::operator=(const CPlayer& tPlayer) {
+	if (this == &tPlayer)
+	{
+		return *this;
+	}
+
+	GameObject::operator=(tPlayer);
+}
+
 void CPlayer::OnCreate()
 {
 	GameObject::OnCreate();

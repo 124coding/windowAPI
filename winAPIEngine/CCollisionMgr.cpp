@@ -87,6 +87,10 @@ void CCollisionMgr::LayerCollision(float tDeltaTime, CScene* tScene, eLayerType 
 
 void CCollisionMgr::ColliderCollision(float tDeltaTime, CCollider* tLeft, CCollider* tRight) {
 	
+	if (!tLeft->GetActivate() || !tRight->GetActivate()) {
+		return;
+	}
+
 	// 두 충돌체 번호를 가져온 ID를 확인해서 CollisionID값 세팅
 	CollisionID id = {};
 	id.left = tLeft->GetID();
@@ -197,13 +201,6 @@ bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 	}
 	// OBB 충돌
 	else {
-		char buff[100];
-		sprintf_s(buff, "left: %f, %f, leftSize: %f, %f\n", leftCenterPos.mX, leftCenterPos.mY, leftSize.mX, leftSize.mY);
-		OutputDebugStringA(buff);
-
-		char tbuff[100];
-		sprintf_s(tbuff, "right: %f, %f, rightSize: %f, %f\n", rightCenterPos.mX, rightCenterPos.mY, rightSize.mX, rightSize.mY);
-		OutputDebugStringA(tbuff);
 
 		SVector2D dist = leftCenterPos.GetDistanceVector(rightCenterPos);
 

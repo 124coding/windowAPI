@@ -26,6 +26,7 @@
 #include "CAudioSource.h"
 
 #include "CMeleeWeaponScript.h"
+#include "CRangedWeaponScript.h"
 #include "CBabyAlienScript.h"
 
 #include "CUIHPBar.h"
@@ -39,13 +40,8 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 {
 	// LoadMap(tEngine, L"..\\resources\\Maps\\Here");
 
-	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Enemy, true);
-	CCollisionMgr::CollisionLayerCheck(eLayerType::MeleeWeapon, eLayerType::Enemy, true);
-	CCollisionMgr::CollisionLayerCheck(eLayerType::Bullet, eLayerType::Enemy, true);
 
-
-
-	GameObject* camera = Instantiate<GameObject>(tEngine, eLayerType::None);
+	GameObject* camera = Instantiate<GameObject>(eLayerType::None);
 	CCamera* cameraComp = camera->AddComponent<CCamera>();
 
 	mainCamera = cameraComp;
@@ -57,7 +53,7 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 
 
-	mPlayer = Instantiate<CPlayer>(tEngine, eLayerType::Player, SVector2D(windowWidth / 2, windowHeight / 2 + 55.0f));
+	mPlayer = Instantiate<CPlayer>(eLayerType::Player, SVector2D(windowWidth / 2, windowHeight / 2 + 55.0f));
 	// DontDestroyOnLoad(mPlayer);
 
 	// mPlayer->AddComponent<CRigidbody>();
@@ -85,7 +81,7 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 
 
-	CWeapon* weapon = Instantiate<CWeapon>(tEngine, eLayerType::MeleeWeapon, SVector2D(plTr->GetPos().mX - 10.0f, plTr->GetPos().mY));
+	/*CWeapon* weapon = Instantiate<CWeapon>(eLayerType::MeleeWeapon, SVector2D(plTr->GetPos().mX - 10.0f, plTr->GetPos().mY));
 
 	CTransform* wpTr = weapon->GetComponent<CTransform>();
 	CSpriteRenderer* wpSr = weapon->AddComponent<CSpriteRenderer>();
@@ -94,6 +90,7 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	
 	CBoxCollider2D* wpCl = weapon->AddComponent<CBoxCollider2D>();
 	wpCl->SetSize(SVector2D(0.6f, 0.5f));
+	wpCl->SetActivate(false);
 
 	CTexture* wpImg = CResourceMgr::Find<CTexture>(L"Dagger");
 	weapon->SetSize(SVector2D(0.20f, 0.20f));
@@ -101,6 +98,21 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	weapon->SetAnchorPoint((wpImg->GetWidth() / 2) - 100.0f, wpImg->GetHeight() / 2);
 
 	CMeleeWeaponScript* wpScript = weapon->GetComponent<CMeleeWeaponScript>();
+	wpScript->SetPlayer(mPlayer);*/
+
+	CWeapon* weapon = Instantiate<CWeapon>(eLayerType::RangedWeapon, SVector2D(plTr->GetPos().mX - 10.0f, plTr->GetPos().mY));
+
+	CTransform* wpTr = weapon->GetComponent<CTransform>();
+	CSpriteRenderer* wpSr = weapon->AddComponent<CSpriteRenderer>();
+
+	weapon->AddComponent<CRangedWeaponScript>();
+
+	CTexture* wpImg = CResourceMgr::Find<CTexture>(L"Pistol");
+	weapon->SetSize(SVector2D(0.15f, 0.15f));
+	wpSr->SetTexture(wpImg);
+	weapon->SetAnchorPoint((wpImg->GetWidth() / 2) - 100.0f, wpImg->GetHeight() / 2);
+
+	CRangedWeaponScript* wpScript = weapon->GetComponent<CRangedWeaponScript>();
 	wpScript->SetPlayer(mPlayer);
 
 
@@ -108,7 +120,7 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 
 
-	CBabyAlien* Enemy = Instantiate<CBabyAlien>(tEngine, eLayerType::Enemy, SVector2D(300.0f, 300.0f));
+	CBabyAlien* Enemy = Instantiate<CBabyAlien>(eLayerType::Enemy, SVector2D(300.0f, 300.0f));
 
 	CBabyAlienScript* EnemyScript = Enemy->GetComponent<CBabyAlienScript>();
 	EnemyScript->SetTarget(mPlayer);
@@ -179,6 +191,10 @@ void CPlayScene::Render(HDC tHDC)
 
 void CPlayScene::OnEnter()
 {
+	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Enemy, true);
+	CCollisionMgr::CollisionLayerCheck(eLayerType::MeleeWeapon, eLayerType::Enemy, true);
+	CCollisionMgr::CollisionLayerCheck(eLayerType::Bullet, eLayerType::Enemy, true);
+
 	CUIMgr::Push(eUIType::HPBar);
 	dynamic_cast<CUIHPBar*>(CUIMgr::FindUI(eUIType::HPBar))->SetPlayer(mPlayer);
 
@@ -215,7 +231,7 @@ void CPlayScene::LoadMap(CAPIEngine* tEngine, const wchar_t* tPath)
 		if (fread(&posX, sizeof(int), 1, pFile) == NULL) break;
 		if (fread(&posY, sizeof(int), 1, pFile) == NULL) break;
 
-		CTile* tile = Instantiate<CTile>(tEngine, eLayerType::Tile, SVector2D(posX, posY));
+		CTile* tile = Instantiate<CTile>(eLayerType::Tile, SVector2D(posX, posY));
 		tile->SetSize(SVector2D(2.0f, 2.0f));
 
 		CTilemapRenderer* tmr = tile->AddComponent<CTilemapRenderer>();

@@ -10,8 +10,10 @@ class GameObject;
 class CComponent : public CEntity
 {
 public:
-	CComponent(eComponentType tType) : mActive(true), mType(tType) {}
+	CComponent(eComponentType tType) : mActive(true), mType(tType) {}	
 	virtual ~CComponent() {}
+
+	virtual CComponent* Clone() = 0;
 
 	virtual void OnCreate() = 0;
 	virtual void OnDestroy() = 0;

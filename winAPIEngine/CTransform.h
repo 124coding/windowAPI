@@ -7,13 +7,17 @@ class CTransform : public CComponent
 {
 public:
 	CTransform() : CComponent(eComponentType::Transform), mPosition(SVector2D(0.0f, 0.0f)), mVelocity(SVector2D(0.0f, 0.0f)), mScale(SVector2D(1.0f, 1.0f)), mRotation(0.0f) {}
-	~CTransform() {}
+	virtual ~CTransform() {}
 
-	void OnCreate() override;
-	void OnDestroy() override;
-	void OnUpdate(float tDeltaTime) override;
-	void OnLateUpdate(float tDeltaTime) override;
-	void Render(HDC tHDC) override;
+	virtual CComponent* Clone() override {
+		return new CTransform(*this);
+	}
+
+	virtual void OnCreate() override;
+	virtual void OnDestroy() override;
+	virtual void OnUpdate(float tDeltaTime) override;
+	virtual void OnLateUpdate(float tDeltaTime) override;
+	virtual void Render(HDC tHDC) override;
 
 	void SetPos(SVector2D tPosition) {
 		this->mPosition.mX = tPosition.mX;

@@ -6,7 +6,11 @@ class CFloorScript : public CScript
 {
 public:
 	CFloorScript() {}
-	~CFloorScript() {}
+	virtual ~CFloorScript() {}
+
+	virtual CComponent* Clone() override {
+		return new CFloorScript(*this);
+	}
 
 	void OnCreate() override;
 	void OnDestroy() override;

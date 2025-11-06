@@ -14,7 +14,11 @@ public:
 	CSpriteRenderer()
 		: CComponent(eComponentType::SpriteRenderer), mTexture(nullptr) {
 	}
-	~CSpriteRenderer() {}
+	virtual ~CSpriteRenderer() {}
+
+	virtual CComponent* Clone() override {
+		return new CSpriteRenderer(*this);
+	}
 
 	void OnCreate() override;
 	void OnDestroy() override;

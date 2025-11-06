@@ -9,6 +9,10 @@ public:
 	CAudioSource() : CComponent(eComponentType::AudioSource) {}
 	virtual ~CAudioSource() {}
 
+	virtual CComponent* Clone() override {
+		return new CAudioSource(*this);
+	}
+
 	void OnCreate() override;
 	void OnDestroy() override;
 	void OnUpdate(float tDeltaTime) override;

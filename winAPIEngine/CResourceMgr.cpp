@@ -9,4 +9,6 @@ void CResourceMgr::OnDestroy() {
 			SAFE_DELETE(resource.second);
 		}
 	}
+
+	mResources.clear();
 }

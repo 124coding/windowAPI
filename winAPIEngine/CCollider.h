@@ -13,6 +13,10 @@ public:
 
 	virtual ~CCollider() {}
 
+	virtual CComponent* Clone() override {
+		return new CCollider(*this);
+	}
+
 	void OnCreate() override;
 	void OnDestroy() override;
 	void OnUpdate(float tDeltaTime) override;
@@ -47,11 +51,21 @@ public:
 		return this->mType;
 	}
 
+	void SetActivate(bool tActivate) {
+		this->mActivate = tActivate;
+	}
+
+	bool GetActivate() {
+		return this->mActivate;
+	}
+
 private:
 	static UINT32 mCollisionID;
 	UINT32 mID;
 	SVector2D mOffset;
 	SVector2D mSize;
 	eColliderType mType;
+
+	bool mActivate = true;
 };
 

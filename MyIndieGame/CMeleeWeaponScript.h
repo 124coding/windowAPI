@@ -8,6 +8,10 @@ public:
 	CMeleeWeaponScript() {}
 	virtual ~CMeleeWeaponScript() {}
 
+	virtual CComponent* Clone() override {
+		return new CMeleeWeaponScript(*this);
+	}
+
 	void OnCreate() override;
 	void OnDestroy() override;
 	void OnUpdate(float tDeltaTime) override;
@@ -19,12 +23,12 @@ public:
 	void OnCollisionExit(float tDeltaTime, CCollider* tOther) override;
 
 public:
-	void CanAttackCheck();
+	void CanAttackCheck(std::vector<GameObject*> tEnemies);
 
 	void AttackEndCheck();
 	void BackToPlayer();
 
 private:
-	SVector2D AttackStartPos;
+	SVector2D mAttackStartPos;
 };
 

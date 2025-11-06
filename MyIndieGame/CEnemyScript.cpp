@@ -1,12 +1,13 @@
 #include "CEnemyScript.h"
 
-#include "CPlayer.h"
-#include "CEnemy.h"
-
 #include "CTransform.h"
 #include "CAnimator.h"
 #include "CCollider.h"
 #include "CSpriteRenderer.h"
+
+#include "CPlayerScript.h"
+#include "CWeaponScript.h"
+#include "CBulletScript.h"
 
 #include "Object.h"
 
@@ -68,8 +69,14 @@ void CEnemyScript::Render(HDC tHDC)
 void CEnemyScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther)
 {
 	if (tOther->GetOwner()->GetLayerType() == eLayerType::Player) {
-		CPlayer* player = dynamic_cast<CPlayer*>(tOther->GetOwner());
+		GameObject* player = tOther->GetOwner();
 		ButtDamageToPlayer(player);
+	}
+
+	if (tOther->GetOwner()->GetLayerType() == eLayerType::MeleeWeapon || tOther->GetOwner()->GetLayerType() == eLayerType::Bullet) {
+		GameObject* weapon = tOther->GetOwner();
+		DamageByWeapon(weapon);
+		mTextureChangeDelay = 0.5f;
 	}
 }
 
@@ -77,7 +84,7 @@ void CEnemyScript::OnCollisionStay(float tDeltaTime, CCollider* tOther)
 {
 
 	if (tOther->GetOwner()->GetLayerType() == eLayerType::Player) {
-		CPlayer* player = dynamic_cast<CPlayer*>(tOther->GetOwner());
+		GameObject* player = tOther->GetOwner();
 		ButtDamageToPlayer(player);
 	}
 }
@@ -101,4 +108,20 @@ void CEnemyScript::ButtDamageToPlayer(GameObject* tPlayer)
 		tPlayer->GetComponent<CPlayerScript>()->DecreaseHP(mButtDamage);
 		tPlayer->GetComponent<CPlayerScript>()->SetCanCollideEnemy(false);
 	}
+}
+
+void CEnemyScript::DamageByWeapon(GameObject* tWeapon)
+{
+	float damage;
+
+	if (tWeapon->GetLayerType() == eLayerType::MeleeWeapon) {
+		CWeaponScript* wpSc = tWeapon->GetComponent<CWeaponScript>();
+		damage = wpSc->GetDamage();
+	}
+	else if (tWeapon->GetLayerType() == eLayerType::Bullet) {
+		CBulletScript* blSc = tWeapon->GetComponent<CBulletScript>();
+		damage = blSc->GetDamage();
+	}
+
+	DecreaseHP(damage);
 }

@@ -2,6 +2,19 @@
 
 #include "CTilemapRenderer.h"
 
+CTile::CTile(const CTile& tTile) : GameObject(tTile)
+{
+}
+
+CTile& CTile::operator=(const CTile& tTile) {
+	if (this == &tTile)
+	{
+		return *this;
+	}
+
+	GameObject::operator=(tTile);
+}
+
 void CTile::OnCreate()
 {
 	GameObject::OnCreate();

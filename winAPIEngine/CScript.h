@@ -8,7 +8,11 @@ class CScript : public CComponent
 {
 public:
 	CScript() : CComponent(eComponentType::Script) {}
-	~CScript() {}
+	virtual ~CScript() {}
+
+	virtual CComponent* Clone() override {
+		return new CScript(*this);
+	}
 
 	void OnCreate() override;
 	void OnDestroy() override;

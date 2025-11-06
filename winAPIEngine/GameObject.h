@@ -30,6 +30,9 @@ public:
 	GameObject();
 	virtual ~GameObject();
 
+	GameObject(const GameObject& tObj);
+	GameObject& operator=(const GameObject& tObj);
+
 	virtual void OnCreate();
 	virtual void OnDestroy();
 	virtual void OnUpdate(float tDeltaTime);
@@ -40,7 +43,6 @@ public:
 	T* AddComponent() {
 		T* comp = new T();
 		comp->SetOwner(this);
-		comp->OnCreate();
 
 		mComponents[(UINT)comp->GetType()] = comp;
 

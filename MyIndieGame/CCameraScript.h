@@ -7,7 +7,11 @@ class CCameraScript : public CScript
 {
 public:
 	CCameraScript() {}
-	~CCameraScript() {}
+	virtual ~CCameraScript() {}
+
+	virtual CComponent* Clone() override {
+		return new CCameraScript(*this);
+	}
 
 	void OnCreate() override;
 	void OnDestroy() override;

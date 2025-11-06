@@ -8,6 +8,9 @@ public:
 	}
 	virtual ~CEnemy() {}
 
+	CEnemy(const CEnemy& tObj);
+	CEnemy& operator=(const CEnemy& tObj);
+
 	void OnCreate() override;
 	void OnDestroy() override;
 	void OnUpdate(float tDeltaTime) override;

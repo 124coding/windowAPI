@@ -7,7 +7,11 @@ class CTitleBrotato : public CScript
 public:
 
 	CTitleBrotato() {}
-	~CTitleBrotato() {}
+	virtual ~CTitleBrotato() {}
+
+	virtual CComponent* Clone() override {
+		return new CTitleBrotato(*this);
+	}
 
 	void OnCreate() override;
 	void OnDestroy() override;

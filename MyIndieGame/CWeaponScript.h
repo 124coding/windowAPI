@@ -19,6 +19,10 @@ public:
 	CWeaponScript() : CScript(), mState(eState::Idle) {}
 	virtual ~CWeaponScript() {}
 
+	virtual CComponent* Clone() override {
+		return new CWeaponScript(*this);
+	}
+
 	void OnCreate() override;
 	void OnDestroy() override;
 	void OnUpdate(float tDeltaTime) override;

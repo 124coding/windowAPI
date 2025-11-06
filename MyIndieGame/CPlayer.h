@@ -12,6 +12,9 @@ public:
 
 	virtual ~CPlayer() {}
 
+	CPlayer(const CPlayer& tObj);
+	CPlayer& operator=(const CPlayer& tObj);
+
 	void OnCreate() override;
 	void OnDestroy() override;
 	void OnUpdate(float tDeltaTime) override;

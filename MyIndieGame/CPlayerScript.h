@@ -30,7 +30,11 @@ public:
 		mExp(0.0f),
 		mMoney(0),
 		mSpeed(100.0f) {}
-	~CPlayerScript() {}
+	virtual ~CPlayerScript() {}
+
+	virtual CComponent* Clone() override {
+		return new CPlayerScript(*this);
+	}
 
 	void OnCreate() override;
 	void OnDestroy() override;

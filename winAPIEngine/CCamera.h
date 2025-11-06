@@ -18,7 +18,11 @@ public:
 		mLookPosition(SVector2D(0.0f, 0.0f)),
 		mTarget(nullptr) {
 	}
-	~CCamera() {}
+	virtual ~CCamera() {}
+
+	virtual CComponent* Clone() override {
+		return new CCamera(*this);
+	}
 
 	void OnCreate() override;
 	void OnDestroy() override;

@@ -17,7 +17,11 @@ public:
 		: CComponent(eComponentType::TileRenderer), mTexture(nullptr), mIndex(SVector2D()), mTileSize(SVector2D(16.0f, 16.0f)) {
 
 	}
-	~CTilemapRenderer() {}
+	virtual ~CTilemapRenderer() {}
+
+	virtual CComponent* Clone() override {
+		return new CTilemapRenderer(*this);
+	}
 
 	void OnCreate() override;
 	void OnDestroy() override;

@@ -7,7 +7,11 @@ class CTitleObjectScript : public CScript
 public:
 
 	CTitleObjectScript() {}
-	~CTitleObjectScript() {}
+	virtual ~CTitleObjectScript() {}
+
+	virtual CComponent* Clone() override {
+		return new CTitleObjectScript(*this);
+	}
 
 	void OnCreate() override;
 	void OnDestroy() override;

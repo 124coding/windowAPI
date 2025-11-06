@@ -42,6 +42,8 @@ void CUIMgr::OnDestroy() {
 		it.second->OnDestroy();
 		SAFE_DELETE(it.second);
 	}
+
+	mUIs.clear();
 }
 
 void CUIMgr::OnUpdate(float tDeltaTime) {

@@ -8,6 +8,10 @@ public:
 	CBabyAlienScript() {}
 	virtual ~CBabyAlienScript() {}
 
+	virtual CComponent* Clone() override {
+		return new CBabyAlienScript(*this);
+	}
+
 	virtual void OnCreate() override;
 	virtual void OnDestroy() override;
 	virtual void OnUpdate(float tDeltaTime) override;

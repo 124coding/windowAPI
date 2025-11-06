@@ -11,6 +11,9 @@ public:
 	}
 	virtual ~CFloor() {}
 
+	CFloor(const CFloor& tObj);
+	CFloor& operator=(const CFloor& tObj);
+
 	void OnCreate() override;
 	void OnDestroy() override;
 	void OnUpdate(float tDeltaTime) override;

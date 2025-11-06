@@ -2,13 +2,14 @@
 
 #include "GameObject.h"
 
-class CPlayer;
-
 class CWeapon : public GameObject
 {
 public:
 	CWeapon() {}
 	virtual ~CWeapon() {}
+
+	CWeapon(const CWeapon& tObj);
+	CWeapon& operator=(const CWeapon& tObj);
 
 	void OnCreate() override;
 	void OnDestroy() override;

@@ -1,5 +1,18 @@
 #include "CFloor.h"
 
+CFloor::CFloor(const CFloor& tFloor) : GameObject(tFloor)
+{
+}
+
+CFloor& CFloor::operator=(const CFloor& tFloor) {
+	if (this == &tFloor)
+	{
+		return *this;
+	}
+
+	GameObject::operator=(tFloor);
+}
+
 void CFloor::OnCreate()
 {
 	GameObject::OnCreate();

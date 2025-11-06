@@ -53,8 +53,10 @@ void CWeaponScript::OnCollisionExit(float tDeltaTime, CCollider* tOther)
 void CWeaponScript::SetRotForClosedEnemyWatch(std::vector<GameObject*> tEnemies)
 {
 	GameObject* closedEnemy = nullptr;
+	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 
 	if (tEnemies.empty()) {
+		tr->SetRot(0.0f);
 		return;
 	}
 
@@ -64,7 +66,6 @@ void CWeaponScript::SetRotForClosedEnemyWatch(std::vector<GameObject*> tEnemies)
 		}
 	}
 
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
 	CTransform* enemyTr = closedEnemy->GetComponent<CTransform>();
 	CSpriteRenderer* enemySr = closedEnemy->GetComponent<CSpriteRenderer>();

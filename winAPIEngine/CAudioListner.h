@@ -8,6 +8,10 @@ public:
 	CAudioListner() : CComponent(eComponentType::AudioListner) {}
 	virtual ~CAudioListner() {}
 
+	virtual CComponent* Clone() override {
+		return new CAudioListner(*this);
+	}
+
 	void OnCreate() override;
 	void OnDestroy() override;
 	void OnUpdate(float tDeltaTime) override;

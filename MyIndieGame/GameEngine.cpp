@@ -48,7 +48,6 @@ void GameEngine::OnDestroy() {
 	DestroyScenes();
 	CUIMgr::OnDestroy();
 	CCollisionMgr::OnDestroy();
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 }
 
 void GameEngine::OnUpdate(float tDeltaTime) {
@@ -57,7 +56,6 @@ void GameEngine::OnUpdate(float tDeltaTime) {
 	CUIMgr::OnUpdate(tDeltaTime);
 	CCollisionMgr::OnUpdate(tDeltaTime);
 	CSceneMgr::OnUpdate(tDeltaTime);
-
 	RemoveDeadObjects();
 }
 
@@ -103,16 +101,25 @@ void GameEngine::LoadResources()
 
 	// Sprites
 	CResourceMgr::Load<CTexture>(this, L"BabyAlien", L"../resources/Sprites/Enemy/baby_alien.png");
+	CResourceMgr::Load<CTexture>(this, L"BabyAlienCollsion", L"../resources/Sprites/Enemy/baby_alien_white.png");
+
+	CResourceMgr::Load<CTexture>(this, L"EnemyBullet", L"../resources/Sprites/Enemy/enemy_bullet.png");
+
+	// Player
 	CResourceMgr::Load<CTexture>(this, L"PlayerBase", L"../resources/Sprites/Player/base.png");
-
-	CResourceMgr::Load<CTexture>(this, L"StartOutMouse", L"../resources/ButtonImg/StartButtonOutMouse.png"); 
-	CResourceMgr::Load<CTexture>(this, L"StartInMouse", L"../resources/ButtonImg/StartButtonInMouse.png"); 
-
-	CResourceMgr::Load<CTexture>(this, L"SpringFloor", L"../resources/SpringFloor.bmp");
-
 
 	//Weapon
 	CResourceMgr::Load<CTexture>(this, L"Dagger", L"../resources/Sprites/Weapon/dagger.png");
+
+	CResourceMgr::Load<CTexture>(this, L"Pistol", L"../resources/Sprites/Weapon/pistol.png");
+	CResourceMgr::Load<CTexture>(this, L"PlayerBullet", L"../resources/Sprites/Weapon/player_bullet.png");
+
+	// UI
+	CResourceMgr::Load<CTexture>(this, L"StartOutMouse", L"../resources/ButtonImg/StartButtonOutMouse.png"); 
+	CResourceMgr::Load<CTexture>(this, L"StartInMouse", L"../resources/ButtonImg/StartButtonInMouse.png"); 
+
+	// Tool
+	CResourceMgr::Load<CTexture>(this, L"SpringFloor", L"../resources/SpringFloor.bmp");
 
 
 }

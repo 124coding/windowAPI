@@ -34,6 +34,10 @@ public:
 	}
 	virtual ~CAnimator() {}
 
+	virtual CComponent* Clone() override {
+		return new CAnimator(*this);
+	}
+
 	void OnCreate() override;
 	void OnDestroy() override;
 	void OnUpdate(float tDeltaTime) override;

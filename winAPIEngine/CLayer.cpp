@@ -111,6 +111,7 @@ void CLayer::RemoveDeadObjects()
 
 			it = mGameObjects.erase(it);
 
+			deadObj->OnDestroy();
 			SAFE_DELETE(deadObj);
 
 			continue;

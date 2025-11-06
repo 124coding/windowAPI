@@ -1,5 +1,18 @@
 #include "CCat.h"
 
+CCat::CCat(const CCat& tCat) : GameObject(tCat)
+{
+}
+
+CCat& CCat::operator=(const CCat& tCat) {
+	if (this == &tCat)
+	{
+		return *this;
+	}
+
+	GameObject::operator=(tCat);
+}
+
 void CCat::OnCreate()
 {
 	GameObject::OnCreate();

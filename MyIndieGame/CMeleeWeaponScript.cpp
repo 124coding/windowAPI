@@ -2,11 +2,13 @@
 
 #include "CSceneMgr.h"
 
+#include "CCollider.h"
+
 void CMeleeWeaponScript::OnCreate()
 {
 	CWeaponScript::OnCreate();
 
-	SetDamage(0.0f);
+	SetDamage(1.0f);
 	SetDelay(1.0f); // 공격 간 딜레이 즉, 공격 속도
 	SetRange(200.0f);
 	SetSpeed(700.0f);
@@ -27,7 +29,7 @@ void CMeleeWeaponScript::OnUpdate(float tDeltaTime)
 	case eState::Idle:
 		SetRotForClosedEnemyWatch(CSceneMgr::GetGameObjects(eLayerType::Enemy));
 		SetFollowPlayer();
-		CanAttackCheck();
+		CanAttackCheck(CSceneMgr::GetGameObjects(eLayerType::Enemy));
 		break;
 	case eState::Attack:
 		AttackEndCheck();
@@ -65,15 +67,21 @@ void CMeleeWeaponScript::OnCollisionExit(float tDeltaTime, CCollider* tOther)
 	CWeaponScript::OnCollisionExit(tDeltaTime, tOther);
 }
 
-void CMeleeWeaponScript::CanAttackCheck()
+void CMeleeWeaponScript::CanAttackCheck(std::vector<GameObject*> tEnemies)
 {
+	if (tEnemies.empty()) {
+		return;
+	}
+
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CCollider* cl = GetOwner()->GetComponent<CCollider>();
 
 	float distanceToEnemy = (tr->GetPos() - GetClosedEnemyPos()).Length();
 
 	if (distanceToEnemy <= GetRange() && mTotalTime > GetDelay()) {
-		AttackStartPos = tr->GetPos();
+		mAttackStartPos = tr->GetPos();
 		tr->SetVelocity((GetClosedEnemyPos() - tr->GetPos()).Normalize() * GetSpeed());
+		cl->SetActivate(true);
 
 		mState = eState::Attack;
 	};
@@ -87,7 +95,7 @@ void CMeleeWeaponScript::AttackEndCheck()
 	rangeSize.mX = fabs(rangeSize.mX);
 	rangeSize.mY = fabs(rangeSize.mY);
 
-	SVector2D currentRange = tr->GetPos() - AttackStartPos;
+	SVector2D currentRange = tr->GetPos() - mAttackStartPos;
 	currentRange.mX = fabs(currentRange.mX);
 	currentRange.mY = fabs(currentRange.mY);
 
@@ -99,12 +107,15 @@ void CMeleeWeaponScript::AttackEndCheck()
 void CMeleeWeaponScript::BackToPlayer()
 {
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CCollider* cl = GetOwner()->GetComponent<CCollider>();
 
 	tr->SetVelocity((CalculatePosNextToPlayer() - tr->GetPos()).Normalize() * GetSpeed());
 
 	if ((tr->GetPos() - CalculatePosNextToPlayer()).Length() < 10.0f) {
 		tr->SetPos(CalculatePosNextToPlayer());
 		mTotalTime = 0.0f;
+		cl->SetActivate(true);
+
 		mState = eState::Idle;
 	}
 }
