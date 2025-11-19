@@ -3,6 +3,7 @@
 #include "CTransform.h"
 #include "CAnimator.h"
 #include "CCollider.h"
+#include "CCircleCollider2D.h"
 #include "CSpriteRenderer.h"
 
 #include "CPlayerScript.h"
@@ -15,6 +16,7 @@ void CEnemyScript::OnCreate()
 {
 	SetBobbingSpeed(1.0f);
 	SetSquashMagnitude(0.2f);
+	GetOwner()->AddComponent<CCircleCollider2D>();
 }
 
 void CEnemyScript::OnDestroy()
@@ -76,7 +78,7 @@ void CEnemyScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther)
 	if (tOther->GetOwner()->GetLayerType() == eLayerType::MeleeWeapon || tOther->GetOwner()->GetLayerType() == eLayerType::Bullet) {
 		GameObject* weapon = tOther->GetOwner();
 		DamageByWeapon(weapon);
-		mTextureChangeDelay = 0.5f;
+		mTextureChangeDelay = 0.3f;
 	}
 }
 

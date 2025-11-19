@@ -67,6 +67,14 @@ public:
 		return this->mButtDamage;
 	}
 
+	void SetAttackDamage(int tAttackDamage) {
+		this->mAttackDamage = tAttackDamage;
+	}
+
+	int GetAttackDamage() {
+		return this->mAttackDamage;
+	}
+
 	void SetSpeed(float tSpeed) {
 		this->mSpeed = tSpeed;
 	}
@@ -98,6 +106,7 @@ private:
 
 	int mHP = 0;
 	int mButtDamage = 0;
+	int mAttackDamage = 0;
 	float mSpeed = 0.0f;
 
 	float mDistanceToPlayer = 9999.9f;

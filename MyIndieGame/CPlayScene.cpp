@@ -14,6 +14,7 @@
 #include "CResourceMgr.h"
 #include "CCollisionMgr.h"
 #include "CUIMgr.h"
+#include "CMonsterSpawnMgr.h"
 
 #include "CBoxCollider2D.h"
 #include "CCircleCollider2D.h"
@@ -117,15 +118,15 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 
 
+	// CMonsterSpawnMgr::MonsterSpawn<CBabyAlien>("M_001", mPlayer);
 
 
-
-	CBabyAlien* Enemy = Instantiate<CBabyAlien>(eLayerType::Enemy, SVector2D(300.0f, 300.0f));
+	/*CBabyAlien* Enemy = Instantiate<CBabyAlien>(eLayerType::Enemy, SVector2D(300.0f, 300.0f));
 
 	CBabyAlienScript* EnemyScript = Enemy->GetComponent<CBabyAlienScript>();
 	EnemyScript->SetTarget(mPlayer);
 	
-	CCircleCollider2D* cCatCollider = Enemy->AddComponent<CCircleCollider2D>();
+	Enemy->AddComponent<CCircleCollider2D>();
 
 	CTexture* babyAlienImg = CResourceMgr::Find<CTexture>(L"BabyAlien");
 
@@ -135,7 +136,7 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	CTransform* babyAlienTr = Enemy->GetComponent<CTransform>();
 
 	Enemy->SetSize(SVector2D(0.05f, 0.05f));
-	Enemy->SetAnchorPoint(babyAlienImg->GetWidth() / 2, babyAlienImg->GetHeight());
+	Enemy->SetAnchorPoint(babyAlienImg->GetWidth() / 2, babyAlienImg->GetHeight());*/
 
 
 
@@ -191,6 +192,7 @@ void CPlayScene::Render(HDC tHDC)
 
 void CPlayScene::OnEnter()
 {
+	mStageNum++;
 	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Enemy, true);
 	CCollisionMgr::CollisionLayerCheck(eLayerType::MeleeWeapon, eLayerType::Enemy, true);
 	CCollisionMgr::CollisionLayerCheck(eLayerType::Bullet, eLayerType::Enemy, true);
@@ -200,6 +202,8 @@ void CPlayScene::OnEnter()
 
 	CUIMgr::Push(eUIType::EXPBar);
 	dynamic_cast<CUIEXPBar*>(CUIMgr::FindUI(eUIType::EXPBar))->SetPlayer(mPlayer);
+
+	CMonsterSpawnMgr::LoadStageSpawnEvents(mStageNum);
 
 	CScene::OnEnter();
 

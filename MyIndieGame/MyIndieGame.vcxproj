@@ -156,6 +156,7 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClCompile Include="CFloorScript.cpp" />
     <ClCompile Include="CFMOD.cpp" />
     <ClCompile Include="CMeleeWeaponScript.cpp" />
+    <ClCompile Include="CMonsterSpawnMgr.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CPlayScene.cpp" />
@@ -189,6 +190,7 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClInclude Include="CFloorScript.h" />
     <ClInclude Include="CFMOD.h" />
     <ClInclude Include="CMeleeWeaponScript.h" />
+    <ClInclude Include="CMonsterSpawnMgr.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CPlayScene.h" />

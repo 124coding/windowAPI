@@ -1,0 +1,23 @@
+{
+    "Monsters" : [
+        {
+            "M_ID": "M_001",
+            "ClassName": "BabyAlien",
+            "Image": "BabyAlien",
+            "HP": 1,
+            "ButtDamage": 1,
+            "AttackDamage": 0,
+            "Speed": 50.0,
+            "SizeX": 0.05,
+            "SizeY": 0.05
+        },
+        {
+            "M_ID": "M_002",
+            "ClassName": "",
+            "HP": 2,
+            "ButtDamage": 1,
+            "AttackDamage": 2,
+            "Speed": 50.0
+        }
+    ]
+}

@@ -10,6 +10,7 @@
 #include "CResourceMgr.h"
 #include "CCollisionMgr.h"
 #include "CUIMgr.h"
+#include "CMonsterSpawnMgr.h"
 
 #include "CPlayScene.h"
 #include "CTitleScene.h"
@@ -20,11 +21,14 @@
 #include "SVector2D.h"
 #include "time.h"
 
+class CBabyAlien;
+
 void GameEngine::OnCreate() {
 	int a = 0;
 	srand((unsigned int)(&a));
 
 	LoadResources();
+	LoadDatas();
 
 	// CFMOD::OnCreate();
 	CCollisionMgr::OnCreate(this);
@@ -122,6 +126,10 @@ void GameEngine::LoadResources()
 	CResourceMgr::Load<CTexture>(this, L"SpringFloor", L"../resources/SpringFloor.bmp");
 
 
+}
+
+void GameEngine::LoadDatas() {
+	CMonsterSpawnMgr::Register<CBabyAlien>("CBabyAlien");
 }
 
 void GameEngine::DestroyScenes()

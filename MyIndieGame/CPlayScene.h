@@ -30,4 +30,5 @@ public:
 
 private:
 	CPlayer* mPlayer;
+	int mStageNum = 0;
 };

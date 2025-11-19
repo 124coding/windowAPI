@@ -79,6 +79,9 @@
     <Filter Include="Scripts\Weapon\RangedWeapon\Bullet">
       <UniqueIdentifier>{f3597cb1-b34d-424a-8052-7764cc0cb57e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Helpers">
+      <UniqueIdentifier>{50bde5d0-507b-4198-8246-80f17e430ec6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -174,6 +177,9 @@
     <ClCompile Include="CBulletScript.cpp">
       <Filter>Scripts\Weapon\RangedWeapon\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="CMonsterSpawnMgr.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -268,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="CBulletScript.h">
       <Filter>Scripts\Weapon\RangedWeapon\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterSpawnMgr.h">
+      <Filter>Helpers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
