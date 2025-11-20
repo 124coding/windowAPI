@@ -176,6 +176,7 @@ void CPlayScene::OnDestroy()
 void CPlayScene::OnUpdate(float tDeltaTime)
 {
 	CScene::OnUpdate(tDeltaTime);
+	CMonsterSpawnMgr::MonsterSpawnEvent(tDeltaTime, mPlayer);
 }
 
 void CPlayScene::OnLateUpdate(float tDeltaTime)
@@ -214,6 +215,7 @@ void CPlayScene::OnExit()
 {
 	CScene::OnExit();
 
+	CMonsterSpawnMgr::DestroyStageSpawnEvents();
 	CUIMgr::Pop(eUIType::HPBar);
 	CUIMgr::Pop(eUIType::EXPBar);
 }

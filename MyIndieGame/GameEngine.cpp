@@ -29,6 +29,7 @@ void GameEngine::OnCreate() {
 
 	LoadResources();
 	LoadDatas();
+	CMonsterSpawnMgr::LoadMonsterBasicStats();
 
 	// CFMOD::OnCreate();
 	CCollisionMgr::OnCreate(this);

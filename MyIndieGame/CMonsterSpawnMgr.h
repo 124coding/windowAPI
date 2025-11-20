@@ -32,6 +32,7 @@ public:
 		float time = 0.0f;
 		std::string ID = "";
 		int count = 0;
+		std::string spawnType = "";
 	};
 
 	static void LoadMonsterBasicStats() {
@@ -55,6 +56,7 @@ public:
 			event.time = e["Time"];
 			event.ID = e["M_ID"];
 			event.count = e["Count"];
+			event.spawnType = e["SpawnType"];
 		}
 
 		mActiveStageSpawnEvents.push_back(event);
@@ -62,6 +64,16 @@ public:
 
 	static void DestroyStageSpawnEvents() {
 		mActiveStageSpawnEvents.clear();
+	}
+
+	static SVector2D GetRandomPosAroundObject(SVector2D tPlayerPos, float minR, float maxR) {
+		float angle = DegToRad(((float)rand() / RAND_MAX) * 360);
+		float dist = minR + ((float)rand() / RAND_MAX) * (maxR - minR);
+
+		float x = cos(angle) * dist;
+		float y = sin(angle) * dist;
+
+		return tPlayerPos + SVector2D(x, y);
 	}
 
 	template<typename T>
@@ -72,11 +84,25 @@ public:
 	}
 
 	static void MonsterSpawnEvent(float tDeltaTime, GameObject* tTarget) {
+
+		// json 파일을 확인하여 개별적으로 스폰하는지 무리를 지어 스폰하는지
+		SVector2D targetPos = tTarget->GetComponent<CTransform>()->GetPos();
+
 		for (mEventIdx; mEventIdx < mActiveStageSpawnEvents.size(); mEventIdx++) {
 			if (mActiveStageSpawnEvents[mEventIdx].time <= tDeltaTime) {
-				for (int i = 0; i < mActiveStageSpawnEvents[mEventIdx].count; i++) {
-					MonsterSpawn(mActiveStageSpawnEvents[mEventIdx].ID, tTarget, SVector2D());
+				if (mActiveStageSpawnEvents[mEventIdx].spawnType == "Individual") {
+					for (int i = 0; i < mActiveStageSpawnEvents[mEventIdx].count; i++) {
+						MonsterSpawn(mActiveStageSpawnEvents[mEventIdx].ID, tTarget, GetRandomPosAroundObject(targetPos, 600.0f, 1000.0f));
+					}
 				}
+				else if (mActiveStageSpawnEvents[mEventIdx].spawnType == "cluster") {
+					SVector2D anchorPos = GetRandomPosAroundObject(targetPos, 600.0f, 1000.0f);
+
+					for (int i = 0; i < mActiveStageSpawnEvents[mEventIdx].count; i++) {
+						MonsterSpawn(mActiveStageSpawnEvents[mEventIdx].ID, tTarget, GetRandomPosAroundObject(anchorPos, 0.0f, 50.0f));
+					}
+				}
+
 			}
 			else {
 				break;
@@ -134,6 +160,8 @@ public:
 
 		enemy->SetSize(SVector2D(currentMonster.sizeX, currentMonster.sizeY));
 		enemy->SetAnchorPoint(enemyImg->GetWidth() / 2, enemyImg->GetHeight());
+
+		enemy->OnCreate();
 	}
 
 	static void SetEventIdxZero() {

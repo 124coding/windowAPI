@@ -2,7 +2,7 @@
     "Monsters" : [
         {
             "M_ID": "M_001",
-            "ClassName": "BabyAlien",
+            "ClassName": "CBabyAlien",
             "Image": "BabyAlien",
             "HP": 1,
             "ButtDamage": 1,
