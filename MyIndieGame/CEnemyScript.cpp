@@ -16,7 +16,6 @@ void CEnemyScript::OnCreate()
 {
 	SetBobbingSpeed(1.0f);
 	SetSquashMagnitude(0.2f);
-	GetOwner()->AddComponent<CCircleCollider2D>();
 }
 
 void CEnemyScript::OnDestroy()

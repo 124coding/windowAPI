@@ -90,16 +90,11 @@ void CWeaponScript::SetRotForClosedEnemyWatch(std::vector<GameObject*> tEnemies)
 	}
 }
 
-void CWeaponScript::SetFollowPlayer()
+
+void CWeaponScript::CalculatePosNextToTarget()
 {
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CTransform* plTr = mTarget->GetComponent<CTransform>();
 
-	tr->SetPos(CalculatePosNextToPlayer());
-}
-
-SVector2D CWeaponScript::CalculatePosNextToPlayer()
-{
-	CTransform* plTr = mPlayer->GetComponent<CTransform>();
-
-	return plTr->GetPos() + SVector2D(-10.0f, 0.0f);
+	tr->SetPos(ObjectCenterPos(mTarget) + mOffset);
 }

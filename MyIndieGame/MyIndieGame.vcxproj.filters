@@ -82,6 +82,15 @@
     <Filter Include="Helpers">
       <UniqueIdentifier>{50bde5d0-507b-4198-8246-80f17e430ec6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{ea0b44a7-5348-4db8-8263-25fe47a695a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers\Data">
+      <UniqueIdentifier>{89ee079a-8ceb-4d05-84f7-97f3e3c7b646}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers\MonsterSpawn">
+      <UniqueIdentifier>{24f692dd-3065-4ad4-957c-7088cdc274f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -177,8 +186,14 @@
     <ClCompile Include="CBulletScript.cpp">
       <Filter>Scripts\Weapon\RangedWeapon\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="CWeaponMgr.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
     <ClCompile Include="CMonsterSpawnMgr.cpp">
-      <Filter>Helpers</Filter>
+      <Filter>Helpers\MonsterSpawn</Filter>
+    </ClCompile>
+    <ClCompile Include="CDataMgr.cpp">
+      <Filter>Helpers\Data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -275,8 +290,14 @@
     <ClInclude Include="CBulletScript.h">
       <Filter>Scripts\Weapon\RangedWeapon\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="CWeaponMgr.h">
+      <Filter>Component</Filter>
+    </ClInclude>
     <ClInclude Include="CMonsterSpawnMgr.h">
-      <Filter>Helpers</Filter>
+      <Filter>Helpers\MonsterSpawn</Filter>
+    </ClInclude>
+    <ClInclude Include="CDataMgr.h">
+      <Filter>Helpers\Data</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

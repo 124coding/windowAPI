@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Object.h"
-#include "CEnemyScript.h"
+#include "CEnemy.h"
+
 #include "json.hpp"
 
-#include "CBabyAlien.h"
+#include "CDataMgr.h"
 
 #include <iostream>
 #include <fstream>
@@ -14,18 +15,6 @@ using json = nlohmann::json;
 class CMonsterSpawnMgr
 {
 public:
-	struct SMonster {
-		// 각 몬스터가 가지는 값들을 저장하기 위한 구조체
-		std::string ID = "";
-		std::string className = "";
-		std::string image = "";
-		int hp = 0;
-		int buttDamage = 0;
-		int attackDamage = 0;
-		float speed = 0.0f;
-		float sizeX = 0.0f;
-		float sizeY = 0.0f;
-	};
 
 	struct SpawnEvent {
 		// 몬스터 생성 이벤트
@@ -35,142 +24,25 @@ public:
 		std::string spawnType = "";
 	};
 
-	static void LoadMonsterBasicStats() {
-		std::ifstream monsterFile("../Data/MonsterStats.json", std::ios::in);
+	static void LoadStageSpawnEvents(int tStageNum);
 
-		monsterFile >> mMonsterStats;
-	}
+	static void OnCreate(CAPIEngine* tEngine);
+	static void OnDestroy();
+	static void OnUpdate(float tDeltaTime);
+	static void OnLateUpdate(float tDeltaTime);
+	static void Render(HDC tHDC);
 
-	static void LoadStageSpawnEvents(int tStageNum) {
-		std::string stageFileName = "../Data/Stage_" + std::to_string(tStageNum) + ".json";
-		std::ifstream stageFile(stageFileName, std::ios::in);
+	static void DestroyStageSpawnEvents();
 
-		json j;
-		stageFile >> j;
+	static SVector2D GetRandomPosAroundObject(SVector2D tPlayerPos, float minR, float maxR);
 
-		mHPMultiplier = j["DefaultModifiers"]["HP_Multiplier"];
-		
-		SpawnEvent event;
+	static void MonsterSpawnEvent(float tDeltaTime, GameObject* tTarget);
 
-		for (auto& e : j["Events"]) {
-			event.time = e["Time"];
-			event.ID = e["M_ID"];
-			event.count = e["Count"];
-			event.spawnType = e["SpawnType"];
-		}
+	static void MonsterSpawn(const std::string tMonsterId, GameObject* tTarget, SVector2D tPosition);
 
-		mActiveStageSpawnEvents.push_back(event);
-	}
-
-	static void DestroyStageSpawnEvents() {
-		mActiveStageSpawnEvents.clear();
-	}
-
-	static SVector2D GetRandomPosAroundObject(SVector2D tPlayerPos, float minR, float maxR) {
-		float angle = DegToRad(((float)rand() / RAND_MAX) * 360);
-		float dist = minR + ((float)rand() / RAND_MAX) * (maxR - minR);
-
-		float x = cos(angle) * dist;
-		float y = sin(angle) * dist;
-
-		return tPlayerPos + SVector2D(x, y);
-	}
-
-	template<typename T>
-	static void Register(const std::string& tClassName) {
-		mCreator[tClassName] = []() -> GameObject* {
-			return Instantiate<T>(eLayerType::Enemy);
-		};
-	}
-
-	static void MonsterSpawnEvent(float tDeltaTime, GameObject* tTarget) {
-
-		// json 파일을 확인하여 개별적으로 스폰하는지 무리를 지어 스폰하는지
-		SVector2D targetPos = tTarget->GetComponent<CTransform>()->GetPos();
-
-		for (mEventIdx; mEventIdx < mActiveStageSpawnEvents.size(); mEventIdx++) {
-			if (mActiveStageSpawnEvents[mEventIdx].time <= tDeltaTime) {
-				if (mActiveStageSpawnEvents[mEventIdx].spawnType == "Individual") {
-					for (int i = 0; i < mActiveStageSpawnEvents[mEventIdx].count; i++) {
-						MonsterSpawn(mActiveStageSpawnEvents[mEventIdx].ID, tTarget, GetRandomPosAroundObject(targetPos, 600.0f, 1000.0f));
-					}
-				}
-				else if (mActiveStageSpawnEvents[mEventIdx].spawnType == "cluster") {
-					SVector2D anchorPos = GetRandomPosAroundObject(targetPos, 600.0f, 1000.0f);
-
-					for (int i = 0; i < mActiveStageSpawnEvents[mEventIdx].count; i++) {
-						MonsterSpawn(mActiveStageSpawnEvents[mEventIdx].ID, tTarget, GetRandomPosAroundObject(anchorPos, 0.0f, 50.0f));
-					}
-				}
-
-			}
-			else {
-				break;
-			}
-		}
-	}
-
-	static void MonsterSpawn(const std::string tMonsterId, GameObject* tTarget, SVector2D tPosition) {
-		SMonster currentMonster;
-
-		for (const auto& monsterData : mMonsterStats["Monsters"]) {
-			if (monsterData["M_ID"] == tMonsterId){
-				currentMonster.ID = monsterData["M_ID"];
-				currentMonster.className = monsterData["ClassName"];
-				currentMonster.image = monsterData["Image"];
-				currentMonster.hp = monsterData["HP"];
-				currentMonster.buttDamage = monsterData["ButtDamage"];
-				currentMonster.attackDamage = monsterData["AttackDamage"];
-				currentMonster.speed = monsterData["Speed"];
-				currentMonster.sizeX = monsterData["SizeX"];
-				currentMonster.sizeY = monsterData["SizeY"];
-
-				currentMonster.hp *= mHPMultiplier;
-
-				break;
-			}
-		}
-
-		if (currentMonster.ID != tMonsterId) {
-			return;
-		}
-
-		auto iter = mCreator.find(currentMonster.className);
-		if (iter == mCreator.end()) {
-			return;
-		}
-
-		GameObject* enemy = iter->second();
-
-		CEnemyScript* enemyScript = enemy->GetComponent<CEnemyScript>();
-		enemyScript->SetTarget(tTarget);
-
-		enemyScript->SetHP(currentMonster.hp);
-		enemyScript->SetButtDamage(currentMonster.buttDamage);
-
-		enemyScript->SetSpeed(currentMonster.speed);
-
-		CTexture* enemyImg = CResourceMgr::Find<CTexture>(std::wstring(currentMonster.image.begin(), currentMonster.image.end()));
-
-		CSpriteRenderer* enemySr = enemy->AddComponent<CSpriteRenderer>();
-		enemySr->SetTexture(enemyImg);
-
-		CTransform* enemyTr = enemy->GetComponent<CTransform>();
-		enemyTr->SetPos(tPosition);
-
-		enemy->SetSize(SVector2D(currentMonster.sizeX, currentMonster.sizeY));
-		enemy->SetAnchorPoint(enemyImg->GetWidth() / 2, enemyImg->GetHeight());
-
-		enemy->OnCreate();
-	}
-
-	static void SetEventIdxZero() {
-		mEventIdx = 0;
-	}
+	static void SetEventIdxZero();
 
 private:
-	static std::unordered_map<std::string, std::function<GameObject* ()>> mCreator;
-	static json mMonsterStats;
 	static float mHPMultiplier;
 	static std::vector<SpawnEvent> mActiveStageSpawnEvents;
 	static int mEventIdx;

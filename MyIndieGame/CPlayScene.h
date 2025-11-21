@@ -4,7 +4,7 @@
 #include <vector>
 
 class CPlayer;
-class CEnemy;
+class CWeaponMgr;
 
 class CPlayScene : public CScene
 {
@@ -30,5 +30,6 @@ public:
 
 private:
 	CPlayer* mPlayer;
+	CWeaponMgr* mPlayerWeapons;
 	int mStageNum = 0;
 };

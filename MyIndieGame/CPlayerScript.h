@@ -112,23 +112,6 @@ public:
 		this->mBodyTexture = tTexture;
 	}
 
-	bool PlusWeapon(CWeapon* tWeapon) {
-		if (mWeapons.size() < mWeaponCount) {
-			mWeapons.push_back(tWeapon);
-			return true;
-		}
-
-		return false;
-	}
-
-	std::vector<CWeapon*> GetWeapons() {
-		return this->mWeapons;
-	}
-
-	void SetWeaponCount(int tCount) {
-		this->mWeaponCount = tCount;
-	}
-
 private:
 	eState mState;
 	CAnimator* mAnimator;
@@ -144,9 +127,6 @@ private:
 
 	float mGracePeriod = 1.0f;
 	bool mCanCollideEnemy = true;
-
-	std::vector<CWeapon*> mWeapons;
-	int mWeaponCount = 6;
 
 	CTexture* mBaseTexture = nullptr;
 	CTexture* mEyesTexture = nullptr;

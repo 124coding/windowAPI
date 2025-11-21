@@ -29,6 +29,5 @@ public:
 	void BackToPlayer();
 
 private:
-	SVector2D mAttackStartPos;
 };
 

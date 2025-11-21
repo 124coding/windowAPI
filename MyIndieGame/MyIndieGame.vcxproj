@@ -149,6 +149,7 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClCompile Include="CCameraScript.cpp" />
     <ClCompile Include="CCatScript.cpp" />
     <ClCompile Include="CCat.cpp" />
+    <ClCompile Include="CDataMgr.cpp" />
     <ClCompile Include="CEndingScene.cpp" />
     <ClCompile Include="CEnemy.cpp" />
     <ClCompile Include="CEnemyScript.cpp" />
@@ -171,6 +172,7 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClCompile Include="CUIHPBar.cpp" />
     <ClCompile Include="CUIStartButton.cpp" />
     <ClCompile Include="CWeapon.cpp" />
+    <ClCompile Include="CWeaponMgr.cpp" />
     <ClCompile Include="CWeaponScript.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="main.cpp" />
@@ -183,6 +185,7 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClInclude Include="CCameraScript.h" />
     <ClInclude Include="CCatScript.h" />
     <ClInclude Include="CCat.h" />
+    <ClInclude Include="CDataMgr.h" />
     <ClInclude Include="CEndingScene.h" />
     <ClInclude Include="CEnemy.h" />
     <ClInclude Include="CEnemyScript.h" />
@@ -205,6 +208,7 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClInclude Include="CUIHPBar.h" />
     <ClInclude Include="CUIStartButton.h" />
     <ClInclude Include="CWeapon.h" />
+    <ClInclude Include="CWeaponMgr.h" />
     <ClInclude Include="CWeaponScript.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="Enums.h" />

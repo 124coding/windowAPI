@@ -24,10 +24,11 @@ public:
 	void OnCollisionStay(float tDeltaTime, CCollider* tOther) override;
 	void OnCollisionExit(float tDeltaTime, CCollider* tOther) override;
 
-public:
 	void CanAttackCheck(std::vector<GameObject*> tEnemies);
 
 public:
+	void SetBullet(SVector2D tSize, SVector2D tColliderSize, const std::wstring& tTextureName);
+
 	CBullet* GetBullet() {
 		return this->mBullet;
 	}

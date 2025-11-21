@@ -5,6 +5,7 @@ enum class eComponentType {
 	Rigidbody,
 	Script,
 	SpriteRenderer,
+	WeaponMgr,
 	AutoSpriteFlipper,
 	TileRenderer,
 	Animator,

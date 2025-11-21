@@ -25,6 +25,7 @@
 #include "CAudioClip.h"
 #include "CAudioListner.h"
 #include "CAudioSource.h"
+#include "CWeaponMgr.h"
 
 #include "CMeleeWeaponScript.h"
 #include "CRangedWeaponScript.h"
@@ -60,6 +61,8 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	// mPlayer->AddComponent<CRigidbody>();
 	// mPlayer->AddComponent<CAudioListner>();
 
+	mPlayerWeapons = mPlayer->AddComponent<CWeaponMgr>();
+
 	CCircleCollider2D* cPlCollider = mPlayer->AddComponent<CCircleCollider2D>();
 	cPlCollider->SetSize(SVector2D(0.40f, 0.40f));
 	cPlCollider->SetOffset(SVector2D(0.0f, -45.0f));
@@ -75,8 +78,6 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	CAnimator* plAnim = mPlayer->AddComponent<CAnimator>();
 	CSpriteRenderer* plSr = mPlayer->AddComponent<CSpriteRenderer>();
 	plSr->SetTexture(plImg);
-
-
 
 
 
@@ -101,7 +102,7 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	CMeleeWeaponScript* wpScript = weapon->GetComponent<CMeleeWeaponScript>();
 	wpScript->SetPlayer(mPlayer);*/
 
-	CWeapon* weapon = Instantiate<CWeapon>(eLayerType::RangedWeapon, SVector2D(plTr->GetPos().mX - 10.0f, plTr->GetPos().mY));
+	/*CWeapon* weapon = Instantiate<CWeapon>(eLayerType::RangedWeapon, SVector2D(plTr->GetPos().mX - 10.0f, plTr->GetPos().mY));
 
 	CTransform* wpTr = weapon->GetComponent<CTransform>();
 	CSpriteRenderer* wpSr = weapon->AddComponent<CSpriteRenderer>();
@@ -114,7 +115,7 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	weapon->SetAnchorPoint((wpImg->GetWidth() / 2) - 100.0f, wpImg->GetHeight() / 2);
 
 	CRangedWeaponScript* wpScript = weapon->GetComponent<CRangedWeaponScript>();
-	wpScript->SetPlayer(mPlayer);
+	wpScript->SetPlayer(mPlayer);*/
 
 
 
@@ -204,6 +205,8 @@ void CPlayScene::OnEnter()
 	CUIMgr::Push(eUIType::EXPBar);
 	dynamic_cast<CUIEXPBar*>(CUIMgr::FindUI(eUIType::EXPBar))->SetPlayer(mPlayer);
 
+	mPlayerWeapons->PlusWeapon(eLayerType::MeleeWeapon, "MW_001", 1);
+	mPlayerWeapons->WeaponsPosition();
 	CMonsterSpawnMgr::LoadStageSpawnEvents(mStageNum);
 
 	CScene::OnEnter();

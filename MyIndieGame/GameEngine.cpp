@@ -11,6 +11,7 @@
 #include "CCollisionMgr.h"
 #include "CUIMgr.h"
 #include "CMonsterSpawnMgr.h"
+#include "CDataMgr.h"
 
 #include "CPlayScene.h"
 #include "CTitleScene.h"
@@ -27,10 +28,9 @@ void GameEngine::OnCreate() {
 	int a = 0;
 	srand((unsigned int)(&a));
 
+	CDataMgr::OnCreate(this);
 	LoadResources();
-	LoadDatas();
-	CMonsterSpawnMgr::LoadMonsterBasicStats();
-
+	CMonsterSpawnMgr::OnCreate(this);
 	// CFMOD::OnCreate();
 	CCollisionMgr::OnCreate(this);
 	CUIMgr::OnCreate(this);
@@ -53,6 +53,8 @@ void GameEngine::OnDestroy() {
 	DestroyScenes();
 	CUIMgr::OnDestroy();
 	CCollisionMgr::OnDestroy();
+	CMonsterSpawnMgr::OnDestroy();
+	CDataMgr::OnDestroy();
 }
 
 void GameEngine::OnUpdate(float tDeltaTime) {
@@ -117,7 +119,7 @@ void GameEngine::LoadResources()
 	CResourceMgr::Load<CTexture>(this, L"Dagger", L"../resources/Sprites/Weapon/dagger.png");
 
 	CResourceMgr::Load<CTexture>(this, L"Pistol", L"../resources/Sprites/Weapon/pistol.png");
-	CResourceMgr::Load<CTexture>(this, L"PlayerBullet", L"../resources/Sprites/Weapon/player_bullet.png");
+	CResourceMgr::Load<CTexture>(this, L"PlayerBullet", L"../resources/Sprites/Weapon/bullet_0001.png");
 
 	// UI
 	CResourceMgr::Load<CTexture>(this, L"StartOutMouse", L"../resources/ButtonImg/StartButtonOutMouse.png"); 
@@ -127,10 +129,6 @@ void GameEngine::LoadResources()
 	CResourceMgr::Load<CTexture>(this, L"SpringFloor", L"../resources/SpringFloor.bmp");
 
 
-}
-
-void GameEngine::LoadDatas() {
-	CMonsterSpawnMgr::Register<CBabyAlien>("CBabyAlien");
 }
 
 void GameEngine::DestroyScenes()

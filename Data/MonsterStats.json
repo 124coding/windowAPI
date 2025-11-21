@@ -2,14 +2,15 @@
     "Monsters" : [
         {
             "M_ID": "M_001",
-            "ClassName": "CBabyAlien",
-            "Image": "BabyAlien",
+            "Name": "BabyAlien",
             "HP": 1,
             "ButtDamage": 1,
             "AttackDamage": 0,
             "Speed": 50.0,
-            "SizeX": 0.05,
-            "SizeY": 0.05
+            "SizeX": 0.5,
+            "SizeY": 0.5,
+            "CollisionSizeX": 1.0,
+            "CollisionSizeY": 1.0
         },
         {
             "M_ID": "M_002",

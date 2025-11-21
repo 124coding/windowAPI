@@ -13,27 +13,6 @@
 void CRangedWeaponScript::OnCreate()
 {
 	CWeaponScript::OnCreate();
-
-	SetDamage(1.0f);
-	SetDelay(1.0f); // 공격 간 딜레이 즉, 공격 속도
-	SetRange(400.0f);
-	SetSpeed(700.0f);
-
-	mBullet = new CBullet();
-	mBullet->SetLayerType(eLayerType::Bullet);
-
-	mBullet->AddComponent<CCircleCollider2D>();
-	CBulletScript* blSc = mBullet->GetComponent<CBulletScript>();
-
-	blSc->SetDamage(GetDamage());
-
-	CTexture* blImg = CResourceMgr::Find<CTexture>(L"PlayerBullet");
-
-	CSpriteRenderer* blSr = mBullet->AddComponent<CSpriteRenderer>();
-	blSr->SetTexture(blImg);
-	
-	mBullet->SetSize(SVector2D(0.3f, 0.3f));
-	mBullet->SetAnchorPoint(blImg->GetWidth() / 2, blImg->GetHeight() / 2);
 }
 
 void CRangedWeaponScript::OnDestroy()
@@ -53,7 +32,7 @@ void CRangedWeaponScript::OnUpdate(float tDeltaTime)
 	switch (mState) {
 	case eState::Idle:
 		SetRotForClosedEnemyWatch(CSceneMgr::GetGameObjects(eLayerType::Enemy));
-		SetFollowPlayer();
+		CalculatePosNextToTarget();
 		CanAttackCheck(CSceneMgr::GetGameObjects(eLayerType::Enemy));
 		break;
 	default:
@@ -89,9 +68,10 @@ void CRangedWeaponScript::CanAttackCheck(std::vector<GameObject*> tEnemies)
 		return;
 	}
 
+	SVector2D targetPos = ObjectCenterPos(GetTarget());
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 
-	float distanceToEnemy = (tr->GetPos() - GetClosedEnemyPos()).Length();
+	float distanceToEnemy = (targetPos - GetClosedEnemyPos()).Length();
 
 	if (distanceToEnemy <= GetRange() && mTotalTime > GetDelay()) {
 		mTotalTime = 0.0f;
@@ -104,6 +84,26 @@ void CRangedWeaponScript::CanAttackCheck(std::vector<GameObject*> tEnemies)
 		CBullet* bullet = new CBullet();
 		*bullet = *mBullet;
 		AddObjectToScene<CBullet>(bullet);
-		int a = 0;
 	};
+}
+
+void CRangedWeaponScript::SetBullet(SVector2D tSize, SVector2D tColliderSize, const std::wstring& tTextureName)
+{
+	mBullet = new CBullet();
+	mBullet->SetLayerType(eLayerType::Bullet);
+
+	CBulletScript* blSc = mBullet->GetComponent<CBulletScript>();
+
+	blSc->SetDamage(GetDamage());
+
+	CCircleCollider2D* cBlCollider = mBullet->AddComponent<CCircleCollider2D>();
+	cBlCollider->SetSize(tColliderSize);
+
+	CTexture* blImg = CResourceMgr::Find<CTexture>(tTextureName);
+
+	CSpriteRenderer* blSr = mBullet->AddComponent<CSpriteRenderer>();
+	blSr->SetTexture(blImg);
+
+	mBullet->SetSize(tSize);
+	mBullet->SetAnchorPoint(blImg->GetWidth() / 2, blImg->GetHeight() / 2);
 }

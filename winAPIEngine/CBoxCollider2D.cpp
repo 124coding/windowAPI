@@ -10,22 +10,28 @@
 
 void CBoxCollider2D::OnCreate()
 {
+	CCollider::OnCreate();
 }
 
 void CBoxCollider2D::OnDestroy()
 {
+	CCollider::OnDestroy();
 }
 
 void CBoxCollider2D::OnUpdate(float tDeltaTime)
 {
+	CCollider::OnUpdate(tDeltaTime);
 }
 
 void CBoxCollider2D::OnLateUpdate(float tDeltaTime)
 {
+	CCollider::OnLateUpdate(tDeltaTime);
 }
 
 void CBoxCollider2D::Render(HDC tHDC)
 {
+	CCollider::Render(tHDC);
+
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
 	SVector2D pos = tr->GetPos();

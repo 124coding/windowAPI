@@ -9,7 +9,7 @@
 class CLayer : public CEntity
 {
 public:
-	CLayer() : mType(), mGameObjects() {}
+	CLayer() : mGameObjects() {}
 	~CLayer() {}
 	virtual void OnCreate();
 	virtual void OnDestroy();
@@ -28,7 +28,6 @@ public:
 	}
 
 private:
-	eLayerType mType;
 	std::vector<GameObject*> mGameObjects;
 };
 

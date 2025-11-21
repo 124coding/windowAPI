@@ -1,0 +1,75 @@
+{
+    "MeleeWeapons":[
+        {
+            "W_ID":"MW_001",
+            "Name": "Dagger",
+            "Range": 200.0,
+            "Speed": 700.0,
+            "SizeX": 1.0,
+            "SizeY": 1.0,
+            "CollisionSizeX": 0.6,
+            "CollisionSizeY": 0.6,
+            "Tiers":[
+                {
+                    "Tier": 1,
+                    "Damage": 1.0,
+                    "Delay": 1.0
+                },
+                {
+                    "Tier": 2,
+                    "Damage": 2.0,
+                    "Delay": 0.9
+                },
+                {
+                    "Tier": 3,
+                    "Damage": 3.0,
+                    "Delay": 0.8
+                },
+                {
+                    "Tier": 4,
+                    "Damage": 4.0,
+                    "Delay": 0.7
+                }
+            ]
+
+        }
+    ],
+    "RangedWeapons":[
+        {
+            "W_ID":"RW_001",
+            "Name": "Pistol",
+            "BulletName": "PlayerBullet",
+            "Range": 500.0,
+            "Speed": 700.0,
+            "SizeX": 0.8,
+            "SizeY": 0.8,
+            "BulletSizeX": 0.8,
+            "BulletSizeY": 0.8,
+            "CollisionSizeX": 0.3,
+            "CollisionSizeY": 0.3,
+            "Tiers":[
+                {
+                    "Tier": 1,
+                    "Damage": 1.0,
+                    "Delay": 1.0
+                },
+                {
+                    "Tier": 2,
+                    "Damage": 2.0,
+                    "Delay": 0.9
+                },
+                {
+                    "Tier": 3,
+                    "Damage": 3.0,
+                    "Delay": 0.8
+                },
+                {
+                    "Tier": 4,
+                    "Damage": 4.0,
+                    "Delay": 0.7
+                }
+            ]
+
+        }
+    ]
+}

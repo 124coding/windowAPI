@@ -9,22 +9,28 @@
 
 void CCircleCollider2D::OnCreate()
 {
+	CCollider::OnCreate();
 }
 
 void CCircleCollider2D::OnDestroy()
 {
+	CCollider::OnDestroy();
 }
 
 void CCircleCollider2D::OnUpdate(float tDeltaTime)
 {
+	CCollider::OnUpdate(tDeltaTime);
 }
 
 void CCircleCollider2D::OnLateUpdate(float tDeltaTime)
 {
+	CCollider::OnLateUpdate(tDeltaTime);
 }
 
 void CCircleCollider2D::Render(HDC tHDC)
 {
+	CCollider::Render(tHDC);
+
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
 	SVector2D pos = tr->GetPos();

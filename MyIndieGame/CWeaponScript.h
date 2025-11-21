@@ -4,7 +4,7 @@
 
 #include <vector>
 
-class CPlayer;
+class GameObject;
 class CEnemy;
 
 class CWeaponScript : public CScript
@@ -34,16 +34,15 @@ public:
 	void OnCollisionExit(float tDeltaTime, CCollider* tOther) override;
 
 	void SetRotForClosedEnemyWatch(std::vector<GameObject*> tEnemies);
-	void SetFollowPlayer();
-	SVector2D CalculatePosNextToPlayer();
+	void CalculatePosNextToTarget();
 
 public:
-	void SetPlayer(CPlayer* tPlayer) {
-		this->mPlayer = tPlayer;
+	void SetTarget(GameObject* tTarget) {
+		this->mTarget = tTarget;
 	}
 
-	CPlayer* GetPlayer() {
-		return this->mPlayer;
+	GameObject* GetTarget() {
+		return this->mTarget;
 	}
 
 
@@ -86,6 +85,14 @@ public:
 		this->mTier++;
 	}
 
+	void SetOffset(SVector2D tOffset) {
+		this->mOffset = tOffset;
+	}
+
+	SVector2D GetOffset() {
+		return this->mOffset;
+	}
+
 	SVector2D GetClosedEnemyPos() {
 		return this->mClosedEnemyPos;
 	}
@@ -94,13 +101,15 @@ protected:
 	eState mState;
 
 private:
-	CPlayer* mPlayer = nullptr;
+	GameObject* mTarget = nullptr;
 
 	float mDamage;
 	float mDelay; // 공격 간 딜레이 즉, 공격 속도
 	float mRange;
 	float mSpeed; // 근접 무기가 날아가는 속도 겸 원거리 무기의 총알의 속도
 	int mTier = 1;
+
+	SVector2D mOffset;
 
 	SVector2D mClosedEnemyPos;
 };

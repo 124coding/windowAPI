@@ -23,7 +23,7 @@ public:
 
 	void LoadScenes();
 	void LoadResources();
-	void LoadDatas();
+	void LoadMonsters();
 
 	void DestroyScenes();
 	void DestroyResources();

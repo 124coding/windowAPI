@@ -1,5 +1,7 @@
 #include "CMeleeWeaponScript.h"
 
+#include "Object.h"
+
 #include "CSceneMgr.h"
 
 #include "CCollider.h"
@@ -7,11 +9,6 @@
 void CMeleeWeaponScript::OnCreate()
 {
 	CWeaponScript::OnCreate();
-
-	SetDamage(1.0f);
-	SetDelay(1.0f); // 공격 간 딜레이 즉, 공격 속도
-	SetRange(200.0f);
-	SetSpeed(700.0f);
 }
 
 void CMeleeWeaponScript::OnDestroy()
@@ -28,7 +25,7 @@ void CMeleeWeaponScript::OnUpdate(float tDeltaTime)
 	switch (mState) {
 	case eState::Idle:
 		SetRotForClosedEnemyWatch(CSceneMgr::GetGameObjects(eLayerType::Enemy));
-		SetFollowPlayer();
+		CalculatePosNextToTarget();
 		CanAttackCheck(CSceneMgr::GetGameObjects(eLayerType::Enemy));
 		break;
 	case eState::Attack:
@@ -73,13 +70,13 @@ void CMeleeWeaponScript::CanAttackCheck(std::vector<GameObject*> tEnemies)
 		return;
 	}
 
+	SVector2D targetPos = ObjectCenterPos(GetTarget());
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 	CCollider* cl = GetOwner()->GetComponent<CCollider>();
 
-	float distanceToEnemy = (tr->GetPos() - GetClosedEnemyPos()).Length();
+	float distanceToEnemy = (targetPos - GetClosedEnemyPos()).Length();
 
 	if (distanceToEnemy <= GetRange() && mTotalTime > GetDelay()) {
-		mAttackStartPos = tr->GetPos();
 		tr->SetVelocity((GetClosedEnemyPos() - tr->GetPos()).Normalize() * GetSpeed());
 		cl->SetActivate(true);
 
@@ -89,13 +86,14 @@ void CMeleeWeaponScript::CanAttackCheck(std::vector<GameObject*> tEnemies)
 
 void CMeleeWeaponScript::AttackEndCheck()
 {
+	SVector2D targetPos = ObjectCenterPos(GetTarget());
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 
-	SVector2D rangeSize = (GetClosedEnemyPos() - tr->GetPos()).Normalize() * GetRange();
+	SVector2D rangeSize = (GetClosedEnemyPos() - targetPos).Normalize() * GetRange();
 	rangeSize.mX = fabs(rangeSize.mX);
 	rangeSize.mY = fabs(rangeSize.mY);
 
-	SVector2D currentRange = tr->GetPos() - mAttackStartPos;
+	SVector2D currentRange = tr->GetPos() - targetPos;
 	currentRange.mX = fabs(currentRange.mX);
 	currentRange.mY = fabs(currentRange.mY);
 
@@ -106,13 +104,16 @@ void CMeleeWeaponScript::AttackEndCheck()
 
 void CMeleeWeaponScript::BackToPlayer()
 {
+	SVector2D targetPos = ObjectCenterPos(GetTarget());
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 	CCollider* cl = GetOwner()->GetComponent<CCollider>();
 
-	tr->SetVelocity((CalculatePosNextToPlayer() - tr->GetPos()).Normalize() * GetSpeed());
+	SVector2D initialPos = targetPos + GetOffset();
 
-	if ((tr->GetPos() - CalculatePosNextToPlayer()).Length() < 10.0f) {
-		tr->SetPos(CalculatePosNextToPlayer());
+	tr->SetVelocity((initialPos - tr->GetPos()).Normalize() * GetSpeed());
+
+	if ((tr->GetPos() - initialPos).Length() < 10.0f) {
+		tr->SetPos(initialPos);
 		mTotalTime = 0.0f;
 		cl->SetActivate(true);
 
