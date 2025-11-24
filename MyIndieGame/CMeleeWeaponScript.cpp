@@ -97,7 +97,7 @@ void CMeleeWeaponScript::AttackEndCheck()
 	currentRange.mX = fabs(currentRange.mX);
 	currentRange.mY = fabs(currentRange.mY);
 
-	if (currentRange.mX > rangeSize.mX && currentRange.mY > rangeSize.mY) {
+	if (currentRange.LengthSq() > rangeSize.LengthSq()) {
 		mState = eState::Back;
 	}
 }
@@ -115,7 +115,7 @@ void CMeleeWeaponScript::BackToPlayer()
 	if ((tr->GetPos() - initialPos).Length() < 10.0f) {
 		tr->SetPos(initialPos);
 		mTotalTime = 0.0f;
-		cl->SetActivate(true);
+		cl->SetActivate(false);
 
 		mState = eState::Idle;
 	}

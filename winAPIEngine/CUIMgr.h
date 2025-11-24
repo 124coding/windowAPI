@@ -12,7 +12,7 @@
 class CUIMgr
 {
 public:
-	static void OnCreate(CAPIEngine* tEngine);
+	static void OnCreate();
 	static void OnLoad(eUIType tType, float tDeltaTime);
 	static void OnDestroy();
 	static void OnUpdate(float tDeltaTime);

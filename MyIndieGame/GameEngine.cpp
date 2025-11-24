@@ -5,6 +5,8 @@
 
 #include "CFMOD.h"
 
+#include "CRenderer.h"
+
 #include "CInputMgr.h"
 #include "CSceneMgr.h"
 #include "CResourceMgr.h"
@@ -28,14 +30,16 @@ void GameEngine::OnCreate() {
 	int a = 0;
 	srand((unsigned int)(&a));
 
-	CDataMgr::OnCreate(this);
+	mainEngine = this;
+
+	CDataMgr::OnCreate();
 	LoadResources();
-	CMonsterSpawnMgr::OnCreate(this);
+	CMonsterSpawnMgr::OnCreate();
 	// CFMOD::OnCreate();
-	CCollisionMgr::OnCreate(this);
-	CUIMgr::OnCreate(this);
+	CCollisionMgr::OnCreate();
+	CUIMgr::OnCreate();
+	CSceneMgr::OnCreate();
 	LoadScenes();
-	CSceneMgr::OnCreate(this);
 
 	CInputMgr::GetInst()->AddKeyInfo("DoMoveLt", 'A');
 	CInputMgr::GetInst()->AddKeyInfo("DoMoveRt", 'D');
@@ -73,7 +77,7 @@ void GameEngine::OnLateUpdate(float tDeltaTime) {
 }
 
 void GameEngine::Render() {
-	this->Clear(0.5f, 0.5f, 0.5f);
+	this->Clear(0.1f, 0.0f, 0.1f);
 	CSceneMgr::Render(mBackBuffer->GetDCMem());
 	CCollisionMgr::Render(mBackBuffer->GetDCMem());
 	CUIMgr::Render(mBackBuffer->GetDCMem());
@@ -83,11 +87,11 @@ void GameEngine::Render() {
 
 void GameEngine::LoadScenes()
 {
-	CSceneMgr::CreateScene<CTitleScene>(this, L"TitleScene");
+	// CSceneMgr::CreateScene<CTitleScene>(this, L"TitleScene");
 	// CSceneMgr::CreateScene<CSettingScene>(this, L"SettingScene");
-	CSceneMgr::CreateScene<CPlayScene>(this, L"PlayScene");
+	CSceneMgr::CreateScene<CPlayScene>(L"PlayScene");
 	// CSceneMgr::CreateScene<CEndingScene>(this, L"EndingScene");
-	// CSceneMgr::CreateScene<CToolScene>(this, L"ToolScene");
+	CSceneMgr::CreateScene <CToolScene>(L"ToolScene");
 	
 
 	CSceneMgr::LoadScene(L"PlayScene");
@@ -96,37 +100,44 @@ void GameEngine::LoadScenes()
 void GameEngine::LoadResources()
 {
 	// TitleScene
-	CResourceMgr::Load<CTexture>(this, L"TitleMap", L"../resources/Maps/Brotato_Title_Screen_Map.png");
-	CResourceMgr::Load<CTexture>(this, L"TitleMob1", L"../resources/Maps/Brotato_Title_Screen_Mobs_1.png");
-	CResourceMgr::Load<CTexture>(this, L"TitleMob2", L"../resources/Maps/Brotato_Title_Screen_Mobs_2.png");
-	CResourceMgr::Load<CTexture>(this, L"TitleMob3", L"../resources/Maps/Brotato_Title_Screen_Mobs_3.png");
-	CResourceMgr::Load<CTexture>(this, L"TitleLight", L"../resources/Maps/Brotato_Title_Screen_Light.png");
-	CResourceMgr::Load<CTexture>(this, L"TitleLogo", L"../resources/Maps/Logo.png");
-	CResourceMgr::Load<CTexture>(this, L"TitleBrotato", L"../resources/Maps/splash_art_brotato.png");
+	CResourceMgr::Load<CTexture>(L"TitleMap", L"../resources/Maps/Title/Brotato_Title_Screen_Map.png");
+	CResourceMgr::Load<CTexture>(L"TitleMob1", L"../resources/Maps/Title/Brotato_Title_Screen_Mobs_1.png");
+	CResourceMgr::Load<CTexture>(L"TitleMob2", L"../resources/Maps/Title/Brotato_Title_Screen_Mobs_2.png");
+	CResourceMgr::Load<CTexture>(L"TitleMob3", L"../resources/Maps/Title/Brotato_Title_Screen_Mobs_3.png");
+	CResourceMgr::Load<CTexture>(L"TitleLight", L"../resources/Maps/Title/Brotato_Title_Screen_Light.png");
+	CResourceMgr::Load<CTexture>(L"TitleLogo", L"../resources/Maps/Title/Logo.png");
+	CResourceMgr::Load<CTexture>(L"TitleBrotato", L"../resources/Maps/Title/splash_art_brotato.png");
 
 
 
 	// Sprites
-	CResourceMgr::Load<CTexture>(this, L"BabyAlien", L"../resources/Sprites/Enemy/baby_alien.png");
-	CResourceMgr::Load<CTexture>(this, L"BabyAlienCollsion", L"../resources/Sprites/Enemy/baby_alien_white.png");
+	CResourceMgr::Load<CTexture>(L"BabyAlien", L"../resources/Sprites/Enemy/baby_alien.png");
+	CResourceMgr::Load<CTexture>(L"BabyAlienCollsion", L"../resources/Sprites/Enemy/baby_alien_white.png");
 
-	CResourceMgr::Load<CTexture>(this, L"EnemyBullet", L"../resources/Sprites/Enemy/enemy_bullet.png");
+	CResourceMgr::Load<CTexture>(L"EnemyBullet", L"../resources/Sprites/Enemy/enemy_bullet.png");
 
 	// Player
-	CResourceMgr::Load<CTexture>(this, L"PlayerBase", L"../resources/Sprites/Player/base.png");
+	CResourceMgr::Load<CTexture>(L"PlayerBase", L"../resources/Sprites/Player/base.png");
 
 	//Weapon
-	CResourceMgr::Load<CTexture>(this, L"Dagger", L"../resources/Sprites/Weapon/dagger.png");
+	CResourceMgr::Load<CTexture>(L"Dagger", L"../resources/Sprites/Weapon/dagger.png");
 
-	CResourceMgr::Load<CTexture>(this, L"Pistol", L"../resources/Sprites/Weapon/pistol.png");
-	CResourceMgr::Load<CTexture>(this, L"PlayerBullet", L"../resources/Sprites/Weapon/bullet_0001.png");
+	CResourceMgr::Load<CTexture>(L"Pistol", L"../resources/Sprites/Weapon/pistol.png");
+	CResourceMgr::Load<CTexture>(L"PlayerBullet", L"../resources/Sprites/Weapon/bullet_0001.png");
 
 	// UI
-	CResourceMgr::Load<CTexture>(this, L"StartOutMouse", L"../resources/ButtonImg/StartButtonOutMouse.png"); 
-	CResourceMgr::Load<CTexture>(this, L"StartInMouse", L"../resources/ButtonImg/StartButtonInMouse.png"); 
+	CResourceMgr::Load<CTexture>(L"StartOutMouse", L"../resources/ButtonImg/StartButtonOutMouse.png"); 
+	CResourceMgr::Load<CTexture>(L"StartInMouse", L"../resources/ButtonImg/StartButtonInMouse.png"); 
 
-	// Tool
-	CResourceMgr::Load<CTexture>(this, L"SpringFloor", L"../resources/SpringFloor.bmp");
+	// TileMap
+	CResourceMgr::Load<CTexture>(L"Tile1", L"../resources/Maps/Tiles/tiles_1.png");
+	CResourceMgr::Load<CTexture>(L"Tile2", L"../resources/Maps/Tiles/tiles_2.png");
+	CResourceMgr::Load<CTexture>(L"Tile3", L"../resources/Maps/Tiles/tiles_3.png");
+	CResourceMgr::Load<CTexture>(L"Tile4", L"../resources/Maps/Tiles/tiles_4.png");
+	CResourceMgr::Load<CTexture>(L"Tile5", L"../resources/Maps/Tiles/tiles_5.png");
+	CResourceMgr::Load<CTexture>(L"Tile6", L"../resources/Maps/Tiles/tiles_6.png");
+	CResourceMgr::Load<CTexture>(L"TileOutLine", L"../resources/Maps/Tiles/tiles_outline_modify.png");
+	// CResourceMgr::Load<CTexture>(L"BakedBG", L"../resources/Maps/Tiles/tiles_outline_modify.png");
 
 
 }

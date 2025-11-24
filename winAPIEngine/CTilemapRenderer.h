@@ -14,7 +14,7 @@ class CTilemapRenderer : public CComponent
 {
 public:
 	CTilemapRenderer()
-		: CComponent(eComponentType::TileRenderer), mTexture(nullptr), mIndex(SVector2D()), mTileSize(SVector2D(16.0f, 16.0f)) {
+		: CComponent(eComponentType::TileRenderer), mTexture(nullptr), mIndex(SVector2D()), mTileSize(SVector2D(64.0f, 64.0f)) {
 
 	}
 	virtual ~CTilemapRenderer() {}

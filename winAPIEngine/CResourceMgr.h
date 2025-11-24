@@ -19,13 +19,13 @@ public:
 	}
 
 	template <typename T>
-	static T* Load(CAPIEngine* tEngine, const std::wstring& tKey, const std::wstring& tPath) {
+	static T* Load(const std::wstring& tKey, const std::wstring& tPath) {
 		T* resource = CResourceMgr::Find<T>(tKey);
 
 		if (resource != nullptr) return resource;
 
 		resource = new T();
-		if ( FAILED(resource->Load(tEngine, tPath))) assert(false);
+		if ( FAILED(resource->Load(tPath))) assert(false);
 
 		resource->SetName(tKey);
 		resource->SetPath(tPath);

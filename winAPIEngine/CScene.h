@@ -18,7 +18,7 @@ public:
 	}
 	virtual ~CScene() {};
 
-	virtual void OnCreate(CAPIEngine* tEngine);
+	virtual void OnCreate();
 	virtual void OnDestroy();
 	virtual void OnUpdate(float tDeltaTime);
 	virtual void OnLateUpdate(float tDeltaTime);

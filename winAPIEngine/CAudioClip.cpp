@@ -1,7 +1,7 @@
 #include "CAudioClip.h"
 #include "CAudioSource.h"
 
-HRESULT CAudioClip::Load(CAPIEngine* tEngine, const std::wstring& tPath)
+HRESULT CAudioClip::Load(const std::wstring& tPath)
 {
     std::string cPath(tPath.begin(), tPath.end());
     if (!CFMOD::CreateSound(cPath, &mSound))

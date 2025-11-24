@@ -12,7 +12,7 @@ public:
 	CPlayScene() {}
 	virtual ~CPlayScene() {}
 
-	void OnCreate(CAPIEngine* tEngine) override;
+	void OnCreate() override;
 	void OnDestroy() override;
 	void OnUpdate(float tDeltaTime) override;
 	void OnLateUpdate(float tDeltaTime) override;
@@ -26,10 +26,15 @@ public:
 	}
 
 public:
-	void LoadMap(CAPIEngine* tEngine, const wchar_t* tPath);
+	void LoadBakedMap(const wchar_t* tPath);
+	void RandomBakedMap();
+	void OutLineFill(Gdiplus::Graphics* tGraphics, int tTileW, int tTileH);
 
 private:
 	CPlayer* mPlayer;
 	CWeaponMgr* mPlayerWeapons;
+
+	GameObject* mBakedMap;
+
 	int mStageNum = 0;
 };

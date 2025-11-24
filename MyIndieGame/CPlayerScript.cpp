@@ -7,6 +7,7 @@
 #include "CAnimator.h"
 #include "CCollider.h"
 #include "CSpriteRenderer.h"
+#include "CTilemapRenderer.h"
 
 void CPlayerScript::OnCreate()
 {
@@ -56,22 +57,22 @@ void CPlayerScript::Idle()
 {
 	if (mInputMgr->GetKeyPressed("DoMoveLt")) {
 		mState = eState::Walk;
-		mAnimator->PlayAnimation(L"LeftWalk");
+		// mAnimator->PlayAnimation(L"LeftWalk");
 	}
 
 	if (mInputMgr->GetKeyPressed("DoMoveRt")) {
 		mState = eState::Walk;
-		mAnimator->PlayAnimation(L"RightWalk");
+		// mAnimator->PlayAnimation(L"RightWalk");
 	}
 
 	if (mInputMgr->GetKeyPressed("DoMoveFt")) {
 		mState = eState::Walk;
-		mAnimator->PlayAnimation(L"DownWalk");
+		// mAnimator->PlayAnimation(L"DownWalk");
 	}
 
 	if (mInputMgr->GetKeyPressed("DoMoveBt")) {
 		mState = eState::Walk;
-		mAnimator->PlayAnimation(L"UpWalk");
+		// mAnimator->PlayAnimation(L"UpWalk");
 	}
 }
 
@@ -93,21 +94,35 @@ void CPlayerScript::Move()
 void CPlayerScript::Translate(CTransform* tr)
 {
 	SVector2D currentVelocity = SVector2D();
+	CCollider* Cl = GetOwner()->GetComponent<CCollider>();
 
-	if (mInputMgr->GetKeyPressed("DoMoveLt")) {
+	if (mInputMgr->GetKeyPressed("DoMoveLt") && tr->GetPos().mX + Cl->GetOffset().mX > CTilemapRenderer::TileSize.mX / 2) {
 		currentVelocity.mX += -1.0f;
 	}
 
-	if (mInputMgr->GetKeyPressed("DoMoveRt")) {
+	if (mInputMgr->GetKeyPressed("DoMoveRt") && tr->GetPos().mX + Cl->GetOffset().mX < mapWidth - CTilemapRenderer::TileSize.mX / 2) {
 		currentVelocity.mX += 1.0f;
 	}
 
-	if (mInputMgr->GetKeyPressed("DoMoveFt")) {
+	if (mInputMgr->GetKeyPressed("DoMoveFt") && tr->GetPos().mY + Cl->GetOffset().mY > CTilemapRenderer::TileSize.mY / 2) {
 		currentVelocity.mY += -1.0f;
 	}
 
-	if (mInputMgr->GetKeyPressed("DoMoveBt")) {
+	if (mInputMgr->GetKeyPressed("DoMoveBt") && tr->GetPos().mY + Cl->GetOffset().mY < mapHeight - CTilemapRenderer::TileSize.mY / 2) {
 		currentVelocity.mY += 1.0f;
+	}
+
+	if (tr->GetPos().mX + Cl->GetOffset().mX < CTilemapRenderer::TileSize.mX / 2) {
+		tr->SetPos(SVector2D((CTilemapRenderer::TileSize.mX / 2 + 1) - Cl->GetOffset().mX, tr->GetPos().mY));
+	}
+	if (tr->GetPos().mX + Cl->GetOffset().mX > mapWidth - CTilemapRenderer::TileSize.mX / 2) {
+		tr->SetPos(SVector2D(mapWidth - (CTilemapRenderer::TileSize.mX / 2) - 1 - Cl->GetOffset().mX, tr->GetPos().mY));
+	}
+	if (tr->GetPos().mY + Cl->GetOffset().mY < CTilemapRenderer::TileSize.mY / 2) {
+		tr->SetPos(SVector2D(tr->GetPos().mX, (CTilemapRenderer::TileSize.mY / 2 + 1) - Cl->GetOffset().mY));
+	}
+	if (tr->GetPos().mY + Cl->GetOffset().mY > mapHeight - CTilemapRenderer::TileSize.mY / 2) {
+		tr->SetPos(SVector2D(tr->GetPos().mX, mapHeight - (CTilemapRenderer::TileSize.mY / 2) - 1 - Cl->GetOffset().mY));
 	}
 
 	if (currentVelocity.Length() > 0.0f) {

@@ -11,20 +11,23 @@ bool CSceneMgr::mDontDestroyOnLoad = false;
 std::vector<GameObject*> CSceneMgr::GetGameObjects(eLayerType tLayer)
 {
 	std::vector<GameObject*> gameObjects = mActiveScene->GetLayer(tLayer)->GetGameObjects();
-	// std::vector<GameObject*> dontDestroyOnLoadGameObjs = mDontDestroyOnLoadScene->GetLayer(tLayer)->GetGameObjects();
+	std::vector<GameObject*> dontDestroyOnLoadGameObjs = mDontDestroyOnLoadScene->GetLayer(tLayer)->GetGameObjects();
 
-	// gameObjects.insert(gameObjects.end(), dontDestroyOnLoadGameObjs.begin(), dontDestroyOnLoadGameObjs.end());
+	gameObjects.insert(gameObjects.end(), dontDestroyOnLoadGameObjs.begin(), dontDestroyOnLoadGameObjs.end());
 
 	return gameObjects;
 }
 
-void CSceneMgr::OnCreate(CAPIEngine* tEngine)
+void CSceneMgr::OnCreate()
 {
-	// mDontDestroyOnLoadScene = CreateScene<CDontDestroyOnLoad>(tEngine, L"DontDestroyOnLoad");
+	mDontDestroyOnLoadScene = CreateScene<CDontDestroyOnLoad>(L"DontDestroyOnLoad");
+	SetDontDestroyOnLoad(true);
 }
 
 void CSceneMgr::OnDestroy()
 {
+	mActiveScene->OnExit();
+
 	for (auto& it : mScenes) {
 		it.second->OnDestroy();
 		SAFE_DELETE(it.second);
@@ -38,25 +41,25 @@ void CSceneMgr::OnDestroy()
 void CSceneMgr::OnUpdate(float tDeltaTime)
 {
 	mActiveScene->OnUpdate(tDeltaTime);
-	/*if (mDontDestroyOnLoad) {
+	if (mDontDestroyOnLoad) {
 		mDontDestroyOnLoadScene->OnUpdate(tDeltaTime);
-	}*/
+	}
 }
 
 void CSceneMgr::OnLateUpdate(float tDeltaTime)
 {
 	mActiveScene->OnLateUpdate(tDeltaTime);
-	/*if (mDontDestroyOnLoad) {
+	if (mDontDestroyOnLoad) {
 		mDontDestroyOnLoadScene->OnLateUpdate(tDeltaTime);
-	}*/
+	}
 }
 
 void CSceneMgr::Render(HDC tHDC)
 {
 	mActiveScene->Render(tHDC);
-	/*if (mDontDestroyOnLoad) {
+	if (mDontDestroyOnLoad) {
 		mDontDestroyOnLoadScene->Render(tHDC);
-	}*/
+	}
 }
 
 void CSceneMgr::RemoveDeadObjects()

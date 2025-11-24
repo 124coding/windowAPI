@@ -11,7 +11,7 @@ std::unordered_map<std::string, std::function<CEnemy* ()>> CDataMgr::mMonsterCre
 std::unordered_map<std::string, std::function<CWeapon* ()>> CDataMgr::mWeaponCreator;
 
 
-void CDataMgr::OnCreate(CAPIEngine* tEngine) {
+void CDataMgr::OnCreate() {
 	LoadDatas();
 
 	// Monsters

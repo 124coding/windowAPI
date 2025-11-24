@@ -45,7 +45,7 @@ public:
 	void Render(HDC tHDC) override;
 
 	void CreateAnimation(const std::wstring& tName, CTexture* tSpriteSheet, SVector2D tLeftTop, SVector2D tSize, SVector2D tOffset, UINT tSpriteLength, float tDuration);
-	void CreateAnimationByFolder(CAPIEngine* tEngine, const std::wstring& tName, const std::wstring& tPath, SVector2D tOffset, float tDuration);
+	void CreateAnimationByFolder(const std::wstring& tName, const std::wstring& tPath, SVector2D tOffset, float tDuration);
 	CAnimation* FindAnimation(const std::wstring& tName);
 	void PlayAnimation(const std::wstring& tName, bool tLoop = true);
 

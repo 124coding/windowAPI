@@ -29,7 +29,7 @@ public:
 		mLevel(1),
 		mExp(0.0f),
 		mMoney(0),
-		mSpeed(100.0f) {}
+		mSpeed(500.0f) {}
 	virtual ~CPlayerScript() {}
 
 	virtual CComponent* Clone() override {

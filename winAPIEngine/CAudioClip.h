@@ -20,7 +20,7 @@ public:
 		SAFE_DELETE(mSound);
 	}
 
-	virtual HRESULT Load(CAPIEngine* tEngine, const std::wstring& tPath) override;
+	virtual HRESULT Load(const std::wstring& tPath) override;
 
 	void Play();
 	void Stop();

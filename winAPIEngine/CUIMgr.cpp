@@ -15,7 +15,7 @@ std::stack<CUIBase*> CUIMgr::mUIBases = {};
 std::queue<eUIType> CUIMgr::mRequestUIQueue = {};
 CUIBase* CUIMgr::mActiveUI = nullptr;
 
-void CUIMgr::OnCreate(CAPIEngine* tEngine) {
+void CUIMgr::OnCreate() {
 	CUIStartButton* button = new CUIStartButton();
 	mUIs.insert(std::make_pair(eUIType::StartButton, button));
 

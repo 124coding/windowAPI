@@ -24,15 +24,6 @@ BOOL CAPIEngine::Create(HINSTANCE hInstance, int nCmdShow) {
 
     MyRegisterClass(hInstance, szWindowClass, WndProc);
 
-    RECT rect = { 0, 0, windowWidth, windowHeight };
-    AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, false);
-
-    SetWindowPos(mhWnd, nullptr, 
-        0, 0, 
-        rect.right - rect.left, 
-        rect.bottom - rect.top, 
-        0);
-
     if (!InitInstance(hInstance, nCmdShow))
     {
         return FALSE;
@@ -121,9 +112,15 @@ BOOL CAPIEngine::InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
+    RECT rect = { 0, 0, windowWidth, windowHeight };
+    AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, false);
+
+    int width = rect.right - rect.left;
+    int height = rect.bottom - rect.top;
+
     mhWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
         0, 0, 
-        windowWidth, windowHeight, 
+        width, height,
         nullptr, nullptr, hInstance, nullptr);
 
     if (!mhWnd)

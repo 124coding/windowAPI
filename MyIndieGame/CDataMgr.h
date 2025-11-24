@@ -52,7 +52,7 @@ public:
 		SWeaponTier tier[4];
 	};
 
-	static void OnCreate(CAPIEngine* tEngine);
+	static void OnCreate();
 	static void OnDestroy();
 	static void OnUpdate(float tDeltaTime);
 	static void OnLateUpdate(float tDeltaTime);

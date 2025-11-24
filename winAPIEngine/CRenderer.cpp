@@ -2,3 +2,4 @@
 
 
 CCamera* mainCamera = nullptr;
+CAPIEngine* mainEngine = nullptr;

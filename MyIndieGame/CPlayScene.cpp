@@ -1,5 +1,6 @@
 #include "CPlayScene.h"
 #include "CTitleScene.h"
+#include "CToolScene.h"
 
 #include "CPlayer.h"
 #include "CBabyAlien.h"
@@ -38,24 +39,31 @@
 #include "Enums.h"
 #include "Object.h"
 
-void CPlayScene::OnCreate(CAPIEngine* tEngine)
+void CPlayScene::OnCreate()
 {
-	// LoadMap(tEngine, L"..\\resources\\Maps\\Here");
 
-
-	GameObject* camera = Instantiate<GameObject>(eLayerType::None);
+	GameObject* camera = Instantiate<GameObject>(eLayerType::None, SVector2D(mapWidth / 2, mapHeight / 2));
 	CCamera* cameraComp = camera->AddComponent<CCamera>();
 
 	mainCamera = cameraComp;
 
+	DontDestroyOnLoad(camera);
+
+
+	/*GameObject* mapOutLine = Instantiate<GameObject>(eLayerType::None);
+
+	CTexture* mapOLImg = CResourceMgr::Find<CTexture>(L"TileOutLine");
+	
+	mapOutLine->SetSize(SVector2D(mapWidth / mapOLImg->GetWidth(), mapHeight / mapOLImg->GetHeight()));
+
+	CSpriteRenderer* mapOLSr = mapOutLine->AddComponent<CSpriteRenderer>();
+	mapOLSr->SetTexture(mapOLImg);*/
 
 
 
+	mBakedMap = Instantiate<GameObject>(eLayerType::BackGround);
 
-
-
-
-	mPlayer = Instantiate<CPlayer>(eLayerType::Player, SVector2D(windowWidth / 2, windowHeight / 2 + 55.0f));
+	mPlayer = Instantiate<CPlayer>(eLayerType::Player, SVector2D(mapWidth / 2, mapHeight / 2 + 55.0f));
 	// DontDestroyOnLoad(mPlayer);
 
 	// mPlayer->AddComponent<CRigidbody>();
@@ -65,14 +73,12 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 
 	CCircleCollider2D* cPlCollider = mPlayer->AddComponent<CCircleCollider2D>();
 	cPlCollider->SetSize(SVector2D(0.40f, 0.40f));
-	cPlCollider->SetOffset(SVector2D(0.0f, -45.0f));
-
-	cameraComp->SetTarget(mPlayer);
+	cPlCollider->SetOffset(SVector2D(0.0f, -35.0f));
 
 	CTexture* plImg = CResourceMgr::Find<CTexture>(L"PlayerBase");
 
 	CTransform* plTr = mPlayer->GetComponent<CTransform>();
-	mPlayer->SetSize(SVector2D(0.20f, 0.20f)); 
+	mPlayer->SetSize(SVector2D(0.15f, 0.15f)); 
 	mPlayer->SetAnchorPoint(plImg->GetWidth() / 2, plImg->GetHeight());
 
 	CAnimator* plAnim = mPlayer->AddComponent<CAnimator>();
@@ -146,7 +152,7 @@ void CPlayScene::OnCreate(CAPIEngine* tEngine)
 	EnemyAnim->CreateAnimationByFolder(tEngine, L"MushroomIdle", L"../resources/Sprites/Mushrooms", SVector2D(), 0.5f);
 	EnemyAnim->PlayAnimation(L"MushroomIdle");*/
 
-	CScene::OnCreate(tEngine);
+	CScene::OnCreate();
 
 	// CAT
 	/*CCat* Cat = Instantiate<CCat>(tEngine, eLayerType::Animal, SVector2D(200.0f, 200.0f));
@@ -194,6 +200,9 @@ void CPlayScene::Render(HDC tHDC)
 
 void CPlayScene::OnEnter()
 {
+	// LoadBakedMap(L"..\\resources\\Maps\\Here");
+	RandomBakedMap();
+
 	mStageNum++;
 	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Enemy, true);
 	CCollisionMgr::CollisionLayerCheck(eLayerType::MeleeWeapon, eLayerType::Enemy, true);
@@ -209,9 +218,9 @@ void CPlayScene::OnEnter()
 	mPlayerWeapons->WeaponsPosition();
 	CMonsterSpawnMgr::LoadStageSpawnEvents(mStageNum);
 
-	CScene::OnEnter();
+	mainCamera->SetTarget(mPlayer);
 
-	CSceneMgr::SetDontDestroyOnLoad(true);
+	CScene::OnEnter();
 }
 
 void CPlayScene::OnExit()
@@ -223,10 +232,21 @@ void CPlayScene::OnExit()
 	CUIMgr::Pop(eUIType::EXPBar);
 }
 
-void CPlayScene::LoadMap(CAPIEngine* tEngine, const wchar_t* tPath)
+void CPlayScene::LoadBakedMap(const wchar_t* tPath)
 {
 	FILE* pFile = nullptr;
 	_wfopen_s(&pFile, tPath, L"rb");
+
+	CSpriteRenderer* mBakedMapSr = mBakedMap->AddComponent<CSpriteRenderer>();
+	CTexture* mBakedMapImg = CTexture::Create(L"BakedBG", mapWidth, mapHeight);
+
+	mBakedMapSr->SetTexture(mBakedMapImg);
+
+	Gdiplus::Graphics graphics(mBakedMapImg->GetDCMem());
+
+	CTexture* tileTex = CToolScene::GetMapTileTexture();
+	int tileW = CTilemapRenderer::TileSize.mX;
+	int tileH = CTilemapRenderer::TileSize.mY;
 
 	while (true) {
 		int idxX = 0;
@@ -240,13 +260,151 @@ void CPlayScene::LoadMap(CAPIEngine* tEngine, const wchar_t* tPath)
 		if (fread(&posX, sizeof(int), 1, pFile) == NULL) break;
 		if (fread(&posY, sizeof(int), 1, pFile) == NULL) break;
 
-		CTile* tile = Instantiate<CTile>(eLayerType::Tile, SVector2D(posX, posY));
-		tile->SetSize(SVector2D(2.0f, 2.0f));
+		//CTile* tile = Instantiate<CTile>(eLayerType::Tile, SVector2D(posX, posY));
+		//tile->SetSize(SVector2D(1.0f, 1.0f));
 
-		CTilemapRenderer* tmr = tile->AddComponent<CTilemapRenderer>();
-		tmr->SetTexture(CResourceMgr::Find<CTexture>(L"SpringFloor"));
-		tmr->SetIndex(SVector2D(idxX, idxY));
+		//CTilemapRenderer* tmr = tile->AddComponent<CTilemapRenderer>();
+		//tmr->SetTexture(CToolScene::GetMapTileTexture());
+		//tmr->SetIndex(SVector2D(idxX, idxY));
+
+		int srcX = idxX * tileW;
+		int srcY = idxY * tileH;
+
+		Gdiplus::Rect destRect(posX, posY, tileW, tileH);
+
+		graphics.DrawImage(tileTex->GetImage(),
+			destRect,
+			srcX, srcY, tileW, tileH,
+			Gdiplus::UnitPixel);
 	}
 
 	fclose(pFile);
+
+	OutLineFill(&graphics, tileW, tileH);
+}
+
+void CPlayScene::RandomBakedMap()
+{
+	// 랜덤하게 타일 리소스를 가져옴
+	int randTile = std::rand() % 5 + 1;
+	std::wstring tileName = L"Tile" + std::to_wstring(randTile);
+	CTexture* randomMapTex = CResourceMgr::Find<CTexture>(tileName);
+
+	CSpriteRenderer* mBakedMapSr = mBakedMap->AddComponent<CSpriteRenderer>();
+	CTexture* mBakedMapImg = CTexture::Create(L"BakedBG", mapWidth, mapHeight);
+
+	mBakedMapSr->SetTexture(mBakedMapImg);
+
+	Gdiplus::Graphics graphics(mBakedMapImg->GetDCMem());
+
+	int tileW = CTilemapRenderer::TileSize.mX;
+	int tileH = CTilemapRenderer::TileSize.mY;
+
+	int tileCountWidth = mapWidth / CTilemapRenderer::TileSize.mX;
+	int tileCountHeight = mapHeight / CTilemapRenderer::TileSize.mY;
+
+	int tileMapWidth = randomMapTex->GetWidth() / CTilemapRenderer::TileSize.mX;
+	int tileMapHeight = randomMapTex->GetHeight() / CTilemapRenderer::TileSize.mY;
+
+	int srcX = 0;
+	int srcY = 0;
+
+	// 타일 채우는 for문
+	for (int i = 0; i < tileCountWidth; i++) {
+		for (int j = 0; j < tileCountHeight; j++) {
+			int randNum = std::rand() % 10;
+
+			// 90프로 확률로 빈 타일이 나오게 설정
+			if (randNum > 0) {
+				srcX = (tileMapWidth - 1) * tileW;
+				srcY = (tileMapHeight - 1) * tileH;
+			}
+			else {
+				int randX = 0;
+				int randY = 0;
+				
+				while (true) {
+					randX = std::rand() % tileMapWidth;
+					randY = std::rand() % tileMapHeight;
+
+					if (randX != tileMapWidth - 1 && randY != tileMapHeight - 1) {
+						srcX = randX * tileW;
+						srcY = randY * tileH;
+						break;
+					}
+				}
+			}
+			graphics.DrawImage(randomMapTex->GetImage(),
+				Gdiplus::Rect(i * tileW, j * tileH, tileW, tileH),
+				srcX, srcY, tileW, tileH,
+				Gdiplus::UnitPixel);
+		}
+	}
+
+	OutLineFill(&graphics, tileW, tileH);
+}
+
+void CPlayScene::OutLineFill(Gdiplus::Graphics* tGraphics, int tTileW, int tTileH)
+{
+	CTexture* outlineTex = CResourceMgr::Find<CTexture>(L"TileOutLine"); // 아웃라인 텍스처 가져오기
+
+	int tileCountWidth = mapWidth / CTilemapRenderer::TileSize.mX;
+	int tileCountHeight = mapHeight / CTilemapRenderer::TileSize.mY;
+
+	int countOutLineXNotCorner = outlineTex->GetWidth() / CTilemapRenderer::TileSize.mX - 2;
+	int countOutLineYNotCorner = outlineTex->GetHeight() / CTilemapRenderer::TileSize.mY - 2;
+
+	// 왼쪽 오른쪽 위 모서리와 가장 위 OutLine 채우기
+	tGraphics->DrawImage(outlineTex->GetImage(),
+		Gdiplus::Rect(0, 0, tTileW, tTileH),
+		0, 0, tTileW, tTileH,
+		Gdiplus::UnitPixel);
+
+	tGraphics->DrawImage(outlineTex->GetImage(),
+		Gdiplus::Rect((tileCountWidth - 1) * tTileW, 0, tTileW, tTileH),
+		(outlineTex->GetWidth() / CTilemapRenderer::TileSize.mX - 1) * tTileW, 0, tTileW, tTileH,
+		Gdiplus::UnitPixel);
+
+	for (int i = 1; i < tileCountWidth - 1; i++) {
+		tGraphics->DrawImage(outlineTex->GetImage(),
+			Gdiplus::Rect(i * tTileW, 0, tTileW, tTileH),
+			(i % countOutLineXNotCorner + 1) * tTileW, 0, tTileW, tTileH,
+			Gdiplus::UnitPixel);
+	}
+
+
+	// 왼쪽 오른쪽 아래 모서리와 가장 아래 OutLine 채우기
+
+	tGraphics->DrawImage(outlineTex->GetImage(),
+		Gdiplus::Rect(0, (tileCountHeight - 1) * tTileH, tTileW, tTileH),
+		0, (outlineTex->GetHeight() / CTilemapRenderer::TileSize.mY - 1) * tTileH, tTileW, tTileH,
+		Gdiplus::UnitPixel);
+
+	tGraphics->DrawImage(outlineTex->GetImage(),
+		Gdiplus::Rect((tileCountWidth - 1) * tTileW, (tileCountHeight - 1) * tTileH, tTileW, tTileH),
+		(outlineTex->GetWidth() / CTilemapRenderer::TileSize.mX - 1) * tTileW, (outlineTex->GetHeight() / CTilemapRenderer::TileSize.mY - 1) * tTileH, tTileW, tTileH,
+		Gdiplus::UnitPixel);
+
+	for (int i = 1; i < tileCountWidth - 1; i++) {
+		tGraphics->DrawImage(outlineTex->GetImage(),
+			Gdiplus::Rect(i * tTileW, (tileCountHeight - 1) * tTileH, tTileW, tTileH),
+			(i % countOutLineXNotCorner + 1) * tTileW, (outlineTex->GetHeight() / CTilemapRenderer::TileSize.mY - 1) * tTileH, tTileW, tTileH,
+			Gdiplus::UnitPixel);
+	}
+
+	// 왼쪽 모서리 OutLine 채우기
+	for (int i = 1; i < tileCountHeight - 1; i++) {
+		tGraphics->DrawImage(outlineTex->GetImage(),
+			Gdiplus::Rect(0, i * tTileH, tTileW, tTileH),
+			0, (i % countOutLineYNotCorner + 1) * tTileH, tTileW, tTileH,
+			Gdiplus::UnitPixel);
+	}
+
+	// 오른쪽 모서리 OutLine 채우기
+	for (int i = 1; i < tileCountHeight - 1; i++) {
+		tGraphics->DrawImage(outlineTex->GetImage(),
+			Gdiplus::Rect((tileCountWidth - 1) * tTileW, i * tTileH, tTileW, tTileH),
+			(outlineTex->GetWidth() / CTilemapRenderer::TileSize.mX - 1) * tTileW, (i % countOutLineYNotCorner + 1) * tTileH, tTileW, tTileH,
+			Gdiplus::UnitPixel);
+	}
 }

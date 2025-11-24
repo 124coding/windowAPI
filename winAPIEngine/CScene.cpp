@@ -2,7 +2,7 @@
 
 #include "CCollisionMgr.h"
 
-void CScene::OnCreate(CAPIEngine* tEngine)
+void CScene::OnCreate()
 {
 	for (auto it = mLayers.begin(); it != mLayers.end(); it++) {
 		if (*it == nullptr) {

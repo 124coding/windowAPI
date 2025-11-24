@@ -2,8 +2,11 @@
 #include "CTexture.h"
 #include "winMacro.h"
 #include "CResourceMgr.h"
+#include "SVector2D.h"
 
-CTexture* CTexture::Create(CAPIEngine* tEngine, const std::wstring& tName, UINT tWidth, UINT tHeight)
+#include "CRenderer.h"
+
+CTexture* CTexture::Create(const std::wstring& tName, UINT tWidth, UINT tHeight)
 {
 	CTexture* image = CResourceMgr::Find<CTexture>(tName);
 
@@ -14,8 +17,8 @@ CTexture* CTexture::Create(CAPIEngine* tEngine, const std::wstring& tName, UINT 
 	image->SetWidth(tWidth);
 	image->SetHeight(tHeight);
 
-	HDC hDC = tEngine->GetmhDC();
-	HWND hWND = tEngine->GetmhWnd();
+	HDC hDC = mainEngine->GetmhDC();
+	HWND hWND = mainEngine->GetmhWnd();
 	
 	image->mhBitmap = CreateCompatibleBitmap(hDC, tWidth, tHeight);
 	image->mhDCMem = CreateCompatibleDC(hDC);
@@ -35,7 +38,7 @@ CTexture* CTexture::Create(CAPIEngine* tEngine, const std::wstring& tName, UINT 
 	return image;
 }
 
-HRESULT CTexture::Load(CAPIEngine* tEngine, const std::wstring& tPath)
+HRESULT CTexture::Load(const std::wstring& tPath)
 {
 	std::wstring ext = L"";
 	if (tPath != L"") ext = tPath.substr(tPath.find_last_of(L".") + 1);
@@ -58,7 +61,7 @@ HRESULT CTexture::Load(CAPIEngine* tEngine, const std::wstring& tPath)
 			mbAlpha = false;
 		}
 
-		HDC mainDC = tEngine->GetmhDC();
+		HDC mainDC = mainEngine->GetmhDC();
 		mhDCMem = CreateCompatibleDC(mainDC);
 
 		mhOldBitmap = (HBITMAP)SelectObject(mhDCMem, mhBitmap);

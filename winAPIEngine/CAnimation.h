@@ -38,7 +38,7 @@ public:
 
 	~CAnimation() {}
 
-	HRESULT Load(CAPIEngine* tEngine, const std::wstring& tPath) override;
+	HRESULT Load(const std::wstring& tPath) override;
 
 	void OnUpdate(float tDeltaTime);
 	void Render(HDC tHDC);

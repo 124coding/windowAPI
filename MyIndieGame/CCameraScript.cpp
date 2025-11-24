@@ -20,19 +20,19 @@ void CCameraScript::OnUpdate(float tDeltaTime)
 
 	SVector2D CurrentVelocity;
 
-	if (mInputMgr->GetKeyPressed("DoMoveLt")) {
+	if (mInputMgr->GetKeyPressed("DoMoveLt") && tr->GetPos().mX > windowWidth / 2) {
 		CurrentVelocity.mX += -1.0f;
 	}
 
-	if (mInputMgr->GetKeyPressed("DoMoveRt")) {
+	if (mInputMgr->GetKeyPressed("DoMoveRt") && tr->GetPos().mX < mapWidth - windowWidth / 2) {
 		CurrentVelocity.mX += 1.0f;
 	}
 
-	if (mInputMgr->GetKeyPressed("DoMoveFt")) {
+	if (mInputMgr->GetKeyPressed("DoMoveFt") && tr->GetPos().mY > windowHeight / 2) {
 		CurrentVelocity.mY += -1.0f;
 	}
 
-	if (mInputMgr->GetKeyPressed("DoMoveBt")) {
+	if (mInputMgr->GetKeyPressed("DoMoveBt") && tr->GetPos().mY < mapHeight - windowHeight / 2) {
 		CurrentVelocity.mY += 1.0f;
 	}
 
@@ -40,7 +40,20 @@ void CCameraScript::OnUpdate(float tDeltaTime)
 		CurrentVelocity.Normalize();
 	}
 
-	tr->SetVelocity(CurrentVelocity * 100.0f);
+	if (tr->GetPos().mX < windowWidth / 2) {
+		tr->SetPos(SVector2D(windowWidth / 2, tr->GetPos().mY));
+	}
+	if (tr->GetPos().mX > mapWidth - windowWidth / 2) {
+		tr->SetPos(SVector2D(mapWidth - windowWidth / 2, tr->GetPos().mY));
+	}
+	if (tr->GetPos().mY < windowHeight / 2) {
+		tr->SetPos(SVector2D(tr->GetPos().mX, windowHeight / 2));
+	}
+	if (tr->GetPos().mY > mapHeight - windowHeight / 2) {
+		tr->SetPos(SVector2D(tr->GetPos().mX, mapHeight - windowHeight / 2));
+	}
+
+	tr->SetVelocity(CurrentVelocity * 500.0f);
 }
 
 void CCameraScript::OnLateUpdate(float tDeltaTime)

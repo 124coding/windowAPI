@@ -1,8 +1,8 @@
 #include "CDontDestroyOnLoad.h"
 
-void CDontDestroyOnLoad::OnCreate(CAPIEngine* tEngine)
+void CDontDestroyOnLoad::OnCreate()
 {
-	CScene::OnCreate(tEngine);
+	CScene::OnCreate();
 }
 
 void CDontDestroyOnLoad::OnDestroy()

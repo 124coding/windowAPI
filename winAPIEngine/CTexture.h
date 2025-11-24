@@ -9,6 +9,8 @@
 
 #include <windows.h>
 
+class SVector2D;
+
 class CTexture : public CResource
 {
 public:
@@ -18,14 +20,14 @@ public:
 		None
 	};
 
-	static CTexture* Create(CAPIEngine* tEngine, const std::wstring& tName, UINT tWidth, UINT tHeight);
+	static CTexture* Create(const std::wstring& tName, UINT tWidth, UINT tHeight);
 
 	CTexture() : CResource(eResourceType::Texture), mbAlpha(false) { 
 		memset(&mBitmapInfo, 0, sizeof(BITMAP));
 	}
 	~CTexture(){}
 
-	HRESULT Load(CAPIEngine* tEngine, const std::wstring& tPath) override;
+	HRESULT Load(const std::wstring& tPath) override;
 	void UnLoad();
 
 	HRESULT CreateBackBuffer(HDC tDC);

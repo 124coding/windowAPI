@@ -26,7 +26,7 @@ public:
 
 	static void LoadStageSpawnEvents(int tStageNum);
 
-	static void OnCreate(CAPIEngine* tEngine);
+	static void OnCreate();
 	static void OnDestroy();
 	static void OnUpdate(float tDeltaTime);
 	static void OnLateUpdate(float tDeltaTime);

@@ -73,7 +73,7 @@ void CAnimator::CreateAnimation(const std::wstring& tName,
 	mAnimations.insert(std::make_pair(tName, animation));
 }
 
-void CAnimator::CreateAnimationByFolder(CAPIEngine* tEngine, const std::wstring& tName, 
+void CAnimator::CreateAnimationByFolder(const std::wstring& tName, 
 	const std::wstring& tPath, 
 	SVector2D tOffset, 
 	float tDuration)
@@ -92,7 +92,7 @@ void CAnimator::CreateAnimationByFolder(CAPIEngine* tEngine, const std::wstring&
 		std::wstring fileName = p.path().filename();
 		std::wstring fullName = p.path();
 
-		CTexture* texture = CResourceMgr::Load<CTexture>(tEngine, fileName, fullName);
+		CTexture* texture = CResourceMgr::Load<CTexture>(fileName, fullName);
 		images.push_back(texture);
 		fileCount++;
 	}
@@ -100,7 +100,7 @@ void CAnimator::CreateAnimationByFolder(CAPIEngine* tEngine, const std::wstring&
 	UINT sheetWidth = images[0]->GetWidth() * fileCount;
 	UINT sheetHeight = images[0]->GetHeight();
 
-	CTexture* spriteSheet = CTexture::Create(tEngine, tName, sheetWidth, sheetHeight);
+	CTexture* spriteSheet = CTexture::Create(tName, sheetWidth, sheetHeight);
 
 	UINT imageWidth = images[0]->GetWidth();
 	UINT imageHeight = images[0]->GetHeight();

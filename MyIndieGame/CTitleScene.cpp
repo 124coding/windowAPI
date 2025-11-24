@@ -11,9 +11,9 @@
 
 #include "Object.h"
 
-void CTitleScene::OnCreate(CAPIEngine* tEngine)
+void CTitleScene::OnCreate()
 {
-	CScene::OnCreate(tEngine);
+	CScene::OnCreate();
 
 
 

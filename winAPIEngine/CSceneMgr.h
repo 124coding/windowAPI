@@ -7,11 +7,11 @@ class CSceneMgr
 {
 public:
 	template<typename T>
-	static CScene* CreateScene(CAPIEngine* tEngine, const std::wstring& tName) {
+	static CScene* CreateScene(const std::wstring& tName) {
 		T* scene = new T();
 		scene->SetName(tName);
 		mActiveScene = scene;
-		scene->OnCreate(tEngine);
+		scene->OnCreate();
 
 		mScenes.insert(make_pair(tName, scene));
 
@@ -19,12 +19,15 @@ public:
 	}
 
 	static CScene* LoadScene(const std::wstring& tName) {
-		if (mActiveScene) mActiveScene->OnExit();
 
 		auto it = mScenes.find(tName);
 
 		if (it == mScenes.end()) {
 			return nullptr;
+		}
+
+		if (it->second != mActiveScene) {
+			mActiveScene->OnExit();
 		}
 
 		mActiveScene = it->second;
@@ -48,7 +51,7 @@ public:
 
 	static std::vector<GameObject*> GetGameObjects(eLayerType tLayer);
 
-	static void OnCreate(CAPIEngine* tEngine);
+	static void OnCreate();
 	static void OnDestroy();
 	static void OnUpdate(float tDeltaTime);
 	static void OnLateUpdate(float tDeltaTime);

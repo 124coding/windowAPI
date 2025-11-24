@@ -1,6 +1,7 @@
 #pragma once
 #include "framework.h"
 
+#include "CResourceMgr.h"
 #include "CScene.h"
 
 class CTile;
@@ -11,7 +12,7 @@ public:
 	CToolScene() {}
 	virtual ~CToolScene() {}
 
-	void OnCreate(CAPIEngine* tEngine) override;
+	void OnCreate() override;
 	void OnDestroy() override;
 	void OnUpdate(float tDeltaTime) override;
 	void OnLateUpdate(float tDeltaTime) override;
@@ -23,6 +24,14 @@ public:
 	void Save();
 	void Load();
 
+	void SetMapTileTexture(const std::wstring& tTextureName) {
+		mMapTileTexture = CResourceMgr::Find<CTexture>(tTextureName);
+	}
+
+	static CTexture* GetMapTileTexture() {
+		return mMapTileTexture;
+	}
+
 private:
 	static SVector2D mIndex;
 	std::vector<CTile*> mTiles;
@@ -33,6 +42,7 @@ private:
 	HDC mhToolDC = nullptr;
 	HWND mhToolWnd = nullptr;
 
+	static CTexture* mMapTileTexture;
 	CTexture* mTileBackBuffer = nullptr;
 
 private:

@@ -28,7 +28,7 @@ void CMonsterSpawnMgr::LoadStageSpawnEvents(int tStageNum) {
 	mActiveStageSpawnEvents.push_back(event);
 }
 
-void CMonsterSpawnMgr::OnCreate(CAPIEngine* tEngine) {
+void CMonsterSpawnMgr::OnCreate() {
 }
 
 void CMonsterSpawnMgr::OnDestroy() {

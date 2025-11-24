@@ -5,6 +5,9 @@
 #define windowWidth 1280
 #define windowHeight 900
 
+#define mapWidth 1600
+#define mapHeight 1600
+
 #define DegToRad(p) ((p) * (PI / 180.0f))
 #define RadToDeg(p) ((p) * (180.0f / PI))
 

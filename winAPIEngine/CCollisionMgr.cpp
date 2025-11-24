@@ -10,7 +10,7 @@
 std::bitset <(UINT)eLayerType::MAX> CCollisionMgr::mCollisionLayerMtrix[(UINT)eLayerType::MAX] = {};
 std::unordered_map<UINT64, bool> CCollisionMgr::mCollisionMap = {};
 
-void CCollisionMgr::OnCreate(CAPIEngine* tEngine){
+void CCollisionMgr::OnCreate(){
 
 }
 

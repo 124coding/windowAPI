@@ -122,7 +122,7 @@ void CWeaponMgr::WeaponsPosition()
 
 	SVector2D targetPos = GetOwner()->GetComponent<CTransform>()->GetPos();
 
-	float radius = 70.0f;
+	float radius = 60.0f;
 	float angleStep = 360.0f / count;
 
 	for (int i = 0; i < count; i++) {

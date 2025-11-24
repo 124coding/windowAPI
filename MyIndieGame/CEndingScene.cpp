@@ -1,8 +1,8 @@
 #include "CEndingScene.h"
 
-void CEndingScene::OnCreate(CAPIEngine* tEngine)
+void CEndingScene::OnCreate()
 {
-	CScene::OnCreate(tEngine);
+	CScene::OnCreate();
 }
 
 void CEndingScene::OnDestroy()

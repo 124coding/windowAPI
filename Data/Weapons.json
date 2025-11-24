@@ -4,11 +4,11 @@
             "W_ID":"MW_001",
             "Name": "Dagger",
             "Range": 200.0,
-            "Speed": 700.0,
-            "SizeX": 1.0,
-            "SizeY": 1.0,
+            "Speed": 1000.0,
+            "SizeX": 0.8,
+            "SizeY": 0.8,
             "CollisionSizeX": 0.6,
-            "CollisionSizeY": 0.6,
+            "CollisionSizeY": 0.4,
             "Tiers":[
                 {
                     "Tier": 1,

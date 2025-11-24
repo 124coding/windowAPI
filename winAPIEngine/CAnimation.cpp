@@ -4,7 +4,7 @@
 #include "CAnimator.h"
 #include "CRenderer.h"
 
-HRESULT CAnimation::Load(CAPIEngine* tEngine, const std::wstring& tPath)
+HRESULT CAnimation::Load(const std::wstring& tPath)
 {
     return E_NOTIMPL;
 }

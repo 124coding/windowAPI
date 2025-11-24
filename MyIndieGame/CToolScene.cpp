@@ -3,7 +3,6 @@
 #include "CTile.h"
 #include "CTexture.h"
 
-#include "CResourceMgr.h"
 #include "CInputMgr.h"
 
 #include "CCamera.h"
@@ -16,17 +15,35 @@
 #include <commdlg.h>
 
 SVector2D CToolScene::mIndex;
+CTexture* CToolScene::mMapTileTexture = nullptr;
 
-void CToolScene::OnCreate(CAPIEngine* tEngine)
+void CToolScene::OnCreate()
 {
-	CScene::OnCreate(tEngine);
+	mEngine = mainEngine;
 
-	mEngine = tEngine;
+	SetMapTileTexture(L"Tile1");
 
-	CTile* tile = Instantiate<CTile>(eLayerType::Tile, SVector2D());
-	tile->SetSize(SVector2D(2.0f, 2.0f));
+	CTile* tile = Instantiate<CTile>(eLayerType::Tile);
 
 	CTilemapRenderer* tmr = tile->AddComponent<CTilemapRenderer>();
+
+	GameObject* mapOutLine = Instantiate<GameObject>(eLayerType::Tile);
+	CTexture* mapOLImg = CResourceMgr::Find<CTexture>(L"TileOutLine");
+
+	CTransform* mapOLTr = mapOutLine->GetComponent<CTransform>();
+
+	float aspectRatioX = (float)mapWidth / mapOLImg->GetWidth();
+	float aspectRatioY = (float)mapHeight / mapOLImg->GetHeight();
+
+	mapOutLine->SetSize(SVector2D(aspectRatioX, aspectRatioY));
+	mapOutLine->SetAnchorPoint(mapOLImg->GetWidth() / 2, mapOLImg->GetHeight() / 2);
+
+	mapOLTr->SetPos(SVector2D(mapWidth / 2, mapHeight / 2));
+
+	CSpriteRenderer* mapOLSr = mapOutLine->AddComponent<CSpriteRenderer>();
+	mapOLSr->SetTexture(mapOLImg);
+
+	CScene::OnCreate();
 }
 
 void CToolScene::OnDestroy()
@@ -46,9 +63,9 @@ void CToolScene::OnLateUpdate(float tDeltaTime)
 	CScene::OnLateUpdate(tDeltaTime);
 
 	if (CInputMgr::GetInst()->GetKeyDown("MouseLeftClick")) {
-		SVector2D pos = CInputMgr::GetMousePosition();
+		SVector2D mousePos = CInputMgr::GetMousePosition();
 
-		pos = mainCamera->CalculateTilePosition(pos);
+		SVector2D pos = mainCamera->CalculateTilePosition(mousePos);
 
 		if (pos.mX >= 0.0f && pos.mY >= 0.0f) {
 			SVector2D index;
@@ -58,10 +75,9 @@ void CToolScene::OnLateUpdate(float tDeltaTime)
 			index.mY = (int)index.mY;
 
 			CTile* tile = Instantiate<CTile>(eLayerType::Tile);
-			tile->SetSize(SVector2D(2.0f, 2.0f));
 
 			CTilemapRenderer* tmr = tile->AddComponent<CTilemapRenderer>();
-			tmr->SetTexture(CResourceMgr::Find<CTexture>(L"SpringFloor"));
+			tmr->SetTexture(mMapTileTexture);
 			tmr->SetIndex(mIndex);
 
 			tile->SetIndexPosition(index);
@@ -83,36 +99,68 @@ void CToolScene::OnLateUpdate(float tDeltaTime)
 
 void CToolScene::Render(HDC tHDC)
 {
-	CScene::Render(tHDC);
-
-	for (size_t i = 0; i < 200; i++) {
+	for (size_t i = 0; i < 47; i++) {
 		SVector2D pos = mainCamera->CalculatePosition(SVector2D(CTilemapRenderer::TileSize.mX * i, 0.0f));
 		
 		MoveToEx(tHDC, pos.mX, 0, NULL);
-		LineTo(tHDC, pos.mX, 1000);		
+		LineTo(tHDC, pos.mX, windowHeight);		
 	}
 
-	for (size_t i = 0; i < 200; i++) {
+	for (size_t i = 0; i < 47; i++) {
 		SVector2D pos = mainCamera->CalculatePosition(SVector2D(0.0f, CTilemapRenderer::TileSize.mY * i));
 
 		MoveToEx(tHDC, 0, pos.mY, NULL);
-		LineTo(tHDC, 2000, pos.mY);
+		LineTo(tHDC, windowWidth, pos.mY);
 
 	}
 
-	CTexture* texture = CResourceMgr::Load<CTexture>(mEngine, L"SpringFloor", L"../resources/SpringFloor.bmp");
+	if (mMapTileTexture->GetTextureType() == CTexture::eTextureType::Bmp) {
 
-	TransparentBlt(mhToolDC, 0, 0,
-		texture->GetWidth() * 2, texture->GetHeight() * 2,
-		texture->GetDCMem(),
-		0, 0,
-		texture->GetWidth(), texture->GetHeight(),
-		RGB(255, 0, 255));
+		if (mMapTileTexture->GetbAlpha()) {
+			BLENDFUNCTION func = {};
+			func.BlendOp = AC_SRC_OVER;
+			func.BlendFlags = 0;
+			func.AlphaFormat = AC_SRC_ALPHA;
+
+			func.SourceConstantAlpha = 255;
+			AlphaBlend(mhToolDC, 0, 0,
+				mMapTileTexture->GetWidth(), mMapTileTexture->GetHeight(),
+				mMapTileTexture->GetDCMem(),
+				0, 0,
+				mMapTileTexture->GetWidth(), mMapTileTexture->GetHeight(), func);
+		}
+		else {
+			TransparentBlt(mhToolDC, 0, 0,
+				mMapTileTexture->GetWidth(), mMapTileTexture->GetHeight(),
+				mMapTileTexture->GetDCMem(),
+				0, 0,
+				mMapTileTexture->GetWidth(), mMapTileTexture->GetHeight(),
+				RGB(255, 0, 255));
+		}
+	}
+	else if (mMapTileTexture->GetTextureType() == CTexture::eTextureType::Png) {
+		Gdiplus::ImageAttributes imgAtt = {};
+
+		// 투명화 시킬 픽셀의 색 범위
+		imgAtt.SetColorKey(Gdiplus::Color(245, 0, 245), Gdiplus::Color(255, 0, 255));
+
+		Gdiplus::Graphics graphics(mhToolDC);
+
+		graphics.DrawImage(mMapTileTexture->GetImage(),
+			0, 0,
+			mMapTileTexture->GetWidth(),
+			mMapTileTexture->GetHeight()
+		);
+	}
+
+	CScene::Render(tHDC);
 }
 
 void CToolScene::OnEnter()
 {
 	CScene::OnEnter();
+
+	mainCamera->GetOwner()->AddComponent<CCameraScript>();
 
     CreateTileWindow(mEngine->hInst, SW_SHOWDEFAULT); // nCmdShow에 임의의 값 투입
 
@@ -125,6 +173,8 @@ void CToolScene::OnEnter()
 void CToolScene::OnExit()
 {
 	CScene::OnExit();
+
+	mainCamera->GetOwner()->RemoveComponent<CCameraScript>();
 
 	if (mTileBackBuffer != nullptr) {
 	    mTileBackBuffer->UnLoad();
@@ -220,13 +270,12 @@ void CToolScene::Load()
 		if (fread(&posY, sizeof(int), 1, pFile) == NULL) break;
 
 		CTile* tile = Instantiate<CTile>(eLayerType::Tile, SVector2D(posX, posY));
-		tile->SetSize(SVector2D(2.0f, 2.0f));
 
 		CTilemapRenderer* tmr = tile->AddComponent<CTilemapRenderer>();
-		tmr->SetTexture(CResourceMgr::Find<CTexture>(L"SpringFloor"));
+		tmr->SetTexture(mMapTileTexture);
 		tmr->SetIndex(SVector2D(idxX, idxY));
 
-		// tile->SetIndexPosition(SVector2D(posX, posY) / CTilemapRenderer::TileSize);
+		tile->SetIndexPosition(SVector2D(posX, posY) / CTilemapRenderer::TileSize);
 		mTiles.push_back(tile);
 	}
 
@@ -259,10 +308,8 @@ BOOL CToolScene::InitInstanceTileWIndow(HINSTANCE hInstance, int nCmdShow)
         return FALSE;
     }
 
-    CTexture* texture = CResourceMgr::Load<CTexture>(mEngine, L"SpringFloor", L"../resources/SpringFloor.bmp");
-
-    RECT rect = { 0, 0, texture->GetWidth() * 2, texture->GetHeight() * 2 };
-    AdjustWindowRect(&rect, WS_OVERLAPPED, false);
+    RECT rect = { 0, 0, mMapTileTexture->GetWidth(), mMapTileTexture->GetHeight() };
+    AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, false);
 
     SetWindowPos(mhToolWnd, nullptr,
 		windowWidth, 0,
