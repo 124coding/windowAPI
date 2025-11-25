@@ -242,7 +242,7 @@ void CPlayScene::LoadBakedMap(const wchar_t* tPath)
 
 	mBakedMapSr->SetTexture(mBakedMapImg);
 
-	Gdiplus::Graphics graphics(mBakedMapImg->GetDCMem());
+	Gdiplus::Graphics graphics(mBakedMapImg->GetImage());
 
 	CTexture* tileTex = CToolScene::GetMapTileTexture();
 	int tileW = CTilemapRenderer::TileSize.mX;
@@ -281,6 +281,8 @@ void CPlayScene::LoadBakedMap(const wchar_t* tPath)
 	fclose(pFile);
 
 	OutLineFill(&graphics, tileW, tileH);
+
+	mBakedMapImg->CreateHBitmapFromGdiPlus();
 }
 
 void CPlayScene::RandomBakedMap()
@@ -295,7 +297,7 @@ void CPlayScene::RandomBakedMap()
 
 	mBakedMapSr->SetTexture(mBakedMapImg);
 
-	Gdiplus::Graphics graphics(mBakedMapImg->GetDCMem());
+	Gdiplus::Graphics graphics(mBakedMapImg->GetImage());
 
 	int tileW = CTilemapRenderer::TileSize.mX;
 	int tileH = CTilemapRenderer::TileSize.mY;
@@ -342,6 +344,8 @@ void CPlayScene::RandomBakedMap()
 	}
 
 	OutLineFill(&graphics, tileW, tileH);
+
+	mBakedMapImg->CreateHBitmapFromGdiPlus();
 }
 
 void CPlayScene::OutLineFill(Gdiplus::Graphics* tGraphics, int tTileW, int tTileH)

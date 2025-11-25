@@ -20,18 +20,12 @@ CTexture* CTexture::Create(const std::wstring& tName, UINT tWidth, UINT tHeight)
 	HDC hDC = mainEngine->GetmhDC();
 	HWND hWND = mainEngine->GetmhWnd();
 	
-	image->mhBitmap = CreateCompatibleBitmap(hDC, tWidth, tHeight);
-	image->mhDCMem = CreateCompatibleDC(hDC);
+	image->mhBitmap = nullptr;
+	image->mhDCMem = nullptr;
+	image->mhOldBitmap = nullptr;
 
-	HBRUSH transparentBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
-	HBRUSH oldBrush = (HBRUSH)SelectObject(hDC, transparentBrush);
-
-	Rectangle(hDC,
-		-1, -1, image->GetWidth() + 1, image->GetHeight() + 1);
-
-	SelectObject(hDC, oldBrush);
-
-	image->mhOldBitmap = (HBITMAP)SelectObject(image->mhDCMem, image->mhBitmap);
+	image->mType = eTextureType::Png;
+	image->mImage = new Gdiplus::Bitmap(tWidth, tHeight, PixelFormat32bppARGB);
 
 	CResourceMgr::Insert(tName, image);
 
@@ -105,4 +99,130 @@ HRESULT CTexture::CreateBackBuffer(HDC tDC)
 	mhOldBitmap = (HBITMAP)SelectObject(mhDCMem, mhBitmap);
 
 	return S_FALSE;
+}
+
+void CTexture::CreateHBitmapFromGdiPlus() {
+	if (mImage == nullptr) return;
+
+	if (mhDCMem == nullptr) {
+		HDC mainDC = mainEngine->GetmhDC();
+		mhDCMem = CreateCompatibleDC(mainDC);
+	}
+
+	mbAlpha = true;
+
+	if (mhOldBitmap != nullptr) {
+		SelectObject(mhDCMem, mhOldBitmap);
+	}
+
+	if (mhBitmap != nullptr) {
+		DeleteObject(mhBitmap);
+		mhBitmap = nullptr;
+	}
+
+	Gdiplus::Bitmap* bitmap = (Gdiplus::Bitmap*)mImage;
+	bitmap->GetHBITMAP(Gdiplus::Color(255, 0, 255), &mhBitmap);
+
+	mhOldBitmap = (HBITMAP)SelectObject(mhDCMem, mhBitmap);
+}
+
+void CTexture::ApplyOtherColorToWantedAreas(BYTE tBlackThreshold, BYTE tWhiteThreshold, float tR, float tG, float tB, Gdiplus::Image* tImage, Gdiplus::Image* tBasicImage)
+{
+	if (tImage == nullptr) {
+		return;
+	}
+
+	int width = tImage->GetWidth();
+	int height = tImage->GetHeight();
+
+	// Basic 이미지 복사
+	if (tBasicImage != nullptr) {
+		Gdiplus::Graphics graphics(tImage);
+		graphics.Clear(Gdiplus::Color(0, 0, 0, 0));
+		graphics.DrawImage(tBasicImage, 0, 0, width, height);
+	}
+	
+	Gdiplus::Bitmap* targetBitmap = (Gdiplus::Bitmap*)tImage;
+	Gdiplus::Rect rect(0, 0, width, height);
+	Gdiplus::BitmapData bitmapData;
+
+	// 쓰기 모드로 잠금
+	if (Gdiplus::Ok != targetBitmap->LockBits(&rect, Gdiplus::ImageLockModeWrite | Gdiplus::ImageLockModeRead, PixelFormat32bppARGB, &bitmapData))
+	{
+		return;
+	}
+
+	BYTE* pixels = (BYTE*)bitmapData.Scan0;
+	int stride = bitmapData.Stride;
+
+	for (int i = 0; i < height; i++) {
+		BYTE* row = pixels + (i * stride);
+
+		for (int j = 0; j < width; j++) {
+			// BGRA 순서
+			BYTE b = row[j * 4 + 0];
+			BYTE g = row[j * 4 + 1];
+			BYTE r = row[j * 4 + 2];
+			BYTE a = row[j * 4 + 3];
+
+			if (a == 0) continue; // 투명하면 패스
+
+			BYTE brigtness = (BYTE)((r + g + b) / 3);
+
+			if (brigtness > tBlackThreshold && brigtness < tWhiteThreshold) {
+				float ratio = brigtness / 255.0f;
+
+				// 명암 비율 곱해서 적용
+				row[j * 4 + 0] = (BYTE)(tB * ratio);
+				row[j * 4 + 1] = (BYTE)(tG * ratio);
+				row[j * 4 + 2] = (BYTE)(tR * ratio);
+			}
+		}
+	}
+
+	targetBitmap->UnlockBits(&bitmapData);
+}
+
+void CTexture::ApplySolidColor(BYTE tR, BYTE tG, BYTE tB, Gdiplus::Image* tImage, Gdiplus::Image* tBasicImage) {
+	if (tImage == nullptr) return;
+
+	int width = tImage->GetWidth();
+	int height = tImage->GetHeight();
+
+	if (tBasicImage != nullptr)
+	{
+		Gdiplus::Graphics graphics(tImage);
+		graphics.Clear(Gdiplus::Color(0, 0, 0, 0));
+		graphics.DrawImage(tBasicImage, 0, 0, width, height);
+	}
+
+	Gdiplus::Bitmap* targetBitmap = (Gdiplus::Bitmap*)tImage;
+	Gdiplus::Rect rect(0, 0, width, height);
+	Gdiplus::BitmapData bitmapData;
+
+	// 쓰기 모드로 잠금
+	if (Gdiplus::Ok != targetBitmap->LockBits(&rect, Gdiplus::ImageLockModeWrite | Gdiplus::ImageLockModeRead, PixelFormat32bppARGB, &bitmapData))
+	{
+		return;
+	}
+
+	BYTE* pixels = (BYTE*)bitmapData.Scan0;
+	int stride = bitmapData.Stride;
+
+	for (int i = 0; i < height; i++) {
+		BYTE* row = pixels + (i * stride);
+
+		for (int j = 0; j < width; j++) {
+			BYTE a = row[j * 4 + 3];
+
+			if (a > 80) {
+				row[j * 4 + 0] = tB;
+				row[j * 4 + 1] = tG;
+				row[j * 4 + 2] = tR;
+				row[j * 4 + 3] = 255;
+			}
+		}
+	}
+
+	targetBitmap->UnlockBits(&bitmapData);
 }

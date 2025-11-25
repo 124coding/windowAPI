@@ -23,7 +23,7 @@ public:
 
 	void LoadScenes();
 	void LoadResources();
-	void LoadMonsters();
+	void LoadMonster(std::wstring tName, std::wstring tPath);
 
 	void DestroyScenes();
 	void DestroyResources();

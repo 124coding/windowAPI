@@ -12,14 +12,16 @@ class CEnemyScript : public CScript
 {
 public:
 	enum class eState {
+		Spawn,
 		Idle,
 		Attack,
+		Dead,
 		Walk
 	};
 
 	CEnemyScript() : 
 		CScript(), 
-		mState(eState::Walk), 
+		mState(eState::Spawn), 
 		mAnimator(nullptr), 
 		mTarget(nullptr) {}
 	virtual ~CEnemyScript() {}
@@ -98,9 +100,9 @@ private:
 
 protected:
 	float mTextureChangeDelay = 0.5f;
+	eState mState;
 
 private:
-	eState mState;
 	CAnimator* mAnimator;
 	GameObject* mTarget;
 

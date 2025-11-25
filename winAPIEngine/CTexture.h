@@ -31,9 +31,14 @@ public:
 	void UnLoad();
 
 	HRESULT CreateBackBuffer(HDC tDC);
+	void CreateHBitmapFromGdiPlus();
 
 	bool GetbAlpha() {
 		return this->mbAlpha;
+	}
+
+	HBITMAP GetHBitmap() {
+		return this->mhBitmap;
 	}
 
 	HDC GetDCMem() {
@@ -63,10 +68,14 @@ public:
 	eTextureType GetTextureType() {
 		return this->mType;
 	}
-	
+
 	Gdiplus::Image* GetImage() {
 		return this->mImage;
 	}
+
+public:
+	static void ApplyOtherColorToWantedAreas(BYTE tBlackThreshold, BYTE tWhiteThreshold, float tR, float tG, float tB, Gdiplus::Image* tImage, Gdiplus::Image* tBasicImage = nullptr);
+	static void ApplySolidColor(BYTE tR, BYTE tG, BYTE tB, Gdiplus::Image* tImage, Gdiplus::Image* tBasicImage = nullptr); // 피격 텍스처 전용 함수(모든 픽셀의 색깔을 똑같이 바꿈)
 
 private:
 	bool mbAlpha;
@@ -80,5 +89,6 @@ private:
 	Gdiplus::Image* mImage = nullptr;
 	UINT mWidth = 0;
 	UINT mHeight = 0;
+
 };
 

@@ -33,6 +33,7 @@ void CSpriteRenderer::Render(HDC tHDC)
 	if (mTexture == nullptr) {
 		return;
 	}
+
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 	SVector2D pos = tr->GetPos();
 	float rot = tr->GetRot();
@@ -51,7 +52,7 @@ void CSpriteRenderer::Render(HDC tHDC)
 
 	pos = mainCamera->CalculatePosition(pos);
 
-	if (mTexture->GetTextureType() == CTexture::eTextureType::Bmp) {
+	if (mTexture->GetHBitmap() != nullptr) {
 
 		if (mTexture->GetbAlpha()) {
 			BLENDFUNCTION func = {};
@@ -75,7 +76,7 @@ void CSpriteRenderer::Render(HDC tHDC)
 				RGB(255, 0, 255));
 		}
 	}
-	else if (mTexture->GetTextureType() == CTexture::eTextureType::Png) {
+	else {
 		Gdiplus::ImageAttributes imgAtt = {};
 
 		// 투명화 시킬 픽셀의 색 범위

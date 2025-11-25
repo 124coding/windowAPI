@@ -49,10 +49,14 @@ void CEnemyScript::OnUpdate(float tDeltaTime)
 	}
 
 	switch (mState) {
+	case eState::Spawn:
+		break;
 	case eState::Walk:
 		Bounce();
 		break;
 	case eState::Attack:
+		break;
+	case eState::Dead:
 		break;
 	default:
 		break;

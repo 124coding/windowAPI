@@ -57,8 +57,9 @@ bool CWeaponMgr::PlusWeapon(eLayerType tType, std::string tWeaponId, int tWeapon
 				currentWeapon.bulletSizeY = weaponData["BulletSizeY"];
 			}
 
+			int i = 0;
 			for (const auto& t : weaponData["Tiers"]) {
-				int i = 0; 
+				currentWeapon.tier[i].tier = t["Tier"];
 				currentWeapon.tier[i].damage = t["Damage"];
 				currentWeapon.tier[i++].delay = t["Delay"];
 			}

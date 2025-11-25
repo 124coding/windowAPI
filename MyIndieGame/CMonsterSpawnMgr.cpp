@@ -2,6 +2,7 @@
 
 #include "CEnemyScript.h"
 #include "CCircleCollider2D.h"
+#include "CTilemapRenderer.h"
 
 float CMonsterSpawnMgr::mHPMultiplier = 1.0f;
 std::vector<CMonsterSpawnMgr::SpawnEvent> CMonsterSpawnMgr::mActiveStageSpawnEvents;
@@ -58,7 +59,23 @@ SVector2D CMonsterSpawnMgr::GetRandomPosAroundObject(SVector2D tPlayerPos, float
 	float x = cosf(angle) * dist;
 	float y = sinf(angle) * dist;
 
-	return tPlayerPos + SVector2D(x, y);
+	SVector2D resultPos = tPlayerPos + SVector2D(x, y);
+
+	if (resultPos.mX < 0 + CTilemapRenderer::TileSize.mX) {
+		resultPos.mX = 0 + CTilemapRenderer::TileSize.mX;
+	}
+	else if (resultPos.mX > mapWidth - CTilemapRenderer::TileSize.mX) {
+		resultPos.mX = mapWidth - CTilemapRenderer::TileSize.mX;
+	}
+
+	if (resultPos.mY < 0 + CTilemapRenderer::TileSize.mY) {
+		resultPos.mY = 0 + CTilemapRenderer::TileSize.mY;
+	}
+	else if (resultPos.mY > mapHeight - CTilemapRenderer::TileSize.mY) {
+		resultPos.mY = mapHeight - CTilemapRenderer::TileSize.mY;
+	}
+
+	return resultPos;
 }
 
 void CMonsterSpawnMgr::MonsterSpawnEvent(float tDeltaTime, GameObject* tTarget) {
@@ -70,11 +87,11 @@ void CMonsterSpawnMgr::MonsterSpawnEvent(float tDeltaTime, GameObject* tTarget) 
 		if (mActiveStageSpawnEvents[mEventIdx].time <= tDeltaTime) {
 			if (mActiveStageSpawnEvents[mEventIdx].spawnType == "Individual") {
 				for (int i = 0; i < mActiveStageSpawnEvents[mEventIdx].count; i++) {
-					MonsterSpawn(mActiveStageSpawnEvents[mEventIdx].ID, tTarget, GetRandomPosAroundObject(targetPos, 600.0f, 1000.0f));
+					MonsterSpawn(mActiveStageSpawnEvents[mEventIdx].ID, tTarget, GetRandomPosAroundObject(targetPos, 500.0f, 800.0f));
 				}
 			}
 			else if (mActiveStageSpawnEvents[mEventIdx].spawnType == "cluster") {
-				SVector2D anchorPos = GetRandomPosAroundObject(targetPos, 600.0f, 1000.0f);
+				SVector2D anchorPos = GetRandomPosAroundObject(targetPos, 500.0f, 800.0f);
 
 				for (int i = 0; i < mActiveStageSpawnEvents[mEventIdx].count; i++) {
 					MonsterSpawn(mActiveStageSpawnEvents[mEventIdx].ID, tTarget, GetRandomPosAroundObject(anchorPos, 0.0f, 50.0f));

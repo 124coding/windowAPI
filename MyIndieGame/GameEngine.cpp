@@ -111,19 +111,18 @@ void GameEngine::LoadResources()
 
 
 	// Sprites
-	CResourceMgr::Load<CTexture>(L"BabyAlien", L"../resources/Sprites/Enemy/baby_alien.png");
-	CResourceMgr::Load<CTexture>(L"BabyAlienCollsion", L"../resources/Sprites/Enemy/baby_alien_white.png");
+	LoadMonster(L"BabyAlien", L"../resources/Enemy/BabyAlien/baby_alien.png");
 
-	CResourceMgr::Load<CTexture>(L"EnemyBullet", L"../resources/Sprites/Enemy/enemy_bullet.png");
+	CResourceMgr::Load<CTexture>(L"EnemyBullet", L"../resources/Enemy/EnemyBullet/enemy_bullet.png");
 
 	// Player
-	CResourceMgr::Load<CTexture>(L"PlayerBase", L"../resources/Sprites/Player/base.png");
+	CResourceMgr::Load<CTexture>(L"PlayerBase", L"../resources/Player/base.png");
 
 	//Weapon
-	CResourceMgr::Load<CTexture>(L"Dagger", L"../resources/Sprites/Weapon/dagger.png");
+	CResourceMgr::Load<CTexture>(L"Dagger", L"../resources/Weapons/Dagger/dagger.png");
 
-	CResourceMgr::Load<CTexture>(L"Pistol", L"../resources/Sprites/Weapon/pistol.png");
-	CResourceMgr::Load<CTexture>(L"PlayerBullet", L"../resources/Sprites/Weapon/bullet_0001.png");
+	CResourceMgr::Load<CTexture>(L"Pistol", L"../resources/Weapons/Pistol/pistol.png");
+	CResourceMgr::Load<CTexture>(L"PlayerBullet", L"../resources/Weapons/bullet_0001.png");
 
 	// UI
 	CResourceMgr::Load<CTexture>(L"StartOutMouse", L"../resources/ButtonImg/StartButtonOutMouse.png"); 
@@ -140,6 +139,16 @@ void GameEngine::LoadResources()
 	// CResourceMgr::Load<CTexture>(L"BakedBG", L"../resources/Maps/Tiles/tiles_outline_modify.png");
 
 
+}
+
+void GameEngine::LoadMonster(std::wstring tName, std::wstring tPath)
+{
+	std::wstring collisionMonster = tName + L"Collision";
+
+	CTexture* monsterImg = CResourceMgr::Load<CTexture>(tName, tPath);
+	CTexture* monsterCollisionImg = CTexture::Create(collisionMonster, monsterImg->GetWidth(), monsterImg->GetHeight());
+
+	CTexture::ApplySolidColor((BYTE)255, (BYTE)255, (BYTE)255, monsterCollisionImg->GetImage(), monsterImg->GetImage());
 }
 
 void GameEngine::DestroyScenes()
