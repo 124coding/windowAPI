@@ -110,10 +110,12 @@ void GameEngine::LoadResources()
 
 
 
-	// Sprites
+	// Enemies
 	LoadMonster(L"BabyAlien", L"../resources/Enemy/BabyAlien/baby_alien.png");
 
 	CResourceMgr::Load<CTexture>(L"EnemyBullet", L"../resources/Enemy/EnemyBullet/enemy_bullet.png");
+	CTexture* enemyBirth = CResourceMgr::Load<CTexture>(L"EnemyBirth", L"../resources/Enemy/EnemyBirth/entity_birth.png");
+	CTexture::ApplyOtherColorToWantedAreas(30, 255, 255.0f, 0.0f, 0.0f, enemyBirth->GetImage());
 
 	// Player
 	CResourceMgr::Load<CTexture>(L"PlayerBase", L"../resources/Player/base.png");
@@ -136,7 +138,6 @@ void GameEngine::LoadResources()
 	CResourceMgr::Load<CTexture>(L"Tile5", L"../resources/Maps/Tiles/tiles_5.png");
 	CResourceMgr::Load<CTexture>(L"Tile6", L"../resources/Maps/Tiles/tiles_6.png");
 	CResourceMgr::Load<CTexture>(L"TileOutLine", L"../resources/Maps/Tiles/tiles_outline_modify.png");
-	// CResourceMgr::Load<CTexture>(L"BakedBG", L"../resources/Maps/Tiles/tiles_outline_modify.png");
 
 
 }

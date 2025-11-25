@@ -56,14 +56,24 @@ void CWeaponScript::SetRotForClosedEnemyWatch(std::vector<GameObject*> tEnemies)
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 
 	if (tEnemies.empty()) {
+		mClosedEnemyPos = SVector2D(9999.0f, 9999.0f);
 		tr->SetRot(0.0f);
 		return;
 	}
 
 	for (GameObject* enemy : tEnemies) {
 		if (closedEnemy == nullptr || enemy->GetComponent<CEnemyScript>()->GetDistanceToPlayer() < closedEnemy->GetComponent<CEnemyScript>()->GetDistanceToPlayer()) {
+			CEnemyScript* enemySc = enemy->GetComponent<CEnemyScript>();
+
+			if (enemySc->GetState() == CEnemyScript::eState::Spawn || enemySc->GetState() == CEnemyScript::eState::Dead) break;
 			closedEnemy = enemy;
 		}
+	}
+
+	if (closedEnemy == nullptr) {
+		mClosedEnemyPos = SVector2D(9999.0f, 9999.0f);
+		tr->SetRot(0.0f);
+		return;
 	}
 
 	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();

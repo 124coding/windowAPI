@@ -68,6 +68,10 @@ void CRangedWeaponScript::CanAttackCheck(std::vector<GameObject*> tEnemies)
 		return;
 	}
 
+	if (GetClosedEnemyPos().mX == 9999.0f && GetClosedEnemyPos().mY == 9999.0f) {
+		return;
+	}
+
 	SVector2D targetPos = ObjectCenterPos(GetTarget());
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 

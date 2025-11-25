@@ -20,16 +20,6 @@ void CBabyAlienScript::OnUpdate(float tDeltaTime)
 {
 	CEnemyScript::OnUpdate(tDeltaTime);
 
-	if (mTextureChangeDelay > 0) {
-		mTextureChangeDelay -= tDeltaTime;
-	}
-
-	if (mTextureChangeDelay < 0) {
-		CSpriteRenderer* thisSr = GetOwner()->GetComponent<CSpriteRenderer>();
-		thisSr->SetTexture(CResourceMgr::Find<CTexture>(L"BabyAlien"));
-		mTextureChangeDelay = 0.0f;
-	}
-
 	if (mState == CEnemyScript::eState::Walk) {
 		CTransform* tr = GetOwner()->GetComponent<CTransform>();
 		Translate(tr);
@@ -49,11 +39,6 @@ void CBabyAlienScript::Render(HDC tHDC)
 void CBabyAlienScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther)
 {
 	CEnemyScript::OnCollisionEnter(tDeltaTime, tOther);
-
-	if (tOther->GetOwner()->GetLayerType() == eLayerType::MeleeWeapon || tOther->GetOwner()->GetLayerType() == eLayerType::Bullet) {
-		CSpriteRenderer* thisSr = GetOwner()->GetComponent<CSpriteRenderer>();
-		thisSr->SetTexture(CResourceMgr::Find<CTexture>(L"BabyAlienCollision"));
-	}
 }
 
 void CBabyAlienScript::OnCollisionStay(float tDeltaTime, CCollider* tOther)

@@ -111,6 +111,6 @@ private:
 
 	SVector2D mOffset;
 
-	SVector2D mClosedEnemyPos;
+	SVector2D mClosedEnemyPos = SVector2D(9999.0f, 9999.0f);
 };
 

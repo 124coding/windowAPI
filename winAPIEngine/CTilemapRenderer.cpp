@@ -52,14 +52,14 @@ void CTilemapRenderer::Render(HDC tHDC)
 			func.AlphaFormat = AC_SRC_ALPHA;
 
 			func.SourceConstantAlpha = 255;
-			AlphaBlend(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX * GetOwner()->GetSize().mX * scale.mX, pos.mY - GetOwner()->GetAnchorPoint().mY * GetOwner()->GetSize().mY * scale.mY,
+			AlphaBlend(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX * fScaleX, pos.mY - GetOwner()->GetAnchorPoint().mY * fScaleY,
 				mTexture->GetWidth() * fScaleX, mTexture->GetHeight() * fScaleY,
 				mTexture->GetDCMem(),
 				mIndex.mX * mTileSize.mX, mIndex.mY * mTileSize.mY,
 				mTileSize.mX, mTileSize.mY, func);
 		}
 		else {
-			TransparentBlt(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX * GetOwner()->GetSize().mX * scale.mX, pos.mY - GetOwner()->GetAnchorPoint().mY * GetOwner()->GetSize().mY * scale.mY,
+			TransparentBlt(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX * fScaleX, pos.mY - GetOwner()->GetAnchorPoint().mY * fScaleY,
 				mTexture->GetWidth() * fScaleX, mTexture->GetHeight() * fScaleY,
 				mTexture->GetDCMem(),
 				mIndex.mX * mTileSize.mX, mIndex.mY * mTileSize.mY,
@@ -95,7 +95,8 @@ void CTilemapRenderer::Render(HDC tHDC)
 			destRect,
 			srcX, srcY,
 			srcWidth, srcHeight,
-			Gdiplus::UnitPixel
+			Gdiplus::UnitPixel,
+			&imgAtt
 		);
 	}
 }

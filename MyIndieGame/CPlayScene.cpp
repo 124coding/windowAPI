@@ -84,6 +84,7 @@ void CPlayScene::OnCreate()
 	CAnimator* plAnim = mPlayer->AddComponent<CAnimator>();
 	CSpriteRenderer* plSr = mPlayer->AddComponent<CSpriteRenderer>();
 	plSr->SetTexture(plImg);
+	plSr->GetTexture()->CreateHBitmapFromGdiPlus(false);
 
 
 
@@ -282,7 +283,7 @@ void CPlayScene::LoadBakedMap(const wchar_t* tPath)
 
 	OutLineFill(&graphics, tileW, tileH);
 
-	mBakedMapImg->CreateHBitmapFromGdiPlus();
+	mBakedMapImg->CreateHBitmapFromGdiPlus(false);
 }
 
 void CPlayScene::RandomBakedMap()
@@ -345,7 +346,7 @@ void CPlayScene::RandomBakedMap()
 
 	OutLineFill(&graphics, tileW, tileH);
 
-	mBakedMapImg->CreateHBitmapFromGdiPlus();
+	mBakedMapImg->CreateHBitmapFromGdiPlus(false);
 }
 
 void CPlayScene::OutLineFill(Gdiplus::Graphics* tGraphics, int tTileW, int tTileH)

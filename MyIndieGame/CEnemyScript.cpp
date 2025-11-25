@@ -14,7 +14,7 @@
 
 void CEnemyScript::OnCreate()
 {
-	SetBobbingSpeed(1.0f);
+	SetBobbingSpeed(static_cast<float>(std::rand() % 2) + 1);
 	SetSquashMagnitude(0.2f);
 }
 
@@ -44,12 +44,23 @@ void CEnemyScript::OnUpdate(float tDeltaTime)
 		mAnimator = GetOwner()->GetComponent<CAnimator>();
 	}
 
+	if (mTextureChangeDelay > 0) {
+		mTextureChangeDelay -= tDeltaTime;
+	}
+
+	if (mTextureChangeDelay < 0) {
+		CSpriteRenderer* thisSr = GetOwner()->GetComponent<CSpriteRenderer>();
+		thisSr->SetTexture(mBaseTexture);
+		mTextureChangeDelay = 0.0f;
+	}
+
 	if (mHP == 0) {
 		ObjDestroy(GetOwner());
 	}
 
 	switch (mState) {
 	case eState::Spawn:
+		Spawn(tDeltaTime);
 		break;
 	case eState::Walk:
 		Bounce();
@@ -81,6 +92,12 @@ void CEnemyScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther)
 	if (tOther->GetOwner()->GetLayerType() == eLayerType::MeleeWeapon || tOther->GetOwner()->GetLayerType() == eLayerType::Bullet) {
 		GameObject* weapon = tOther->GetOwner();
 		DamageByWeapon(weapon);
+
+		CSpriteRenderer* thisSr = GetOwner()->GetComponent<CSpriteRenderer>();
+
+		std::wstring collisionName = GetOwner()->GetName() + L"Collision";
+		thisSr->SetTexture(CResourceMgr::Find<CTexture>(collisionName));
+
 		mTextureChangeDelay = 0.3f;
 	}
 }
@@ -105,6 +122,42 @@ void CEnemyScript::DecreaseHP(int tDecreaseAmount) {
 	if (mHP < 0) {
 		mHP = 0;
 	}
+}
+
+void CEnemyScript::Spawn(float tDeltaTime)
+{
+	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
+	CCollider* cl = GetOwner()->GetComponent<CCollider>();
+
+	mBlinkTime -= tDeltaTime;
+
+	if (mBlinkTime < 0.0f) {
+		sr->SetTexture(mBaseTexture);
+		sr->GetTexture()->CreateHBitmapFromGdiPlus(false);
+		sr->SetAlphaMultiplier(1.0f);
+		mState = eState::Walk;
+		cl->SetActivate(true);
+		return;
+	}
+
+	float alphaChange = mBlinkSpeed * tDeltaTime;
+
+	if (mBlinkFadeOut) {
+		mCurrentBlinkAlpha -= alphaChange;
+		if (mCurrentBlinkAlpha <= 0.0f) {
+			mCurrentBlinkAlpha = 0.0f;
+			mBlinkFadeOut = false;
+		}
+	}
+	else {
+		mCurrentBlinkAlpha += alphaChange;
+		if (mCurrentBlinkAlpha >= 1.0f) {
+			mCurrentBlinkAlpha = 1.0f;
+			mBlinkFadeOut = true;
+		}
+	}
+
+	sr->SetAlphaMultiplier(mCurrentBlinkAlpha);
 }
 
 void CEnemyScript::ButtDamageToPlayer(GameObject* tPlayer)

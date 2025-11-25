@@ -38,14 +38,20 @@ public:
 		this->mbFlipX = tFlipX;
 	}
 
-	void SetFlipY(bool tFlipY) {
+	/*void SetFlipY(bool tFlipY) {
 		this->mbFlipY = tFlipY;
+	}*/
+
+	void SetAlphaMultiplier(float tAlpha) {
+		this->mAlphaMultiplier = tAlpha;
 	}
 
 private:
 	CTexture* mTexture;
 
 	bool mbFlipX = false;
-	bool mbFlipY = false;
+	// bool mbFlipY = false;
+
+	float mAlphaMultiplier = 1.0f;
 };
 

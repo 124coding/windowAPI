@@ -31,14 +31,24 @@ public:
 	void UnLoad();
 
 	HRESULT CreateBackBuffer(HDC tDC);
-	void CreateHBitmapFromGdiPlus();
+	void CreateHBitmapFromGdiPlus(bool tbAlpha);
+	void DeleteHBitmap();
+
+	void SetbAlpha(bool tAlpha) {
+		this->mbAlpha = tAlpha;
+	}
 
 	bool GetbAlpha() {
 		return this->mbAlpha;
 	}
 
-	HBITMAP GetHBitmap() {
-		return this->mhBitmap;
+	HBITMAP GetHBitmap(bool tFlipX) {
+		if (!tFlipX) {
+			return this->mhRightBitmap;
+		}
+		else {
+			return this->mhLeftBitmap;
+		}
 	}
 
 	HDC GetDCMem() {
@@ -47,6 +57,22 @@ public:
 
 	BITMAP GetBitmapInfo() {
 		return this->mBitmapInfo;
+	}
+
+	void SetBaseWidth(UINT tBaseWidth) {
+		this->mBaseWidth = tBaseWidth;
+	}
+
+	UINT GetBaseWidth() {
+		return this->mBaseWidth;
+	}
+
+	void SetBaseHeight(UINT tBaseHeight) {
+		this->mBaseHeight = tBaseHeight;
+	}
+
+	UINT GetBaseHeight() {
+		return this->mBaseHeight;
 	}
 
 	void SetWidth(UINT tWidth) {
@@ -82,11 +108,14 @@ private:
 	eTextureType mType;
 
 	HDC mhDCMem = nullptr;
-	HBITMAP mhBitmap = nullptr;
+	HBITMAP mhRightBitmap = nullptr;
+	HBITMAP mhLeftBitmap = nullptr;
 	BITMAP mBitmapInfo;
 	HBITMAP mhOldBitmap = nullptr;
 
 	Gdiplus::Image* mImage = nullptr;
+	UINT mBaseWidth = 0;
+	UINT mBaseHeight = 0;
 	UINT mWidth = 0;
 	UINT mHeight = 0;
 

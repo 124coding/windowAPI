@@ -93,18 +93,28 @@ public:
 		return this->mDistanceToPlayer;
 	}
 
+	void SetBaseTexture(CTexture* tTex) {
+		this->mBaseTexture = tTex;
+	}
+
+	eState GetState() {
+		return this->mState;
+	}
+
 // Move
 private:
 	virtual void Idle() = 0;
 	virtual void Translate(CTransform* tr) = 0;
+	void Spawn(float tDeltaTime);
 
 protected:
-	float mTextureChangeDelay = 0.5f;
 	eState mState;
 
 private:
 	CAnimator* mAnimator;
 	GameObject* mTarget;
+
+	float mSpawnDelay = 2.0f;
 
 	int mHP = 0;
 	int mButtDamage = 0;
@@ -112,5 +122,13 @@ private:
 	float mSpeed = 0.0f;
 
 	float mDistanceToPlayer = 9999.9f;
+
+	float mBlinkTime = 3.0f;
+	float mCurrentBlinkAlpha = 1.0f;
+	float mBlinkSpeed = (static_cast<float>(std::rand() % 20) / 10.0f) + 0.5f;
+	bool mBlinkFadeOut = true;
+
+	CTexture* mBaseTexture = nullptr;
+	float mTextureChangeDelay = 0.0f;
 };
 

@@ -42,17 +42,28 @@ void CSpriteRenderer::Render(HDC tHDC)
 	float fScaleX = GetOwner()->GetSize().mX * scale.mX;
 	float fScaleY = GetOwner()->GetSize().mY * scale.mY;
 
-	if (mbFlipX) {
-		fScaleX *= -1.0f;
-	}
-
-	if (mbFlipY) {
+	/*if (mbFlipY) {
 		fScaleY *= -1.0f;
-	}
+	}*/
 
 	pos = mainCamera->CalculatePosition(pos);
 
-	if (mTexture->GetHBitmap() != nullptr) {
+	HBITMAP hBm = mTexture->GetHBitmap(mbFlipX);
+
+	if (hBm != nullptr) {
+		HDC srcDC = mTexture->GetDCMem();
+		HBITMAP oldBm = (HBITMAP)SelectObject(srcDC, hBm);
+
+		if (GetOwner()->GetLayerType() == eLayerType::BackGround) {
+			BitBlt(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX * fScaleX, pos.mY - GetOwner()->GetAnchorPoint().mY * fScaleY,
+				mTexture->GetWidth() * fScaleX, mTexture->GetHeight() * fScaleY,
+				srcDC,
+				0, 0,
+				SRCCOPY);
+			SelectObject(srcDC, oldBm);
+
+			return;
+		}
 
 		if (mTexture->GetbAlpha()) {
 			BLENDFUNCTION func = {};
@@ -60,21 +71,23 @@ void CSpriteRenderer::Render(HDC tHDC)
 			func.BlendFlags = 0;
 			func.AlphaFormat = AC_SRC_ALPHA;
 
-			func.SourceConstantAlpha = 255;
-			AlphaBlend(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX * GetOwner()->GetSize().mX * scale.mX, pos.mY - GetOwner()->GetAnchorPoint().mY * GetOwner()->GetSize().mY * scale.mY,
+			func.SourceConstantAlpha = (BYTE)(mAlphaMultiplier * 255.0f);
+			AlphaBlend(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX * fScaleX, pos.mY - GetOwner()->GetAnchorPoint().mY * fScaleY,
 				mTexture->GetWidth() * fScaleX, mTexture->GetHeight() * fScaleY,
-				mTexture->GetDCMem(),
+				srcDC,
 				0, 0,
-				mTexture->GetWidth(), mTexture->GetHeight(), func);
+				mTexture->GetBaseWidth(), mTexture->GetBaseHeight(), func);
 		}
 		else {
-			TransparentBlt(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX * GetOwner()->GetSize().mX * scale.mX, pos.mY - GetOwner()->GetAnchorPoint().mY * GetOwner()->GetSize().mY * scale.mY,
+			TransparentBlt(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX * fScaleX, pos.mY - GetOwner()->GetAnchorPoint().mY * fScaleY,
 				mTexture->GetWidth() * fScaleX, mTexture->GetHeight() * fScaleY,
-				mTexture->GetDCMem(),
+				srcDC,
 				0, 0,
-				mTexture->GetWidth(), mTexture->GetHeight(),
+				mTexture->GetBaseWidth(), mTexture->GetBaseHeight(),
 				RGB(255, 0, 255));
 		}
+
+		SelectObject(srcDC, oldBm);
 	}
 	else {
 		Gdiplus::ImageAttributes imgAtt = {};
@@ -91,11 +104,35 @@ void CSpriteRenderer::Render(HDC tHDC)
 		float originalWidth = mTexture->GetWidth();
 		float originalHeight = mTexture->GetHeight();
 
-		graphics.DrawImage(mTexture->GetImage(),
-			-GetOwner()->GetAnchorPoint().mX,
-			-GetOwner()->GetAnchorPoint().mY,
-			originalWidth,
-			originalHeight
-		);
+		if (mAlphaMultiplier < 1.0f) {
+			Gdiplus::ColorMatrix colorMatrix = {
+				1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+				0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+				0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+				0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+				0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+			};
+
+			colorMatrix.m[3][3] = mAlphaMultiplier;
+
+			imgAtt.SetColorMatrix(&colorMatrix);
+
+			graphics.DrawImage(mTexture->GetImage(),
+				Gdiplus::Rect(-GetOwner()->GetAnchorPoint().mX, -GetOwner()->GetAnchorPoint().mY,
+					originalWidth, originalHeight),
+				0, 0,
+				originalWidth, originalHeight,
+				Gdiplus::UnitPixel,
+				&imgAtt
+			);
+		}
+		else {
+			graphics.DrawImage(mTexture->GetImage(),
+				-GetOwner()->GetAnchorPoint().mX, 
+				-GetOwner()->GetAnchorPoint().mY,
+				originalWidth, 
+				originalHeight
+			);
+		}
 	}
 }

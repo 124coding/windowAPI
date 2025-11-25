@@ -16,11 +16,14 @@ CTexture* CTexture::Create(const std::wstring& tName, UINT tWidth, UINT tHeight)
 	image->SetName(tName);
 	image->SetWidth(tWidth);
 	image->SetHeight(tHeight);
+	image->SetBaseWidth(tWidth);
+	image->SetBaseHeight(tHeight);
 
 	HDC hDC = mainEngine->GetmhDC();
 	HWND hWND = mainEngine->GetmhWnd();
 	
-	image->mhBitmap = nullptr;
+	image->mhRightBitmap = nullptr;
+	image->mhLeftBitmap = nullptr;
 	image->mhDCMem = nullptr;
 	image->mhOldBitmap = nullptr;
 
@@ -40,11 +43,11 @@ HRESULT CTexture::Load(const std::wstring& tPath)
 	// bmp
 	if (ext == L"bmp") {
 		mType = eTextureType::Bmp;
-		mhBitmap = (HBITMAP)LoadImageW(nullptr, tPath.c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+		mhRightBitmap = (HBITMAP)LoadImageW(nullptr, tPath.c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
 
-		if (mhBitmap == nullptr) return S_FALSE;
+		if (mhRightBitmap == nullptr) return S_FALSE;
 
-		GetObject(mhBitmap, sizeof(BITMAP), &mBitmapInfo);
+		GetObject(mhRightBitmap, sizeof(BITMAP), &mBitmapInfo);
 
 		mWidth = mBitmapInfo.bmWidth;
 		mHeight = mBitmapInfo.bmHeight;
@@ -58,7 +61,7 @@ HRESULT CTexture::Load(const std::wstring& tPath)
 		HDC mainDC = mainEngine->GetmhDC();
 		mhDCMem = CreateCompatibleDC(mainDC);
 
-		mhOldBitmap = (HBITMAP)SelectObject(mhDCMem, mhBitmap);
+		mhOldBitmap = (HBITMAP)SelectObject(mhDCMem, mhRightBitmap);
 	}
 	else if (ext == L"png") { // png
 		mType = eTextureType::Png;
@@ -68,6 +71,8 @@ HRESULT CTexture::Load(const std::wstring& tPath)
 		}
 		mWidth = mImage->GetWidth();
 		mHeight = mImage->GetHeight();
+		mBaseWidth = mImage->GetWidth();
+		mBaseHeight = mImage->GetHeight();
 	}
 
 	/*mImage = Gdiplus::Image::FromFile(tPath.c_str());
@@ -83,7 +88,8 @@ void CTexture::UnLoad()
 
 	SelectObject(mhDCMem, mhOldBitmap);
 
-	DeleteObject(mhBitmap);
+	DeleteObject(mhRightBitmap);
+	DeleteObject(mhLeftBitmap);
 
 	DeleteDC(mhDCMem);
 }
@@ -92,16 +98,16 @@ HRESULT CTexture::CreateBackBuffer(HDC tDC)
 {
 	mhDCMem = CreateCompatibleDC(tDC);
 
-	mhBitmap = CreateCompatibleBitmap(tDC, windowWidth, windowHeight);
+	mhRightBitmap = CreateCompatibleBitmap(tDC, windowWidth, windowHeight);
 
-	GetObject(mhBitmap, sizeof(mBitmapInfo), &mBitmapInfo);
+	GetObject(mhRightBitmap, sizeof(mBitmapInfo), &mBitmapInfo);
 
-	mhOldBitmap = (HBITMAP)SelectObject(mhDCMem, mhBitmap);
+	mhOldBitmap = (HBITMAP)SelectObject(mhDCMem, mhRightBitmap);
 
 	return S_FALSE;
 }
 
-void CTexture::CreateHBitmapFromGdiPlus() {
+void CTexture::CreateHBitmapFromGdiPlus(bool tbAlpha) {
 	if (mImage == nullptr) return;
 
 	if (mhDCMem == nullptr) {
@@ -109,21 +115,102 @@ void CTexture::CreateHBitmapFromGdiPlus() {
 		mhDCMem = CreateCompatibleDC(mainDC);
 	}
 
-	mbAlpha = true;
+	mbAlpha = tbAlpha;
 
 	if (mhOldBitmap != nullptr) {
 		SelectObject(mhDCMem, mhOldBitmap);
 	}
 
-	if (mhBitmap != nullptr) {
-		DeleteObject(mhBitmap);
-		mhBitmap = nullptr;
+	if (mhRightBitmap != nullptr) {
+		DeleteObject(mhRightBitmap);
+		mhRightBitmap = nullptr;
 	}
 
-	Gdiplus::Bitmap* bitmap = (Gdiplus::Bitmap*)mImage;
-	bitmap->GetHBITMAP(Gdiplus::Color(255, 0, 255), &mhBitmap);
+	if (mhLeftBitmap != nullptr) {
+		DeleteObject(mhLeftBitmap);
+		mhLeftBitmap = nullptr;
+	}
 
-	mhOldBitmap = (HBITMAP)SelectObject(mhDCMem, mhBitmap);
+	if (tbAlpha) {
+		Gdiplus::Bitmap* bitmap = (Gdiplus::Bitmap*)mImage;
+
+		bitmap->GetHBITMAP(Gdiplus::Color(0, 0, 0), &mhRightBitmap);
+		bitmap->RotateFlip(Gdiplus::RotateNoneFlipX);
+
+		bitmap->GetHBITMAP(Gdiplus::Color(0, 0, 0), &mhLeftBitmap);
+		bitmap->RotateFlip(Gdiplus::RotateNoneFlipX);
+	}
+	else {
+		int width = mImage->GetWidth();
+		int height = mImage->GetHeight();
+
+		Gdiplus::Bitmap tempBitmap(width, height, PixelFormat32bppARGB);
+
+		Gdiplus::Bitmap* src = (Gdiplus::Bitmap*)mImage;
+		Gdiplus::BitmapData srcData, destData;
+		Gdiplus::Rect rect(0, 0, width, height);
+
+		src->LockBits(&rect, Gdiplus::ImageLockModeRead, PixelFormat32bppARGB, &srcData);
+		tempBitmap.LockBits(&rect, Gdiplus::ImageLockModeWrite, PixelFormat32bppARGB, &destData);
+
+		BYTE* srcBits = (BYTE*)srcData.Scan0;
+		BYTE* destBits = (BYTE*)destData.Scan0;
+
+		const int stride = srcData.Stride;
+
+		// 경계선 문제 해결을 위해 alpha 값을 강제
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				int idx = (i * stride) + (j * 4);
+
+				BYTE b = srcBits[idx + 0];
+				BYTE g = srcBits[idx + 1];
+				BYTE r = srcBits[idx + 2];
+				BYTE a = srcBits[idx + 3];
+
+				if (a < 128) {
+					destBits[idx + 0] = 255;
+					destBits[idx + 1] = 0;
+					destBits[idx + 2] = 255;
+					destBits[idx + 3] = 255;
+				}
+				else {
+					destBits[idx + 0] = b;
+					destBits[idx + 1] = g;
+					destBits[idx + 2] = r;
+					destBits[idx + 3] = 255;
+				}
+			}
+		}
+
+		tempBitmap.UnlockBits(&destData);
+		src->UnlockBits(&srcData);
+
+		tempBitmap.GetHBITMAP(Gdiplus::Color(255, 0, 255), &mhRightBitmap);
+		tempBitmap.RotateFlip(Gdiplus::RotateNoneFlipX);
+
+		tempBitmap.GetHBITMAP(Gdiplus::Color(255, 0, 255), &mhLeftBitmap);
+		tempBitmap.RotateFlip(Gdiplus::RotateNoneFlipX);
+
+	}
+
+	mhOldBitmap = (HBITMAP)SelectObject(mhDCMem, mhRightBitmap);
+}
+
+void CTexture::DeleteHBitmap() {
+	if (mhOldBitmap != nullptr) {
+		SelectObject(mhDCMem, mhOldBitmap);
+	}
+
+	if (mhRightBitmap != nullptr) {
+		DeleteObject(mhRightBitmap);
+		mhRightBitmap = nullptr;
+	}
+
+	if (mhLeftBitmap != nullptr) {
+		DeleteObject(mhLeftBitmap);
+		mhLeftBitmap = nullptr;
+	}
 }
 
 void CTexture::ApplyOtherColorToWantedAreas(BYTE tBlackThreshold, BYTE tWhiteThreshold, float tR, float tG, float tB, Gdiplus::Image* tImage, Gdiplus::Image* tBasicImage)
@@ -169,7 +256,7 @@ void CTexture::ApplyOtherColorToWantedAreas(BYTE tBlackThreshold, BYTE tWhiteThr
 
 			BYTE brigtness = (BYTE)((r + g + b) / 3);
 
-			if (brigtness > tBlackThreshold && brigtness < tWhiteThreshold) {
+			if (brigtness >= tBlackThreshold && brigtness <= tWhiteThreshold) {
 				float ratio = brigtness / 255.0f;
 
 				// 명암 비율 곱해서 적용

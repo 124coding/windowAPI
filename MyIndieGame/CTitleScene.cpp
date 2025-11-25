@@ -19,7 +19,7 @@ void CTitleScene::OnCreate()
 
 
 
-	GameObject* titleMap = Instantiate<GameObject>(eLayerType::BackGround);
+	GameObject* titleMap = Instantiate<GameObject>(eLayerType::None);
 
 	float aspectRatioX = 0.0f;
 	float aspectRatioY = 0.0f;
@@ -48,7 +48,7 @@ void CTitleScene::OnCreate()
 
 
 
-	GameObject* titleMob1 = Instantiate<GameObject>(eLayerType::BackGround);
+	GameObject* titleMob1 = Instantiate<GameObject>(eLayerType::None);
 
 	CTexture* titleMob1Img = CResourceMgr::Find<CTexture>(L"TitleMob1");
 	titleMob1->AddComponent<CSpriteRenderer>();
@@ -73,7 +73,7 @@ void CTitleScene::OnCreate()
 
 
 
-	GameObject* titleMob3 = Instantiate<GameObject>(eLayerType::BackGround);
+	GameObject* titleMob3 = Instantiate<GameObject>(eLayerType::None);
 
 	CTexture* titleMob3Img = CResourceMgr::Find<CTexture>(L"TitleMob3");
 	titleMob3->AddComponent<CSpriteRenderer>();
@@ -92,7 +92,7 @@ void CTitleScene::OnCreate()
 
 
 
-	GameObject* titleMob2 = Instantiate<GameObject>(eLayerType::BackGround);
+	GameObject* titleMob2 = Instantiate<GameObject>(eLayerType::None);
 
 	CTexture* titleMob2Img = CResourceMgr::Find<CTexture>(L"TitleMob2");
 	titleMob2->AddComponent<CSpriteRenderer>();
@@ -117,7 +117,7 @@ void CTitleScene::OnCreate()
 
 
 
-	GameObject* titleBrotato = Instantiate<GameObject>(eLayerType::BackGround);
+	GameObject* titleBrotato = Instantiate<GameObject>(eLayerType::None);
 
 	CTexture* titleBrotatoImg = CResourceMgr::Find<CTexture>(L"TitleBrotato");
 	titleBrotato->AddComponent<CSpriteRenderer>();
@@ -144,7 +144,7 @@ void CTitleScene::OnCreate()
 
 
 
-	GameObject* titleLogo = Instantiate<GameObject>(eLayerType::BackGround);
+	GameObject* titleLogo = Instantiate<GameObject>(eLayerType::None);
 
 	CTexture* titleLogoImg = CResourceMgr::Find<CTexture>(L"TitleLogo");
 	titleLogo->AddComponent<CSpriteRenderer>();
@@ -170,7 +170,7 @@ void CTitleScene::OnCreate()
 
 
 
-	GameObject* titleLight = Instantiate<GameObject>(eLayerType::BackGround);
+	GameObject* titleLight = Instantiate<GameObject>(eLayerType::None);
 
 	CTexture* titleLightImg = CResourceMgr::Find<CTexture>(L"TitleLight");
 	titleLight->AddComponent<CSpriteRenderer>();

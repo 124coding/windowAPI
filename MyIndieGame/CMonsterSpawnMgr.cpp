@@ -138,6 +138,8 @@ void CMonsterSpawnMgr::MonsterSpawn(const std::string tMonsterId, GameObject* tT
 
 	CEnemy* enemy = iter->second();
 
+	enemy->SetName(std::wstring(currentMonster.name.begin(), currentMonster.name.end()));
+
 	CEnemyScript* enemyScript = enemy->GetComponent<CEnemyScript>();
 	enemyScript->SetTarget(tTarget);
 
@@ -147,9 +149,14 @@ void CMonsterSpawnMgr::MonsterSpawn(const std::string tMonsterId, GameObject* tT
 	enemyScript->SetSpeed(currentMonster.speed);
 
 	CTexture* enemyImg = CResourceMgr::Find<CTexture>(std::wstring(currentMonster.name.begin(), currentMonster.name.end()));
+	enemyScript->SetBaseTexture(enemyImg);
 
-	CSpriteRenderer* enemySr = enemy->AddComponent<CSpriteRenderer>();
-	enemySr->SetTexture(enemyImg);
+	CSpriteRenderer* sr = enemy->AddComponent<CSpriteRenderer>();
+	sr->SetTexture(CResourceMgr::Find<CTexture>(L"EnemyBirth"));
+	sr->GetTexture()->SetWidth(80.0f);
+	sr->GetTexture()->SetHeight(80.0f);
+
+	sr->GetTexture()->CreateHBitmapFromGdiPlus(true);
 
 	CTransform* enemyTr = enemy->GetComponent<CTransform>();
 	enemyTr->SetPos(tPosition);
@@ -159,6 +166,7 @@ void CMonsterSpawnMgr::MonsterSpawn(const std::string tMonsterId, GameObject* tT
 
 	CCollider* enemyCl = enemy->AddComponent<CCircleCollider2D>();
 	enemyCl->SetSize(SVector2D(currentMonster.collisionSizeX, currentMonster.collisionSizeY));
+	enemyCl->SetActivate(false);
 
 	enemy->OnCreate();
 }
