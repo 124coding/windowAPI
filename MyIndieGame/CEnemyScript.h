@@ -101,11 +101,12 @@ public:
 		return this->mState;
 	}
 
-// Move
+
 private:
 	virtual void Idle() = 0;
 	virtual void Translate(CTransform* tr) = 0;
 	void Spawn(float tDeltaTime);
+	void Death(float tDeltaTime);
 
 protected:
 	eState mState;
@@ -114,7 +115,7 @@ private:
 	CAnimator* mAnimator;
 	GameObject* mTarget;
 
-	float mSpawnDelay = 2.0f;
+	float mDeadTimeTaken = 1.0f;
 
 	int mHP = 0;
 	int mButtDamage = 0;

@@ -25,7 +25,32 @@ public:
 	CTexture() : CResource(eResourceType::Texture), mbAlpha(false) { 
 		memset(&mBitmapInfo, 0, sizeof(BITMAP));
 	}
-	~CTexture(){}
+	~CTexture(){
+		if (mhRightBitmap != nullptr)
+		{
+			DeleteObject(mhRightBitmap);
+			mhRightBitmap = nullptr;
+		}
+
+		if (mhLeftBitmap != nullptr)
+		{
+			DeleteObject(mhLeftBitmap);
+			mhLeftBitmap = nullptr;
+		}
+
+		if (mhDCMem != nullptr)
+		{
+			SelectObject(mhDCMem, mhOldBitmap);
+			DeleteDC(mhDCMem);
+			mhDCMem = nullptr;
+		}
+
+		if (mImage != nullptr)
+		{
+			delete mImage;
+			mImage = nullptr;
+		}
+	}
 
 	HRESULT Load(const std::wstring& tPath) override;
 	void UnLoad();

@@ -48,22 +48,39 @@ void CSpriteRenderer::Render(HDC tHDC)
 
 	pos = mainCamera->CalculatePosition(pos);
 
+	if (GetOwner()->GetLayerType() == eLayerType::BackGround) {
+		BitBlt(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX * fScaleX, pos.mY - GetOwner()->GetAnchorPoint().mY * fScaleY,
+			mTexture->GetWidth() * fScaleX, mTexture->GetHeight() * fScaleY,
+			mTexture->GetDCMem(),
+			0, 0,
+			SRCCOPY);
+
+		return;
+	}
+
+	// 화면 밖의 오브젝트들을 컬링하기 위함
+
+	float left = pos.mX - GetOwner()->GetAnchorPoint().mX * fScaleX;
+	float top = pos.mY - GetOwner()->GetAnchorPoint().mY * fScaleY;
+	float right = left + mTexture->GetWidth() * fScaleX;
+	float bottom = top + mTexture->GetHeight() * fScaleY;
+
+	float margin = 0.0f;
+	if (rot != 0.0f) margin = (mTexture->GetWidth() * fScaleX + mTexture->GetHeight() * fScaleY) * 0.5f;
+
+	if (right + margin < 0 ||
+		left - margin > windowWidth ||
+		bottom + margin < 0||
+		top - margin > windowHeight)
+	{
+		return;
+	}
+
 	HBITMAP hBm = mTexture->GetHBitmap(mbFlipX);
 
-	if (hBm != nullptr) {
+	if (hBm != nullptr && !mbGdiplusDraw) {
 		HDC srcDC = mTexture->GetDCMem();
 		HBITMAP oldBm = (HBITMAP)SelectObject(srcDC, hBm);
-
-		if (GetOwner()->GetLayerType() == eLayerType::BackGround) {
-			BitBlt(tHDC, pos.mX - GetOwner()->GetAnchorPoint().mX * fScaleX, pos.mY - GetOwner()->GetAnchorPoint().mY * fScaleY,
-				mTexture->GetWidth() * fScaleX, mTexture->GetHeight() * fScaleY,
-				srcDC,
-				0, 0,
-				SRCCOPY);
-			SelectObject(srcDC, oldBm);
-
-			return;
-		}
 
 		if (mTexture->GetbAlpha()) {
 			BLENDFUNCTION func = {};
@@ -104,6 +121,7 @@ void CSpriteRenderer::Render(HDC tHDC)
 		float originalWidth = mTexture->GetWidth();
 		float originalHeight = mTexture->GetHeight();
 
+		// 행렬에 알파 값에 직접 곱해줌
 		if (mAlphaMultiplier < 1.0f) {
 			Gdiplus::ColorMatrix colorMatrix = {
 				1.0f, 0.0f, 0.0f, 0.0f, 0.0f,

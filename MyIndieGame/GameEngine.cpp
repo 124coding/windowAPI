@@ -87,10 +87,10 @@ void GameEngine::Render() {
 
 void GameEngine::LoadScenes()
 {
-	// CSceneMgr::CreateScene<CTitleScene>(this, L"TitleScene");
-	// CSceneMgr::CreateScene<CSettingScene>(this, L"SettingScene");
+	// CSceneMgr::CreateScene<CTitleScene>(L"TitleScene");
+	// CSceneMgr::CreateScene<CSettingScene>(L"SettingScene");
 	CSceneMgr::CreateScene<CPlayScene>(L"PlayScene");
-	// CSceneMgr::CreateScene<CEndingScene>(this, L"EndingScene");
+	// CSceneMgr::CreateScene<CEndingScene>(L"EndingScene");
 	CSceneMgr::CreateScene <CToolScene>(L"ToolScene");
 	
 
@@ -150,6 +150,9 @@ void GameEngine::LoadMonster(std::wstring tName, std::wstring tPath)
 	CTexture* monsterCollisionImg = CTexture::Create(collisionMonster, monsterImg->GetWidth(), monsterImg->GetHeight());
 
 	CTexture::ApplySolidColor((BYTE)255, (BYTE)255, (BYTE)255, monsterCollisionImg->GetImage(), monsterImg->GetImage());
+
+	monsterImg->CreateHBitmapFromGdiPlus(false);
+	monsterCollisionImg->CreateHBitmapFromGdiPlus(false);
 }
 
 void GameEngine::DestroyScenes()

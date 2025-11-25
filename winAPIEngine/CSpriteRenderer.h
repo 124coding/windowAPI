@@ -46,12 +46,17 @@ public:
 		this->mAlphaMultiplier = tAlpha;
 	}
 
+	void SetGdiplusDraw(bool tDraw) {
+		this->mbGdiplusDraw = tDraw;
+	}
+
 private:
 	CTexture* mTexture;
 
 	bool mbFlipX = false;
 	// bool mbFlipY = false;
 
+	bool mbGdiplusDraw = false;
 	float mAlphaMultiplier = 1.0f;
 };
 

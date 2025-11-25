@@ -55,7 +55,27 @@ void CEnemyScript::OnUpdate(float tDeltaTime)
 	}
 
 	if (mHP == 0) {
-		ObjDestroy(GetOwner());
+		mState = eState::Dead;
+		CCollider* cl = GetOwner()->GetComponent<CCollider>();
+		cl->SetActivate(false);
+
+		// AnchorPoint가 가운데가 아니더라도 가운데를 기준으로 회전시키기 위함
+		SVector2D size = GetOwner()->GetSize();
+		SVector2D scale = tr->GetScale();
+
+		SVector2D originAnchor = GetOwner()->GetAnchorPoint();
+		GetOwner()->SetAnchorPoint(sr->GetTexture()->GetWidth() / 2, sr->GetTexture()->GetHeight() / 2);
+
+		float modifyWidth = originAnchor.mX - sr->GetTexture()->GetWidth() / 2;
+		float modifyHeight = originAnchor.mY - sr->GetTexture()->GetHeight() / 2;
+
+		modifyWidth *= (size.mX * scale.mX);
+		modifyHeight *= (size.mY * scale.mY);
+
+		SVector2D curPos = tr->GetPos();
+		curPos.mX -= modifyWidth;
+		curPos.mY -= modifyHeight;
+		tr->SetPos(curPos);
 	}
 
 	switch (mState) {
@@ -68,6 +88,7 @@ void CEnemyScript::OnUpdate(float tDeltaTime)
 	case eState::Attack:
 		break;
 	case eState::Dead:
+		Death(tDeltaTime);
 		break;
 	default:
 		break;
@@ -133,7 +154,6 @@ void CEnemyScript::Spawn(float tDeltaTime)
 
 	if (mBlinkTime < 0.0f) {
 		sr->SetTexture(mBaseTexture);
-		sr->GetTexture()->CreateHBitmapFromGdiPlus(false);
 		sr->SetAlphaMultiplier(1.0f);
 		mState = eState::Walk;
 		cl->SetActivate(true);
@@ -158,6 +178,32 @@ void CEnemyScript::Spawn(float tDeltaTime)
 	}
 
 	sr->SetAlphaMultiplier(mCurrentBlinkAlpha);
+}
+
+void CEnemyScript::Death(float tDeltaTime) {
+	
+	mDeadTimeTaken -= tDeltaTime;
+
+	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
+	if (sr->GetTexture()->GetHBitmap(false) != nullptr || sr->GetTexture()->GetHBitmap(true) != nullptr) {
+		sr->SetGdiplusDraw(true);
+	}
+
+	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	float curRot = tr->GetRot();
+	float rotSpeed = 720.0f;
+
+	tr->SetRot(curRot + (rotSpeed * tDeltaTime));
+
+	float totalTime = 1.0f;
+	float ratio = mDeadTimeTaken / totalTime;
+	if (ratio < 0.0f) ratio = 0.0f;
+
+	tr->SetScale(SVector2D(ratio, ratio));
+
+	if (mDeadTimeTaken < 0.0f) {
+		ObjDestroy(GetOwner());
+	}
 }
 
 void CEnemyScript::ButtDamageToPlayer(GameObject* tPlayer)

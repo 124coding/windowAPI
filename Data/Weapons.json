@@ -12,7 +12,7 @@
             "Tiers":[
                 {
                     "Tier": 1,
-                    "Damage": 0.0,
+                    "Damage": 1.0,
                     "Delay": 1.0
                 },
                 {

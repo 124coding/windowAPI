@@ -34,6 +34,10 @@ public:
 		this->mTarget = tTarget;
 	}
 
+	SVector2D GetPosition() {
+		return this->mLookPosition;
+	}
+
 private:
 	// std::vector<GameObject*> mGameObjects;
 

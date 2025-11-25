@@ -13,12 +13,6 @@
 
 void CTitleScene::OnCreate()
 {
-	CScene::OnCreate();
-
-
-
-
-
 	GameObject* titleMap = Instantiate<GameObject>(eLayerType::None);
 
 	float aspectRatioX = 0.0f;
@@ -38,6 +32,7 @@ void CTitleScene::OnCreate()
 	CSpriteRenderer* tlMapSr = titleMap->GetComponent<CSpriteRenderer>();
 	titleMap->SetAnchorPoint(titleMapImg->GetWidth() / 2, titleMapImg->GetHeight());
 	tlMapSr->SetTexture(titleMapImg);
+	tlMapSr->GetTexture()->CreateHBitmapFromGdiPlus(true);
 
 
 
@@ -64,6 +59,7 @@ void CTitleScene::OnCreate()
 	CSpriteRenderer* tlMob1Sr = titleMob1->GetComponent<CSpriteRenderer>();
 	titleMob1->SetAnchorPoint(titleMob1Img->GetWidth() / 2, titleMob1Img->GetHeight());
 	tlMob1Sr->SetTexture(titleMob1Img);
+	tlMob1Sr->GetTexture()->CreateHBitmapFromGdiPlus(true);
 
 
 
@@ -85,6 +81,7 @@ void CTitleScene::OnCreate()
 	CSpriteRenderer* tlMob3Sr = titleMob3->GetComponent<CSpriteRenderer>();
 	titleMob3->SetAnchorPoint(titleMob3Img->GetWidth() / 2, titleMob3Img->GetHeight());
 	tlMob3Sr->SetTexture(titleMob3Img);
+	tlMob3Sr->GetTexture()->CreateHBitmapFromGdiPlus(true);
 
 
 
@@ -109,6 +106,7 @@ void CTitleScene::OnCreate()
 	CSpriteRenderer* tlMob2Sr = titleMob2->GetComponent<CSpriteRenderer>();
 	titleMob2->SetAnchorPoint(titleMob2Img->GetWidth() / 2, titleMob2Img->GetHeight());
 	tlMob2Sr->SetTexture(titleMob2Img);
+	tlMob2Sr->GetTexture()->CreateHBitmapFromGdiPlus(true);
 
 
 
@@ -133,6 +131,7 @@ void CTitleScene::OnCreate()
 	titleBrotato->SetSize(SVector2D(0.3f * aspectRatioX, 0.3f * aspectRatioY));
 	titleBrotato->SetAnchorPoint(titleBrotatoImg->GetWidth() / 2, titleBrotatoImg->GetHeight());
 	titleBrotatoSr->SetTexture(titleBrotatoImg);
+	titleBrotatoSr->GetTexture()->CreateHBitmapFromGdiPlus(true);
 
 	titleBrotato->AddComponent<CTitleBrotato>();
 
@@ -160,6 +159,7 @@ void CTitleScene::OnCreate()
 	titleLogo->SetSize(SVector2D(aspectRatioX * 0.5f, aspectRatioY * 0.3f));
 	titleLogo->SetAnchorPoint(titleLogoImg->GetWidth() / 2, titleLogoImg->GetHeight());
 	titleLogoSr->SetTexture(titleLogoImg);
+	titleLogoSr->GetTexture()->CreateHBitmapFromGdiPlus(true);
 
 	// 최종적 : x = (titleLogoImg->GetWidth() * titleLogoTr->GetScale().mX * titleLogo->GetSize().mX), y 도 동일
 
@@ -182,6 +182,9 @@ void CTitleScene::OnCreate()
 	CSpriteRenderer* tlLightSr = titleLight->GetComponent<CSpriteRenderer>();
 	titleLight->SetAnchorPoint(titleLightImg->GetWidth() / 2, titleLightImg->GetHeight());
 	tlLightSr->SetTexture(titleLightImg);
+	tlLightSr->GetTexture()->CreateHBitmapFromGdiPlus(true);
+
+	CScene::OnCreate();
 }
 
 void CTitleScene::OnDestroy()
