@@ -100,14 +100,14 @@ void CToolScene::OnLateUpdate(float tDeltaTime)
 void CToolScene::Render(HDC tHDC)
 {
 	for (size_t i = 0; i < 47; i++) {
-		SVector2D pos = mainCamera->CalculatePosition(SVector2D(CTilemapRenderer::TileSize.mX * i, 0.0f));
+		SVector2D pos = mainCamera->CalculatePosition(SVector2D(tileSizeX * i, 0.0f));
 		
 		MoveToEx(tHDC, pos.mX, 0, NULL);
 		LineTo(tHDC, pos.mX, windowHeight);		
 	}
 
 	for (size_t i = 0; i < 47; i++) {
-		SVector2D pos = mainCamera->CalculatePosition(SVector2D(0.0f, CTilemapRenderer::TileSize.mY * i));
+		SVector2D pos = mainCamera->CalculatePosition(SVector2D(0.0f, tileSizeY * i));
 
 		MoveToEx(tHDC, 0, pos.mY, NULL);
 		LineTo(tHDC, windowWidth, pos.mY);

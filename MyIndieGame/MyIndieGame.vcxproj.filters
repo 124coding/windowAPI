@@ -31,9 +31,6 @@
     <Filter Include="UI">
       <UniqueIdentifier>{f17eef79-46ef-4906-a03b-3828c493d232}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UI\Button">
-      <UniqueIdentifier>{f238738d-5330-4d66-a861-b806de585912}</UniqueIdentifier>
-    </Filter>
     <Filter Include="UI\HUD">
       <UniqueIdentifier>{685132f6-9153-4c38-83f0-31ed5c738e01}</UniqueIdentifier>
     </Filter>
@@ -91,6 +88,9 @@
     <Filter Include="Helpers\MonsterSpawn">
       <UniqueIdentifier>{24f692dd-3065-4ad4-957c-7088cdc274f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI\CharacterSelectUI">
+      <UniqueIdentifier>{7aa40a63-9c8f-4d38-a0e3-db447b96b4dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -131,9 +131,6 @@
     </ClCompile>
     <ClCompile Include="CSettingScene.cpp">
       <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="CUIStartButton.cpp">
-      <Filter>UI\Button</Filter>
     </ClCompile>
     <ClCompile Include="CUIHPBar.cpp">
       <Filter>UI\HUD</Filter>
@@ -195,6 +192,9 @@
     <ClCompile Include="CDataMgr.cpp">
       <Filter>Helpers\Data</Filter>
     </ClCompile>
+    <ClCompile Include="CCharacterSelectUI.cpp">
+      <Filter>UI\CharacterSelectUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -235,9 +235,6 @@
     </ClInclude>
     <ClInclude Include="CSettingScene.h">
       <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="CUIStartButton.h">
-      <Filter>UI\Button</Filter>
     </ClInclude>
     <ClInclude Include="CUIHPBar.h">
       <Filter>UI\HUD</Filter>
@@ -298,6 +295,9 @@
     </ClInclude>
     <ClInclude Include="CDataMgr.h">
       <Filter>Helpers\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="CCharacterSelectUI.h">
+      <Filter>UI\CharacterSelectUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

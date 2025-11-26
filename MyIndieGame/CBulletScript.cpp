@@ -17,8 +17,8 @@ void CBulletScript::OnUpdate(float tDeltaTime)
 {
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 
-	if (tr->GetPos().mX < -CTilemapRenderer::TileSize.mX || tr->GetPos().mX > mapWidth + CTilemapRenderer::TileSize.mX
-		|| tr->GetPos().mY < -CTilemapRenderer::TileSize.mY * 2 || tr->GetPos().mY > mapHeight + CTilemapRenderer::TileSize.mY) {
+	if (tr->GetPos().mX < -tileSizeX || tr->GetPos().mX > mapWidth + tileSizeX
+		|| tr->GetPos().mY < - tileSizeY * 2 || tr->GetPos().mY > mapHeight + tileSizeY) {
 		ObjDestroy(GetOwner());
 	}
 }

@@ -46,9 +46,20 @@ enum class eColliderType {
 };
 
 enum class eUIType {
-	HPBar,
-	EXPBar,
-	StartButton,
-	Button,
+	None,
+
+	// TitleScene
+	TitleSceneUI,
+
+	// SettingScene
+	CharacterSelectUI,
+	WeaponSelectUI,
+	DifficultySelectUI,
+
+	// PlayScene
+
+	// Commonness
+	OptionUI,
+
 	End
 };

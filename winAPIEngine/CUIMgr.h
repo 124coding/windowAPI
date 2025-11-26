@@ -13,13 +13,12 @@ class CUIMgr
 {
 public:
 	static void OnCreate();
-	static void OnLoad(eUIType tType, float tDeltaTime);
+	static void OnLoad(eUIType tType);
 	static void OnDestroy();
 	static void OnUpdate(float tDeltaTime);
 	static void OnLateUpdate(float tDeltaTime);
 	static void Render(HDC tHDC);
-	static void OnComplete(CUIBase* tAddUI, float tDeltaTime);
-	static void OnFail();
+	static void OnComplete(CUIBase* tAddUI);
 
 	static void Push(eUIType tType);
 	static void Pop(eUIType tType);
@@ -30,8 +29,7 @@ public:
 
 private:
 	static std::unordered_map<eUIType, CUIBase*> mUIs;
-	static std::stack<CUIBase*> mUIBases;
+	static std::vector<CUIBase*> mActiveUIs;
 	static std::queue<eUIType> mRequestUIQueue;
-	static CUIBase* mActiveUI;
 };
 

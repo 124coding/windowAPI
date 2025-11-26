@@ -3,6 +3,8 @@
 #include "CResource.h"
 #include "CAPIEngine.h"
 
+#include "winMacro.h"
+
 #include <map>
 #include <assert.h>
 
@@ -44,6 +46,24 @@ public:
 		}
 
 		mResources.insert(std::make_pair(tKey, tResource));
+	}
+
+	static void Delete(const std::wstring& tKey, CResource* tResource) {
+		if (tKey == L"") {
+			return;
+		}
+
+		if (tResource == nullptr) {
+			return;
+		}
+
+		for (auto& resource : mResources) {
+			if (resource.first == tKey) {
+				SAFE_DELETE(resource.second);
+				mResources.erase(tKey);
+				break;
+			}
+		}
 	}
 
 	static void OnDestroy();

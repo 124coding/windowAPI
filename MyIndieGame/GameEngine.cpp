@@ -62,12 +62,12 @@ void GameEngine::OnDestroy() {
 }
 
 void GameEngine::OnUpdate(float tDeltaTime) {
-	Render();
-
 	CUIMgr::OnUpdate(tDeltaTime);
 	CCollisionMgr::OnUpdate(tDeltaTime);
 	CSceneMgr::OnUpdate(tDeltaTime);
 	RemoveDeadObjects();
+
+	Render();
 }
 
 void GameEngine::OnLateUpdate(float tDeltaTime) {
@@ -87,18 +87,21 @@ void GameEngine::Render() {
 
 void GameEngine::LoadScenes()
 {
-	// CSceneMgr::CreateScene<CTitleScene>(L"TitleScene");
-	// CSceneMgr::CreateScene<CSettingScene>(L"SettingScene");
+	CSceneMgr::CreateScene<CTitleScene>(L"TitleScene");
+	CSceneMgr::CreateScene<CSettingScene>(L"SettingScene");
 	CSceneMgr::CreateScene<CPlayScene>(L"PlayScene");
 	// CSceneMgr::CreateScene<CEndingScene>(L"EndingScene");
 	CSceneMgr::CreateScene <CToolScene>(L"ToolScene");
 	
 
-	CSceneMgr::LoadScene(L"PlayScene");
+	CSceneMgr::LoadScene(L"SettingScene");
 }
 
 void GameEngine::LoadResources()
 {
+	// Font
+	AddFontResourceEx(L"..Resources/Font/NotoSansKR-Medium.otf", FR_PRIVATE, 0);
+
 	// TitleScene
 	CResourceMgr::Load<CTexture>(L"TitleMap", L"../resources/Maps/Title/Brotato_Title_Screen_Map.png");
 	CResourceMgr::Load<CTexture>(L"TitleMob1", L"../resources/Maps/Title/Brotato_Title_Screen_Mobs_1.png");
@@ -107,6 +110,9 @@ void GameEngine::LoadResources()
 	CResourceMgr::Load<CTexture>(L"TitleLight", L"../resources/Maps/Title/Brotato_Title_Screen_Light.png");
 	CResourceMgr::Load<CTexture>(L"TitleLogo", L"../resources/Maps/Title/Logo.png");
 	CResourceMgr::Load<CTexture>(L"TitleBrotato", L"../resources/Maps/Title/splash_art_brotato.png");
+
+	// SettingScene
+	CResourceMgr::Load<CTexture>(L"SettingMap", L"../resources/UI/shop_background.png")->CreateHBitmapFromGdiPlus(false);
 
 
 
@@ -118,8 +124,20 @@ void GameEngine::LoadResources()
 	CTexture::ApplyOtherColorToWantedAreas(30, 255, 255.0f, 0.0f, 0.0f, enemyBirth->GetImage());
 
 	// Player
-	CResourceMgr::Load<CTexture>(L"PlayerBase", L"../resources/Player/base.png");
+	CResourceMgr::Load<CTexture>(L"PlayerBase", L"../resources/Player/potato.png")->BakedTex(25.0f, 80.0f, 100.0f, 50.0f, CResourceMgr::Load<CTexture>(L"PlayerLegs", L"../resources/Player/legs.png")->GetImage());
 
+
+	// Items
+	// Characters
+	
+	// WellRounded
+	CResourceMgr::Load<CTexture>(L"WellRoundedEyes", L"../resources/Items/Character/Well_rounded/well_rounded_eyes.png");
+	CResourceMgr::Load<CTexture>(L"WellRoundedMouth", L"../resources/Items/Character/Well_rounded/well_rounded_mouth.png");
+
+	// Ranger
+	CResourceMgr::Load<CTexture>(L"RangerEyes", L"../resources/Items/Character/Ranger/ranger_eyes.png");
+	CResourceMgr::Load<CTexture>(L"RangerMouth", L"../resources/Items/Character/Ranger/ranger_mouth.png");
+	
 	//Weapon
 	CResourceMgr::Load<CTexture>(L"Dagger", L"../resources/Weapons/Dagger/dagger.png");
 
@@ -127,8 +145,6 @@ void GameEngine::LoadResources()
 	CResourceMgr::Load<CTexture>(L"PlayerBullet", L"../resources/Weapons/bullet_0001.png");
 
 	// UI
-	CResourceMgr::Load<CTexture>(L"StartOutMouse", L"../resources/ButtonImg/StartButtonOutMouse.png"); 
-	CResourceMgr::Load<CTexture>(L"StartInMouse", L"../resources/ButtonImg/StartButtonInMouse.png"); 
 
 	// TileMap
 	CResourceMgr::Load<CTexture>(L"Tile1", L"../resources/Maps/Tiles/tiles_1.png");
@@ -163,6 +179,7 @@ void GameEngine::DestroyScenes()
 void GameEngine::DestroyResources()
 {
 	CResourceMgr::OnDestroy();
+	RemoveFontResourceEx(L"..Resources/Font/NotoSansKR-Medium.otf", FR_PRIVATE, 0);
 }
 
 void GameEngine::RemoveDeadObjects()

@@ -12,6 +12,8 @@ class CUIBase : public CEntity
 {
 public:
 	struct SEvent {
+		std::function<void()> mEvent;
+
 		void operator=(std::function<void()> func) {
 			mEvent = std::move(func);
 		}
@@ -20,7 +22,6 @@ public:
 			if (mEvent)
 				mEvent();
 		}
-		std::function<void()> mEvent;
 	};
 
 	CUIBase(eUIType tType) : mType(tType), mbFullScreen(false), mbEnabled(false) {}
@@ -55,22 +56,52 @@ public:
 		this->mPos = tPos;
 	}
 
+	SVector2D GetFinalPos() {
+		SVector2D finalPos = mPos;
+		if (mParent != nullptr) {
+			SVector2D parentPos = mParent->GetFinalPos();
+			finalPos.mX += parentPos.mX;
+			finalPos.mY += parentPos.mY;
+		}
+
+		this->mFinalPos = finalPos;
+		return this->mFinalPos;
+	}
+
 	SVector2D GetPos() {
 		return this->mPos;
 	}
 
-	void SetSize(SVector2D tSize) {
-		this->mSize = tSize;
+	void SetWidth(float tWidth) {
+		this->mWidth = tWidth;
 	}
 
-	SVector2D GetSize() {
-		return this->mSize;
+	float GetWidth() {
+		return this->mWidth;
+	}
+
+	void SetHeight(float tHeight) {
+		this->mHeight = tHeight;
+	}
+
+	float GetHeight() {
+		return this->mHeight;
+	}
+
+	void AddChild(CUIBase* tChild) {
+		tChild->mParent = this;
+		mChilds.push_back(tChild);
 	}
 
 protected:
+	SVector2D mFinalPos;
 	SVector2D mPos;
-	SVector2D mSize;
+	float mWidth;
+	float mHeight;
 
+	CUIBase* mParent = nullptr;
+
+	std::vector<CUIBase*> mChilds;
 private:
 	eUIType mType;
 	bool mbFullScreen;

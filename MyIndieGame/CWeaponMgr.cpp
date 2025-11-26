@@ -1,6 +1,9 @@
 #include "CWeaponMgr.h"
 
 #include "Object.h"
+
+#include "CDataMgr.h"
+
 #include "CWeaponScript.h"
 #include "CRangedWeaponScript.h"
 

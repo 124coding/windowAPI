@@ -9,7 +9,7 @@ std::vector<CMonsterSpawnMgr::SpawnEvent> CMonsterSpawnMgr::mActiveStageSpawnEve
 int CMonsterSpawnMgr::mEventIdx = 0;
 
 void CMonsterSpawnMgr::LoadStageSpawnEvents(int tStageNum) {
-	std::string stageFileName = "../Data/Stage_" + std::to_string(tStageNum) + ".json";
+	std::string stageFileName = "../Data/Stages/Stage_" + std::to_string(tStageNum) + ".json";
 	std::ifstream stageFile(stageFileName, std::ios::in);
 
 	json j;
@@ -61,18 +61,18 @@ SVector2D CMonsterSpawnMgr::GetRandomPosAroundObject(SVector2D tPlayerPos, float
 
 	SVector2D resultPos = tPlayerPos + SVector2D(x, y);
 
-	if (resultPos.mX < 0 + CTilemapRenderer::TileSize.mX) {
-		resultPos.mX = 0 + CTilemapRenderer::TileSize.mX;
+	if (resultPos.mX < 0 + tileSizeX) {
+		resultPos.mX = 0 + tileSizeX;
 	}
-	else if (resultPos.mX > mapWidth - CTilemapRenderer::TileSize.mX) {
-		resultPos.mX = mapWidth - CTilemapRenderer::TileSize.mX;
+	else if (resultPos.mX > mapWidth - tileSizeX) {
+		resultPos.mX = mapWidth - tileSizeX;
 	}
 
-	if (resultPos.mY < 0 + CTilemapRenderer::TileSize.mY) {
-		resultPos.mY = 0 + CTilemapRenderer::TileSize.mY;
+	if (resultPos.mY < 0 + tileSizeY) {
+		resultPos.mY = 0 + tileSizeY;
 	}
-	else if (resultPos.mY > mapHeight - CTilemapRenderer::TileSize.mY) {
-		resultPos.mY = mapHeight - CTilemapRenderer::TileSize.mY;
+	else if (resultPos.mY > mapHeight - tileSizeY) {
+		resultPos.mY = mapHeight - tileSizeY;
 	}
 
 	return resultPos;

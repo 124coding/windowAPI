@@ -42,7 +42,7 @@
 void CPlayScene::OnCreate()
 {
 
-	GameObject* camera = Instantiate<GameObject>(eLayerType::None, SVector2D(mapWidth / 2, mapHeight / 2));
+	GameObject* camera = Instantiate<GameObject>(eLayerType::None, SVector2D(windowWidth / 2, windowHeight / 2));
 	CCamera* cameraComp = camera->AddComponent<CCamera>();
 
 	mainCamera = cameraComp;
@@ -78,15 +78,28 @@ void CPlayScene::OnCreate()
 	CTexture* plImg = CResourceMgr::Find<CTexture>(L"PlayerBase");
 
 	CTransform* plTr = mPlayer->GetComponent<CTransform>();
-	mPlayer->SetSize(SVector2D(0.15f, 0.15f)); 
+	mPlayer->SetSize(SVector2D(0.8f, 0.8f)); 
 	mPlayer->SetAnchorPoint(plImg->GetWidth() / 2, plImg->GetHeight());
 
 	CAnimator* plAnim = mPlayer->AddComponent<CAnimator>();
+
+	CPlayerScript* plSc = mPlayer->GetComponent<CPlayerScript>();
+	
+	plSc->SetBaseTexture(plImg);
+
+	// Player 외모 변화 체크
+	/*CTexture* rangerEyesImg = CResourceMgr::Find<CTexture>(L"RangerEyes");
+	CTexture* rangerMouthImg = CResourceMgr::Find<CTexture>(L"RangerMouth");
+
+	plSc->SetEyesTexture(rangerEyesImg);
+	plSc->SetMouthTexture(rangerMouthImg);
+
+	plImg->BakedTex(0.0f, 0.0f, plImg->GetWidth(), plImg->GetHeight(), rangerEyesImg->GetImage());
+	plImg->BakedTex(0.0f, 0.0f, plImg->GetWidth(), plImg->GetHeight(), rangerMouthImg->GetImage());*/
+
 	CSpriteRenderer* plSr = mPlayer->AddComponent<CSpriteRenderer>();
 	plSr->SetTexture(plImg);
 	plSr->GetTexture()->CreateHBitmapFromGdiPlus(false);
-
-
 
 
 
@@ -209,11 +222,11 @@ void CPlayScene::OnEnter()
 	CCollisionMgr::CollisionLayerCheck(eLayerType::MeleeWeapon, eLayerType::Enemy, true);
 	CCollisionMgr::CollisionLayerCheck(eLayerType::Bullet, eLayerType::Enemy, true);
 
-	CUIMgr::Push(eUIType::HPBar);
+	/*CUIMgr::Push(eUIType::HPBar);
 	dynamic_cast<CUIHPBar*>(CUIMgr::FindUI(eUIType::HPBar))->SetPlayer(mPlayer);
 
 	CUIMgr::Push(eUIType::EXPBar);
-	dynamic_cast<CUIEXPBar*>(CUIMgr::FindUI(eUIType::EXPBar))->SetPlayer(mPlayer);
+	dynamic_cast<CUIEXPBar*>(CUIMgr::FindUI(eUIType::EXPBar))->SetPlayer(mPlayer);*/
 
 	mPlayerWeapons->PlusWeapon(eLayerType::MeleeWeapon, "MW_001", 1);
 	mPlayerWeapons->WeaponsPosition();
@@ -229,8 +242,8 @@ void CPlayScene::OnExit()
 	CScene::OnExit();
 
 	CMonsterSpawnMgr::DestroyStageSpawnEvents();
-	CUIMgr::Pop(eUIType::HPBar);
-	CUIMgr::Pop(eUIType::EXPBar);
+	//CUIMgr::Pop(eUIType::HPBar);
+	//CUIMgr::Pop(eUIType::EXPBar);
 }
 
 void CPlayScene::LoadBakedMap(const wchar_t* tPath)
@@ -246,8 +259,8 @@ void CPlayScene::LoadBakedMap(const wchar_t* tPath)
 	Gdiplus::Graphics graphics(mBakedMapImg->GetImage());
 
 	CTexture* tileTex = CToolScene::GetMapTileTexture();
-	int tileW = CTilemapRenderer::TileSize.mX;
-	int tileH = CTilemapRenderer::TileSize.mY;
+	int tileW = tileSizeX;
+	int tileH = tileSizeY;
 
 	while (true) {
 		int idxX = 0;
@@ -300,14 +313,14 @@ void CPlayScene::RandomBakedMap()
 
 	Gdiplus::Graphics graphics(mBakedMapImg->GetImage());
 
-	int tileW = CTilemapRenderer::TileSize.mX;
-	int tileH = CTilemapRenderer::TileSize.mY;
+	int tileW = tileSizeX;
+	int tileH = tileSizeY;
 
-	int tileCountWidth = mapWidth / CTilemapRenderer::TileSize.mX;
-	int tileCountHeight = mapHeight / CTilemapRenderer::TileSize.mY;
+	int tileCountWidth = mapWidth / tileSizeX;
+	int tileCountHeight = mapHeight / tileSizeY;
 
-	int tileMapWidth = randomMapTex->GetWidth() / CTilemapRenderer::TileSize.mX;
-	int tileMapHeight = randomMapTex->GetHeight() / CTilemapRenderer::TileSize.mY;
+	int tileMapWidth = randomMapTex->GetWidth() / tileSizeX;
+	int tileMapHeight = randomMapTex->GetHeight() / tileSizeY;
 
 	int srcX = 0;
 	int srcY = 0;
@@ -353,11 +366,11 @@ void CPlayScene::OutLineFill(Gdiplus::Graphics* tGraphics, int tTileW, int tTile
 {
 	CTexture* outlineTex = CResourceMgr::Find<CTexture>(L"TileOutLine"); // 아웃라인 텍스처 가져오기
 
-	int tileCountWidth = mapWidth / CTilemapRenderer::TileSize.mX;
-	int tileCountHeight = mapHeight / CTilemapRenderer::TileSize.mY;
+	int tileCountWidth = mapWidth / tileSizeX;
+	int tileCountHeight = mapHeight / tileSizeY;
 
-	int countOutLineXNotCorner = outlineTex->GetWidth() / CTilemapRenderer::TileSize.mX - 2;
-	int countOutLineYNotCorner = outlineTex->GetHeight() / CTilemapRenderer::TileSize.mY - 2;
+	int countOutLineXNotCorner = outlineTex->GetWidth() / tileSizeX - 2;
+	int countOutLineYNotCorner = outlineTex->GetHeight() / tileSizeY - 2;
 
 	// 왼쪽 오른쪽 위 모서리와 가장 위 OutLine 채우기
 	tGraphics->DrawImage(outlineTex->GetImage(),
@@ -367,7 +380,7 @@ void CPlayScene::OutLineFill(Gdiplus::Graphics* tGraphics, int tTileW, int tTile
 
 	tGraphics->DrawImage(outlineTex->GetImage(),
 		Gdiplus::Rect((tileCountWidth - 1) * tTileW, 0, tTileW, tTileH),
-		(outlineTex->GetWidth() / CTilemapRenderer::TileSize.mX - 1) * tTileW, 0, tTileW, tTileH,
+		(outlineTex->GetWidth() / tileSizeX - 1) * tTileW, 0, tTileW, tTileH,
 		Gdiplus::UnitPixel);
 
 	for (int i = 1; i < tileCountWidth - 1; i++) {
@@ -382,18 +395,18 @@ void CPlayScene::OutLineFill(Gdiplus::Graphics* tGraphics, int tTileW, int tTile
 
 	tGraphics->DrawImage(outlineTex->GetImage(),
 		Gdiplus::Rect(0, (tileCountHeight - 1) * tTileH, tTileW, tTileH),
-		0, (outlineTex->GetHeight() / CTilemapRenderer::TileSize.mY - 1) * tTileH, tTileW, tTileH,
+		0, (outlineTex->GetHeight() / tileSizeY - 1) * tTileH, tTileW, tTileH,
 		Gdiplus::UnitPixel);
 
 	tGraphics->DrawImage(outlineTex->GetImage(),
 		Gdiplus::Rect((tileCountWidth - 1) * tTileW, (tileCountHeight - 1) * tTileH, tTileW, tTileH),
-		(outlineTex->GetWidth() / CTilemapRenderer::TileSize.mX - 1) * tTileW, (outlineTex->GetHeight() / CTilemapRenderer::TileSize.mY - 1) * tTileH, tTileW, tTileH,
+		(outlineTex->GetWidth() / tileSizeX - 1) * tTileW, (outlineTex->GetHeight() / tileSizeY - 1) * tTileH, tTileW, tTileH,
 		Gdiplus::UnitPixel);
 
 	for (int i = 1; i < tileCountWidth - 1; i++) {
 		tGraphics->DrawImage(outlineTex->GetImage(),
 			Gdiplus::Rect(i * tTileW, (tileCountHeight - 1) * tTileH, tTileW, tTileH),
-			(i % countOutLineXNotCorner + 1) * tTileW, (outlineTex->GetHeight() / CTilemapRenderer::TileSize.mY - 1) * tTileH, tTileW, tTileH,
+			(i % countOutLineXNotCorner + 1) * tTileW, (outlineTex->GetHeight() / tileSizeY - 1) * tTileH, tTileW, tTileH,
 			Gdiplus::UnitPixel);
 	}
 
@@ -409,7 +422,7 @@ void CPlayScene::OutLineFill(Gdiplus::Graphics* tGraphics, int tTileW, int tTile
 	for (int i = 1; i < tileCountHeight - 1; i++) {
 		tGraphics->DrawImage(outlineTex->GetImage(),
 			Gdiplus::Rect((tileCountWidth - 1) * tTileW, i * tTileH, tTileW, tTileH),
-			(outlineTex->GetWidth() / CTilemapRenderer::TileSize.mX - 1) * tTileW, (i % countOutLineYNotCorner + 1) * tTileH, tTileW, tTileH,
+			(outlineTex->GetWidth() / tileSizeX - 1) * tTileW, (i % countOutLineYNotCorner + 1) * tTileH, tTileW, tTileH,
 			Gdiplus::UnitPixel);
 	}
 }

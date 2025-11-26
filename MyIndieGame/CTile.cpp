@@ -43,8 +43,8 @@ void CTile::SetIndexPosition(SVector2D tPos)
 {
 	CTransform* tr = GetComponent<CTransform>();
 
-	tPos.mX = tPos.mX * CTilemapRenderer::TileSize.mX;
-	tPos.mY = tPos.mY * CTilemapRenderer::TileSize.mY;
+	tPos.mX = tPos.mX * tileSizeX;
+	tPos.mY = tPos.mY * tileSizeY;
 
 	tr->SetPos(tPos);
 }

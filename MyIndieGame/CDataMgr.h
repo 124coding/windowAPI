@@ -52,6 +52,16 @@ public:
 		SWeaponTier tier[4];
 	};
 
+	struct SCharacter {
+		std::string ID = "";
+		std::string name = "";
+		std::string hairTexture = "";
+		std::string eyesTexture = "";
+		std::string mouthTexture = "";
+		std::string clothTexture = "";
+		std::vector<std::string> Weapons;
+	};
+
 	static void OnCreate();
 	static void OnDestroy();
 	static void OnUpdate(float tDeltaTime);
@@ -86,6 +96,10 @@ public:
 		return mWeaponDatas;
 	}
 
+	static const json& GetCharacterDatas() {
+		return mCharacterDatas;
+	}
+
 	static const std::unordered_map<std::string, std::function<CEnemy* ()>>& GetMonsterCreator() {
 		return mMonsterCreator;
 	}
@@ -97,6 +111,7 @@ public:
 private:
 	static json mMonsterStats;
 	static json mWeaponDatas;
+	static json mCharacterDatas;
 	
 	static std::unordered_map<std::string, std::function<CEnemy* ()>> mMonsterCreator;
 	static std::unordered_map<std::string, std::function<CWeapon* ()>> mWeaponCreator;

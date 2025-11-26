@@ -2,39 +2,29 @@
 
 #include "CSceneMgr.h"
 
-#include "CUIButton.h"
-#include "CUIStartButton.h"
-#include "CUIHUD.h"
-#include "CUIHPBar.h"
-#include "CUIEXPBar.h"
+#include "CCharacterSelectUI.h"
 
 #include "winMacro.h"
 
 std::unordered_map<eUIType, CUIBase*> CUIMgr::mUIs = {};
-std::stack<CUIBase*> CUIMgr::mUIBases = {};
+std::vector<CUIBase*> CUIMgr::mActiveUIs = {};
 std::queue<eUIType> CUIMgr::mRequestUIQueue = {};
-CUIBase* CUIMgr::mActiveUI = nullptr;
 
 void CUIMgr::OnCreate() {
-	CUIStartButton* button = new CUIStartButton();
-	mUIs.insert(std::make_pair(eUIType::StartButton, button));
+	CCharacterSelectUI* chSelectUI = new CCharacterSelectUI();
+	mUIs.insert(std::make_pair(eUIType::CharacterSelectUI, chSelectUI));
 
-	CUIHPBar* HPBar = new CUIHPBar();
-	mUIs.insert(std::make_pair(eUIType::HPBar, HPBar));
-
-	CUIEXPBar* EXPBar = new CUIEXPBar();
-	mUIs.insert(std::make_pair(eUIType::EXPBar, EXPBar));
+	chSelectUI->OnCreate();
 }
 
-void CUIMgr::OnLoad(eUIType tType, float tDeltaTime) {
+void CUIMgr::OnLoad(eUIType tType) {
 	auto it = mUIs.find(tType);
 
 	if (it == mUIs.end()) {
-		OnFail();
 		return;
 	}
 
-	OnComplete(it->second, tDeltaTime);
+	OnComplete(it->second);
 }
 
 void CUIMgr::OnDestroy() {
@@ -47,79 +37,45 @@ void CUIMgr::OnDestroy() {
 }
 
 void CUIMgr::OnUpdate(float tDeltaTime) {
-	std::stack<CUIBase*> uiBases = mUIBases;
 
-	while (!uiBases.empty()) {
-		CUIBase* uiBase = uiBases.top();
-
-		if (uiBase) {
-			uiBase->OnUpdate(tDeltaTime);
-			uiBases.pop();
-		}
+	for (CUIBase* ui : mActiveUIs) {
+		if (ui) ui->OnUpdate(tDeltaTime);
 	}
 
-	if (mRequestUIQueue.size() > 0) {
+	if (!mRequestUIQueue.empty()) {
 		eUIType requestUI = mRequestUIQueue.front();
 		mRequestUIQueue.pop();
-		OnLoad(requestUI, tDeltaTime);
+		OnLoad(requestUI);
 	}
 }
 
 void CUIMgr::OnLateUpdate(float tDeltaTime) {
-	std::stack<CUIBase*> uiBases = mUIBases;
-
-	while (!uiBases.empty()) {
-		CUIBase* uiBase = uiBases.top();
-
-		if (uiBase) {
-			uiBase->OnLateUpdate(tDeltaTime);
-			uiBases.pop();
-		}
+	for (CUIBase* ui : mActiveUIs) {
+		if (ui) ui->OnLateUpdate(tDeltaTime);
 	}
 }
 
 void CUIMgr::Render(HDC tHDC) {
-	std::stack<CUIBase*> uiBases = mUIBases;
-
-	while (!uiBases.empty()) {
-		CUIBase* uiBase = uiBases.top();
-
-		if (uiBase) {
-			uiBase->Render(tHDC);
-			uiBases.pop();
-		}
+	for (CUIBase* ui : mActiveUIs) {
+		if (ui) ui->Render(tHDC);
 	}
 }
 
-void CUIMgr::OnComplete(CUIBase* tAddUI, float tDeltaTime) {
+void CUIMgr::OnComplete(CUIBase* tAddUI) {
 	if (tAddUI == nullptr) {
 		return;
 	}
 
-	 tAddUI->OnCreate();
 	 tAddUI->Active();
-	 tAddUI->OnUpdate(tDeltaTime);
 
 	// ui가 전체 화면이라면 해당 ui말고는 전부 비활성화
-	if (tAddUI->IsFullScreen()) {
-		std::stack<CUIBase*> uiBases = mUIBases;
+	 if (tAddUI->IsFullScreen()) {
+		 for (CUIBase* ui : mActiveUIs) {
+			 ui->InActive();
+		 }
+	 }
 
-		while (!uiBases.empty()) {
-			CUIBase* uiBase = uiBases.top();
-			uiBases.pop();
-
-			if (uiBase) {
-				uiBase->InActive();
-			}
-		}
-	}
-
-	mUIBases.push(tAddUI);
-	mActiveUI = nullptr;
-}
-
-void CUIMgr::OnFail() {
-	mActiveUI = nullptr;
+	mActiveUIs.push_back(tAddUI);
 }
 
 void CUIMgr::Push(eUIType tType) {
@@ -127,42 +83,21 @@ void CUIMgr::Push(eUIType tType) {
 }
 
 void CUIMgr::Pop(eUIType tType) {
-	if (mUIBases.size() <= 0)
-		return;
+	auto it = std::find_if(mActiveUIs.begin(), mActiveUIs.end(),
+		[tType](CUIBase* ui) { return ui->GetType() == tType; });
 
-	std::stack<CUIBase*> tempStack;
+	if (it != mActiveUIs.end()) {
+		CUIBase* targetUI = *it;
 
-	CUIBase* uiBase = nullptr;
-	
-	while (mUIBases.size() > 0) {
-		uiBase = mUIBases.top();
-		mUIBases.pop();
+		targetUI->UIClear();
+		targetUI->InActive();
 
-		if (uiBase->GetType() != tType) {
-			tempStack.push(uiBase);
-			continue;
-		}
-
-		if (uiBase->IsFullScreen()) {
-			std::stack<CUIBase*> uiBases = mUIBases;
-
-			while (!uiBases.empty()) {
-				CUIBase* ui = uiBases.top();
-				uiBases.pop();
-
-				if (ui) {
-					ui->Active();
-					break;
-				}
+		if (targetUI->IsFullScreen()) {
+			for (CUIBase* ui : mActiveUIs) {
+				if (ui != targetUI) ui->Active();
 			}
 		}
 
-		uiBase->UIClear();
-	}
-
-	while (tempStack.size() > 0) {
-		uiBase = tempStack.top();
-		tempStack.pop();
-		mUIBases.push(uiBase);
+		mActiveUIs.erase(it);
 	}
 }

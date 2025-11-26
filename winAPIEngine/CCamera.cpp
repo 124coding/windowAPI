@@ -22,20 +22,20 @@ void CCamera::OnUpdate(float tDeltaTime)
 
 		mLookPosition = targetTr->GetPos() + targetCollider->GetOffset();
 
-		if (mLookPosition.mX < windowWidth / 2 - CTilemapRenderer::TileSize.mX) {
-			mLookPosition.mX = windowWidth / 2 - CTilemapRenderer::TileSize.mX + 1;
+		if (mLookPosition.mX < windowWidth / 2 - tileSizeX) {
+			mLookPosition.mX = windowWidth / 2 - tileSizeX + 1;
 		}
 
-		if (mLookPosition.mX > mapWidth - windowWidth / 2 + CTilemapRenderer::TileSize.mX) {
-			mLookPosition.mX = mapWidth - windowWidth / 2 + CTilemapRenderer::TileSize.mX - 1;
+		if (mLookPosition.mX > mapWidth - windowWidth / 2 + tileSizeX) {
+			mLookPosition.mX = mapWidth - windowWidth / 2 + tileSizeX - 1;
 		}
 
-		if (mLookPosition.mY < windowHeight / 2 - CTilemapRenderer::TileSize.mY * 2) {
-			mLookPosition.mY = windowHeight / 2 - CTilemapRenderer::TileSize.mY * 2 + 1;
+		if (mLookPosition.mY < windowHeight / 2 - tileSizeY * 2) {
+			mLookPosition.mY = windowHeight / 2 - tileSizeY * 2 + 1;
 		}
 
-		if (mLookPosition.mY > mapHeight - windowHeight / 2 + CTilemapRenderer::TileSize.mY) {
-			mLookPosition.mY = mapHeight - windowHeight / 2 + CTilemapRenderer::TileSize.mY - 1;
+		if (mLookPosition.mY > mapHeight - windowHeight / 2 + tileSizeY) {
+			mLookPosition.mY = mapHeight - windowHeight / 2 + tileSizeY - 1;
 		}
 	}
 	else {

@@ -313,3 +313,38 @@ void CTexture::ApplySolidColor(BYTE tR, BYTE tG, BYTE tB, Gdiplus::Image* tImage
 
 	targetBitmap->UnlockBits(&bitmapData);
 }
+
+void CTexture::BakedTex(float tSrcX, float tSrcY, float tWidth, float tHeight, Gdiplus::Image* tImage)
+{
+	Gdiplus::Graphics graphics(mImage);
+
+	graphics.DrawImage(tImage,
+		Gdiplus::Rect(tSrcX, tSrcY, tWidth, tHeight),
+		0, 0, tImage->GetWidth(), tImage->GetHeight(),
+		Gdiplus::UnitPixel);
+}
+
+void CTexture::AddRoundedRectToPath(Gdiplus::GraphicsPath* path, Gdiplus::Rect rect, int cornerRadius) {
+	int diameter = cornerRadius * 2;
+	SVector2D size(diameter, diameter);
+	Gdiplus::Rect cornerBox = Gdiplus::Rect(rect.X, rect.Y, size.mX, size.mY);
+
+	path->StartFigure();
+
+	// 좌상단 모서리
+	path->AddArc(cornerBox, 180, 90);
+
+	// 우상단 모서리
+	cornerBox.X = rect.GetRight() - diameter;
+	path->AddArc(cornerBox, 270, 90);
+
+	// 우하단 모서리
+	cornerBox.Y = rect.GetBottom() - diameter;
+	path->AddArc(cornerBox, 0, 90);
+
+	// 좌하단 모서리
+
+	cornerBox.X = rect.X;
+	path->AddArc(cornerBox, 90, 90);
+	path->CloseFigure();
+}

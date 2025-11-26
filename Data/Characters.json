@@ -1,0 +1,33 @@
+{
+    "Characters":[
+        {
+            "C_ID" : "C_001",
+            "Name" : "WellRounded",
+            "HairTexture" : "NULL",
+            "EyesTexture" : "WellRoundedEyes",
+            "MouthTexture" : "WellRoundedMouth",
+            "ClothTexture" : "NULL",
+            "Weapons" : [
+                {
+                    "W_ID" : "MW_001"
+                },
+                {
+                    "W_ID" : "RW_001"
+                }
+            ]
+        },
+        {
+            "C_ID" : "C_002",
+            "Name" : "Ranger",
+            "HairTexture" : "NULL",
+            "EyesTexture" : "RangerEyes",
+            "MouthTexture" : "RangerMouth",
+            "ClothTexture" : "NULL",
+            "Weapons" : [
+                {
+                    "W_ID" : "RW_001"
+                }
+            ]
+        }
+    ]
+}

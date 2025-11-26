@@ -24,7 +24,7 @@ public:
 		CScript(), 
 		mState(eState::Idle), 
 		mAnimator(nullptr), 
-		mHP(5),
+		mHP(10),
 		mMaxHP(10),
 		mLevel(1),
 		mExp(0.0f),
@@ -100,16 +100,44 @@ public:
 	}
 
 public:
+	void SetBaseTexture(CTexture* tTexture) {
+		this->mBaseTexture = tTexture;
+	}
+
+	CTexture* GetBaseTexture() {
+		return this->mBaseTexture;
+	}
+
 	void SetEyesTexture(CTexture* tTexture) {
 		this->mEyesTexture = tTexture;
+	}
+
+	CTexture* GetEyesTexture() {
+		return this->mEyesTexture;
 	}
 
 	void SetMouthTexture(CTexture* tTexture) {
 		this->mMouthTexture = tTexture;
 	}
 
-	void SetBodyTexture(CTexture* tTexture) {
-		this->mBodyTexture = tTexture;
+	CTexture* GetMouthTexture() {
+		return this->mMouthTexture;
+	}
+
+	void SetHairTexture(CTexture* tTexture) {
+		this->mHairTexture = tTexture;
+	}
+
+	CTexture* GetHairTexture() {
+		return this->mHairTexture;
+	}
+
+	void SetClothTexture(CTexture* tTexture) {
+		this->mClothTexture = tTexture;
+	}
+
+	CTexture* GetClothTexture() {
+		return this->mClothTexture;
 	}
 
 private:
@@ -131,6 +159,7 @@ private:
 	CTexture* mBaseTexture = nullptr;
 	CTexture* mEyesTexture = nullptr;
 	CTexture* mMouthTexture = nullptr;
-	CTexture* mBodyTexture = nullptr;
+	CTexture* mClothTexture = nullptr;
+	CTexture* mHairTexture = nullptr;
 };
 

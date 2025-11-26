@@ -7,7 +7,7 @@
 class CUIHUD : public CUIBase
 {
 public:
-	CUIHUD() : CUIBase(eUIType::HPBar) {}
+	CUIHUD() : CUIBase(eUIType::None) {}
 	virtual ~CUIHUD() {}
 
 	virtual void OnCreate() override;

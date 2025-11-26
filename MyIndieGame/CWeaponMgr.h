@@ -1,7 +1,5 @@
 #pragma once
 
-#include "CDataMgr.h"
-
 #include "CComponent.h"
 #include "CWeapon.h"
 
