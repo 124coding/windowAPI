@@ -7,14 +7,17 @@
             "EyesTexture" : "WellRoundedEyes",
             "MouthTexture" : "WellRoundedMouth",
             "ClothTexture" : "NULL",
-            "Weapons" : [
+            "IconTexture" : "WellRoundedIcon",
+            "Effects":[
                 {
-                    "W_ID" : "MW_001"
+                    "E_ID": "E_001",
+                    "Value" : "5"
                 },
                 {
-                    "W_ID" : "RW_001"
+
                 }
-            ]
+            ],
+            "Weapons" : [ "MW_001", "RW_001" ]
         },
         {
             "C_ID" : "C_002",
@@ -23,11 +26,8 @@
             "EyesTexture" : "RangerEyes",
             "MouthTexture" : "RangerMouth",
             "ClothTexture" : "NULL",
-            "Weapons" : [
-                {
-                    "W_ID" : "RW_001"
-                }
-            ]
+            "IconTexture" : "RangerIcon",
+            "Weapons" : [ "RW_001" ]
         }
     ]
 }

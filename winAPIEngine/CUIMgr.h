@@ -23,6 +23,8 @@ public:
 	static void Push(eUIType tType);
 	static void Pop(eUIType tType);
 
+	static void CheckMouseHover();
+
 	static CUIBase* FindUI(eUIType tType) {
 		return mUIs.find(tType)->second;
 	}
@@ -31,5 +33,7 @@ private:
 	static std::unordered_map<eUIType, CUIBase*> mUIs;
 	static std::vector<CUIBase*> mActiveUIs;
 	static std::queue<eUIType> mRequestUIQueue;
+
+	static CUIBase* mPrevHoverUI;
 };
 

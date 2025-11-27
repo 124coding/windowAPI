@@ -133,11 +133,13 @@ void GameEngine::LoadResources()
 	// WellRounded
 	CResourceMgr::Load<CTexture>(L"WellRoundedEyes", L"../resources/Items/Character/Well_rounded/well_rounded_eyes.png");
 	CResourceMgr::Load<CTexture>(L"WellRoundedMouth", L"../resources/Items/Character/Well_rounded/well_rounded_mouth.png");
+	CResourceMgr::Load<CTexture>(L"WellRoundedIcon", L"../resources/Items/Character/Well_rounded/well_rounded_icon.png");
 
 	// Ranger
 	CResourceMgr::Load<CTexture>(L"RangerEyes", L"../resources/Items/Character/Ranger/ranger_eyes.png");
 	CResourceMgr::Load<CTexture>(L"RangerMouth", L"../resources/Items/Character/Ranger/ranger_mouth.png");
-	
+	CResourceMgr::Load<CTexture>(L"RangerIcon", L"../resources/Items/Character/Ranger/ranger_icon.png");
+
 	//Weapon
 	CResourceMgr::Load<CTexture>(L"Dagger", L"../resources/Weapons/Dagger/dagger.png");
 

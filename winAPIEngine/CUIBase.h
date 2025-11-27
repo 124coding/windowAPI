@@ -24,7 +24,7 @@ public:
 		}
 	};
 
-	CUIBase(eUIType tType) : mType(tType), mbFullScreen(false), mbEnabled(false) {}
+	CUIBase(eUIType tType) : mType(tType), mbFullScreen(false), mbEnabled(true) {}
 	virtual ~CUIBase() {}
 
 	virtual void OnCreate();
@@ -38,6 +38,10 @@ public:
 
 	eUIType GetType() {
 		return this->mType;
+	}
+
+	void SetUsedClipping(bool tUseClipping) {
+		this->mbUseClipping = tUseClipping;
 	}
 
 	void SetFullScreen(bool tEnable) {
@@ -93,15 +97,76 @@ public:
 		mChilds.push_back(tChild);
 	}
 
+	void SetHover(bool tIsHover) {
+		this->mIsHover = tIsHover;
+	}
+
+	bool GetIsHover() {
+		return this->mIsHover;
+	}
+
+	void SetIgnoreMouse(bool tIgnore) {
+		this->mIgnoreMouse = tIgnore;
+	}
+
+	bool GetIgnoreMouse() {
+		return this->mIgnoreMouse;
+	}
+
+	void SetBackColor(Gdiplus::Color tColor) {
+		this->mBackColor = tColor;
+	}
+
+	void SetCornerRadius(int tRadius) {
+		this->mCornerRadius = tRadius;
+	}
+
+	int GetCornerRadius() {
+		return this->mCornerRadius;
+	}
+
+public:
+	void SetEventHover(std::function<void()> tFunc) {
+		this->mOnHover = std::move(tFunc);
+	}
+
+	void GetEventHover() {
+		return this->mOnHover();
+	}
+
+	void SetEventOutHover(std::function<void()> tFunc) {
+		this->mOutHover = std::move(tFunc);
+	}
+
+	void GetEventOutHover() {
+		return this->mOutHover();
+	}
+
+	void AddRoundedRectToPath(Gdiplus::GraphicsPath* path, Gdiplus::Rect rect, int cornerRadius);
+	bool IsOutsideRect(CUIBase* tUIBase);
+	CUIBase* FindTargetUI(SVector2D mousePos);
+
 protected:
 	SVector2D mFinalPos;
 	SVector2D mPos;
 	float mWidth;
 	float mHeight;
 
-	CUIBase* mParent = nullptr;
+	bool mbUseClipping;
 
+	CUIBase* mParent = nullptr;
 	std::vector<CUIBase*> mChilds;
+
+	SEvent mOnHover;
+	SEvent mOutHover;
+	bool mIsHover = false;
+
+	bool mIgnoreMouse = false;
+
+	Gdiplus::Color mBackColor = Gdiplus::Color(0, 0, 0, 0);
+
+	int mCornerRadius = 0;
+
 private:
 	eUIType mType;
 	bool mbFullScreen;

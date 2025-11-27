@@ -91,6 +91,24 @@
     <Filter Include="UI\CharacterSelectUI">
       <UniqueIdentifier>{7aa40a63-9c8f-4d38-a0e3-db447b96b4dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scenes\Ending">
+      <UniqueIdentifier>{1c3a86fe-149c-40f7-8d54-5f6fa464de5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Play">
+      <UniqueIdentifier>{e7e03db8-7f8b-4069-b804-9568e51dd453}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Setting">
+      <UniqueIdentifier>{21d757a6-048d-4807-aa31-e531baeaab25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Title">
+      <UniqueIdentifier>{4fa3a9f7-19ae-414c-8b57-f4cde71a04e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Tool">
+      <UniqueIdentifier>{77bd5390-909c-4782-8677-ece6d24a3947}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Tile">
+      <UniqueIdentifier>{bd20c9e1-7c35-4137-8370-aa3680157c55}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -99,26 +117,11 @@
     <ClCompile Include="GameEngine.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CTitleScene.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="CEndingScene.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="CPlayScene.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="CCat.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="CCatScript.cpp">
       <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="CToolScene.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="CTile.cpp">
-      <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="CFloor.cpp">
       <Filter>Objects</Filter>
@@ -128,9 +131,6 @@
     </ClCompile>
     <ClCompile Include="CFMOD.cpp">
       <Filter>FMOD</Filter>
-    </ClCompile>
-    <ClCompile Include="CSettingScene.cpp">
-      <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="CUIHPBar.cpp">
       <Filter>UI\HUD</Filter>
@@ -195,19 +195,28 @@
     <ClCompile Include="CCharacterSelectUI.cpp">
       <Filter>UI\CharacterSelectUI</Filter>
     </ClCompile>
+    <ClCompile Include="CEndingScene.cpp">
+      <Filter>Scenes\Ending</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayScene.cpp">
+      <Filter>Scenes\Play</Filter>
+    </ClCompile>
+    <ClCompile Include="CSettingScene.cpp">
+      <Filter>Scenes\Setting</Filter>
+    </ClCompile>
+    <ClCompile Include="CTitleScene.cpp">
+      <Filter>Scenes\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="CToolScene.cpp">
+      <Filter>Scenes\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="CTile.cpp">
+      <Filter>Objects\Tile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
       <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="CPlayScene.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="CTitleScene.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="CEndingScene.h">
-      <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Enums.h">
       <Filter>헤더 파일</Filter>
@@ -218,12 +227,6 @@
     <ClInclude Include="CCatScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="CToolScene.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="CTile.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="CFloor.h">
       <Filter>Objects</Filter>
     </ClInclude>
@@ -232,9 +235,6 @@
     </ClInclude>
     <ClInclude Include="CFMOD.h">
       <Filter>FMOD</Filter>
-    </ClInclude>
-    <ClInclude Include="CSettingScene.h">
-      <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="CUIHPBar.h">
       <Filter>UI\HUD</Filter>
@@ -298,6 +298,24 @@
     </ClInclude>
     <ClInclude Include="CCharacterSelectUI.h">
       <Filter>UI\CharacterSelectUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CEndingScene.h">
+      <Filter>Scenes\Ending</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayScene.h">
+      <Filter>Scenes\Play</Filter>
+    </ClInclude>
+    <ClInclude Include="CSettingScene.h">
+      <Filter>Scenes\Setting</Filter>
+    </ClInclude>
+    <ClInclude Include="CTitleScene.h">
+      <Filter>Scenes\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="CToolScene.h">
+      <Filter>Scenes\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="CTile.h">
+      <Filter>Objects\Tile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

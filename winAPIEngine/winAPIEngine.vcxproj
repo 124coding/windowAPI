@@ -162,7 +162,10 @@
     <ClInclude Include="CUIBase.h" />
     <ClInclude Include="CUIButton.h" />
     <ClInclude Include="CUIHUD.h" />
+    <ClInclude Include="CUIImg.h" />
     <ClInclude Include="CUIMgr.h" />
+    <ClInclude Include="CUIPanel.h" />
+    <ClInclude Include="CUIText.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="CInputMgr.h" />
     <ClInclude Include="GameObject.h" />
@@ -203,7 +206,10 @@
     <ClCompile Include="CUIBase.cpp" />
     <ClCompile Include="CUIButton.cpp" />
     <ClCompile Include="CUIHUD.cpp" />
+    <ClCompile Include="CUIImg.cpp" />
     <ClCompile Include="CUIMgr.cpp" />
+    <ClCompile Include="CUIPanel.cpp" />
+    <ClCompile Include="CUIText.cpp" />
     <ClCompile Include="GameObject.cpp" />
   </ItemGroup>
   <ItemGroup>

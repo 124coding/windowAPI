@@ -1,6 +1,7 @@
 #include "CUIMgr.h"
 
 #include "CSceneMgr.h"
+#include "CInputMgr.h"
 
 #include "CCharacterSelectUI.h"
 
@@ -9,10 +10,13 @@
 std::unordered_map<eUIType, CUIBase*> CUIMgr::mUIs = {};
 std::vector<CUIBase*> CUIMgr::mActiveUIs = {};
 std::queue<eUIType> CUIMgr::mRequestUIQueue = {};
+CUIBase* CUIMgr::mPrevHoverUI = nullptr;
 
 void CUIMgr::OnCreate() {
 	CCharacterSelectUI* chSelectUI = new CCharacterSelectUI();
 	mUIs.insert(std::make_pair(eUIType::CharacterSelectUI, chSelectUI));
+	chSelectUI->SetWidth(windowWidth);
+	chSelectUI->SetHeight(windowHeight);
 
 	chSelectUI->OnCreate();
 }
@@ -37,10 +41,11 @@ void CUIMgr::OnDestroy() {
 }
 
 void CUIMgr::OnUpdate(float tDeltaTime) {
-
 	for (CUIBase* ui : mActiveUIs) {
 		if (ui) ui->OnUpdate(tDeltaTime);
 	}
+
+	CheckMouseHover();
 
 	if (!mRequestUIQueue.empty()) {
 		eUIType requestUI = mRequestUIQueue.front();
@@ -98,6 +103,38 @@ void CUIMgr::Pop(eUIType tType) {
 			}
 		}
 
+		if (mPrevHoverUI == targetUI) {
+			mPrevHoverUI = nullptr;
+		}
+
 		mActiveUIs.erase(it);
+	}
+}
+
+void CUIMgr::CheckMouseHover()
+{
+	SVector2D mousePos = CInputMgr::GetMousePosition();
+
+	CUIBase* pTargetUI = nullptr;
+
+	// 가장 늦게 들어온 UI부터 (역순)
+	for (auto iter = mActiveUIs.rbegin(); iter != mActiveUIs.rend(); ++iter) {
+		pTargetUI = (*iter)->FindTargetUI(mousePos);
+
+		if (pTargetUI != nullptr) break;
+	}
+
+	if (mPrevHoverUI != pTargetUI) {
+		if (mPrevHoverUI != nullptr) {
+			mPrevHoverUI->SetHover(false);
+			mPrevHoverUI->GetEventOutHover();
+		}
+
+		if (pTargetUI != nullptr) {
+			pTargetUI->SetHover(true);
+			pTargetUI->GetEventHover();
+		}
+
+		mPrevHoverUI = pTargetUI;
 	}
 }

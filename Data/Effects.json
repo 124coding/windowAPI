@@ -1,0 +1,8 @@
+{
+    "Effects":[
+        {
+            "E_ID" : "E_001",
+            "Name" : "Increased_Max_HP"
+        }
+    ]
+}

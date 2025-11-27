@@ -129,7 +129,6 @@ public:
 	static void ApplySolidColor(BYTE tR, BYTE tG, BYTE tB, Gdiplus::Image* tImage, Gdiplus::Image* tBasicImage = nullptr); // 피격 텍스처 전용 함수(모든 픽셀의 색깔을 똑같이 바꿈)
 
 	void BakedTex(float tSrcX, float tSrcY, float tWidth, float tHeight, Gdiplus::Image* tImage);
-	static void AddRoundedRectToPath(Gdiplus::GraphicsPath* path, Gdiplus::Rect rect, int cornerRadius);
 
 private:
 	bool mbAlpha;

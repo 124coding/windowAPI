@@ -37,22 +37,25 @@ public:
 	CTexture* GetMouseInTexture() {
 		return this->mMouseInTexture;
 	}
-	
-	virtual void SetButtonClick(std::function<void()> tFunc) {
+
+public:
+
+	virtual void SetEventClick(std::function<void()> tFunc) {
 		mOnClick = std::move(tFunc);
 	}
 
-public:
-	static CUIButton* CreateInvertButton(
+	/*static CUIButton* CreateInvertButton(
 		const std::wstring& tName
 		, const std::wstring& tText
-		, const std::wstring& tImagePath
+		, const std::wstring& tImageName
 		, float tX, float tY
 		, float tPaddingX, float tPaddingY
 		, Gdiplus::Color tNormalBgColor, Gdiplus::Color tNormalFgColor
 		, Gdiplus::Color tHoverBgColor, Gdiplus::Color tHoverFgColor
+		, float tImgSizeX = 1.0f
+		, float tImgSizeY = 1.0f
 		, float tFontSize = 24.0f
-		, float tBold = 0.0f);
+		, float tBold = 0.0f);*/
 
 
 private:

@@ -2,88 +2,134 @@
 
 #include "CUIMgr.h"
 #include "CSceneMgr.h"
+#include "CDataMgr.h"
 
 #include "CUIButton.h"
+#include "CUIPanel.h"
+#include "CUIText.h"
+#include "CUIImg.h"
 
 void CCharacterSelectUI::OnCreate()
 {
 
+	CUIPanel* basePanel = new CUIPanel();
 
-	CUIButton* backButton = CUIButton::CreateInvertButton(
-		L"BackButton"
-		, L"뒤로"
-		, L""
-		, windowWidth / 20, windowHeight / 20
-		, 100.0f, 10.0f
-		, Gdiplus::Color(255, 0, 0, 0), Gdiplus::Color(255, 255, 255, 255)
-		, Gdiplus::Color(255, 255, 255, 255), Gdiplus::Color(255, 0, 0, 0)
-		, 24.0f
-		, 2.0f);
+	basePanel->SetPos(SVector2D());
+	basePanel->SetWidth(this->GetWidth());
+	basePanel->SetHeight(this->GetHeight());
 
-	//CTexture* backMouseInTex = CTexture::Create(L"BackMouseInButton", 100, 50);
-	//CTexture* backMouseOutTex = CTexture::Create(L"BackMouseOutButton", 100, 50);
+	/*CUIText* text = new CUIText();
 
-	//if (backMouseInTex != nullptr && backMouseOutTex != nullptr) {
-	//	// Gdiplus를 이용한 텍스트 작성 및 텍스처 내부 색 채우기
+	text->SetPos(SVector2D(30.0f, 30.0f));
+	text->SetText(L"Test");
 
-	//	Gdiplus::Graphics mouseInGraphics(backMouseInTex->GetImage());
-	//	mouseInGraphics.SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
-	//	mouseInGraphics.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
-	//	mouseInGraphics.SetTextRenderingHint(Gdiplus::TextRenderingHintAntiAlias);
+	basePanel->AddChild(text);*/
 
-	//	Gdiplus::Graphics mouseOutGraphics(backMouseOutTex->GetImage());
-	//	mouseOutGraphics.SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
-	//	mouseOutGraphics.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
-	//	mouseOutGraphics.SetTextRenderingHint(Gdiplus::TextRenderingHintAntiAlias);
+	CUIButton* backButton = new CUIButton();
+	backButton->SetPos(SVector2D(windowWidth / 20, windowHeight / 20));
+	backButton->SetWidth(200.0f);
+	backButton->SetHeight(50.0f);
+	backButton->SetBackColor(Gdiplus::Color(255, 0, 0, 0));
+	backButton->SetCornerRadius(10.0f);
 
+	CUIText* backButtonTex = new CUIText();
 
-	//	Gdiplus::SolidBrush blackBrush(Gdiplus::Color(255, 0, 0, 0));
-	//	Gdiplus::SolidBrush whiteBrush(Gdiplus::Color(255, 255, 255, 255));
+	backButtonTex->SetText(L"뒤로");
+	backButtonTex->SetFont(L"Noto Sans KR Medium");
+	backButtonTex->SetFontSize(24.0f);
+	backButtonTex->SetStrokeWidth(1.0f);
+	// backButtonTex->SetOutline(1.0f, Gdiplus::Color::Red);
+	backButtonTex->SetColor(Gdiplus::Color(255, 255, 255, 255));
+	backButtonTex->SetPos(SVector2D());
+	backButtonTex->SetWidth(backButton->GetWidth());
+	backButtonTex->SetHeight(backButton->GetHeight());
+	backButtonTex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentCenter);
 
-	//	Gdiplus::Pen boldWhitePen(Gdiplus::Color(255, 255, 255, 255), 2);
-	//	Gdiplus::Pen boldBlackPen(Gdiplus::Color(255, 0, 0, 0), 2);
+	backButton->AddChild(backButtonTex);
 
+	backButton->SetEventHover([=]() {
+		backButtonTex->SetColor(Gdiplus::Color(255, 0, 0, 0));
+		backButton->SetBackColor(Gdiplus::Color(255, 255, 255, 255));
+		});
 
-	//	Gdiplus::GraphicsPath bgPath;
-	//	Gdiplus::Rect rect(0, 0, backMouseInTex->GetWidth(), backMouseInTex->GetHeight());
-	//	CTexture::AddRoundedRectToPath(&bgPath, rect, backMouseInTex->GetHeight() / 5);
+	backButton->SetEventOutHover([=]() {
+		backButtonTex->SetColor(Gdiplus::Color(255, 255, 255, 255));
+		backButton->SetBackColor(Gdiplus::Color(255, 0, 0, 0));
+		});
 
-	//	mouseInGraphics.FillPath(&whiteBrush, &bgPath);
-	//	mouseOutGraphics.FillPath(&blackBrush, &bgPath);
+	backButton->SetEventClick([=]() { CSceneMgr::LoadScene(L"TitleScene"); });
+	basePanel->AddChild(backButton);
 
-	//	Gdiplus::GraphicsPath textPath;
-	//	Gdiplus::FontFamily fontFamily(L"Noto Sans KR Medium");
-	//	Gdiplus::StringFormat format;
-	//	format.SetAlignment(Gdiplus::StringAlignmentCenter);
-	//	format.SetLineAlignment(Gdiplus::StringAlignmentCenter);
+	CUIText* currentUITex = new CUIText();
 
-	//	Gdiplus::RectF textRect(0.0f, 0.0f, (float)backMouseInTex->GetWidth(), (float)backMouseInTex->GetHeight());
+	currentUITex->SetText(L"캐릭터 선택");
+	currentUITex->SetFont(L"Noto Sans KR Medium");
+	currentUITex->SetFontSize(70.0f);
+	currentUITex->SetStrokeWidth(1.0f);
+	currentUITex->SetOutline(3.0f, Gdiplus::Color::Black);
+	currentUITex->SetColor(Gdiplus::Color(255, 255, 255, 255));
+	currentUITex->SetPos(SVector2D(0.0f, this->GetHeight() / 15));
+	currentUITex->SetWidth(this->GetWidth());
+	currentUITex->SetHeight(this->GetHeight());
+	currentUITex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentNear);
 
-	//	textPath.AddString(
-	//		L"뒤로", -1,
-	//		&fontFamily, Gdiplus::FontStyleBold,
-	//		24, textRect, &format
-	//	);
+	basePanel->AddChild(currentUITex);
 
-	//	mouseInGraphics.FillPath(&blackBrush, &textPath); 
-	//	mouseInGraphics.DrawPath(&boldBlackPen, &textPath);
+	int x = 30;
+	int y = windowHeight / 2 + 30;
+	int i = 1;
 
-	//	mouseOutGraphics.FillPath(&whiteBrush, &textPath);
-	//	mouseOutGraphics.DrawPath(&boldWhitePen, &textPath);
+	// 캐릭터 데이터 가져와서 버튼 만들기
+	for (auto& character : CDataMgr::GetCharacterDatas()["Characters"]) {
+		std::string name = character["Name"];
+		std::string iconImage = character["IconTexture"];
 
-	//	// 텍스처 키 지정
-	//	backButton->SetMouseInTexture(L"BackMouseInButton");
-	//	backButton->SetMouseOutTexture(L"BackMouseOutButton");
-	//}
+		CUIButton* charButton = new CUIButton();
+		charButton->SetPos(SVector2D(x, y));
+		charButton->SetWidth(75.0f);
+		charButton->SetHeight(75.0f);
+		charButton->SetBackColor(Gdiplus::Color(255, 10, 10, 10));
+		charButton->SetCornerRadius(10.0f);
 
-	//backButton->SetWidth(backMouseInTex->GetWidth());
-	//backButton->SetHeight(backMouseInTex->GetHeight());
-	//backButton->SetPos(SVector2D(windowWidth / 20, windowHeight / 20));
-	backButton->SetButtonClick([=]() { CSceneMgr::LoadScene(L"TitleScene"); });
-	backButton->Active();
-	this->AddChild(backButton);
+		CUIImg* uiImg = new CUIImg();
+		uiImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
+		uiImg->SetTexture(std::wstring(iconImage.begin(), iconImage.end()));
+		uiImg->SetWidth(charButton->GetWidth());
+		uiImg->SetHeight(charButton->GetHeight());
 
-	// CUIMgr::Push(eUIType::CharacterSelectUI);
+		charButton->AddChild(uiImg);
+			/*::CreateInvertButton(
+			std::wstring(name.begin(), name.end())
+			, L""
+			, std::wstring(iconImage.begin(), iconImage.end())
+			, x, y
+			, 0.0f, 0.0f
+			, Gdiplus::Color(255, 20, 20, 20), Gdiplus::Color(255, 255, 255, 255)
+			, Gdiplus::Color(255, 255, 255, 255), Gdiplus::Color(255, 255, 255, 255)
+			, 0.8f
+			, 0.8f
+		);*/
+
+		charButton->SetEventHover([=]() {
+			charButton->SetBackColor(Gdiplus::Color(255, 255, 255, 255));
+			});
+		charButton->SetEventOutHover([=]() {
+			charButton->SetBackColor(Gdiplus::Color(255, 10, 10, 10));
+			});
+		// charButton->SetEventClick();
+		basePanel->AddChild(charButton);
+		
+		if (i == 11) {
+			y += 85;
+			i = 0;
+		}
+		else {
+			x += 85;
+		}
+	}
+
+	this->AddChild(basePanel);
+
 	CUIBase::OnCreate();
 }
 

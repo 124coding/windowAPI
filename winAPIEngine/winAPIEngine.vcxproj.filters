@@ -94,6 +94,15 @@
     <Filter Include="Resource\Animation">
       <UniqueIdentifier>{5cda2420-151b-4704-825a-3682e1a206c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI\Panel">
+      <UniqueIdentifier>{71f4ea80-c373-4a97-b7af-d780210277bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Text">
+      <UniqueIdentifier>{bda69781-bb5e-4cd7-bc89-071a734736ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Image">
+      <UniqueIdentifier>{030c6bb0-6c68-4354-9aa1-7f7aaadf430e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -210,6 +219,15 @@
     <ClInclude Include="CAudioClip.h">
       <Filter>Resource\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="CUIText.h">
+      <Filter>UI\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIPanel.h">
+      <Filter>UI\Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIImg.h">
+      <Filter>UI\Image</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAPIEngine.cpp">
@@ -307,6 +325,15 @@
     </ClCompile>
     <ClCompile Include="CAudioClip.cpp">
       <Filter>Resource\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIText.cpp">
+      <Filter>UI\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIPanel.cpp">
+      <Filter>UI\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIImg.cpp">
+      <Filter>UI\Image</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
