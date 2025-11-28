@@ -174,6 +174,7 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClCompile Include="CWeapon.cpp" />
     <ClCompile Include="CWeaponMgr.cpp" />
     <ClCompile Include="CWeaponScript.cpp" />
+    <ClCompile Include="CWeaponSelectUI.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -210,6 +211,8 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClInclude Include="CWeapon.h" />
     <ClInclude Include="CWeaponMgr.h" />
     <ClInclude Include="CWeaponScript.h" />
+    <ClInclude Include="CWeaponSelectUI.h" />
+    <ClInclude Include="Effect.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="Enums.h" />
   </ItemGroup>

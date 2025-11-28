@@ -38,28 +38,25 @@ public:
 		return this->mMouseInTexture;
 	}
 
+	void SetToolTipText(const std::wstring& text) {
+		mToolTipText = text;
+	}
+
+	std::wstring GetToolTipText() {
+		return mToolTipText;
+	}
+
 public:
 
 	virtual void SetEventClick(std::function<void()> tFunc) {
 		mOnClick = std::move(tFunc);
 	}
 
-	/*static CUIButton* CreateInvertButton(
-		const std::wstring& tName
-		, const std::wstring& tText
-		, const std::wstring& tImageName
-		, float tX, float tY
-		, float tPaddingX, float tPaddingY
-		, Gdiplus::Color tNormalBgColor, Gdiplus::Color tNormalFgColor
-		, Gdiplus::Color tHoverBgColor, Gdiplus::Color tHoverFgColor
-		, float tImgSizeX = 1.0f
-		, float tImgSizeY = 1.0f
-		, float tFontSize = 24.0f
-		, float tBold = 0.0f);*/
-
 
 private:
 	CTexture* mMouseOutTexture = nullptr;
 	CTexture* mMouseInTexture = nullptr;
 	SEvent mOnClick;
+
+	std::wstring mToolTipText;
 };

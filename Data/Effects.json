@@ -2,7 +2,64 @@
     "Effects":[
         {
             "E_ID" : "E_001",
-            "Name" : "Increased_Max_HP"
+            "Name" : "Max_HP",
+            "Description" : "{0} 최대 HP"
+        },
+        {
+            "E_ID" : "E_002",
+            "Name" : "HP_regeneration",
+            "Description" : "{0} HP 재생"
+        },
+        {
+            "E_ID" : "E_003",
+            "Name" : "Dodge",
+            "Description" : "{0} % 회피"
+        },
+        {
+            "E_ID" : "E_004",
+            "Name" : "Armor",
+            "Description" : "{0} 방어구"
+        },
+        {
+            "E_ID" : "E_005",
+            "Name" : "Range",
+            "Description" : "{0} 범위"
+        },
+        {
+            "E_ID" : "E_006",
+            "Name" : "Percent_Damage",
+            "Description" : "{0}% 데미지"
+        },
+        {
+            "E_ID" : "E_007",
+            "Name" : "Percent_Critical_Chance",
+            "Description" : "{0}% 치명타 확률"
+        },
+        {
+            "E_ID" : "E_008",
+            "Name" : "Ranged_Damage",
+            "Description" : "{0} 원거리 데미지"
+        },
+        {
+            "E_ID" : "E_009",
+            "Name" : "Melee_Damage",
+            "Description" : "{0} 근거리 데미지"
+        },
+        {
+            "E_ID" : "E_010",
+            "Name" : "Percent_Attack_Speed",
+            "Description" : "{0}% 공격 속도"
+        },
+        {
+            "E_ID" : "E_011",
+            "Name" : "Speed",
+            "Description" : "{0}% 속도"
+        },
+        {
+            "E_ID" : "E_012",
+            "Name" : "Life_Steal",
+            "Description" : "{0}% 생명 훔침"
         }
+
     ]
 }

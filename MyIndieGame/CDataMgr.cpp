@@ -8,6 +8,9 @@
 json CDataMgr::mMonsterStats = nullptr;
 json CDataMgr::mWeaponDatas = nullptr;
 json CDataMgr::mCharacterDatas = nullptr;
+json CDataMgr::mEffectDatas = nullptr;
+
+
 std::unordered_map<std::string, std::function<CEnemy* ()>> CDataMgr::mMonsterCreator;
 std::unordered_map<std::string, std::function<CWeapon* ()>> CDataMgr::mWeaponCreator;
 
@@ -46,4 +49,7 @@ void CDataMgr::LoadDatas() {
 
 	std::ifstream characterFile("../Data/Characters.json", std::ios::in);
 	characterFile >> mCharacterDatas;
+
+	std::ifstream effectFile("../Data/Effects.json", std::ios::in);
+	effectFile >> mEffectDatas;
 }

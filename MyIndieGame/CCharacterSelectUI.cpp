@@ -9,6 +9,10 @@
 #include "CUIText.h"
 #include "CUIImg.h"
 
+#include "CSettingScene.h"
+
+#include <regex>
+
 void CCharacterSelectUI::OnCreate()
 {
 
@@ -18,18 +22,12 @@ void CCharacterSelectUI::OnCreate()
 	basePanel->SetWidth(this->GetWidth());
 	basePanel->SetHeight(this->GetHeight());
 
-	/*CUIText* text = new CUIText();
-
-	text->SetPos(SVector2D(30.0f, 30.0f));
-	text->SetText(L"Test");
-
-	basePanel->AddChild(text);*/
-
+	// 뒤로가기 버튼
 	CUIButton* backButton = new CUIButton();
 	backButton->SetPos(SVector2D(windowWidth / 20, windowHeight / 20));
 	backButton->SetWidth(200.0f);
 	backButton->SetHeight(50.0f);
-	backButton->SetBackColor(Gdiplus::Color(255, 0, 0, 0));
+	backButton->SetBackColor(Gdiplus::Color::Black);
 	backButton->SetCornerRadius(10.0f);
 
 	CUIText* backButtonTex = new CUIText();
@@ -39,7 +37,7 @@ void CCharacterSelectUI::OnCreate()
 	backButtonTex->SetFontSize(24.0f);
 	backButtonTex->SetStrokeWidth(1.0f);
 	// backButtonTex->SetOutline(1.0f, Gdiplus::Color::Red);
-	backButtonTex->SetColor(Gdiplus::Color(255, 255, 255, 255));
+	backButtonTex->SetColor(Gdiplus::Color::White);
 	backButtonTex->SetPos(SVector2D());
 	backButtonTex->SetWidth(backButton->GetWidth());
 	backButtonTex->SetHeight(backButton->GetHeight());
@@ -48,76 +46,234 @@ void CCharacterSelectUI::OnCreate()
 	backButton->AddChild(backButtonTex);
 
 	backButton->SetEventHover([=]() {
-		backButtonTex->SetColor(Gdiplus::Color(255, 0, 0, 0));
-		backButton->SetBackColor(Gdiplus::Color(255, 255, 255, 255));
+		backButtonTex->SetColor(Gdiplus::Color::Black);
+		backButton->SetBackColor(Gdiplus::Color::White);
 		});
 
 	backButton->SetEventOutHover([=]() {
-		backButtonTex->SetColor(Gdiplus::Color(255, 255, 255, 255));
-		backButton->SetBackColor(Gdiplus::Color(255, 0, 0, 0));
+		backButtonTex->SetColor(Gdiplus::Color::White);
+		backButton->SetBackColor(Gdiplus::Color::Black);
 		});
 
 	backButton->SetEventClick([=]() { CSceneMgr::LoadScene(L"TitleScene"); });
 	basePanel->AddChild(backButton);
 
+	// 현재 창 텍스트
 	CUIText* currentUITex = new CUIText();
 
 	currentUITex->SetText(L"캐릭터 선택");
 	currentUITex->SetFont(L"Noto Sans KR Medium");
-	currentUITex->SetFontSize(70.0f);
+	currentUITex->SetFontSize(40.0f);
 	currentUITex->SetStrokeWidth(1.0f);
 	currentUITex->SetOutline(3.0f, Gdiplus::Color::Black);
-	currentUITex->SetColor(Gdiplus::Color(255, 255, 255, 255));
-	currentUITex->SetPos(SVector2D(0.0f, this->GetHeight() / 15));
+	currentUITex->SetColor(Gdiplus::Color::White);
 	currentUITex->SetWidth(this->GetWidth());
-	currentUITex->SetHeight(this->GetHeight());
+	currentUITex->SetHeight(this->GetHeight() / 5);
+	currentUITex->SetPos(SVector2D(0.0f, currentUITex->GetHeight() / 3));
 	currentUITex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentNear);
 
 	basePanel->AddChild(currentUITex);
 
+
+
+	// 설명 패널
+	CUIPanel* descriptionPanel = new CUIPanel();
+
+	descriptionPanel->SetWidth(250.0f);
+	descriptionPanel->SetHeight(320.0f);
+	descriptionPanel->SetPos(SVector2D(basePanel->GetWidth() / 2 - descriptionPanel->GetWidth() / 2, this->GetHeight() / 7));
+	descriptionPanel->SetBackColor(Gdiplus::Color::Black);
+	descriptionPanel->SetCornerRadius(10.0f);
+
+	basePanel->AddChild(descriptionPanel);
+
+	CUIPanel* charDescriptionImgPanel = new CUIPanel();
+
+	charDescriptionImgPanel->SetWidth(75.0f);
+	charDescriptionImgPanel->SetHeight(75.0f);
+	charDescriptionImgPanel->SetPos(SVector2D(10.0f, 10.0f));
+	charDescriptionImgPanel->SetBackColor(Gdiplus::Color::Black);
+	charDescriptionImgPanel->SetCornerRadius(10.0f);
+
+	descriptionPanel->AddChild(charDescriptionImgPanel);
+
+	CUIImg* charDescriptionImg = new CUIImg();
+	
+	charDescriptionImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
+	charDescriptionImg->SetWidth(charDescriptionImgPanel->GetWidth());
+	charDescriptionImg->SetHeight(charDescriptionImgPanel->GetHeight());
+
+	charDescriptionImgPanel->AddChild(charDescriptionImg);
+
+	CUIText* charNameTex = new CUIText();
+
+	charNameTex->SetPos(SVector2D(charDescriptionImgPanel->GetPos().mX + charDescriptionImgPanel->GetWidth() + 10.0f, charDescriptionImgPanel->GetPos().mY));
+	charNameTex->SetWidth(100.0f);
+	charNameTex->SetHeight(25.0f);
+
+	charNameTex->SetText(L"");
+	charNameTex->SetFont(L"Noto Sans KR Medium");
+	charNameTex->SetFontSize(20.0f);
+	charNameTex->SetColor(Gdiplus::Color::White);
+
+	descriptionPanel->AddChild(charNameTex);
+
+	CUIText* charTex = new CUIText();
+
+	charTex->SetPos(SVector2D(charDescriptionImgPanel->GetPos().mX + charDescriptionImgPanel->GetWidth() + 10.0f, charDescriptionImgPanel->GetPos().mY + 30.0f));
+	charTex->SetWidth(100.0f);
+	charTex->SetHeight(25.0f);
+
+	charTex->SetText(L"");
+	charTex->SetFont(L"Noto Sans KR Medium");
+	charTex->SetFontSize(15.0f);
+	charTex->SetColor(Gdiplus::Color::LightYellow);
+
+	descriptionPanel->AddChild(charTex);
+
+	CUIText* descriptionTex = new CUIText();
+
+	descriptionTex->SetPos(SVector2D(charDescriptionImgPanel->GetPos().mX, charDescriptionImgPanel->GetPos().mY + charDescriptionImgPanel->GetHeight() + 10.0f));
+	descriptionTex->SetWidth(200.0f);
+	descriptionTex->SetHeight(250.0f);
+
+	descriptionTex->SetFont(L"Noto Sans KR Medium");
+	descriptionTex->SetFontSize(15.0f);
+	descriptionTex->SetColor(Gdiplus::Color::White);
+
+	descriptionPanel->AddChild(descriptionTex);
+
 	int x = 30;
-	int y = windowHeight / 2 + 30;
+	int y = windowHeight / 2 + 100;
 	int i = 1;
 
 	// 캐릭터 데이터 가져와서 버튼 만들기
 	for (auto& character : CDataMgr::GetCharacterDatas()["Characters"]) {
+
 		std::string name = character["Name"];
 		std::string iconImage = character["IconTexture"];
+		std::vector<CSettingScene::SEffect> effects;
+		json effectDatas = CDataMgr::GetEffectDatas()["Effects"];
 
 		CUIButton* charButton = new CUIButton();
 		charButton->SetPos(SVector2D(x, y));
 		charButton->SetWidth(75.0f);
 		charButton->SetHeight(75.0f);
-		charButton->SetBackColor(Gdiplus::Color(255, 10, 10, 10));
+		charButton->SetBackColor(Gdiplus::Color::Gray);
 		charButton->SetCornerRadius(10.0f);
 
 		CUIImg* uiImg = new CUIImg();
 		uiImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
-		uiImg->SetTexture(std::wstring(iconImage.begin(), iconImage.end()));
+		uiImg->SetTexture(CResourceMgr::Find<CTexture>(CDataMgr::ToWString(iconImage)));
 		uiImg->SetWidth(charButton->GetWidth());
 		uiImg->SetHeight(charButton->GetHeight());
 
 		charButton->AddChild(uiImg);
-			/*::CreateInvertButton(
-			std::wstring(name.begin(), name.end())
-			, L""
-			, std::wstring(iconImage.begin(), iconImage.end())
-			, x, y
-			, 0.0f, 0.0f
-			, Gdiplus::Color(255, 20, 20, 20), Gdiplus::Color(255, 255, 255, 255)
-			, Gdiplus::Color(255, 255, 255, 255), Gdiplus::Color(255, 255, 255, 255)
-			, 0.8f
-			, 0.8f
-		);*/
 
 		charButton->SetEventHover([=]() {
-			charButton->SetBackColor(Gdiplus::Color(255, 255, 255, 255));
+			charButton->SetBackColor(Gdiplus::Color::White);
+			charDescriptionImgPanel->SetBackColor(Gdiplus::Color::Gray);
+			charDescriptionImg->SetTexture(uiImg->GetTexture());
+			charNameTex->SetText(CDataMgr::ToWString(name));
+			charTex->SetText(L"캐릭터");
+
+			descriptionTex->SetText(charButton->GetToolTipText());
 			});
+
 		charButton->SetEventOutHover([=]() {
-			charButton->SetBackColor(Gdiplus::Color(255, 10, 10, 10));
+			charButton->SetBackColor(Gdiplus::Color::Gray);
 			});
-		// charButton->SetEventClick();
+
+		charButton->SetEventClick([=, effects = std::move(effects)]() {
+			for (auto& effect : effects) {
+				CSettingScene::mApplicableEffects.push_back(effect);
+			}
+			charDescriptionImgPanel->SetBackColor(Gdiplus::Color::Black);
+			charDescriptionImg->SetTexture(nullptr);
+			charNameTex->SetText(L"");
+			charTex->SetText(L"");
+			CUIMgr::Pop(eUIType::CharacterSelectUI);
+			CUIMgr::Push(eUIType::WeaponSelectUI);
+			});
+
 		basePanel->AddChild(charButton);
+
+		for (auto& effect : character["Effects"]) {
+			CSettingScene::SEffect ef;
+
+			std::string sID = effect["E_ID"].get<std::string>();
+			ef.id = CDataMgr::ToWString(sID);
+
+			std::wstring rawDesc = L"";
+
+			for (auto& masterData : effectDatas) {
+				if (masterData["E_ID"] == sID) {
+					rawDesc = CDataMgr::ToWString(masterData["Description"]);
+					break;
+				}
+			}
+
+			if (effect.contains("Args") && effect["Args"].is_array())
+			{
+				int index = 0;
+
+				for (auto& arg : effect["Args"]) {
+					CSettingScene::SEffectArg ar;
+
+					std::wstring value = L"";
+
+					if (arg.contains("Value")) {
+						if (arg["Value"].is_number()) {
+							int val = arg["Value"].get<int>();
+							if (val > 0) {
+								value = L"+" + std::to_wstring(val);
+							}
+							else {
+								value = std::to_wstring(val);
+							}
+						}
+						else {
+							value = CDataMgr::ToWString(arg["Value"].get<std::string>());
+						}
+					}
+					ar.value = value;
+
+					std::string colorStr = "#FFFFFF"; // 기본값
+					if (arg.contains("Color")) {
+						colorStr = arg["Color"].get<std::string>();
+					}
+					ar.color = CDataMgr::ToWString(colorStr);
+					std::wstring taggedStr = L"<c=" + ar.color + L">" + value + L"</c>";
+
+					// 설명글 치환 ({0} -> 태그 문자열)
+					// L"\\{" + 숫자 + L"\\}" 형태의 정규식 패턴 생성
+					std::wstring pattern = L"\\{" + std::to_wstring(index) + L"\\}";
+					
+					try {
+						// rawDesc 안에 있는 {i}를 taggedStr로 교체
+						rawDesc = std::regex_replace(rawDesc, std::wregex(pattern), taggedStr);
+					}
+					catch (...) {
+						// 정규식 에러 예외처리 (원본 유지)
+					}
+
+					// E. 결과 저장
+					ef.args.push_back(ar);
+					index++;
+				}
+			}
+			ef.description = rawDesc;
+
+			effects.push_back(ef);
+		}
+
+		std::wstring finalDiscription = L"";
+
+		for (auto& effect : effects) {
+			finalDiscription += effect.description + L"\n";
+		}
+
+		charButton->SetToolTipText(finalDiscription);
 		
 		if (i == 11) {
 			y += 85;

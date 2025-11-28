@@ -2,7 +2,7 @@
     "Characters":[
         {
             "C_ID" : "C_001",
-            "Name" : "WellRounded",
+            "Name" : "다재다능",
             "HairTexture" : "NULL",
             "EyesTexture" : "WellRoundedEyes",
             "MouthTexture" : "WellRoundedMouth",
@@ -11,23 +11,30 @@
             "Effects":[
                 {
                     "E_ID": "E_001",
-                    "Value" : "5"
+                    "Args": [
+                        {"Value" : 5, "Color" : "#00FF00"}
+                    ]
                 },
                 {
-
+                    "E_ID" : "E_011",
+                    "Args": [
+                        {"Value" : 5, "Color" : "#00FF00"}
+                    ]
                 }
             ],
             "Weapons" : [ "MW_001", "RW_001" ]
         },
         {
             "C_ID" : "C_002",
-            "Name" : "Ranger",
+            "Name" : "레인저",
             "HairTexture" : "NULL",
             "EyesTexture" : "RangerEyes",
             "MouthTexture" : "RangerMouth",
             "ClothTexture" : "NULL",
             "IconTexture" : "RangerIcon",
-            "Weapons" : [ "RW_001" ]
+            "Weapons" : [ "RW_001" ],
+            "Effects":[
+            ]
         }
     ]
 }

@@ -167,10 +167,6 @@ void CPlayerScript::IncreaseHP(int tIncreaseAmount) {
 	if (mHP > mMaxHP) {
 		mHP = mMaxHP;
 	}
-}
-
-void CPlayerScript::DecreaseHP(int tDecreaseAmount) {
-	mHP = mHP - tDecreaseAmount;
 
 	if (mHP < 0) {
 		mHP = 0;
@@ -180,11 +176,6 @@ void CPlayerScript::DecreaseHP(int tDecreaseAmount) {
 void CPlayerScript::IncreaseMaxHP(int tIncreaseAmount)
 {
 	mMaxHP = mMaxHP + tIncreaseAmount;
-}
-
-void CPlayerScript::DecreaseMaxHP(int tDecreaseAmount)
-{
-	mMaxHP = mMaxHP - tDecreaseAmount;
 
 	if (mMaxHP < 0) {
 		mMaxHP = 0;

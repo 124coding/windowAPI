@@ -26,10 +26,25 @@ public:
 		mAnimator(nullptr), 
 		mHP(10),
 		mMaxHP(10),
+		mHPRegeneration(0),
+
+		mDodge(0.0f),
+		mArmor(0.0f),
+		mBasicMoveSpeed(500.0f),
+		mSpeedPercent(1.0f),
+
+		mRange(1.0f),
+		mDamagePer(1.0f),
+		mCriticalChancePer(0.0f),
+		mMeleeDamage(0),
+		mRangedDamage(0),
+		mAttackSpeedPer(1.0f),
+
+		mLifeSteal(0.0f),
+		
 		mLevel(1),
 		mExp(0.0f),
-		mMoney(0),
-		mSpeed(500.0f) {}
+		mMoney(0) {}
 	virtual ~CPlayerScript() {}
 
 	virtual CComponent* Clone() override {
@@ -53,9 +68,6 @@ private:
 	// void GiveWater();
 
 public:
-	void IncreaseHP(int tIncreaseAmount);
-	void DecreaseHP(int tDecreaseAmount);
-
 	void SetHP(int tHP) {
 		this->mHP = tHP;
 
@@ -64,32 +76,191 @@ public:
 		}
 	}
 
+	void IncreaseHP(int tIncreaseAmount);
+
 	int GetHP() {
 		return this->mHP;
 	}
 
-	void IncreaseMaxHP(int tIncreaseAmount);
-	void DecreaseMaxHP(int tDecreaseAmount);
 
-	void SetMaxHP(int tMaxHP) {
-		this->mMaxHP = tMaxHP;
+
+	void SetMaxHP(int tAmount) {
+		this->mMaxHP = tAmount;
 	}
+	void IncreaseMaxHP(int tIncreaseAmount);
 
 	int GetMaxHP() {
 		return this->mMaxHP;
+	}
+
+	void SetHPGeneration(int tAmount) {
+		this->mHPRegeneration = tAmount;
+	}
+
+	void InCreaseHPGeneration(int tIncreaseAmount) {
+		this->mHPRegeneration += tIncreaseAmount;
+	}
+
+	int GetHPGeneration() {
+		return this->mHPRegeneration;
+	}
+
+
+	void SetDodge(int tAmount) {
+		this->mDodge = tAmount;
+	}
+	void IncreaseDodge(int tIncreaseAmount) {
+		this->mDodge += tIncreaseAmount;
+	}
+
+	int GetDodge() {
+		return this->mDodge;
+	}
+
+
+
+	void SetArmor(int tAmount) {
+		this->mArmor = tAmount;
+	}
+	void IncreaseArmor(int tIncreaseAmount) {
+		this->mArmor += tIncreaseAmount;
+	}
+
+	int GetArmor() {
+		return this->mArmor;
+	}
+
+
+	void SetRange(int tAmount) {
+		this->mRange = tAmount;
+	}
+	void IncreaseRange(int tIncreaseAmount) {
+		this->mRange += tIncreaseAmount;
+	}
+
+	int GetRange() {
+		return this->mRange;
+	}
+
+
+	void SetDamagePecent(int tAmount) {
+		this->mDamagePer = tAmount;
+	}
+	void IncreaseDamagePercent(int tIncreaseAmount) {
+		this->mDamagePer += tIncreaseAmount;
+	}
+
+	int GetDamagePercent() {
+		return this->mDamagePer;
+	}
+
+	
+	void SetCriticalChancePercent(int tAmount) {
+		this->mCriticalChancePer = tAmount;
+	}
+	void IncreaseCriticalChancePercent(int tIncreaseAmount) {
+		this->mCriticalChancePer += tIncreaseAmount;
+	}
+
+	int GetCriticalChancePercent() {
+		return this->mCriticalChancePer;
+	}
+
+
+	void SetMeleeDamage(int tAmount) {
+		this->mMeleeDamage = tAmount;
+	}
+	void IncreaseMeleeDamage(int tIncreaseAmount) {
+		this->mMeleeDamage += tIncreaseAmount;
+	}
+
+	int GetMeleeDamage() {
+		return this->mMeleeDamage;
+	}
+
+
+	void SetRangedDamage(int tAmount) {
+		this->mRangedDamage = tAmount;
+	}
+	void IncreaseRangedDamage(int tIncreaseAmount) {
+		this->mRangedDamage += tIncreaseAmount;
+	}
+
+	int GetRangedDamage() {
+		return this->mRangedDamage;
+	}
+
+
+	void SetAttackSpeedPercent(int tAmount) {
+		this->mAttackSpeedPer = tAmount;
+	}
+	void IncreaseAttackSpeedPercent(int tIncreaseAmount) {
+		this->mAttackSpeedPer += tIncreaseAmount;
+	}
+
+	int GetAttackSpeedPercent() {
+		return this->mAttackSpeedPer;
+	}
+
+	void SetLifeSteal(int tAmount) {
+		this->mLifeSteal = tAmount;
+	}
+	void IncreaseLifeSteal(int tIncreaseAmount) {
+		this->mLifeSteal += tIncreaseAmount;
+	}
+
+	int GetLifeSteal() {
+		return this->mLifeSteal;
+	}
+
+
+	void SetExp(float tAmount) {
+		this->mExp = tAmount;
+	}
+
+	void IncreasedExp(float tIncreaseAmount) {
+		this->mExp += tIncreaseAmount;
+	}
+
+	float GetExp() {
+		return this->mExp;
+	}
+
+	void SetLevel(int tAmount) {
+		this->mLevel = tAmount;
+	}
+
+	void IncreaseLevel() {
+		this->mLevel++;
 	}
 
 	int GetLevel() {
 		return this->mLevel;
 	}
 
-	void SetSpeed(float tSpeed) {
-		this->mSpeed = tSpeed;
+
+
+	void SetBasicMoveSpeed(float tSpeed) {
+		this->mBasicMoveSpeed = tSpeed;
 	}
 
 	float GetSpeed() {
-		return this->mSpeed;
+		return this->mBasicMoveSpeed;
 	}
+
+
+	void SetSpeedPercent(int tAmount) {
+		this->mSpeedPercent = tAmount;
+	}
+	void IncreaseSpeedPercent(int tIncreaseAmount) {
+		this->mSpeedPercent += tIncreaseAmount;
+	}
+
+	int GetSpeedPercent() {
+		return this->mSpeedPercent;
+	}
+
+
 
 	void SetCanCollideEnemy(bool tCanCollideEnemey) {
 		this->mCanCollideEnemy = tCanCollideEnemey;
@@ -147,13 +318,28 @@ private:
 
 	int mHP;
 	int mMaxHP;
-	int mLevel;
+	int mHPRegeneration;
+
+
+	int mDodge;
+	int mArmor;
+	int mBasicMoveSpeed;
+	int mSpeedPercent;
+
+	int mRange;
+	int mDamagePer;
+	int mCriticalChancePer;
+	int mMeleeDamage;
+	int mRangedDamage;
+	int mAttackSpeedPer;
+
+	int mLifeSteal;
+
 	float mExp;
+	int mLevel;
 	int mMoney;
 
-	float mSpeed;
-
-	float mGracePeriod = 1.0f;
+	float mGracePeriod = 0.2f;
 	bool mCanCollideEnemy = true;
 
 	CTexture* mBaseTexture = nullptr;

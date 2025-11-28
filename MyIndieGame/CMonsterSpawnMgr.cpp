@@ -138,7 +138,7 @@ void CMonsterSpawnMgr::MonsterSpawn(const std::string tMonsterId, GameObject* tT
 
 	CEnemy* enemy = iter->second();
 
-	enemy->SetName(std::wstring(currentMonster.name.begin(), currentMonster.name.end()));
+	enemy->SetName(CDataMgr::ToWString(currentMonster.name));
 
 	CEnemyScript* enemyScript = enemy->GetComponent<CEnemyScript>();
 	enemyScript->SetTarget(tTarget);
@@ -148,7 +148,7 @@ void CMonsterSpawnMgr::MonsterSpawn(const std::string tMonsterId, GameObject* tT
 
 	enemyScript->SetSpeed(currentMonster.speed);
 
-	CTexture* enemyImg = CResourceMgr::Find<CTexture>(std::wstring(currentMonster.name.begin(), currentMonster.name.end()));
+	CTexture* enemyImg = CResourceMgr::Find<CTexture>(CDataMgr::ToWString(currentMonster.name));
 	enemyScript->SetBaseTexture(enemyImg);
 
 	CSpriteRenderer* sr = enemy->AddComponent<CSpriteRenderer>();

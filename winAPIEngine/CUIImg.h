@@ -29,8 +29,12 @@ public:
 	virtual void Render(HDC tHDC) override;
 	virtual void UIClear() override;
 	
-	void SetTexture(std::wstring tTexName) {
-		mTex = CResourceMgr::Find<CTexture>(tTexName);
+	void SetTexture(CTexture* tTex) {
+		mTex = tTex;
+	}
+
+	CTexture* GetTexture() {
+		return this->mTex;
 	}
 
 	void SetImageMode(eImageMode mode) {

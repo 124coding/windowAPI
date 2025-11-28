@@ -109,6 +109,9 @@
     <Filter Include="Objects\Tile">
       <UniqueIdentifier>{bd20c9e1-7c35-4137-8370-aa3680157c55}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI\WeaponSelectUI">
+      <UniqueIdentifier>{67328b62-9262-49bd-93e0-31cd103ae93a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -213,6 +216,9 @@
     <ClCompile Include="CTile.cpp">
       <Filter>Objects\Tile</Filter>
     </ClCompile>
+    <ClCompile Include="CWeaponSelectUI.cpp">
+      <Filter>UI\WeaponSelectUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -316,6 +322,12 @@
     </ClInclude>
     <ClInclude Include="CTile.h">
       <Filter>Objects\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CWeaponSelectUI.h">
+      <Filter>UI\WeaponSelectUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

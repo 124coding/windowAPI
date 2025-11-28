@@ -5,6 +5,18 @@
 class CUIText : public CUIBase
 {
 public:
+	struct STextFragment {
+		std::wstring text;
+		Gdiplus::Color color;
+	};
+
+	struct SAutoColor {
+		std::wstring text;
+		int refValue;
+
+		SAutoColor(std::wstring t, int v) : text(t), refValue(v) {}
+	};
+
 	CUIText() : CUIBase(eUIType::None)
 		, mText(L"")
 		, mFont(L"Noto Sans KR Medium")
@@ -30,21 +42,16 @@ public:
 	virtual void UIClear() override;
 
 public:
-	void SetText(const std::wstring& tText) {
-		this->mText = tText;
-	}
+	void SetText(const std::wstring& tText);
 
 	void SetFont(const std::wstring& tFont) {
 		this->mFont = tFont;
 	}
-
 	void SetFontSize(float tFontSize) {
 		this->mFontSize = tFontSize;
 	}
 
-	void SetColor(Gdiplus::Color tColor) {
-		this->mFontColor = tColor;
-	}
+	void SetColor(Gdiplus::Color tColor);
 
 	void SetStrokeWidth(float tStrokeWidth) {
 		this->mStrokeWidth = tStrokeWidth;
@@ -65,6 +72,15 @@ public:
 	}
 
 private:
+	void ParseRichText(const std::wstring& text);
+
+	// Hex 문자열을 Gdiplus::Color로 변환하는 함수
+	Gdiplus::Color HexToColor(const std::wstring& hex);
+
+	// 텍스트 폭 계산 함수
+	float GetTextWidth(Gdiplus::Graphics* graphics, Gdiplus::Font* font, const std::wstring& text);
+
+private:
 	std::wstring mText;
 	std::wstring mFont;
 	
@@ -78,5 +94,7 @@ private:
 
 	Gdiplus::StringAlignment mAlignH;
 	Gdiplus::StringAlignment mAlignV;
+
+	std::vector<STextFragment> mFragments;
 };
 

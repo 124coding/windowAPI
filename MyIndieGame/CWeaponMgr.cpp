@@ -85,7 +85,7 @@ bool CWeaponMgr::PlusWeapon(eLayerType tType, std::string tWeaponId, int tWeapon
 	CTransform* wpTr = weapon->GetComponent<CTransform>();
 	CSpriteRenderer* wpSr = weapon->AddComponent<CSpriteRenderer>();
 
-	CTexture* wpImg = CResourceMgr::Find<CTexture>(std::wstring(currentWeapon.name.begin(), currentWeapon.name.end()));
+	CTexture* wpImg = CResourceMgr::Find<CTexture>(CDataMgr::ToWString(currentWeapon.name));
 	weapon->SetSize(SVector2D(currentWeapon.sizeX, currentWeapon.sizeY));
 	wpSr->SetTexture(wpImg);
 	weapon->SetAnchorPoint((wpImg->GetWidth() / 2) - 20.0f, wpImg->GetHeight() / 2);
@@ -108,7 +108,7 @@ bool CWeaponMgr::PlusWeapon(eLayerType tType, std::string tWeaponId, int tWeapon
 	}
 	else if (tType == eLayerType::RangedWeapon) {
 		CRangedWeaponScript* wpSc = weapon->GetComponent<CRangedWeaponScript>();
-		wpSc->SetBullet(SVector2D(currentWeapon.bulletSizeX, currentWeapon.bulletSizeY), SVector2D(currentWeapon.collisionSizeX, currentWeapon.collisionSizeY), std::wstring(currentWeapon.bulletName.begin(), currentWeapon.bulletName.end()));
+		wpSc->SetBullet(SVector2D(currentWeapon.bulletSizeX, currentWeapon.bulletSizeY), SVector2D(currentWeapon.collisionSizeX, currentWeapon.collisionSizeY), CDataMgr::ToWString(currentWeapon.bulletName));
 	}
 
 	if (mWeapons.size() < mWeaponCount) {

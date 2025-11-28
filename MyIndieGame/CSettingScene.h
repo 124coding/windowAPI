@@ -5,10 +5,23 @@
 class CSettingScene : public CScene
 {
 public:
+	friend class CCharacterSelectUI;
+
 	enum class eSelect{
 		Character,
 		Weapon,
 		Difficulty
+	};
+
+	struct SEffectArg {
+		std::wstring value; 
+		std::wstring color;
+	};
+
+	struct SEffect {
+		std::wstring id;
+		std::vector<SEffectArg> args;
+		std::wstring description;
 	};
 
 	CSettingScene() {}
@@ -25,5 +38,7 @@ public:
 
 private:
 	eSelect mCurSelect = eSelect::Character;
+
+	static std::vector<SEffect> mApplicableEffects;
 };
 

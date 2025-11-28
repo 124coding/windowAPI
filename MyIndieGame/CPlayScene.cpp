@@ -39,6 +39,8 @@
 #include "Enums.h"
 #include "Object.h"
 
+CPlayer* CPlayScene::mPlayer = nullptr;
+
 void CPlayScene::OnCreate()
 {
 

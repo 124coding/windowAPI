@@ -21,8 +21,8 @@ public:
 	void OnEnter() override;
 	void OnExit() override;
 
-	CPlayer* GetPlayer() {
-		return this->mPlayer;
+	static CPlayer* GetPlayer() {
+		return mPlayer;
 	}
 
 public:
@@ -31,7 +31,7 @@ public:
 	void OutLineFill(Gdiplus::Graphics* tGraphics, int tTileW, int tTileH);
 
 private:
-	CPlayer* mPlayer;
+	static CPlayer* mPlayer;
 	CWeaponMgr* mPlayerWeapons;
 
 	GameObject* mBakedMap;
