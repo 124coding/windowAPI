@@ -108,28 +108,13 @@ void CMonsterSpawnMgr::MonsterSpawnEvent(float tDeltaTime, GameObject* tTarget) 
 void CMonsterSpawnMgr::MonsterSpawn(const std::string tMonsterId, GameObject* tTarget, SVector2D tPosition) {
 	CDataMgr::SMonster currentMonster;
 
-	for (const auto& monsterData : CDataMgr::GetMonsterBasicStats()["Monsters"]) {
-		if (monsterData["M_ID"] == tMonsterId) {
-			currentMonster.ID = monsterData["M_ID"];
-			currentMonster.name = monsterData["Name"];
-			currentMonster.hp = monsterData["HP"];
-			currentMonster.buttDamage = monsterData["ButtDamage"];
-			currentMonster.attackDamage = monsterData["AttackDamage"];
-			currentMonster.speed = monsterData["Speed"];
-			currentMonster.sizeX = monsterData["SizeX"];
-			currentMonster.sizeY = monsterData["SizeY"];
-			currentMonster.collisionSizeX = monsterData["CollisionSizeX"];
-			currentMonster.collisionSizeY = monsterData["CollisionSizeY"];
+	auto it = CDataMgr::GetMonsterBasicStats().find(tMonsterId);
 
-			currentMonster.hp *= mHPMultiplier;
-
-			break;
-		}
-	}
-
-	if (currentMonster.ID != tMonsterId) {
+	if (it == CDataMgr::GetMonsterBasicStats().end()) {
 		return;
 	}
+
+	currentMonster = it->second;
 
 	auto iter = CDataMgr::GetMonsterCreator().find(currentMonster.name);
 	if (iter == CDataMgr::GetMonsterCreator().end()) {

@@ -9,7 +9,12 @@
 #include "CUIText.h"
 #include "CUIImg.h"
 
+#include "CPlayer.h"
+
+#include "CPlayScene.h"
 #include "CSettingScene.h"
+
+#include "CPlayerScript.h"
 
 #include <regex>
 
@@ -148,13 +153,7 @@ void CCharacterSelectUI::OnCreate()
 	int i = 1;
 
 	// 캐릭터 데이터 가져와서 버튼 만들기
-	for (auto& character : CDataMgr::GetCharacterDatas()["Characters"]) {
-
-		std::string name = character["Name"];
-		std::string iconImage = character["IconTexture"];
-		std::vector<CSettingScene::SEffect> effects;
-		json effectDatas = CDataMgr::GetEffectDatas()["Effects"];
-
+	for (auto& [id, character] : CDataMgr::GetCharacterDatas()) {
 		CUIButton* charButton = new CUIButton();
 		charButton->SetPos(SVector2D(x, y));
 		charButton->SetWidth(75.0f);
@@ -164,30 +163,84 @@ void CCharacterSelectUI::OnCreate()
 
 		CUIImg* uiImg = new CUIImg();
 		uiImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
-		uiImg->SetTexture(CResourceMgr::Find<CTexture>(CDataMgr::ToWString(iconImage)));
+		uiImg->SetTexture(CResourceMgr::Find<CTexture>(CDataMgr::ToWString(character.iconTexture)));
 		uiImg->SetWidth(charButton->GetWidth());
 		uiImg->SetHeight(charButton->GetHeight());
 
 		charButton->AddChild(uiImg);
 
+		basePanel->AddChild(charButton);
+
+		std::wstring finalDiscription = L"";
+
+		for (auto& [effectID, args] : character.effects) {
+			auto it = CDataMgr::GetEffectDatas().find(effectID);
+			if (it == CDataMgr::GetEffectDatas().end()) {
+				continue;
+			}
+
+			std::wstring rawDesc = CDataMgr::ToWString(it->second.description);
+
+			int index = 0;
+
+			for (auto& arg : args) {
+				std::wstring value = CDataMgr::ToWString(arg.value);
+
+				std::string colorStr = "#FFFFFF"; // 기본값
+				if (arg.color != "") {
+					colorStr = arg.color;
+				}
+
+				if (colorStr == "#00FF00")
+				{
+					try {
+						int iVal = std::stoi(arg.value);
+
+						if (iVal > 0) {
+							value = L"+" + value;
+						}
+					}
+					catch (...) {
+						// 변환 실패
+					}
+				}
+
+				std::wstring taggedStr = L"<c=" + CDataMgr::ToWString(colorStr) + L">" + value + L"</c>";
+
+				// 설명글 치환 ({0} -> 태그 문자열)
+				// L"\\{" + 숫자 + L"\\}" 형태의 정규식 패턴 생성
+				std::wstring pattern = L"\\{" + std::to_wstring(index) + L"\\}";
+
+				try {
+					// rawDesc 안에 있는 {i}를 taggedStr로 교체
+					rawDesc = std::regex_replace(rawDesc, std::wregex(pattern), taggedStr);
+				}
+				catch (...) {
+					// 정규식 에러 예외처리 (원본 유지)
+				}
+				index++;
+			}
+
+			finalDiscription += rawDesc + L"\n";
+		}
+
 		charButton->SetEventHover([=]() {
 			charButton->SetBackColor(Gdiplus::Color::White);
 			charDescriptionImgPanel->SetBackColor(Gdiplus::Color::Gray);
 			charDescriptionImg->SetTexture(uiImg->GetTexture());
-			charNameTex->SetText(CDataMgr::ToWString(name));
+			charNameTex->SetText(CDataMgr::ToWString(character.name));
 			charTex->SetText(L"캐릭터");
 
-			descriptionTex->SetText(charButton->GetToolTipText());
+			descriptionTex->SetText(finalDiscription);
 			});
 
 		charButton->SetEventOutHover([=]() {
 			charButton->SetBackColor(Gdiplus::Color::Gray);
 			});
 
-		charButton->SetEventClick([=, effects = std::move(effects)]() {
-			for (auto& effect : effects) {
-				CSettingScene::mApplicableEffects.push_back(effect);
-			}
+		charButton->SetEventClick([=]() {
+			CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
+			plSc->SetCharacter(CDataMgr::ToWString(character.name));
 			charDescriptionImgPanel->SetBackColor(Gdiplus::Color::Black);
 			charDescriptionImg->SetTexture(nullptr);
 			charNameTex->SetText(L"");
@@ -195,88 +248,10 @@ void CCharacterSelectUI::OnCreate()
 			CUIMgr::Pop(eUIType::CharacterSelectUI);
 			CUIMgr::Push(eUIType::WeaponSelectUI);
 			});
-
-		basePanel->AddChild(charButton);
-
-		for (auto& effect : character["Effects"]) {
-			CSettingScene::SEffect ef;
-
-			std::string sID = effect["E_ID"].get<std::string>();
-			ef.id = CDataMgr::ToWString(sID);
-
-			std::wstring rawDesc = L"";
-
-			for (auto& masterData : effectDatas) {
-				if (masterData["E_ID"] == sID) {
-					rawDesc = CDataMgr::ToWString(masterData["Description"]);
-					break;
-				}
-			}
-
-			if (effect.contains("Args") && effect["Args"].is_array())
-			{
-				int index = 0;
-
-				for (auto& arg : effect["Args"]) {
-					CSettingScene::SEffectArg ar;
-
-					std::wstring value = L"";
-
-					if (arg.contains("Value")) {
-						if (arg["Value"].is_number()) {
-							int val = arg["Value"].get<int>();
-							if (val > 0) {
-								value = L"+" + std::to_wstring(val);
-							}
-							else {
-								value = std::to_wstring(val);
-							}
-						}
-						else {
-							value = CDataMgr::ToWString(arg["Value"].get<std::string>());
-						}
-					}
-					ar.value = value;
-
-					std::string colorStr = "#FFFFFF"; // 기본값
-					if (arg.contains("Color")) {
-						colorStr = arg["Color"].get<std::string>();
-					}
-					ar.color = CDataMgr::ToWString(colorStr);
-					std::wstring taggedStr = L"<c=" + ar.color + L">" + value + L"</c>";
-
-					// 설명글 치환 ({0} -> 태그 문자열)
-					// L"\\{" + 숫자 + L"\\}" 형태의 정규식 패턴 생성
-					std::wstring pattern = L"\\{" + std::to_wstring(index) + L"\\}";
-					
-					try {
-						// rawDesc 안에 있는 {i}를 taggedStr로 교체
-						rawDesc = std::regex_replace(rawDesc, std::wregex(pattern), taggedStr);
-					}
-					catch (...) {
-						// 정규식 에러 예외처리 (원본 유지)
-					}
-
-					// E. 결과 저장
-					ef.args.push_back(ar);
-					index++;
-				}
-			}
-			ef.description = rawDesc;
-
-			effects.push_back(ef);
-		}
-
-		std::wstring finalDiscription = L"";
-
-		for (auto& effect : effects) {
-			finalDiscription += effect.description + L"\n";
-		}
-
-		charButton->SetToolTipText(finalDiscription);
 		
 		if (i == 11) {
 			y += 85;
+			x = 30;
 			i = 0;
 		}
 		else {

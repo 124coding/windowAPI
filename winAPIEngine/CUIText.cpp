@@ -49,6 +49,7 @@ void CUIText::Render(HDC tHDC)
 	int style = mbBold ? Gdiplus::FontStyleBold : Gdiplus::FontStyleRegular;
     Gdiplus::Font font(&fontFamily, mFontSize, style, Gdiplus::UnitPixel);
 
+    // 텍스트 높이
     Gdiplus::RectF measureBox;
     Gdiplus::PointF zero(0.0f, 0.0f);
     graphics.MeasureString(L"TestHeight", -1, &font, zero,
@@ -80,6 +81,7 @@ void CUIText::Render(HDC tHDC)
             else part = remaining;
 
             if (!part.empty()) {
+                // 각 부분마다의 넓이
                 float partWidth = GetTextWidth(&graphics, &font, part);
 
                 // 줄 정보 갱신

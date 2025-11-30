@@ -18,7 +18,6 @@ class CDataMgr
 {
 public:
 	struct SMonster {
-		// 각 몬스터가 가지는 값들을 저장하기 위한 구조체
 		std::string ID = "";
 		std::string name = "";
 		int hp = 0;
@@ -52,6 +51,17 @@ public:
 		SWeaponTier tier[4];
 	};
 
+	struct SEffect {
+		std::string ID = "";
+		std::string name = "";
+		std::string description = "";
+	};
+
+	struct SArg {
+		std::string value = "";
+		std::string color = "";
+	};
+
 	struct SCharacter {
 		std::string ID = "";
 		std::string name = "";
@@ -59,13 +69,9 @@ public:
 		std::string eyesTexture = "";
 		std::string mouthTexture = "";
 		std::string clothTexture = "";
-		std::vector<std::string> Weapons;
-	};
-
-	struct SEffect {
-		std::string ID = "";
-		std::string name = "";
-		std::string description = "";
+		std::string iconTexture = "";
+		std::vector<std::string> weapons;
+		std::unordered_map<std::string, std::vector<SArg>> effects;
 	};
 
 	static void OnCreate();
@@ -106,21 +112,23 @@ public:
 
 	static void LoadDatas();
 
-	static const json& GetMonsterBasicStats() {
+	static const std::unordered_map<std::string, SMonster>& GetMonsterBasicStats() {
 		return mMonsterStats;
 	}
 
-	static const json& GetWeaponDatas() {
+	static const std::unordered_map<std::string, SWeapon>& GetWeaponDatas() {
 		return mWeaponDatas;
 	}
 
-	static const json& GetCharacterDatas() {
+	static const std::unordered_map<std::string, SCharacter>& GetCharacterDatas() {
 		return mCharacterDatas;
 	}
 
-	static const json& GetEffectDatas() {
+	static const std::unordered_map<std::string, SEffect>& GetEffectDatas() {
 		return mEffectDatas;
 	}
+
+
 
 	static const std::unordered_map<std::string, std::function<CEnemy* ()>>& GetMonsterCreator() {
 		return mMonsterCreator;
@@ -131,10 +139,10 @@ public:
 	}
 
 private:
-	static json mMonsterStats;
-	static json mWeaponDatas;
-	static json mCharacterDatas;
-	static json mEffectDatas;
+	static std::unordered_map<std::string, SMonster> mMonsterStats;
+	static std::unordered_map<std::string, SWeapon> mWeaponDatas;
+	static std::unordered_map<std::string, SCharacter> mCharacterDatas;
+	static std::unordered_map<std::string, SEffect> mEffectDatas;
 	
 	static std::unordered_map<std::string, std::function<CEnemy* ()>> mMonsterCreator;
 	static std::unordered_map<std::string, std::function<CWeapon* ()>> mWeaponCreator;

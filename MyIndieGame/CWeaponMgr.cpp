@@ -32,48 +32,12 @@ void CWeaponMgr::Render(HDC tHDC)
 
 bool CWeaponMgr::PlusWeapon(eLayerType tType, std::string tWeaponId, int tWeaponTier) {
 
-	std::string weaponType;
-
-	if (tType == eLayerType::MeleeWeapon) {
-		weaponType = "MeleeWeapons";
-	}
-	else if (tType == eLayerType::RangedWeapon) {
-		weaponType = "RangedWeapons";
-	}
-
-	CDataMgr::SWeapon currentWeapon;
-
-	for (const auto& weaponData : CDataMgr::GetWeaponDatas()[weaponType]) {
-		if (weaponData["W_ID"] == tWeaponId) {
-			currentWeapon.ID = weaponData["W_ID"];
-			currentWeapon.name = weaponData["Name"];
-			currentWeapon.range = weaponData["Range"];
-			currentWeapon.speed = weaponData["Speed"];
-			currentWeapon.sizeX = weaponData["SizeX"];
-			currentWeapon.sizeY = weaponData["SizeY"];
-			currentWeapon.collisionSizeX = weaponData["CollisionSizeX"];
-			currentWeapon.collisionSizeY = weaponData["CollisionSizeY"];
-
-			if (weaponType == "RangedWeapons") {
-				currentWeapon.bulletName = weaponData["BulletName"];
-				currentWeapon.bulletSizeX = weaponData["BulletSizeX"];
-				currentWeapon.bulletSizeY = weaponData["BulletSizeY"];
-			}
-
-			int i = 0;
-			for (const auto& t : weaponData["Tiers"]) {
-				currentWeapon.tier[i].tier = t["Tier"];
-				currentWeapon.tier[i].damage = t["Damage"];
-				currentWeapon.tier[i++].delay = t["Delay"];
-			}
-
-			break;
-		}
-	}
-
-	if (currentWeapon.ID != tWeaponId) {
+	auto weaponIter = CDataMgr::GetWeaponDatas().find(tWeaponId);
+	if (weaponIter == CDataMgr::GetWeaponDatas().end()) {
 		return false;
 	}
+
+	CDataMgr::SWeapon currentWeapon = weaponIter->second;
 
 	auto iter = CDataMgr::GetWeaponCreator().find(currentWeapon.name);
 	if (iter == CDataMgr::GetWeaponCreator().end()) {

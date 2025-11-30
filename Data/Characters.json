@@ -12,13 +12,13 @@
                 {
                     "E_ID": "E_001",
                     "Args": [
-                        {"Value" : 5, "Color" : "#00FF00"}
+                        {"Value" : "5", "Color" : "#00FF00"}
                     ]
                 },
                 {
                     "E_ID" : "E_011",
                     "Args": [
-                        {"Value" : 5, "Color" : "#00FF00"}
+                        {"Value" : "5", "Color" : "#00FF00"}
                     ]
                 }
             ],
@@ -32,9 +32,15 @@
             "MouthTexture" : "RangerMouth",
             "ClothTexture" : "NULL",
             "IconTexture" : "RangerIcon",
-            "Weapons" : [ "RW_001" ],
             "Effects":[
-            ]
+                {
+                    "E_ID" : "E_011",
+                    "Args": [
+                        {"Value" : "5", "Color" : "#00FF00"}
+                    ]
+                }
+            ],
+            "Weapons" : [ "RW_001" ]
         }
     ]
 }

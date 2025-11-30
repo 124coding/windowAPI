@@ -68,6 +68,14 @@ private:
 	// void GiveWater();
 
 public:
+	void SetCharacter(std::wstring tCharacter) {
+		this->mCharacter = tCharacter;
+	}
+
+	std::wstring GetCharacter() {
+		return this->mCharacter;
+	}
+
 	void SetHP(int tHP) {
 		this->mHP = tHP;
 
@@ -315,6 +323,8 @@ private:
 	eState mState;
 	CAnimator* mAnimator;
 	CInputMgr* mInputMgr = CInputMgr::GetInst();
+
+	std::wstring mCharacter = L"";
 
 	int mHP;
 	int mMaxHP;

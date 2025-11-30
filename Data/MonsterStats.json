@@ -14,11 +14,15 @@
         },
         {
             "M_ID": "M_002",
-            "ClassName": "",
-            "HP": 2,
+            "Name": "",
+            "HP": 1,
             "ButtDamage": 1,
-            "AttackDamage": 2,
-            "Speed": 50.0
+            "AttackDamage": 0,
+            "Speed": 50.0,
+            "SizeX": 0.7,
+            "SizeY": 0.7,
+            "CollisionSizeX": 1.0,
+            "CollisionSizeY": 1.0
         }
     ]
 }
