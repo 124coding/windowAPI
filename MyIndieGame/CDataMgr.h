@@ -18,8 +18,8 @@ class CDataMgr
 {
 public:
 	struct SMonster {
-		std::string ID = "";
-		std::string name = "";
+		std::wstring ID = L"";
+		std::wstring name = L"";
 		int hp = 0;
 		int buttDamage = 0;
 		int attackDamage = 0;
@@ -33,14 +33,20 @@ public:
 	struct SWeaponTier {
 		int tier = 0;
 		float damage = 0.0f;
+		float critDamagePer = 0.0f;
+		float critChancePer = 0.0f;
 		float delay = 0.0f;
+		float range = 0.0f;
+		int basePrice = 0;
 	};
 
 	struct SWeapon {
-		std::string ID = "";
-		std::string name = "";
-		std::string bulletName = "";
-		float range = 0.0f;
+		std::wstring weaponType = L"";
+		std::wstring ID = L"";
+		std::wstring name = L"";
+		std::wstring classType = L"";
+		std::wstring bulletName = L"";
+		std::wstring iconTexture = L"";
 		float speed = 0.0f;
 		float sizeX = 0.0f;
 		float sizeY = 0.0f;
@@ -48,30 +54,31 @@ public:
 		float bulletSizeY = 0.0f;
 		float collisionSizeX = 0.0f;
 		float collisionSizeY = 0.0f;
-		SWeaponTier tier[4];
+		std::array<SWeaponTier, 4> tier;
+		std::wstring specialEffect = L"";
 	};
 
 	struct SEffect {
-		std::string ID = "";
-		std::string name = "";
-		std::string description = "";
+		std::wstring ID = L"";
+		std::wstring name = L"";
+		std::wstring description = L"";
 	};
 
 	struct SArg {
-		std::string value = "";
-		std::string color = "";
+		std::wstring value = L"";
+		std::wstring color = L"";
 	};
 
 	struct SCharacter {
-		std::string ID = "";
-		std::string name = "";
-		std::string hairTexture = "";
-		std::string eyesTexture = "";
-		std::string mouthTexture = "";
-		std::string clothTexture = "";
-		std::string iconTexture = "";
-		std::vector<std::string> weapons;
-		std::unordered_map<std::string, std::vector<SArg>> effects;
+		std::wstring ID = L"";
+		std::wstring name = L"";
+		std::wstring hairTexture = L"";
+		std::wstring eyesTexture = L"";
+		std::wstring mouthTexture = L"";
+		std::wstring clothTexture = L"";
+		std::wstring iconTexture = L"";
+		std::vector<std::wstring> weapons;
+		std::unordered_map<std::wstring, std::vector<SArg>> effects;
 	};
 
 	static void OnCreate();
@@ -93,8 +100,8 @@ public:
 public:
 
 	template<typename T>
-	static void WeaponRegister(const std::string& tName, eLayerType tType) {
-		mWeaponCreator[tName] = [=]() -> CWeapon* {
+	static void WeaponRegister(const std::wstring& tID, eLayerType tType) {
+		mWeaponCreator[tID] = [=]() -> CWeapon* {
 			CWeapon* weapon = Instantiate<CWeapon>(tType);
 			weapon->AddComponent<T>();
 			return weapon;
@@ -102,8 +109,8 @@ public:
 	}
 
 	template<typename T>
-	static void MonsterRegister(const std::string& tName) {
-		mMonsterCreator[tName] = []() -> CEnemy* {
+	static void MonsterRegister(const std::wstring& tID) {
+		mMonsterCreator[tID] = []() -> CEnemy* {
 			CEnemy* enemy = Instantiate<CEnemy>(eLayerType::Enemy);
 			enemy->AddComponent<T>();
 			return enemy;
@@ -112,39 +119,39 @@ public:
 
 	static void LoadDatas();
 
-	static const std::unordered_map<std::string, SMonster>& GetMonsterBasicStats() {
+	static const std::unordered_map<std::wstring, SMonster>& GetMonsterBasicStats() {
 		return mMonsterStats;
 	}
 
-	static const std::unordered_map<std::string, SWeapon>& GetWeaponDatas() {
+	static const std::unordered_map<std::wstring, SWeapon>& GetWeaponDatas() {
 		return mWeaponDatas;
 	}
 
-	static const std::unordered_map<std::string, SCharacter>& GetCharacterDatas() {
+	static const std::unordered_map<std::wstring, SCharacter>& GetCharacterDatas() {
 		return mCharacterDatas;
 	}
 
-	static const std::unordered_map<std::string, SEffect>& GetEffectDatas() {
+	static const std::unordered_map<std::wstring, SEffect>& GetEffectDatas() {
 		return mEffectDatas;
 	}
 
 
 
-	static const std::unordered_map<std::string, std::function<CEnemy* ()>>& GetMonsterCreator() {
+	static const std::unordered_map<std::wstring, std::function<CEnemy* ()>>& GetMonsterCreator() {
 		return mMonsterCreator;
 	}
 
-	static const std::unordered_map<std::string, std::function<CWeapon* ()>>& GetWeaponCreator() {
+	static const std::unordered_map<std::wstring, std::function<CWeapon* ()>>& GetWeaponCreator() {
 		return mWeaponCreator;
 	}
 
 private:
-	static std::unordered_map<std::string, SMonster> mMonsterStats;
-	static std::unordered_map<std::string, SWeapon> mWeaponDatas;
-	static std::unordered_map<std::string, SCharacter> mCharacterDatas;
-	static std::unordered_map<std::string, SEffect> mEffectDatas;
+	static std::unordered_map<std::wstring, SMonster> mMonsterStats;
+	static std::unordered_map<std::wstring, SWeapon> mWeaponDatas;
+	static std::unordered_map<std::wstring, SCharacter> mCharacterDatas;
+	static std::unordered_map<std::wstring, SEffect> mEffectDatas;
 	
-	static std::unordered_map<std::string, std::function<CEnemy* ()>> mMonsterCreator;
-	static std::unordered_map<std::string, std::function<CWeapon* ()>> mWeaponCreator;
+	static std::unordered_map<std::wstring, std::function<CEnemy* ()>> mMonsterCreator;
+	static std::unordered_map<std::wstring, std::function<CWeapon* ()>> mWeaponCreator;
 };
 

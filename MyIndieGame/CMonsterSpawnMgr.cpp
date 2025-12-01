@@ -21,9 +21,9 @@ void CMonsterSpawnMgr::LoadStageSpawnEvents(int tStageNum) {
 
 	for (auto& e : j["Events"]) {
 		event.time = e["Time"];
-		event.ID = e["M_ID"];
+		event.ID = CDataMgr::ToWString(e["M_ID"]);
 		event.count = e["Count"];
-		event.spawnType = e["SpawnType"];
+		event.spawnType = CDataMgr::ToWString(e["SpawnType"]);
 	}
 
 	mActiveStageSpawnEvents.push_back(event);
@@ -85,12 +85,12 @@ void CMonsterSpawnMgr::MonsterSpawnEvent(float tDeltaTime, GameObject* tTarget) 
 
 	for (mEventIdx; mEventIdx < mActiveStageSpawnEvents.size(); mEventIdx++) {
 		if (mActiveStageSpawnEvents[mEventIdx].time <= tDeltaTime) {
-			if (mActiveStageSpawnEvents[mEventIdx].spawnType == "Individual") {
+			if (mActiveStageSpawnEvents[mEventIdx].spawnType == L"Individual") {
 				for (int i = 0; i < mActiveStageSpawnEvents[mEventIdx].count; i++) {
 					MonsterSpawn(mActiveStageSpawnEvents[mEventIdx].ID, tTarget, GetRandomPosAroundObject(targetPos, 500.0f, 800.0f));
 				}
 			}
-			else if (mActiveStageSpawnEvents[mEventIdx].spawnType == "cluster") {
+			else if (mActiveStageSpawnEvents[mEventIdx].spawnType == L"cluster") {
 				SVector2D anchorPos = GetRandomPosAroundObject(targetPos, 500.0f, 800.0f);
 
 				for (int i = 0; i < mActiveStageSpawnEvents[mEventIdx].count; i++) {
@@ -105,7 +105,7 @@ void CMonsterSpawnMgr::MonsterSpawnEvent(float tDeltaTime, GameObject* tTarget) 
 	}
 }
 
-void CMonsterSpawnMgr::MonsterSpawn(const std::string tMonsterId, GameObject* tTarget, SVector2D tPosition) {
+void CMonsterSpawnMgr::MonsterSpawn(const std::wstring tMonsterId, GameObject* tTarget, SVector2D tPosition) {
 	CDataMgr::SMonster currentMonster;
 
 	auto it = CDataMgr::GetMonsterBasicStats().find(tMonsterId);
@@ -123,7 +123,7 @@ void CMonsterSpawnMgr::MonsterSpawn(const std::string tMonsterId, GameObject* tT
 
 	CEnemy* enemy = iter->second();
 
-	enemy->SetName(CDataMgr::ToWString(currentMonster.name));
+	enemy->SetName(currentMonster.name);
 
 	CEnemyScript* enemyScript = enemy->GetComponent<CEnemyScript>();
 	enemyScript->SetTarget(tTarget);
@@ -133,7 +133,7 @@ void CMonsterSpawnMgr::MonsterSpawn(const std::string tMonsterId, GameObject* tT
 
 	enemyScript->SetSpeed(currentMonster.speed);
 
-	CTexture* enemyImg = CResourceMgr::Find<CTexture>(CDataMgr::ToWString(currentMonster.name));
+	CTexture* enemyImg = CResourceMgr::Find<CTexture>(currentMonster.name);
 	enemyScript->SetBaseTexture(enemyImg);
 
 	CSpriteRenderer* sr = enemy->AddComponent<CSpriteRenderer>();

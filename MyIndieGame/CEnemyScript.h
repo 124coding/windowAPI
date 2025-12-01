@@ -124,7 +124,7 @@ private:
 
 	float mDistanceToPlayer = 9999.9f;
 
-	float mBlinkTime = 3.0f;
+	float mBlinkTime = 2.0f;
 	float mCurrentBlinkAlpha = 1.0f;
 	float mBlinkSpeed = (static_cast<float>(std::rand() % 20) / 10.0f) + 0.5f;
 	bool mBlinkFadeOut = true;

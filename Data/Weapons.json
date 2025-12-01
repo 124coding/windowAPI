@@ -2,8 +2,9 @@
     "MeleeWeapons":[
         {
             "W_ID":"MW_001",
-            "Name": "Dagger",
-            "Range": 200.0,
+            "Class" : "Precise",
+            "Name": "칼",
+            "IconTexture" : "DaggerIcon",
             "Speed": 1000.0,
             "SizeX": 0.8,
             "SizeY": 0.8,
@@ -12,34 +13,51 @@
             "Tiers":[
                 {
                     "Tier": 1,
-                    "Damage": 1.0,
-                    "Delay": 1.0
+                    "Damage": 6.0,
+                    "Delay": 1.01,
+                    "Range": 150.0,
+                    "CriticalDamage" : 2.5,
+                    "CriticalChance" : 20,
+                    "BasePrice" : 15
                 },
                 {
                     "Tier": 2,
-                    "Damage": 2.0,
-                    "Delay": 0.9
+                    "Damage": 9.0,
+                    "Delay": 0.93,
+                    "CriticalDamage" : 3,
+                    "CriticalChance" : 30,
+                    "Range": 150.0,
+                    "BasePrice" : 31
                 },
                 {
                     "Tier": 3,
-                    "Damage": 3.0,
-                    "Delay": 0.8
+                    "Damage": 12.0,
+                    "Delay": 0.86,
+                    "CriticalDamage" : 3.5,
+                    "CriticalChance" : 40,
+                    "Range": 150.0,
+                    "BasePrice" : 61
                 },
                 {
                     "Tier": 4,
-                    "Damage": 4.0,
-                    "Delay": 0.7
+                    "Damage": 20.0,
+                    "Delay": 0.78,
+                    "CriticalDamage" : 4,
+                    "CriticalChance" : 50,
+                    "Range": 150.0,
+                    "BasePrice" : 122
                 }
-            ]
-
+            ],
+            "SpecialEffect" : ""
         }
     ],
     "RangedWeapons":[
         {
             "W_ID":"RW_001",
-            "Name": "Pistol",
+            "Class" : "Gun",
+            "Name": "권총",
             "BulletName": "PlayerBullet",
-            "Range": 500.0,
+            "IconTexture" : "PistolIcon",
             "Speed": 700.0,
             "SizeX": 0.8,
             "SizeY": 0.8,
@@ -50,26 +68,42 @@
             "Tiers":[
                 {
                     "Tier": 1,
-                    "Damage": 1.0,
-                    "Delay": 1.0
+                    "Damage": 12.0,
+                    "Delay": 1.2,
+                    "Range": 400.0,
+                    "CriticalDamage" : 2,
+                    "CriticalChance" : 5,
+                    "BasePrice" : 10
                 },
                 {
                     "Tier": 2,
-                    "Damage": 2.0,
-                    "Delay": 0.9
+                    "Damage": 20.0,
+                    "Delay": 1.12,
+                    "CriticalDamage" : 2,
+                    "CriticalChance" : 10,
+                    "Range": 400.0,
+                    "BasePrice" : 22
                 },
                 {
                     "Tier": 3,
-                    "Damage": 3.0,
-                    "Delay": 0.8
+                    "Damage": 30.0,
+                    "Delay": 1.03,
+                    "CriticalDamage" : 2,
+                    "CriticalChance" : 15,
+                    "Range": 400.0,
+                    "BasePrice" : 45
                 },
                 {
                     "Tier": 4,
-                    "Damage": 4.0,
-                    "Delay": 0.7
+                    "Damage": 50.0,
+                    "Delay": 0.87,
+                    "CriticalDamage" : 2,
+                    "CriticalChance" : 20,
+                    "Range": 400.0,
+                    "BasePrice" : 91
                 }
-            ]
-
+            ],
+            "SpecialEffect" : ""
         }
     ]
 }

@@ -19,9 +19,9 @@ public:
 	struct SpawnEvent {
 		// 몬스터 생성 이벤트
 		float time = 0.0f;
-		std::string ID = "";
+		std::wstring ID = L"";
 		int count = 0;
-		std::string spawnType = "";
+		std::wstring spawnType = L"";
 	};
 
 	static void LoadStageSpawnEvents(int tStageNum);
@@ -38,7 +38,7 @@ public:
 
 	static void MonsterSpawnEvent(float tDeltaTime, GameObject* tTarget);
 
-	static void MonsterSpawn(const std::string tMonsterId, GameObject* tTarget, SVector2D tPosition);
+	static void MonsterSpawn(const std::wstring tMonsterId, GameObject* tTarget, SVector2D tPosition);
 
 	static void SetEventIdxZero();
 

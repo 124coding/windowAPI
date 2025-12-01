@@ -54,7 +54,6 @@ enum class eUIType {
 	// SettingScene
 	CharacterSelectUI,
 	WeaponSelectUI,
-	DifficultySelectUI,
 
 	// PlayScene
 

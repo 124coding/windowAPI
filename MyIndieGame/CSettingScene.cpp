@@ -4,8 +4,6 @@
 
 #include "CUIMgr.h"
 
-std::vector<CSettingScene::SEffect> CSettingScene::mApplicableEffects;
-
 void CSettingScene::OnCreate()
 {
 	GameObject* bg = Instantiate<GameObject>(eLayerType::BackGround);
@@ -47,5 +45,6 @@ void CSettingScene::OnExit()
 {
 	CScene::OnExit();
 
-	CUIMgr::Pop(eUIType::CharacterSelectUI);
+	CUIMgr::ClearUI(eUIType::CharacterSelectUI);
+	CUIMgr::ClearUI(eUIType::WeaponSelectUI);
 }

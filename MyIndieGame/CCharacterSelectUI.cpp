@@ -21,6 +21,9 @@
 void CCharacterSelectUI::OnCreate()
 {
 
+	SetWidth(windowWidth);
+	SetHeight(windowHeight);
+
 	CUIPanel* basePanel = new CUIPanel();
 
 	basePanel->SetPos(SVector2D());
@@ -41,7 +44,6 @@ void CCharacterSelectUI::OnCreate()
 	backButtonTex->SetFont(L"Noto Sans KR Medium");
 	backButtonTex->SetFontSize(24.0f);
 	backButtonTex->SetStrokeWidth(1.0f);
-	// backButtonTex->SetOutline(1.0f, Gdiplus::Color::Red);
 	backButtonTex->SetColor(Gdiplus::Color::White);
 	backButtonTex->SetPos(SVector2D());
 	backButtonTex->SetWidth(backButton->GetWidth());
@@ -60,7 +62,9 @@ void CCharacterSelectUI::OnCreate()
 		backButton->SetBackColor(Gdiplus::Color::Black);
 		});
 
-	backButton->SetEventClick([=]() { CSceneMgr::LoadScene(L"TitleScene"); });
+	backButton->SetEventClick([=]() { 
+		CSceneMgr::LoadScene(L"TitleScene");
+		});
 	basePanel->AddChild(backButton);
 
 	// 현재 창 텍스트
@@ -148,8 +152,14 @@ void CCharacterSelectUI::OnCreate()
 
 	descriptionPanel->AddChild(descriptionTex);
 
+	CUIPanel* charSelectPanel = new CUIPanel;
+
+	charSelectPanel->SetPos(SVector2D(basePanel->GetPos().mX, basePanel->GetPos().mY + basePanel->GetHeight() / 2));
+	charSelectPanel->SetWidth(basePanel->GetWidth());
+	charSelectPanel->SetHeight(basePanel->GetHeight() / 2);
+
 	int x = 30;
-	int y = windowHeight / 2 + 100;
+	int y = 100;
 	int i = 1;
 
 	// 캐릭터 데이터 가져와서 버튼 만들기
@@ -163,13 +173,13 @@ void CCharacterSelectUI::OnCreate()
 
 		CUIImg* uiImg = new CUIImg();
 		uiImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
-		uiImg->SetTexture(CResourceMgr::Find<CTexture>(CDataMgr::ToWString(character.iconTexture)));
+		uiImg->SetTexture(CResourceMgr::Find<CTexture>(character.iconTexture));
 		uiImg->SetWidth(charButton->GetWidth());
 		uiImg->SetHeight(charButton->GetHeight());
 
 		charButton->AddChild(uiImg);
 
-		basePanel->AddChild(charButton);
+		charSelectPanel->AddChild(charButton);
 
 		std::wstring finalDiscription = L"";
 
@@ -179,19 +189,19 @@ void CCharacterSelectUI::OnCreate()
 				continue;
 			}
 
-			std::wstring rawDesc = CDataMgr::ToWString(it->second.description);
+			std::wstring rawDesc = it->second.description;
 
 			int index = 0;
 
 			for (auto& arg : args) {
-				std::wstring value = CDataMgr::ToWString(arg.value);
+				std::wstring value = arg.value;
 
-				std::string colorStr = "#FFFFFF"; // 기본값
-				if (arg.color != "") {
+				std::wstring colorStr = L"#FFFFFF"; // 기본값
+				if (arg.color != L"") {
 					colorStr = arg.color;
 				}
 
-				if (colorStr == "#00FF00")
+				if (colorStr == L"#00FF00")
 				{
 					try {
 						int iVal = std::stoi(arg.value);
@@ -205,7 +215,7 @@ void CCharacterSelectUI::OnCreate()
 					}
 				}
 
-				std::wstring taggedStr = L"<c=" + CDataMgr::ToWString(colorStr) + L">" + value + L"</c>";
+				std::wstring taggedStr = L"<c=" + colorStr + L">" + value + L"</c>";
 
 				// 설명글 치환 ({0} -> 태그 문자열)
 				// L"\\{" + 숫자 + L"\\}" 형태의 정규식 패턴 생성
@@ -228,7 +238,7 @@ void CCharacterSelectUI::OnCreate()
 			charButton->SetBackColor(Gdiplus::Color::White);
 			charDescriptionImgPanel->SetBackColor(Gdiplus::Color::Gray);
 			charDescriptionImg->SetTexture(uiImg->GetTexture());
-			charNameTex->SetText(CDataMgr::ToWString(character.name));
+			charNameTex->SetText(character.name);
 			charTex->SetText(L"캐릭터");
 
 			descriptionTex->SetText(finalDiscription);
@@ -240,11 +250,7 @@ void CCharacterSelectUI::OnCreate()
 
 		charButton->SetEventClick([=]() {
 			CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
-			plSc->SetCharacter(CDataMgr::ToWString(character.name));
-			charDescriptionImgPanel->SetBackColor(Gdiplus::Color::Black);
-			charDescriptionImg->SetTexture(nullptr);
-			charNameTex->SetText(L"");
-			charTex->SetText(L"");
+			plSc->SetCharacter(character.ID);
 			CUIMgr::Pop(eUIType::CharacterSelectUI);
 			CUIMgr::Push(eUIType::WeaponSelectUI);
 			});
@@ -259,6 +265,7 @@ void CCharacterSelectUI::OnCreate()
 		}
 	}
 
+	basePanel->AddChild(charSelectPanel);
 	this->AddChild(basePanel);
 
 	CUIBase::OnCreate();

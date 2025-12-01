@@ -32,7 +32,6 @@ public:
 
 private:
 	static CPlayer* mPlayer;
-	CWeaponMgr* mPlayerWeapons;
 
 	GameObject* mBakedMap;
 

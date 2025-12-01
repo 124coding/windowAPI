@@ -26,23 +26,25 @@ void CUIBase::OnDestroy() {
 }
 
 void CUIBase::OnUpdate(float tDeltaTime) {
+	if (!this->mbEnabled) return;
+
 	GetFinalPos();
 
 	for (CUIBase* childUI : mChilds) {
-		if (!childUI->mbEnabled) continue;
 		childUI->OnUpdate(tDeltaTime);
 	}
 }
 
 void CUIBase::OnLateUpdate(float tDeltaTime) {
+	if (!this->mbEnabled) return;
+
 	for (CUIBase* childUI : mChilds) {
-		if (!childUI->mbEnabled) continue;
 		childUI->OnLateUpdate(tDeltaTime);
 	}
 }
 
 void CUIBase::Render(HDC tHDC) {
-
+	if (!this->mbEnabled) return;
 	if (mWidth <= 0 || mHeight <= 0) return;
 
 	Gdiplus::Graphics graphics(tHDC);
@@ -73,7 +75,6 @@ void CUIBase::Render(HDC tHDC) {
 	}
 
 	for (CUIBase* childUI : mChilds) {
-		if (!childUI->mbEnabled) continue;
 
 		if (mbUseClipping) {
 			if (IsOutsideRect(childUI)) {
@@ -93,6 +94,7 @@ void CUIBase::UIClear()
 {
 	for (CUIBase* childUI : mChilds) {
 		childUI->UIClear();
+		SAFE_DELETE(childUI);
 	}
 }
 

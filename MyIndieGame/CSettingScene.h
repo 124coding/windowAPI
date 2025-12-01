@@ -13,17 +13,6 @@ public:
 		Difficulty
 	};
 
-	struct SEffectArg {
-		std::wstring value; 
-		std::wstring color;
-	};
-
-	struct SEffect {
-		std::wstring id;
-		std::vector<SEffectArg> args;
-		std::wstring description;
-	};
-
 	CSettingScene() {}
 	virtual ~CSettingScene() {}
 
@@ -38,7 +27,5 @@ public:
 
 private:
 	eSelect mCurSelect = eSelect::Character;
-
-	static std::vector<SEffect> mApplicableEffects;
 };
 

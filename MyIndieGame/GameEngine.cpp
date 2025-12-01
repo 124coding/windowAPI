@@ -141,9 +141,11 @@ void GameEngine::LoadResources()
 	CResourceMgr::Load<CTexture>(L"RangerIcon", L"../resources/Items/Character/Ranger/ranger_icon.png");
 
 	//Weapon
-	CResourceMgr::Load<CTexture>(L"Dagger", L"../resources/Weapons/Dagger/dagger.png");
+	CResourceMgr::Load<CTexture>(L"칼", L"../resources/Weapons/Dagger/dagger.png");
+	CResourceMgr::Load<CTexture>(L"DaggerIcon", L"../resources/Weapons/Dagger/dagger_icon.png");
 
-	CResourceMgr::Load<CTexture>(L"Pistol", L"../resources/Weapons/Pistol/pistol.png");
+	CResourceMgr::Load<CTexture>(L"권총", L"../resources/Weapons/Pistol/pistol.png");
+	CResourceMgr::Load<CTexture>(L"PistolIcon", L"../resources/Weapons/Pistol/pistol_icon.png");
 	CResourceMgr::Load<CTexture>(L"PlayerBullet", L"../resources/Weapons/bullet_0001.png");
 
 	// UI

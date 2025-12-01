@@ -71,8 +71,6 @@ void CPlayScene::OnCreate()
 	// mPlayer->AddComponent<CRigidbody>();
 	// mPlayer->AddComponent<CAudioListner>();
 
-	mPlayerWeapons = mPlayer->AddComponent<CWeaponMgr>();
-
 	CCircleCollider2D* cPlCollider = mPlayer->AddComponent<CCircleCollider2D>();
 	cPlCollider->SetSize(SVector2D(0.40f, 0.40f));
 	cPlCollider->SetOffset(SVector2D(0.0f, -35.0f));
@@ -103,6 +101,7 @@ void CPlayScene::OnCreate()
 	plSr->SetTexture(plImg);
 	plSr->GetTexture()->CreateHBitmapFromGdiPlus(false);
 
+	mPlayer->AddComponent<CWeaponMgr>();
 
 
 	/*CWeapon* weapon = Instantiate<CWeapon>(eLayerType::MeleeWeapon, SVector2D(plTr->GetPos().mX - 10.0f, plTr->GetPos().mY));
@@ -169,26 +168,6 @@ void CPlayScene::OnCreate()
 	EnemyAnim->PlayAnimation(L"MushroomIdle");*/
 
 	CScene::OnCreate();
-
-	// CAT
-	/*CCat* Cat = Instantiate<CCat>(tEngine, eLayerType::Animal, SVector2D(200.0f, 200.0f));
-	Cat->AddComponent<CCatScript>();
-
-	CTexture* catImg = CResourceMgr::Find<CTexture>(L"Cat");
-
-	CAnimator* catAnim = Cat->AddComponent<CAnimator>();
-
-	catAnim->CreateAnimation(L"UpWalk", catImg, SVector2D(0.0f, 0.0f), SVector2D(32.0f, 32.0f), SVector2D(), 4, 0.5f);
-	catAnim->CreateAnimation(L"RightWalk", catImg, SVector2D(0.0f, 32.0f), SVector2D(32.0f, 32.0f), SVector2D(), 4, 0.5f);
-	catAnim->CreateAnimation(L"DownWalk", catImg, SVector2D(0.0f, 64.0f), SVector2D(32.0f, 32.0f), SVector2D(), 4, 0.5f);
-	catAnim->CreateAnimation(L"LeftWalk", catImg, SVector2D(0.0f, 96.0f), SVector2D(32.0f, 32.0f), SVector2D(), 4, 0.5f);
-	catAnim->CreateAnimation(L"SitDown", catImg, SVector2D(0.0f, 128.0f), SVector2D(32.0f, 32.0f), SVector2D(), 4, 0.5f);
-	catAnim->CreateAnimation(L"Grooming", catImg, SVector2D(0.0f, 160.0f), SVector2D(32.0f, 32.0f), SVector2D(), 4, 0.5f);
-	catAnim->CreateAnimation(L"LayDown", plImg, SVector2D(0.0f, 192.0f), SVector2D(32.0f, 32.0f), SVector2D(), 4, 0.5f);
-
-	catAnim->PlayAnimation(L"SitDown", false);
-
-	Cat->GetComponent<CTransform>()->SetScale(SVector2D(1.5f, 1.5f));*/
 }
 
 void CPlayScene::OnDestroy()
@@ -224,14 +203,53 @@ void CPlayScene::OnEnter()
 	CCollisionMgr::CollisionLayerCheck(eLayerType::MeleeWeapon, eLayerType::Enemy, true);
 	CCollisionMgr::CollisionLayerCheck(eLayerType::Bullet, eLayerType::Enemy, true);
 
+	mPlayer->GetComponent<CWeaponMgr>()->WeaponsPosition();
+
+	CSpriteRenderer* plSr = mPlayer->GetComponent<CSpriteRenderer>();
+	CPlayerScript* plSc = mPlayer->GetComponent<CPlayerScript>();
+
+	CTexture* plImg = plSr->GetTexture();
+
+	if (plSc->GetClothTexture() != nullptr) {
+		plImg->BakedTex(0.0f, 0.0f, plImg->GetWidth(), plImg->GetHeight(), plSc->GetClothTexture()->GetImage());
+	}
+	if (plSc->GetMouthTexture() != nullptr) {
+		plImg->BakedTex(0.0f, 0.0f, plImg->GetWidth(), plImg->GetHeight(), plSc->GetMouthTexture()->GetImage());
+	}
+	if (plSc->GetEyesTexture() != nullptr) {
+		plImg->BakedTex(0.0f, 0.0f, plImg->GetWidth(), plImg->GetHeight(), plSc->GetEyesTexture()->GetImage());
+	}
+	if (plSc->GetHairTexture() != nullptr) {
+		plImg->BakedTex(0.0f, 0.0f, plImg->GetWidth(), plImg->GetHeight(), plSc->GetHairTexture()->GetImage());
+	}
+
+	if (plSr != nullptr && plSr->GetTexture() != nullptr) {
+		plSr->GetTexture()->CreateHBitmapFromGdiPlus(false);
+	}
+
+	CWeaponMgr* plWeaponMgr = mPlayer->GetComponent<CWeaponMgr>();
+
+	std::wstring weaponID = plSc->GetStartingWeaponID();
+
+	if (plSc->GetStartingWeaponID() != L"") {
+		if (plSc->GetStartingWeaponID()[0] == L'M') {
+			plWeaponMgr->PlusWeapon(eLayerType::MeleeWeapon, weaponID, 1);
+		}
+		else if (plSc->GetStartingWeaponID()[0] == L'R') {
+			plWeaponMgr->PlusWeapon(eLayerType::RangedWeapon, weaponID, 1);
+		}
+
+		plSc->SetStartingWeaponID(L"");
+	}
+
+	plWeaponMgr->WeaponsPosition();
+
 	/*CUIMgr::Push(eUIType::HPBar);
 	dynamic_cast<CUIHPBar*>(CUIMgr::FindUI(eUIType::HPBar))->SetPlayer(mPlayer);
 
 	CUIMgr::Push(eUIType::EXPBar);
 	dynamic_cast<CUIEXPBar*>(CUIMgr::FindUI(eUIType::EXPBar))->SetPlayer(mPlayer);*/
 
-	mPlayerWeapons->PlusWeapon(eLayerType::MeleeWeapon, "MW_001", 1);
-	mPlayerWeapons->WeaponsPosition();
 	CMonsterSpawnMgr::LoadStageSpawnEvents(mStageNum);
 
 	mainCamera->SetTarget(mPlayer);

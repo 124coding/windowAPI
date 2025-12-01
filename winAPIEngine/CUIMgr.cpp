@@ -4,31 +4,26 @@
 #include "CInputMgr.h"
 
 #include "CCharacterSelectUI.h"
+#include "CWeaponSelectUI.h"
 
 #include "winMacro.h"
 
 std::unordered_map<eUIType, CUIBase*> CUIMgr::mUIs = {};
 std::vector<CUIBase*> CUIMgr::mActiveUIs = {};
 std::queue<eUIType> CUIMgr::mRequestUIQueue = {};
+std::queue<eUIType> CUIMgr::mPopQueue = {};
+std::queue<eUIType> CUIMgr::mDeleteQueue = {};
 CUIBase* CUIMgr::mPrevHoverUI = nullptr;
 
 void CUIMgr::OnCreate() {
-	CCharacterSelectUI* chSelectUI = new CCharacterSelectUI();
-	mUIs.insert(std::make_pair(eUIType::CharacterSelectUI, chSelectUI));
-	chSelectUI->SetWidth(windowWidth);
-	chSelectUI->SetHeight(windowHeight);
-
-	chSelectUI->OnCreate();
 }
 
 void CUIMgr::OnLoad(eUIType tType) {
-	auto it = mUIs.find(tType);
+	CUIBase* pUI = GetUI(tType);
 
-	if (it == mUIs.end()) {
-		return;
+	if (pUI != nullptr) {
+		OnComplete(pUI);
 	}
-
-	OnComplete(it->second);
 }
 
 void CUIMgr::OnDestroy() {
@@ -46,6 +41,8 @@ void CUIMgr::OnUpdate(float tDeltaTime) {
 	}
 
 	CheckMouseHover();
+	ProcessPop();
+	ProcessDelete();
 
 	if (!mRequestUIQueue.empty()) {
 		eUIType requestUI = mRequestUIQueue.front();
@@ -83,32 +80,111 @@ void CUIMgr::OnComplete(CUIBase* tAddUI) {
 	mActiveUIs.push_back(tAddUI);
 }
 
+CUIBase* CUIMgr::GetUI(eUIType tType)
+{
+	auto it = mUIs.find(tType);
+	if (it != mUIs.end()) {
+		return it->second;
+	}
+
+	CUIBase* newUI = CreateUI(tType);
+
+	if (newUI != nullptr) {
+		newUI->OnCreate();
+		mUIs.insert({ tType, newUI });
+	}
+
+	return newUI;
+}
+
+CUIBase* CUIMgr::CreateUI(eUIType tType)
+{
+	switch (tType) {
+	case eUIType::CharacterSelectUI:
+		return new CCharacterSelectUI;
+	case eUIType::WeaponSelectUI:
+		return new CWeaponSelectUI;
+	}
+	return nullptr;
+}
+
+void CUIMgr::ClearUI(eUIType tType)
+{
+	mDeleteQueue.push(tType);
+}
+
+void CUIMgr::ProcessPop()
+{
+	while (!mPopQueue.empty()) {
+		eUIType type = mPopQueue.front();
+		mPopQueue.pop();
+
+		auto it = std::find_if(mActiveUIs.begin(), mActiveUIs.end(),
+			[type](CUIBase* ui) { return ui->GetType() == type; });
+
+		if (it != mActiveUIs.end()) {
+			CUIBase* targetUI = *it;
+
+			targetUI->InActive();
+
+			if (targetUI->IsFullScreen()) {
+				for (CUIBase* ui : mActiveUIs) {
+					if (ui != targetUI) ui->Active();
+				}
+			}
+
+			if (mPrevHoverUI != nullptr) {
+				mPrevHoverUI = nullptr;
+			}
+
+			mActiveUIs.erase(it);
+		}
+	}
+}
+
+void CUIMgr::ProcessDelete()
+{
+	while (!mDeleteQueue.empty()) {
+		eUIType type = mDeleteQueue.front();
+		mDeleteQueue.pop();
+
+		auto itActive = std::find_if(mActiveUIs.begin(), mActiveUIs.end(),
+			[type](CUIBase* ui) { return ui->GetType() == type; });
+
+		if (itActive != mActiveUIs.end()) {
+			Pop(type);
+			CUIBase* targetUI = *itActive;
+
+			targetUI->InActive();
+
+			if (targetUI->IsFullScreen()) {
+				for (CUIBase* ui : mActiveUIs) {
+					if (ui != targetUI) ui->Active();
+				}
+			}
+
+			mActiveUIs.erase(itActive);
+		}
+
+		auto it = mUIs.find(type);
+		if (it != mUIs.end()) {
+			if (mPrevHoverUI != nullptr)
+			{
+				mPrevHoverUI = nullptr;
+			}
+			it->second->UIClear();
+			SAFE_DELETE(it->second);
+			mUIs.erase(it);
+		}
+	}
+}
+
 void CUIMgr::Push(eUIType tType) {
 	mRequestUIQueue.push(tType);
 }
 
 void CUIMgr::Pop(eUIType tType) {
-	auto it = std::find_if(mActiveUIs.begin(), mActiveUIs.end(),
-		[tType](CUIBase* ui) { return ui->GetType() == tType; });
-
-	if (it != mActiveUIs.end()) {
-		CUIBase* targetUI = *it;
-
-		targetUI->UIClear();
-		targetUI->InActive();
-
-		if (targetUI->IsFullScreen()) {
-			for (CUIBase* ui : mActiveUIs) {
-				if (ui != targetUI) ui->Active();
-			}
-		}
-
-		if (mPrevHoverUI == targetUI) {
-			mPrevHoverUI = nullptr;
-		}
-
-		mActiveUIs.erase(it);
-	}
+	mPopQueue.push(tType);
 }
 
 void CUIMgr::CheckMouseHover()

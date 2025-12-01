@@ -278,6 +278,14 @@ public:
 		return this->mCanCollideEnemy;
 	}
 
+	void SetStartingWeaponID(const std::wstring& tID) {
+		this->mStartingWeaponID = tID;
+	}
+
+	std::wstring GetStartingWeaponID() {
+		return this->mStartingWeaponID;
+	}
+
 public:
 	void SetBaseTexture(CTexture* tTexture) {
 		this->mBaseTexture = tTexture;
@@ -351,6 +359,8 @@ private:
 
 	float mGracePeriod = 0.2f;
 	bool mCanCollideEnemy = true;
+
+	std::wstring mStartingWeaponID;
 
 	CTexture* mBaseTexture = nullptr;
 	CTexture* mEyesTexture = nullptr;

@@ -19,7 +19,7 @@ public:
 	void OnLateUpdate(float tDeltaTime) override;
 	void Render(HDC tHDC) override;
 
-	bool PlusWeapon(eLayerType tType, std::string tWeaponId, int tWeaponTier);
+	bool PlusWeapon(eLayerType tType, std::wstring tWeaponId, int tWeaponTier);
 
 	void WeaponsPosition();
 

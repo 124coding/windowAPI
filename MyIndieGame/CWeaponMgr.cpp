@@ -30,7 +30,7 @@ void CWeaponMgr::Render(HDC tHDC)
 {
 }
 
-bool CWeaponMgr::PlusWeapon(eLayerType tType, std::string tWeaponId, int tWeaponTier) {
+bool CWeaponMgr::PlusWeapon(eLayerType tType, std::wstring tWeaponId, int tWeaponTier) {
 
 	auto weaponIter = CDataMgr::GetWeaponDatas().find(tWeaponId);
 	if (weaponIter == CDataMgr::GetWeaponDatas().end()) {
@@ -39,7 +39,7 @@ bool CWeaponMgr::PlusWeapon(eLayerType tType, std::string tWeaponId, int tWeapon
 
 	CDataMgr::SWeapon currentWeapon = weaponIter->second;
 
-	auto iter = CDataMgr::GetWeaponCreator().find(currentWeapon.name);
+	auto iter = CDataMgr::GetWeaponCreator().find(currentWeapon.ID);
 	if (iter == CDataMgr::GetWeaponCreator().end()) {
 		return false;
 	}
@@ -49,7 +49,7 @@ bool CWeaponMgr::PlusWeapon(eLayerType tType, std::string tWeaponId, int tWeapon
 	CTransform* wpTr = weapon->GetComponent<CTransform>();
 	CSpriteRenderer* wpSr = weapon->AddComponent<CSpriteRenderer>();
 
-	CTexture* wpImg = CResourceMgr::Find<CTexture>(CDataMgr::ToWString(currentWeapon.name));
+	CTexture* wpImg = CResourceMgr::Find<CTexture>(currentWeapon.name);
 	weapon->SetSize(SVector2D(currentWeapon.sizeX, currentWeapon.sizeY));
 	wpSr->SetTexture(wpImg);
 	weapon->SetAnchorPoint((wpImg->GetWidth() / 2) - 20.0f, wpImg->GetHeight() / 2);
@@ -63,7 +63,7 @@ bool CWeaponMgr::PlusWeapon(eLayerType tType, std::string tWeaponId, int tWeapon
 	wpSc->SetDamage(currentWeapon.tier[tWeaponTier - 1].damage);
 	wpSc->SetDelay(currentWeapon.tier[tWeaponTier - 1].delay);
 
-	wpSc->SetRange(currentWeapon.range);
+	wpSc->SetRange(currentWeapon.tier[tWeaponTier - 1].range);
 	wpSc->SetSpeed(currentWeapon.speed);
 
 	if (tType == eLayerType::MeleeWeapon) {
@@ -72,7 +72,7 @@ bool CWeaponMgr::PlusWeapon(eLayerType tType, std::string tWeaponId, int tWeapon
 	}
 	else if (tType == eLayerType::RangedWeapon) {
 		CRangedWeaponScript* wpSc = weapon->GetComponent<CRangedWeaponScript>();
-		wpSc->SetBullet(SVector2D(currentWeapon.bulletSizeX, currentWeapon.bulletSizeY), SVector2D(currentWeapon.collisionSizeX, currentWeapon.collisionSizeY), CDataMgr::ToWString(currentWeapon.bulletName));
+		wpSc->SetBullet(SVector2D(currentWeapon.bulletSizeX, currentWeapon.bulletSizeY), SVector2D(currentWeapon.collisionSizeX, currentWeapon.collisionSizeY), currentWeapon.bulletName);
 	}
 
 	if (mWeapons.size() < mWeaponCount) {
