@@ -16,6 +16,8 @@
 
 #include "CPlayerScript.h"
 
+#include "Effect.h"
+
 #include <regex>
 
 void CWeaponSelectUI::OnCreate()
@@ -29,7 +31,7 @@ void CWeaponSelectUI::OnCreate()
 	basePanel->SetWidth(this->GetWidth());
 	basePanel->SetHeight(this->GetHeight());
 
-	auto it = CDataMgr::GetCharacterDatas().find(CPlayScene::GetPlayer()->GetComponent<CPlayerScript>()->GetCharacter());
+	auto it = CDataMgr::GetCharacterDatas().find(CPlayScene::GetPlayer()->GetComponent<CPlayerScript>()->GetStartingCharacterID());
 	if (it == CDataMgr::GetCharacterDatas().end()) {
 		return;
 	}
@@ -357,7 +359,7 @@ void CWeaponSelectUI::OnCreate()
 		descriptionStat(L"범위", data.range);
 
 
-		// 특별한 능력에서 따로 설명 가져오는거 필요
+		/* 특별한 능력에서 따로 설명 가져오는거 필요 */
 
 		weaponButton->SetEventHover([=]() {
 			weaponButton->SetBackColor(Gdiplus::Color::White);
@@ -385,6 +387,18 @@ void CWeaponSelectUI::OnCreate()
 			plSc->SetHairTexture(CResourceMgr::Find<CTexture>(curChar.hairTexture));
 			plSc->SetStartingWeaponID(curWeapon.ID);
 
+			for (auto& [ID, args] : curChar.effects) {
+				int value = 0;
+				for (auto& arg : args) {
+					value = std::stoi(arg.value);
+					if (value != 0) {
+						break;
+					}
+				}
+
+				ApplyEffect(ID, value);
+			}
+
 			CSceneMgr::LoadScene(L"PlayScene");
 			});
 
@@ -403,6 +417,7 @@ void CWeaponSelectUI::OnCreate()
 	this->AddChild(basePanel);
 
 	CUIBase::OnCreate();
+	this->OnUpdate(0.0f);
 }
 
 void CWeaponSelectUI::Active()

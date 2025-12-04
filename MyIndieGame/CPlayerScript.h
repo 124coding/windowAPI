@@ -68,12 +68,12 @@ private:
 	// void GiveWater();
 
 public:
-	void SetCharacter(std::wstring tCharacter) {
-		this->mCharacter = tCharacter;
+	void SetStartingCharacterID(std::wstring tCharacterID) {
+		this->mStartingCharacterID = tCharacterID;
 	}
 
-	std::wstring GetCharacter() {
-		return this->mCharacter;
+	std::wstring GetStartingCharacterID() {
+		return this->mStartingCharacterID;
 	}
 
 	void SetHP(int tHP) {
@@ -332,8 +332,6 @@ private:
 	CAnimator* mAnimator;
 	CInputMgr* mInputMgr = CInputMgr::GetInst();
 
-	std::wstring mCharacter = L"";
-
 	int mHP;
 	int mMaxHP;
 	int mHPRegeneration;
@@ -360,7 +358,8 @@ private:
 	float mGracePeriod = 0.2f;
 	bool mCanCollideEnemy = true;
 
-	std::wstring mStartingWeaponID;
+	std::wstring mStartingWeaponID = L"";
+	std::wstring mStartingCharacterID = L"";
 
 	CTexture* mBaseTexture = nullptr;
 	CTexture* mEyesTexture = nullptr;

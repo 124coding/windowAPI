@@ -16,6 +16,7 @@
 #include "CCollisionMgr.h"
 #include "CUIMgr.h"
 #include "CMonsterSpawnMgr.h"
+#include "CEffectMgr.h"
 
 #include "CBoxCollider2D.h"
 #include "CCircleCollider2D.h"
@@ -50,6 +51,8 @@ void CPlayScene::OnCreate()
 	mainCamera = cameraComp;
 
 	DontDestroyOnLoad(camera);
+
+	CEffectMgr::OnCreate();
 
 
 	/*GameObject* mapOutLine = Instantiate<GameObject>(eLayerType::None);

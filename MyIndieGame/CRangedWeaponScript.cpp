@@ -98,6 +98,7 @@ void CRangedWeaponScript::SetBullet(SVector2D tSize, SVector2D tColliderSize, co
 
 	CBulletScript* blSc = mBullet->GetComponent<CBulletScript>();
 
+	blSc->SetWeapon(this->GetOwner());
 	blSc->SetDamage(GetDamage());
 
 	CCircleCollider2D* cBlCollider = mBullet->AddComponent<CCircleCollider2D>();

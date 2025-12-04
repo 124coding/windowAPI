@@ -3,6 +3,7 @@
 #include "CPlayer.h"
 #include "CEnemy.h"
 
+#include "CPlayScene.h"
 #include "CSceneMgr.h"
 
 #include "CTransform.h"
@@ -107,4 +108,29 @@ void CWeaponScript::CalculatePosNextToTarget()
 	CTransform* plTr = mTarget->GetComponent<CTransform>();
 
 	tr->SetPos(ObjectCenterPos(mTarget) + mOffset);
+}
+
+CWeaponScript::SDamageInfo CWeaponScript::ApplyDamageModifiers(float _baseDamage)
+{
+	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
+
+	float damagePercent = plSc->GetDamagePercent();
+
+	float finalDamage = _baseDamage * (1.0f + (damagePercent / 100.0f));
+
+	int rand = std::rand() % 100;
+
+	bool isCritical = false;
+
+	if (rand <= mCriticalChance) {
+		finalDamage *= mCriticalDamage;
+		isCritical = true;
+	}
+
+	if (finalDamage < 1.0f)
+	{
+		finalDamage = 1.0f;
+	}
+
+	return SDamageInfo{ finalDamage, isCritical };
 }

@@ -62,8 +62,10 @@ bool CWeaponMgr::PlusWeapon(eLayerType tType, std::wstring tWeaponId, int tWeapo
 
 	wpSc->SetDamage(currentWeapon.tier[tWeaponTier - 1].damage);
 	wpSc->SetDelay(currentWeapon.tier[tWeaponTier - 1].delay);
-
 	wpSc->SetRange(currentWeapon.tier[tWeaponTier - 1].range);
+	wpSc->SetCriticalDamage(currentWeapon.tier[tWeaponTier - 1].critDamagePer);
+	wpSc->SetCriticalChance(currentWeapon.tier[tWeaponTier - 1].critChancePer);
+	wpSc->SetBasePrice(currentWeapon.tier[tWeaponTier - 1].basePrice);
 	wpSc->SetSpeed(currentWeapon.speed);
 
 	if (tType == eLayerType::MeleeWeapon) {

@@ -14,6 +14,7 @@
 #include "CUIMgr.h"
 #include "CMonsterSpawnMgr.h"
 #include "CDataMgr.h"
+#include "CEffectMgr.h"
 
 #include "CPlayScene.h"
 #include "CTitleScene.h"
@@ -56,6 +57,7 @@ void GameEngine::OnDestroy() {
 	DestroyResources();
 	DestroyScenes();
 	CUIMgr::OnDestroy();
+	CEffectMgr::OnDestroy();
 	CCollisionMgr::OnDestroy();
 	CMonsterSpawnMgr::OnDestroy();
 	CDataMgr::OnDestroy();
@@ -63,6 +65,7 @@ void GameEngine::OnDestroy() {
 
 void GameEngine::OnUpdate(float tDeltaTime) {
 	CUIMgr::OnUpdate(tDeltaTime);
+	CEffectMgr::OnUpdate(tDeltaTime);
 	CCollisionMgr::OnUpdate(tDeltaTime);
 	CSceneMgr::OnUpdate(tDeltaTime);
 	RemoveDeadObjects();
@@ -72,6 +75,7 @@ void GameEngine::OnUpdate(float tDeltaTime) {
 
 void GameEngine::OnLateUpdate(float tDeltaTime) {
 	CUIMgr::OnLateUpdate(tDeltaTime);
+	CEffectMgr::OnLateUpdate(tDeltaTime);
 	CCollisionMgr::OnLateUpdate(tDeltaTime);
 	CSceneMgr::OnLateUpdate(tDeltaTime);
 }
@@ -80,6 +84,7 @@ void GameEngine::Render() {
 	this->Clear(0.1f, 0.0f, 0.1f);
 	CSceneMgr::Render(mBackBuffer->GetDCMem());
 	CCollisionMgr::Render(mBackBuffer->GetDCMem());
+	CEffectMgr::Render(mBackBuffer->GetDCMem());
 	CUIMgr::Render(mBackBuffer->GetDCMem());
 
 	this->Present();
@@ -94,7 +99,7 @@ void GameEngine::LoadScenes()
 	CSceneMgr::CreateScene <CToolScene>(L"ToolScene");
 	
 
-	CSceneMgr::LoadScene(L"SettingScene");
+	CSceneMgr::LoadScene(L"TitleScene");
 }
 
 void GameEngine::LoadResources()

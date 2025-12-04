@@ -5,6 +5,7 @@
 
 #include "CCharacterSelectUI.h"
 #include "CWeaponSelectUI.h"
+#include "CTitleSceneUI.h"
 
 #include "winMacro.h"
 
@@ -104,7 +105,10 @@ CUIBase* CUIMgr::CreateUI(eUIType tType)
 		return new CCharacterSelectUI;
 	case eUIType::WeaponSelectUI:
 		return new CWeaponSelectUI;
+	case eUIType::TitleSceneUI:
+		return new CTitleSceneUI;
 	}
+
 	return nullptr;
 }
 

@@ -112,6 +112,33 @@
     <Filter Include="UI\WeaponSelectUI">
       <UniqueIdentifier>{67328b62-9262-49bd-93e0-31cd103ae93a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI\TitleSceneUI">
+      <UniqueIdentifier>{c2cae5d2-15f1-479f-a73d-048f02301b8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Weapon\MeleeWeapon\Dagger">
+      <UniqueIdentifier>{047103e4-08bb-4be7-992f-bd4d180c4558}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Weapon\RangedWeapon\Pistol">
+      <UniqueIdentifier>{4d6e2d9d-f7ec-417a-8e9d-b05952d7f1b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Effect">
+      <UniqueIdentifier>{699654f3-f0b1-4f2a-92ae-ffd7afbdf978}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Effect\CDamageText">
+      <UniqueIdentifier>{6c17a2d7-cb23-4f3e-b999-29dfb852a2f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers\Effect">
+      <UniqueIdentifier>{44bf1ada-3d39-4812-84d9-2b29690b2574}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Effect\CAnimatedEffect">
+      <UniqueIdentifier>{443d7bdc-1cf1-4399-a93d-52550c00eb47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Effect\CAnimatedEffect\CEnemyHit">
+      <UniqueIdentifier>{729835f9-6e9f-4e80-a6b3-42ff1b4999f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Effect\CAnimatedEffect\CEnemyDead">
+      <UniqueIdentifier>{a3c58b3c-3b8a-42b9-8f8e-ec105a062e39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -218,6 +245,33 @@
     </ClCompile>
     <ClCompile Include="CWeaponSelectUI.cpp">
       <Filter>UI\WeaponSelectUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CTitleSceneUI.cpp">
+      <Filter>UI\TitleSceneUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CDaggerScript.cpp">
+      <Filter>Scripts\Weapon\MeleeWeapon\Dagger</Filter>
+    </ClCompile>
+    <ClCompile Include="CPistolScript.cpp">
+      <Filter>Scripts\Weapon\RangedWeapon\Pistol</Filter>
+    </ClCompile>
+    <ClCompile Include="CEffect.cpp">
+      <Filter>Objects\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="CEffectMgr.cpp">
+      <Filter>Helpers\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="CDamageText.cpp">
+      <Filter>Objects\Effect\CDamageText</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyDead.cpp">
+      <Filter>Objects\Effect\CAnimatedEffect\CEnemyDead</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyHit.cpp">
+      <Filter>Objects\Effect\CAnimatedEffect\CEnemyHit</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimatedEffect.cpp">
+      <Filter>Objects\Effect\CAnimatedEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -328,6 +382,33 @@
     </ClInclude>
     <ClInclude Include="CWeaponSelectUI.h">
       <Filter>UI\WeaponSelectUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CTitleSceneUI.h">
+      <Filter>UI\TitleSceneUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CDaggerScript.h">
+      <Filter>Scripts\Weapon\MeleeWeapon\Dagger</Filter>
+    </ClInclude>
+    <ClInclude Include="CPistolScript.h">
+      <Filter>Scripts\Weapon\RangedWeapon\Pistol</Filter>
+    </ClInclude>
+    <ClInclude Include="CEffect.h">
+      <Filter>Objects\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="CEffectMgr.h">
+      <Filter>Helpers\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="CDamageText.h">
+      <Filter>Objects\Effect\CDamageText</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyDead.h">
+      <Filter>Objects\Effect\CAnimatedEffect\CEnemyDead</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyHit.h">
+      <Filter>Objects\Effect\CAnimatedEffect\CEnemyHit</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimatedEffect.h">
+      <Filter>Objects\Effect\CAnimatedEffect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -53,6 +53,10 @@ public:
 		this->mAnimator = tAnimator;
 	}
 
+	void SetAlphaMultiplier(float tAlpha) {
+		this->mAlphaMultiplier = tAlpha;
+	}
+
 private:
 	CAnimator* mAnimator;
 	CTexture* mTexture;
@@ -61,6 +65,8 @@ private:
 	int mIndex;
 	float mTime;
 	bool mbComplete;
+
+	float mAlphaMultiplier = 1.0f;
 
 	bool mFlipImage = false;
 };

@@ -2,6 +2,8 @@
 
 #include "CScript.h"
 
+#include "CWeaponScript.h"
+
 class CBulletScript : public CScript
 {
 public:
@@ -23,14 +25,17 @@ public:
 	void OnCollisionExit(float tDeltaTime, CCollider* tOther) override;
 
 public:
+	void SetWeapon(GameObject* tWeapon) {
+		this->mWeapon = tWeapon;
+	}
+
 	void SetDamage(float tDamage) {
 		this->mDamage = tDamage;
 	}
 
-	float GetDamage() {
-		return this->mDamage;
-	}
+	CWeaponScript::SDamageInfo GetFinalDamage();
 private:
+	GameObject* mWeapon;
 	float mDamage;
 };
 

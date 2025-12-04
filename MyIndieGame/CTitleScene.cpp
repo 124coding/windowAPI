@@ -211,12 +211,12 @@ void CTitleScene::OnEnter()
 {
 	CScene::OnEnter();
 	CSceneMgr::SetDontDestroyOnLoad(false);
-	// CUIMgr::Push(eUIType::Button);
+	CUIMgr::Push(eUIType::TitleSceneUI);
 }
 
 void CTitleScene::OnExit()
 {
-	// CUIMgr::Pop(eUIType::Button);
+	CUIMgr::Pop(eUIType::TitleSceneUI);
 	CScene::OnExit();
 	CSceneMgr::SetDontDestroyOnLoad(true);
 }

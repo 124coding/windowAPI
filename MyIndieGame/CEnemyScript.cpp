@@ -1,5 +1,7 @@
 #include "CEnemyScript.h"
 
+#include "CEffectMgr.h"
+
 #include "CTransform.h"
 #include "CAnimator.h"
 #include "CCollider.h"
@@ -216,16 +218,26 @@ void CEnemyScript::ButtDamageToPlayer(GameObject* tPlayer)
 
 void CEnemyScript::DamageByWeapon(GameObject* tWeapon)
 {
-	float damage;
+	CWeaponScript::SDamageInfo dmgInfo = { 0.0f, false };
 
 	if (tWeapon->GetLayerType() == eLayerType::MeleeWeapon) {
 		CWeaponScript* wpSc = tWeapon->GetComponent<CWeaponScript>();
-		damage = wpSc->GetDamage();
+		dmgInfo = wpSc->GetFinalDamage();
 	}
 	else if (tWeapon->GetLayerType() == eLayerType::Bullet) {
 		CBulletScript* blSc = tWeapon->GetComponent<CBulletScript>();
-		damage = blSc->GetDamage();
+		dmgInfo = blSc->GetFinalDamage();
 	}
 
-	DecreaseHP(damage);
+	DecreaseHP(dmgInfo.damage);
+
+	Gdiplus::Color textColor = Gdiplus::Color(255, 255, 255);
+	if (dmgInfo.isCritical) {
+		textColor = Gdiplus::Color(255, 255, 0);
+	}
+
+	SVector2D textPos = GetOwner()->GetComponent<CTransform>()->GetPos();
+	textPos.mY -= 50.0f; // 머리 위로 살짝 올리기
+
+	CEffectMgr::ShowDamageText(textPos, (int)dmgInfo.damage, textColor);
 }

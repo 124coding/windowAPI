@@ -38,7 +38,6 @@ void CSettingScene::OnEnter()
 	CScene::OnEnter();
 
 	CUIMgr::Push(eUIType::CharacterSelectUI);
-	mCurSelect = eSelect::Character;
 }
 
 void CSettingScene::OnExit()
@@ -47,4 +46,5 @@ void CSettingScene::OnExit()
 
 	CUIMgr::ClearUI(eUIType::CharacterSelectUI);
 	CUIMgr::ClearUI(eUIType::WeaponSelectUI);
+	CUIMgr::ClearUI(eUIType::TitleSceneUI);
 }

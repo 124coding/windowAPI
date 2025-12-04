@@ -3,8 +3,6 @@
 #include "GameObject.h"
 #include "Object.h"
 
-#include "CTilemapRenderer.h"
-
 void CBulletScript::OnCreate()
 {
 }
@@ -43,3 +41,9 @@ void CBulletScript::OnCollisionStay(float tDeltaTime, CCollider* tOther)
 void CBulletScript::OnCollisionExit(float tDeltaTime, CCollider* tOther)
 {
 }
+
+CWeaponScript::SDamageInfo CBulletScript::GetFinalDamage() {
+	CWeaponScript* wpSc = mWeapon->GetComponent<CWeaponScript>();
+	return wpSc->ApplyDamageModifiers(this->mDamage);
+}
+

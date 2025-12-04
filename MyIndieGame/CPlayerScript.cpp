@@ -11,7 +11,8 @@
 
 void CPlayerScript::OnCreate()
 {
-	
+	SetBobbingSpeed(1.3f);
+	SetSquashMagnitude(0.1f);
 }
 
 void CPlayerScript::OnDestroy()
@@ -20,6 +21,7 @@ void CPlayerScript::OnDestroy()
 
 void CPlayerScript::OnUpdate(float tDeltaTime)
 {
+	mTotalTime += tDeltaTime;
 
 	if (mAnimator == nullptr) {
 		mAnimator = GetOwner()->GetComponent<CAnimator>();
@@ -34,6 +36,8 @@ void CPlayerScript::OnUpdate(float tDeltaTime)
 	default:
 		break;
 	}
+
+	Bounce();
 
 	if (!mCanCollideEnemy) {
 		mGracePeriod -= tDeltaTime;

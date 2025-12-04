@@ -250,7 +250,7 @@ void CCharacterSelectUI::OnCreate()
 
 		charButton->SetEventClick([=]() {
 			CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
-			plSc->SetCharacter(character.ID);
+			plSc->SetStartingCharacterID(character.ID);
 			CUIMgr::Pop(eUIType::CharacterSelectUI);
 			CUIMgr::Push(eUIType::WeaponSelectUI);
 			});
@@ -269,6 +269,7 @@ void CCharacterSelectUI::OnCreate()
 	this->AddChild(basePanel);
 
 	CUIBase::OnCreate();
+	this->OnUpdate(0.0f);
 }
 
 void CCharacterSelectUI::Active()

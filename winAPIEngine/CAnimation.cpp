@@ -41,6 +41,18 @@ void CAnimation::Render(HDC tHDC) {
     CTexture::eTextureType type = mTexture->GetTextureType();
     SSprite sprite = mAnimationSheet[mIndex];
 
+    float finalWidth = sprite.size.mX * scale.mX;
+    float finalHeight = sprite.size.mY * scale.mY;
+
+    float drawX = pos.mX - (gameObj->GetAnchorPoint().mX * finalWidth) + sprite.offset.mX;
+    float drawY = pos.mY - (gameObj->GetAnchorPoint().mY * finalHeight) + sprite.offset.mY;
+
+    if (drawX + finalWidth < 0 || drawX > windowWidth ||
+        drawY + finalHeight < 0 || drawY > windowHeight)
+    {
+        return;
+    }
+
     HDC imgHDC = mTexture->GetDCMem();
 
     if (mTexture->GetbAlpha()) {
@@ -48,10 +60,10 @@ void CAnimation::Render(HDC tHDC) {
         func.BlendOp = AC_SRC_OVER;
         func.BlendFlags = 0;
         func.AlphaFormat = AC_SRC_ALPHA;
-        func.SourceConstantAlpha = 255;
 
+        func.SourceConstantAlpha = (BYTE)(mAlphaMultiplier * 255.0f);
         AlphaBlend(tHDC,
-            pos.mX - ((sprite.size.mX / 2.0f) + sprite.offset.mX) * scale.mX, pos.mY - (sprite.size.mY + sprite.offset.mY) * scale.mY,
+            drawX, drawY,
             sprite.size.mX * scale.mX, sprite.size.mY * scale.mY,
             imgHDC,
             sprite.leftTop.mX, sprite.leftTop.mY,
@@ -60,7 +72,7 @@ void CAnimation::Render(HDC tHDC) {
     }
     else {
         TransparentBlt(tHDC,
-            pos.mX - ((sprite.size.mX / 2.0f) + sprite.offset.mX) * scale.mX, pos.mY - (sprite.size.mY + sprite.offset.mY) * scale.mY,
+            drawX, drawY,
             sprite.size.mX * scale.mX, sprite.size.mY * scale.mY,
             imgHDC,
             sprite.leftTop.mX, sprite.leftTop.mY,

@@ -7,12 +7,6 @@ class CSettingScene : public CScene
 public:
 	friend class CCharacterSelectUI;
 
-	enum class eSelect{
-		Character,
-		Weapon,
-		Difficulty
-	};
-
 	CSettingScene() {}
 	virtual ~CSettingScene() {}
 
@@ -26,6 +20,5 @@ public:
 	void OnExit() override;
 
 private:
-	eSelect mCurSelect = eSelect::Character;
 };
 

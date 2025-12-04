@@ -10,6 +10,11 @@ class CEnemy;
 class CWeaponScript : public CScript
 {
 public:
+	struct SDamageInfo {
+		float damage;
+		bool isCritical;
+	};
+
 	enum class eState {
 		Idle,
 		Attack,
@@ -50,8 +55,12 @@ public:
 		this->mDamage = tDamage;
 	}
 
-	float GetDamage() {
+	virtual float GetDamage() {
 		return this->mDamage;
+	}
+
+	virtual SDamageInfo GetFinalDamage() {
+		return ApplyDamageModifiers(this->mDamage);
 	}
 
 
@@ -72,6 +81,29 @@ public:
 		return this->mRange;
 	}
 
+	void SetCriticalDamage(float tCritDamage) {
+		this->mCriticalDamage = tCritDamage;
+	}
+
+	float GetCriticalDamage() {
+		return this->mCriticalDamage;
+	}
+
+	void SetCriticalChance(float tChance) {
+		this->mCriticalChance = tChance;
+	}
+
+	float GetCriticalChance() {
+		return this->mCriticalChance;
+	}
+
+	void SetBasePrice(float tPrice) {
+		this->mBasePrice = tPrice;
+	}
+
+	float GetBasePrice() {
+		return this->mBasePrice;
+	}
 
 	void SetSpeed(float tSpeed) {
 		this->mSpeed = tSpeed;
@@ -81,8 +113,16 @@ public:
 		return this->mSpeed;
 	}
 
+	void SetTier(int tTier) {
+		this->mTier = tTier;
+	}
+
 	void PlusTier() {
 		this->mTier++;
+	}
+
+	int GetTier() {
+		return this->mTier;
 	}
 
 	void SetOffset(SVector2D tOffset) {
@@ -96,6 +136,8 @@ public:
 	SVector2D GetClosedEnemyPos() {
 		return this->mClosedEnemyPos;
 	}
+	
+	SDamageInfo ApplyDamageModifiers(float _baseDamage);
 
 protected:
 	eState mState;
@@ -106,6 +148,9 @@ private:
 	float mDamage;
 	float mDelay; // 공격 간 딜레이 즉, 공격 속도
 	float mRange;
+	float mCriticalDamage;
+	float mCriticalChance;
+	float mBasePrice;
 	float mSpeed; // 근접 무기가 날아가는 속도 겸 원거리 무기의 총알의 속도
 	int mTier = 1;
 
