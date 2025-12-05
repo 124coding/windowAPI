@@ -21,7 +21,8 @@ void CEffectMgr::OnCreate() {
 }
 
 void CEffectMgr::OnDestroy() {
-
+	mEffects.clear();
+	mDamageTexts.clear();
 }
 
 void CEffectMgr::OnUpdate(float tDeltaTime) {

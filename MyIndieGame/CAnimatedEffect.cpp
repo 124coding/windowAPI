@@ -1,13 +1,10 @@
 #include "CAnimatedEffect.h"
 
-#include "CAnimator.h"
 #include "CRenderer.h"
 
 void CAnimatedEffect::OnCreate()
 {
 	CEffect::OnCreate();
-
-	this->AddComponent<CAnimator>();
 }
 
 void CAnimatedEffect::OnDestroy()

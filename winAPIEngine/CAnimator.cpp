@@ -93,6 +93,11 @@ void CAnimator::CreateAnimationByFolder(const std::wstring& tName,
 		std::wstring fullName = p.path();
 
 		CTexture* texture = CResourceMgr::Load<CTexture>(fileName, fullName);
+
+		if (texture->GetTextureType() == CTexture::eTextureType::Png) {
+			texture->CreateHBitmapFromGdiPlus(true);
+		}
+
 		images.push_back(texture);
 		fileCount++;
 	}

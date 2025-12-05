@@ -2,12 +2,14 @@
 
 #include "CEffect.h"
 
-class Animation;
+#include "CAnimator.h"
 
 class CAnimatedEffect : public CEffect
 {
 public:
-	CAnimatedEffect() {}
+	CAnimatedEffect() {
+		AddComponent<CAnimator>();
+	}
 	virtual ~CAnimatedEffect() {}
 
 	virtual void OnCreate() override;
