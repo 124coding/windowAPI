@@ -2,7 +2,7 @@
 
 #include "CEffect.h"
 
-class Animator;
+class Animation;
 
 class CAnimatedEffect : public CEffect
 {
@@ -16,7 +16,8 @@ public:
 	virtual void OnLateUpdate(float tDeltaTime) override;
 	virtual void Render(HDC tHDC) override;
 
-private:
+	virtual void Reset(SVector2D tPos);
 
+protected:
 };
 

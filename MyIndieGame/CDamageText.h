@@ -17,11 +17,11 @@ public:
 	virtual void OnLateUpdate(float tDeltaTime) override;
 	virtual void Render(HDC tHDC) override;
 
+	virtual void Reset(SVector2D tPos) override;
 	void Reset(SVector2D tPos, int tDamage, Gdiplus::Color tColor);
 
 private:
 	std::wstring mText = L"";
-	SVector2D mStartPos;
 
 	Gdiplus::Color mColor;
 	float mGravity = 800.0f;

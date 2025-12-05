@@ -58,6 +58,10 @@ public:
 		return this->mActiveAnimation->IsComplete();
 	};
 
+	CAnimation* GetActiveAnimation() {
+		return this->mActiveAnimation;
+	}
+
 private:
 	std::map<std::wstring, CAnimation*> mAnimations;
 	CAnimation* mActiveAnimation;

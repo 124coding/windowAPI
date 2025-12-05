@@ -231,12 +231,16 @@ void CEnemyScript::DamageByWeapon(GameObject* tWeapon)
 
 	DecreaseHP(dmgInfo.damage);
 
+	SVector2D pos = GetOwner()->GetComponent<CTransform>()->GetPos();
+
+	CEffectMgr::PlayEffect(L"EnemyHit", pos);
+
 	Gdiplus::Color textColor = Gdiplus::Color(255, 255, 255);
 	if (dmgInfo.isCritical) {
 		textColor = Gdiplus::Color(255, 255, 0);
 	}
 
-	SVector2D textPos = GetOwner()->GetComponent<CTransform>()->GetPos();
+	SVector2D textPos = pos;
 	textPos.mY -= 50.0f; // 머리 위로 살짝 올리기
 
 	CEffectMgr::ShowDamageText(textPos, (int)dmgInfo.damage, textColor);

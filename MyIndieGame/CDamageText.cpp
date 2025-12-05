@@ -86,6 +86,18 @@ void CDamageText::Render(HDC tHDC) {
     graphics.ResetTransform();
 }
 
+void CDamageText::Reset(SVector2D tPos)
+{
+    CTransform* tr = this->GetComponent<CTransform>();
+    tr->SetVelocity(SVector2D(0.0f, -200.0f));
+    tr->SetPos(mainCamera->CalculatePosition(tPos));
+    mStartPos = tPos;
+
+    tr->SetScale(SVector2D(1.0f, 1.0f));
+    mCurTime = 0.0f;
+    SetState(true);
+}
+
 void CDamageText::Reset(SVector2D tPos, int tDamage, Gdiplus::Color tColor)
 {
     CTransform* tr = this->GetComponent<CTransform>();

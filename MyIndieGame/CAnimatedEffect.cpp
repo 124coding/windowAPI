@@ -1,8 +1,13 @@
 #include "CAnimatedEffect.h"
 
+#include "CAnimator.h"
+#include "CRenderer.h"
+
 void CAnimatedEffect::OnCreate()
 {
 	CEffect::OnCreate();
+
+	this->AddComponent<CAnimator>();
 }
 
 void CAnimatedEffect::OnDestroy()
@@ -23,4 +28,16 @@ void CAnimatedEffect::OnLateUpdate(float tDeltaTime)
 void CAnimatedEffect::Render(HDC tHDC)
 {
 	CEffect::Render(tHDC);
+}
+
+void CAnimatedEffect::Reset(SVector2D tPos)
+{
+	mCurTime = 0.0f;
+	CTransform* tr = this->GetComponent<CTransform>();
+	tr->SetPos(mainCamera->CalculatePosition(tPos));
+	mStartPos = tPos;
+
+	tr->SetScale(SVector2D(1.0f, 1.0f));
+
+	SetState(true);
 }
