@@ -21,10 +21,12 @@ CTexture* CTexture::Create(const std::wstring& tName, UINT tWidth, UINT tHeight)
 
 	HDC hDC = mainEngine->GetmhDC();
 	HWND hWND = mainEngine->GetmhWnd();
+
+	HDC mainDC = mainEngine->GetmhDC();
 	
 	image->mhRightBitmap = nullptr;
 	image->mhLeftBitmap = nullptr;
-	image->mhDCMem = nullptr;
+	image->mhDCMem = CreateCompatibleDC(mainDC);
 	image->mhOldBitmap = nullptr;
 
 	image->mType = eTextureType::Png;

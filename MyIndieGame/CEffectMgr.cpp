@@ -37,7 +37,7 @@ void CEffectMgr::Render(HDC tHDC) {
 
 }
 
-void CEffectMgr::PlayEffect(std::wstring tName, SVector2D tPos)
+void CEffectMgr::PlayEffect(std::wstring tName, SVector2D tPos, GameObject* tObj)
 {
 	std::vector<CEffect*>& pool = mEffects[tName];
 
@@ -46,6 +46,7 @@ void CEffectMgr::PlayEffect(std::wstring tName, SVector2D tPos)
 		if (!effect->IsActive()) {
 			target = effect;
 			target->Reset(tPos);
+			target->SetOwner(tObj);
 			break;
 		}
 	}
@@ -55,6 +56,7 @@ void CEffectMgr::PlayEffect(std::wstring tName, SVector2D tPos)
 			CEnemyHit* newEnemyHit = Instantiate<CEnemyHit>(eLayerType::Effect);
 
 			newEnemyHit->Reset(tPos);
+			newEnemyHit->SetOwner(tObj);
 
 			mEffects[tName].push_back(newEnemyHit);
 		}

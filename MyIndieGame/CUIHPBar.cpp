@@ -1,5 +1,6 @@
 #include "CUIHPBar.h"
 
+#include "CUIText.h"
 #include "CTexture.h"
 #include "CResourceMgr.h"
 
@@ -7,81 +8,65 @@
 
 void CUIHPBar::OnCreate()
 {
+    mHPFill = CResourceMgr::Find<CTexture>(L"UILifeFill");
+    mHPFill->CreateHBitmapFromGdiPlus(false);
+    mHPFill->SetWidth(this->GetWidth());
+    mHPFill->SetHeight(this->GetHeight());
+
+    mHpInfo = new CUIText();
+    mHpInfo->SetWidth(this->GetWidth());
+    mHpInfo->SetHeight(this->GetHeight());
+    mHpInfo->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentCenter);
+
+    this->AddChild(mHpInfo);
+
+
+
+    CUIHUD::OnCreate();
 }
 
 void CUIHPBar::Active()
 {
+    CUIHUD::Active();
 }
 
 void CUIHPBar::InActive()
 {
+    CUIHUD::InActive();
 }
 
 void CUIHPBar::OnDestroy()
 {
+    CUIHUD::OnDestroy();
 }
 
 void CUIHPBar::OnUpdate(float tDeltaTime)
 {
+    mHpInfo->SetText(std::to_wstring(mPlayer->GetComponent<CPlayerScript>()->GetHP()) + L" / " + std::to_wstring(mPlayer->GetComponent<CPlayerScript>()->GetMaxHP()));
+    CUIHUD::OnUpdate(tDeltaTime);
 }
 
 void CUIHPBar::OnLateUpdate(float tDeltaTime)
 {
+    CUIHUD::OnLateUpdate(tDeltaTime);
 }
 
 void CUIHPBar::Render(HDC tHDC)
 {
-    HPEN thOldPen = NULL;
-    HBRUSH thOldBrush = NULL;
+    float ratio = (float)mPlayer->GetComponent<CPlayerScript>()->GetHP() / mPlayer->GetComponent<CPlayerScript>()->GetMaxHP();
 
-    HPEN thPen = NULL;
-    HBRUSH thBrush = NULL;
+    TransparentBlt(tHDC,
+        mFinalPos.mX, mFinalPos.mY,
+        mHPFill->GetWidth() * ratio, mHPFill->GetHeight(),
+        mHPFill->GetDCMem(),
+        0, 0,
+        mHPFill->GetWidth() * ratio, mHPFill->GetHeight(),
+        RGB(255, 0, 255));
 
-    thPen = (HPEN)GetStockObject(NULL_PEN);
-    thBrush = CreateSolidBrush(RGB(124, 124, 124));
-
-    thOldBrush = (HBRUSH)SelectObject(tHDC, thBrush);
-    thOldPen = (HPEN)SelectObject(tHDC, thPen);
-
-    Rectangle(tHDC, 20, 20, 320, 60);
-
-    SelectObject(tHDC, thOldBrush);
-    DeleteObject(thBrush);
-
-    thBrush = CreateSolidBrush(RGB(255, 0, 0));
-    thOldBrush = (HBRUSH)SelectObject(tHDC, thBrush);
-
-    int right = (int)(295 * ((float)mPlayer->GetComponent<CPlayerScript>()->GetHP() / mPlayer->GetComponent<CPlayerScript>()->GetMaxHP())) + 23;
-
-    Rectangle(tHDC, 23, 20, right, 60);
-
-    SelectObject(tHDC, thPen);
-    DeleteObject(thPen);
-
-    thPen = CreatePen(PS_SOLID, 5, RGB(0, 0, 0));
-    thOldPen = (HPEN)SelectObject(tHDC, thPen);
-
-    SelectObject(tHDC, thOldBrush);
-    DeleteObject(thBrush);
-
-    thBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
-    thOldBrush = (HBRUSH)SelectObject(tHDC, thBrush);
-
-    Rectangle(tHDC, 20, 20, 320, 60);
-
-    SelectObject(tHDC, thOldBrush);
-    SelectObject(tHDC, thPen);
-
-    DeleteObject(thPen);
-    DeleteObject(thBrush);
-
-    SetBkMode(tHDC, TRANSPARENT);
-
-    TCHAR szHPText[32];
-    _stprintf_s(szHPText, 32, TEXT("%d   /   %d"), mPlayer->GetComponent<CPlayerScript>()->GetHP(), mPlayer->GetComponent<CPlayerScript>()->GetMaxHP());
-    TextOut(tHDC, 140, 30, szHPText, _tcslen(szHPText));
+    CUIHUD::Render(tHDC);
 }
 
 void CUIHPBar::UIClear()
 {
+    CUIHUD::UIClear();
 }

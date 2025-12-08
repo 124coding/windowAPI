@@ -17,7 +17,7 @@ public:
 	static void OnLateUpdate(float tDeltaTime);
 	static void Render(HDC tHDC);
 
-	static void PlayEffect(std::wstring tParticleName, SVector2D tPos);
+	static void PlayEffect(std::wstring tParticleName, SVector2D tPos, GameObject* tObj = nullptr);
 	static void ShowDamageText(SVector2D tPos, int tDamage, Gdiplus::Color tColor);
 
 private:

@@ -94,10 +94,6 @@ void CAnimator::CreateAnimationByFolder(const std::wstring& tName,
 
 		CTexture* texture = CResourceMgr::Load<CTexture>(fileName, fullName);
 
-		if (texture->GetTextureType() == CTexture::eTextureType::Png) {
-			texture->CreateHBitmapFromGdiPlus(true);
-		}
-
 		images.push_back(texture);
 		fileCount++;
 	}
@@ -110,11 +106,22 @@ void CAnimator::CreateAnimationByFolder(const std::wstring& tName,
 	UINT imageWidth = images[0]->GetWidth();
 	UINT imageHeight = images[0]->GetHeight();
 
+	Gdiplus::Graphics g(spriteSheet->GetImage());
+	g.Clear(Gdiplus::Color(0, 0, 0, 0));
+
 	for (size_t i = 0; i < images.size(); i++) {
+		g.DrawImage(images[i]->GetImage(),
+			Gdiplus::Rect(i * imageWidth, 0, imageWidth, imageHeight),
+			0, 0, imageWidth, imageHeight, Gdiplus::UnitPixel);
+	}
+
+	spriteSheet->CreateHBitmapFromGdiPlus(false);
+
+	/*for (size_t i = 0; i < images.size(); i++) {
 		BitBlt(spriteSheet->GetDCMem(), i * imageWidth, 0,
 			imageWidth, imageHeight,
 			images[i]->GetDCMem(), 0, 0, SRCCOPY);
-	}
+	}*/
 
 	CreateAnimation(tName, spriteSheet, SVector2D(), SVector2D(imageWidth, imageHeight), tOffset, fileCount, tDuration);
 }

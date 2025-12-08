@@ -2,6 +2,9 @@
 
 #include "CUIHUD.h"
 
+class CTexture;
+class CUIText;
+
 class CUIHPBar : public CUIHUD
 {
 public:
@@ -23,4 +26,6 @@ public:
 
 private:
 	GameObject* mPlayer;
+	CTexture* mHPFill;
+	CUIText* mHpInfo;
 };

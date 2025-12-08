@@ -134,10 +134,10 @@
       <UniqueIdentifier>{443d7bdc-1cf1-4399-a93d-52550c00eb47}</UniqueIdentifier>
     </Filter>
     <Filter Include="Objects\Effect\CAnimatedEffect\CEnemyHit">
-      <UniqueIdentifier>{729835f9-6e9f-4e80-a6b3-42ff1b4999f8}</UniqueIdentifier>
+      <UniqueIdentifier>{b933aae4-97ea-489d-9683-af47b5523e60}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Objects\Effect\CAnimatedEffect\CEnemyDead">
-      <UniqueIdentifier>{a3c58b3c-3b8a-42b9-8f8e-ec105a062e39}</UniqueIdentifier>
+    <Filter Include="UI\PlaySceneUI">
+      <UniqueIdentifier>{aec0f230-ad42-479a-8cdd-37f6b9d90226}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -264,14 +264,14 @@
     <ClCompile Include="CDamageText.cpp">
       <Filter>Objects\Effect\CDamageText</Filter>
     </ClCompile>
-    <ClCompile Include="CEnemyDead.cpp">
-      <Filter>Objects\Effect\CAnimatedEffect\CEnemyDead</Filter>
+    <ClCompile Include="CAnimatedEffect.cpp">
+      <Filter>Objects\Effect\CAnimatedEffect</Filter>
     </ClCompile>
     <ClCompile Include="CEnemyHit.cpp">
       <Filter>Objects\Effect\CAnimatedEffect\CEnemyHit</Filter>
     </ClCompile>
-    <ClCompile Include="CAnimatedEffect.cpp">
-      <Filter>Objects\Effect\CAnimatedEffect</Filter>
+    <ClCompile Include="CPlaySceneUI.cpp">
+      <Filter>UI\PlaySceneUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -401,14 +401,14 @@
     <ClInclude Include="CDamageText.h">
       <Filter>Objects\Effect\CDamageText</Filter>
     </ClInclude>
-    <ClInclude Include="CEnemyDead.h">
-      <Filter>Objects\Effect\CAnimatedEffect\CEnemyDead</Filter>
+    <ClInclude Include="CAnimatedEffect.h">
+      <Filter>Objects\Effect\CAnimatedEffect</Filter>
     </ClInclude>
     <ClInclude Include="CEnemyHit.h">
       <Filter>Objects\Effect\CAnimatedEffect\CEnemyHit</Filter>
     </ClInclude>
-    <ClInclude Include="CAnimatedEffect.h">
-      <Filter>Objects\Effect\CAnimatedEffect</Filter>
+    <ClInclude Include="CPlaySceneUI.h">
+      <Filter>UI\PlaySceneUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

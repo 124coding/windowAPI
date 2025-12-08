@@ -233,7 +233,7 @@ void CEnemyScript::DamageByWeapon(GameObject* tWeapon)
 
 	SVector2D pos = GetOwner()->GetComponent<CTransform>()->GetPos();
 
-	CEffectMgr::PlayEffect(L"EnemyHit", pos);
+	CEffectMgr::PlayEffect(L"EnemyHit", pos, GetOwner());
 
 	Gdiplus::Color textColor = Gdiplus::Color(255, 255, 255);
 	if (dmgInfo.isCritical) {

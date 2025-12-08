@@ -29,6 +29,8 @@ void CAnimation::Render(HDC tHDC) {
     if (mTexture == nullptr) return;
 
     GameObject* gameObj = mAnimator->GetOwner();
+    
+
     CTransform* tr = gameObj->GetComponent<CTransform>();
     SVector2D pos = tr->GetPos();
     float rot = tr->GetRot();
@@ -41,14 +43,14 @@ void CAnimation::Render(HDC tHDC) {
     CTexture::eTextureType type = mTexture->GetTextureType();
     SSprite sprite = mAnimationSheet[mIndex];
 
-    float finalWidth = sprite.size.mX * scale.mX;
-    float finalHeight = sprite.size.mY * scale.mY;
+    float finalWidthSize = gameObj->GetSize().mX * scale.mX;
+    float finalHeightSize = gameObj->GetSize().mY * scale.mY;
 
-    float drawX = pos.mX - (gameObj->GetAnchorPoint().mX * finalWidth) + sprite.offset.mX;
-    float drawY = pos.mY - (gameObj->GetAnchorPoint().mY * finalHeight) + sprite.offset.mY;
+    float drawX = pos.mX - (gameObj->GetAnchorPoint().mX * finalWidthSize) + sprite.offset.mX;
+    float drawY = pos.mY - (gameObj->GetAnchorPoint().mY * finalHeightSize) + sprite.offset.mY;
 
-    if (drawX + finalWidth < 0 || drawX > windowWidth ||
-        drawY + finalHeight < 0 || drawY > windowHeight)
+    if (drawX + sprite.size.mX < 0 || drawX > windowWidth ||
+        drawY + sprite.size.mY < 0 || drawY > windowHeight)
     {
         return;
     }
@@ -64,7 +66,7 @@ void CAnimation::Render(HDC tHDC) {
         func.SourceConstantAlpha = (BYTE)(mAlphaMultiplier * 255.0f);
         AlphaBlend(tHDC,
             drawX, drawY,
-            sprite.size.mX * scale.mX, sprite.size.mY * scale.mY,
+            sprite.size.mX * finalWidthSize, sprite.size.mY * finalHeightSize,
             imgHDC,
             sprite.leftTop.mX, sprite.leftTop.mY,
             sprite.size.mX, sprite.size.mY,
@@ -73,7 +75,7 @@ void CAnimation::Render(HDC tHDC) {
     else {
         TransparentBlt(tHDC,
             drawX, drawY,
-            sprite.size.mX * scale.mX, sprite.size.mY * scale.mY,
+            sprite.size.mX * finalWidthSize, sprite.size.mY * finalHeightSize,
             imgHDC,
             sprite.leftTop.mX, sprite.leftTop.mY,
             sprite.size.mX, sprite.size.mY,

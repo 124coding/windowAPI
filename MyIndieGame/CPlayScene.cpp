@@ -246,7 +246,7 @@ void CPlayScene::OnEnter()
 	}
 
 	plWeaponMgr->WeaponsPosition();
-
+	CUIMgr::Push(eUIType::PlaySceneUI);
 	/*CUIMgr::Push(eUIType::HPBar);
 	dynamic_cast<CUIHPBar*>(CUIMgr::FindUI(eUIType::HPBar))->SetPlayer(mPlayer);
 
@@ -265,6 +265,7 @@ void CPlayScene::OnExit()
 	CScene::OnExit();
 
 	CMonsterSpawnMgr::DestroyStageSpawnEvents();
+	CUIMgr::Pop(eUIType::PlaySceneUI);
 	//CUIMgr::Pop(eUIType::HPBar);
 	//CUIMgr::Pop(eUIType::EXPBar);
 }

@@ -18,10 +18,23 @@ public:
 	virtual void Render(HDC tHDC) override;
 
 	virtual void Reset(SVector2D tPos) = 0;
-protected:
-	SVector2D mStartPos;
+
+	void SetOwner(GameObject* tObj) {
+		this->mOwnerObj = tObj;
+	}
+
+	GameObject* GetOwner() {
+		if (mOwnerObj == nullptr || mOwnerObj->IsDead()) {
+			return nullptr;
+		}
+
+		return this->mOwnerObj;
+	}
 
 protected:
+	GameObject* mOwnerObj;
+	SVector2D mStartPos;
+
 	float mLifeTime = 0.0f;
 	float mCurTime = 0.0f;
 };

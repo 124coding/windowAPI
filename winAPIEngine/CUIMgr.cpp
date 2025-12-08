@@ -6,6 +6,7 @@
 #include "CCharacterSelectUI.h"
 #include "CWeaponSelectUI.h"
 #include "CTitleSceneUI.h"
+#include "CPlaySceneUI.h"
 
 #include "winMacro.h"
 
@@ -107,8 +108,9 @@ CUIBase* CUIMgr::CreateUI(eUIType tType)
 		return new CWeaponSelectUI;
 	case eUIType::TitleSceneUI:
 		return new CTitleSceneUI;
+	case eUIType::PlaySceneUI:
+		return new CPlaySceneUI;
 	}
-
 	return nullptr;
 }
 

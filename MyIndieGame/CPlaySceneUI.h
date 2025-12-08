@@ -1,15 +1,15 @@
 #pragma once
+#pragma once
 
-#include "CUIHUD.h"
+#include "CUIBase.h"
 
-class CTexture;
 class CUIText;
 
-class CUIEXPBar : public CUIHUD
+class CPlaySceneUI : public CUIBase
 {
 public:
-	CUIEXPBar() {}
-	virtual ~CUIEXPBar() {}
+	CPlaySceneUI() : CUIBase(eUIType::PlaySceneUI) {}
+	~CPlaySceneUI() {}
 
 	virtual void OnCreate() override;
 	virtual void Active() override;
@@ -20,12 +20,6 @@ public:
 	virtual void Render(HDC tHDC) override;
 	virtual void UIClear() override;
 
-	void SetPlayer(GameObject* tPlayer) {
-		this->mPlayer = tPlayer;
-	}
-
 private:
-	GameObject* mPlayer;
-	CTexture* mExpFill;
-	CUIText* mLevelInfo;
+	CUIText* mMoneyTex = nullptr;
 };

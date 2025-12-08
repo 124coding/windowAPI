@@ -22,10 +22,10 @@ enum class eLayerType {
 	Tile,
 	Enemy,
 	Player,
+	Effect,
 	Bullet,
 	MeleeWeapon,
 	RangedWeapon,
-	Effect,
 	Particle,
 	DamageText,
 	MAX = 16
@@ -58,6 +58,7 @@ enum class eUIType {
 	WeaponSelectUI,
 
 	// PlayScene
+	PlaySceneUI,
 
 	// Commonness
 	OptionUI,

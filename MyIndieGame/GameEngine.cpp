@@ -92,9 +92,9 @@ void GameEngine::Render() {
 
 void GameEngine::LoadScenes()
 {
+	CSceneMgr::CreateScene<CPlayScene>(L"PlayScene");
 	CSceneMgr::CreateScene<CTitleScene>(L"TitleScene");
 	CSceneMgr::CreateScene<CSettingScene>(L"SettingScene");
-	CSceneMgr::CreateScene<CPlayScene>(L"PlayScene");
 	// CSceneMgr::CreateScene<CEndingScene>(L"EndingScene");
 	CSceneMgr::CreateScene <CToolScene>(L"ToolScene");
 	
@@ -125,8 +125,13 @@ void GameEngine::LoadResources()
 	LoadMonster(L"BabyAlien", L"../resources/Enemy/BabyAlien/baby_alien.png");
 
 	CResourceMgr::Load<CTexture>(L"EnemyBullet", L"../resources/Enemy/EnemyBullet/enemy_bullet.png");
-	CTexture* enemyBirth = CResourceMgr::Load<CTexture>(L"EnemyBirth", L"../resources/Enemy/EnemyBirth/entity_birth.png");
-	CTexture::ApplyOtherColorToWantedAreas(30, 255, 255.0f, 0.0f, 0.0f, enemyBirth->GetImage());
+	CTexture* entityBirth = CResourceMgr::Load<CTexture>(L"EntityBirth", L"../resources/Enemy/EnemyBirth/entity_birth.png");
+
+	CTexture* enemyBirth = CTexture::Create(L"EnemyBirth", entityBirth->GetBaseWidth(), entityBirth->GetBaseHeight());
+	CTexture* treeBirth = CTexture::Create(L"TreeBirth", entityBirth->GetBaseWidth(), entityBirth->GetBaseHeight());
+
+	CTexture::ApplyOtherColorToWantedAreas(30, 255, 255.0f, 0.0f, 0.0f, enemyBirth->GetImage(), entityBirth->GetImage());
+	CTexture::ApplyOtherColorToWantedAreas(30, 255, 0.0f, 255.0f, 0.0f, treeBirth->GetImage(), entityBirth->GetImage());
 
 	// Player
 	CResourceMgr::Load<CTexture>(L"PlayerBase", L"../resources/Player/potato.png")->BakedTex(25.0f, 80.0f, 100.0f, 50.0f, CResourceMgr::Load<CTexture>(L"PlayerLegs", L"../resources/Player/legs.png")->GetImage());
@@ -145,6 +150,9 @@ void GameEngine::LoadResources()
 	CResourceMgr::Load<CTexture>(L"RangerMouth", L"../resources/Items/Character/Ranger/ranger_mouth.png");
 	CResourceMgr::Load<CTexture>(L"RangerIcon", L"../resources/Items/Character/Ranger/ranger_icon.png");
 
+	// material
+	CResourceMgr::Load<CTexture>(L"HarvestIcon", L"../resources/Items/materials/harvesting_icon.png");
+
 	//Weapon
 	CResourceMgr::Load<CTexture>(L"칼", L"../resources/Weapons/Dagger/dagger.png");
 	CResourceMgr::Load<CTexture>(L"DaggerIcon", L"../resources/Weapons/Dagger/dagger_icon.png");
@@ -154,6 +162,16 @@ void GameEngine::LoadResources()
 	CResourceMgr::Load<CTexture>(L"PlayerBullet", L"../resources/Weapons/bullet_0001.png");
 
 	// UI
+	CResourceMgr::Load<CTexture>(L"UIHUDBg", L"../resources/UI/uiHUD/ui_lifebar_bg.png");
+	CTexture* hudFill = CResourceMgr::Load<CTexture>(L"UIHUDFill", L"../resources/UI/uiHUD/ui_lifebar_fill.png");
+	CResourceMgr::Load<CTexture>(L"UIHUDFrame", L"../resources/UI/uiHUD/ui_lifebar_frame.png");
+
+	CTexture* lifeFill = CTexture::Create(L"UILifeFill", hudFill->GetWidth(), hudFill->GetHeight());
+	CTexture* EXPFill = CTexture::Create(L"UIEXPFill", hudFill->GetWidth(), hudFill->GetHeight());
+
+	CTexture::ApplyOtherColorToWantedAreas(0, 255, 255.0f, 0.0f, 0.0f, lifeFill->GetImage(), hudFill->GetImage());
+	CTexture::ApplyOtherColorToWantedAreas(0, 255, 0.0f, 255.0f, 0.0f, EXPFill->GetImage(), hudFill->GetImage());
+
 
 	// TileMap
 	CResourceMgr::Load<CTexture>(L"Tile1", L"../resources/Maps/Tiles/tiles_1.png");

@@ -2,7 +2,6 @@
 
 #include "CUIBase.h"
 
-class CUIImg;
 
 class CTitleSceneUI : public CUIBase
 {

@@ -42,7 +42,7 @@ public:
 
 		mLifeSteal(0.0f),
 		
-		mLevel(1),
+		mLevel(0),
 		mExp(0.0f),
 		mMoney(0) {}
 	virtual ~CPlayerScript() {}
@@ -246,6 +246,9 @@ public:
 		return this->mLevel;
 	}
 
+	int GetMoney() {
+		return this->mMoney;
+	}
 
 
 	void SetBasicMoveSpeed(float tSpeed) {
