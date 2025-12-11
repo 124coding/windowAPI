@@ -57,13 +57,17 @@ void CDataMgr::LoadDatas() {
 		monster.ID = ToWString(monsterStat["M_ID"]);
 		monster.name = ToWString(monsterStat["Name"]);
 		monster.hp = monsterStat["HP"];
-		monster.buttDamage = monsterStat["ButtDamage"];
-		monster.attackDamage = monsterStat["AttackDamage"];
+		monster.hpIncreasedEachWave = monsterStat["HP_increase_each_wave"];
+		monster.damage = monsterStat["Damage"];
+		monster.damageIncreaseEachWave = monsterStat["Damage_increase_each_wave"];
 		monster.speed = monsterStat["Speed"];
 		monster.sizeX = monsterStat["SizeX"];
 		monster.sizeY = monsterStat["SizeY"];
 		monster.collisionSizeX = monsterStat["CollisionSizeX"];
 		monster.collisionSizeY = monsterStat["CollisionSizeY"];
+		monster.minNumber = monsterStat["min_number"];
+		monster.maxNumber = monsterStat["max_number"];
+		monster.minDistanceFromPlayer = monsterStat["min_distance_from_player"];
 
 		mMonsterStats.insert({ monster.ID, monster });
 	}

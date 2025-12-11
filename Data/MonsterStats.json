@@ -3,26 +3,34 @@
         {
             "M_ID": "M_001",
             "Name": "BabyAlien",
-            "HP": 1,
-            "ButtDamage": 1,
-            "AttackDamage": 0,
-            "Speed": 50.0,
+            "HP": 3,
+            "HP_increase_each_wave" : 2.0,
+            "Damage": 1,
+            "Damage_increase_each_wave": 0.6,
+            "Speed": 250.0,
             "SizeX": 0.7,
             "SizeY": 0.7,
             "CollisionSizeX": 1.0,
-            "CollisionSizeY": 1.0
+            "CollisionSizeY": 1.0,
+            "min_number" : 4,
+            "max_number" : 4,
+            "min_distance_from_player" : 0
         },
         {
             "M_ID": "M_002",
             "Name": "",
             "HP": 1,
-            "ButtDamage": 1,
-            "AttackDamage": 0,
+            "HP_increase_each_wave" : 2.0,
+            "Damage": 1,
+            "Damage_increase_each_wave": 0.6,
             "Speed": 50.0,
             "SizeX": 0.7,
             "SizeY": 0.7,
             "CollisionSizeX": 1.0,
-            "CollisionSizeY": 1.0
+            "CollisionSizeY": 1.0,
+            "min_number" : 4,
+            "max_number" : 4,
+            "min_distance_from_player" : 0
         }
     ]
 }

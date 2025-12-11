@@ -1,9 +1,0 @@
-{
-    "DefaultModifiers":{
-        "HP_Multiplier": 2.0,
-        "Time" : 20.0
-    },
-    "Events": [
-        {"SpawnTiming": 0, "M_ID": "M_001", "Count": 100, "SpawnType": "Individual"}
-    ]
-}

@@ -22,4 +22,6 @@ public:
 
 private:
 	CUIText* mMoneyTex = nullptr;
+	CUIText* mStageNumTex = nullptr;
+	CUIText* mTimeTex = nullptr;
 };

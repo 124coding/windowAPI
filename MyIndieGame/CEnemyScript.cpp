@@ -211,7 +211,7 @@ void CEnemyScript::Death(float tDeltaTime) {
 void CEnemyScript::ButtDamageToPlayer(GameObject* tPlayer)
 {
 	if (tPlayer->GetComponent<CPlayerScript>()->GetCanCollideEnemy()) {
-		tPlayer->GetComponent<CPlayerScript>()->IncreaseHP(-mButtDamage);
+		tPlayer->GetComponent<CPlayerScript>()->IncreaseHP(-mDamage);
 		tPlayer->GetComponent<CPlayerScript>()->SetCanCollideEnemy(false);
 	}
 }

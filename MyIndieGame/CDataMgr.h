@@ -21,13 +21,17 @@ public:
 		std::wstring ID = L"";
 		std::wstring name = L"";
 		int hp = 0;
-		int buttDamage = 0;
-		int attackDamage = 0;
+		float hpIncreasedEachWave = 0.0f;
+		float damage = 0;
+		float damageIncreaseEachWave = 0.0f;
 		float speed = 0.0f;
 		float sizeX = 0.0f;
 		float sizeY = 0.0f;
 		float collisionSizeX = 0.0f;
 		float collisionSizeY = 0.0f;
+		int minNumber = 0.0f;
+		int maxNumber = 0.0f;
+		float minDistanceFromPlayer = 0.0f;
 	};
 
 	struct SWeaponTier {

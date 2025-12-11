@@ -42,6 +42,7 @@
 #include "Object.h"
 
 CPlayer* CPlayScene::mPlayer = nullptr;
+int CPlayScene::mStageNum = 0;
 
 void CPlayScene::OnCreate()
 {
@@ -183,7 +184,11 @@ void CPlayScene::OnDestroy()
 void CPlayScene::OnUpdate(float tDeltaTime)
 {
 	CScene::OnUpdate(tDeltaTime);
-	CMonsterSpawnMgr::MonsterSpawnEvent(tDeltaTime, mPlayer);
+	CMonsterSpawnMgr::MonsterSpawnEvent(mPlayer);
+	CMonsterSpawnMgr::MinusTime(tDeltaTime);
+	if (CMonsterSpawnMgr::GetTime() < 0) {
+
+	}
 }
 
 void CPlayScene::OnLateUpdate(float tDeltaTime)
@@ -203,7 +208,6 @@ void CPlayScene::OnEnter()
 	// LoadBakedMap(L"..\\resources\\Maps\\Here");
 	RandomBakedMap();
 
-	mStageNum++;
 	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Enemy, true);
 	CCollisionMgr::CollisionLayerCheck(eLayerType::MeleeWeapon, eLayerType::Enemy, true);
 	CCollisionMgr::CollisionLayerCheck(eLayerType::Bullet, eLayerType::Enemy, true);
@@ -266,6 +270,7 @@ void CPlayScene::OnExit()
 {
 	CScene::OnExit();
 
+	mStageNum++;
 	CMonsterSpawnMgr::DestroyStageSpawnEvents();
 	CUIMgr::Pop(eUIType::PlaySceneUI);
 	//CUIMgr::Pop(eUIType::HPBar);

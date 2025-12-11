@@ -246,7 +246,7 @@ void CEndingUI::OnCreate()
 		restartButton->SetBackColor(Gdiplus::Color::Black);
 		});
 	restartButton->SetEventClick([=]() {
-
+		/*버튼 클릭 구현*/
 		});
 
 
@@ -279,6 +279,7 @@ void CEndingUI::OnCreate()
 		newStartButton->SetBackColor(Gdiplus::Color::Black);
 		});
 	newStartButton->SetEventClick([=]() {
+		/*버튼 클릭 구현*/
 
 		});
 
@@ -312,6 +313,7 @@ void CEndingUI::OnCreate()
 		returnMenuButton->SetBackColor(Gdiplus::Color::Black);
 		});
 	returnMenuButton->SetEventClick([=]() {
+		/*버튼 클릭 구현*/
 
 		});
 

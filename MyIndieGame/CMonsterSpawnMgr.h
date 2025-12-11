@@ -18,9 +18,13 @@ public:
 
 	struct SpawnEvent {
 		// 몬스터 생성 이벤트
-		float time = 0.0f;
-		std::wstring ID = L"";
-		int count = 0;
+		float spawnTiming = 0.0f;
+		float repeatingInterval = 0.0f;
+		float minRepeatingInterval = 0.0f;
+		float reduceRepeatingInterval = 0.0f;
+		float nextSpawnTime = 0.0f;
+		float currentInterval = 0.0f;
+		std::vector<std::wstring>IDs;
 		std::wstring spawnType = L"";
 	};
 
@@ -36,14 +40,21 @@ public:
 
 	static SVector2D GetRandomPosAroundObject(SVector2D tPlayerPos, float minR, float maxR);
 
-	static void MonsterSpawnEvent(float tDeltaTime, GameObject* tTarget);
+	static void MonsterSpawnEvent(GameObject* tTarget);
 
-	static void MonsterSpawn(const std::wstring tMonsterId, GameObject* tTarget, SVector2D tPosition);
+	static void MonsterSpawn(const std::wstring tMonsterId, GameObject* tTarget, float tMinDistance, float tMaxDistance, bool tIndividual);
 
-	static void SetEventIdxZero();
+	static void MinusTime(float tDeltaTime) {
+		mTime -= tDeltaTime;
+	}
+
+	static float GetTime() {
+		return mTime;
+	}
 
 private:
-	static float mHPMultiplier;
+	static float mInitialTime;
+	static float mTime;
+	static int mStageNum;
 	static std::vector<SpawnEvent> mActiveStageSpawnEvents;
-	static int mEventIdx;
 };

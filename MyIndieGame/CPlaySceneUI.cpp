@@ -4,8 +4,9 @@
 #include "CPlayer.h"
 
 #include "CSceneMgr.h"
-#include "CUIPanel.h"
+#include "CMonsterSpawnMgr.h"
 
+#include "CUIPanel.h"
 #include "CUIImg.h"
 #include "CUIHUD.h"
 #include "CUIText.h"
@@ -127,6 +128,50 @@ void CPlaySceneUI::OnCreate()
 	this->AddChild(basePanel);
 
 
+	CUIPanel* infoPanel = new CUIPanel();
+	infoPanel->SetWidth(200.0f);
+	infoPanel->SetHeight(100.0f);
+	infoPanel->SetPos(SVector2D(basePanel->GetWidth() / 2 - infoPanel->GetWidth() / 2, 20.0f));
+
+	basePanel->AddChild(infoPanel);
+
+	CUIText* stageTex = new CUIText();
+	stageTex->SetText(L"¿þÀÌºê ");
+	stageTex->SetWidth(2 * infoPanel->GetWidth() / 3 - 20.0f);
+	stageTex->SetHeight(50.0f);
+	stageTex->SetPos(SVector2D());
+	stageTex->SetColor(Gdiplus::Color::White);
+	stageTex->SetFontSize(30.0f);
+	stageTex->SetStrokeWidth(1.0f);
+	stageTex->SetOutline(2.0f, Gdiplus::Color::Black);
+	stageTex->SetAlign(Gdiplus::StringAlignmentFar, Gdiplus::StringAlignmentCenter);
+
+	infoPanel->AddChild(stageTex);
+
+	mStageNumTex = new CUIText();
+	mStageNumTex->SetWidth(infoPanel->GetWidth() - stageTex->GetWidth());
+	mStageNumTex->SetHeight(stageTex->GetHeight());
+	mStageNumTex->SetPos(SVector2D(stageTex->GetWidth() + 20.0f, 0.0f));
+	mStageNumTex->SetColor(Gdiplus::Color::White);
+	mStageNumTex->SetFontSize(30.0f);
+	mStageNumTex->SetStrokeWidth(1.0f);
+	mStageNumTex->SetOutline(2.0f, Gdiplus::Color::Black);
+	mStageNumTex->SetAlign(Gdiplus::StringAlignmentNear, Gdiplus::StringAlignmentCenter);
+
+	infoPanel->AddChild(mStageNumTex);
+
+
+	mTimeTex = new CUIText();
+	mTimeTex->SetWidth(infoPanel->GetWidth());
+	mTimeTex->SetHeight(stageTex->GetHeight());
+	mTimeTex->SetPos(SVector2D(0.0f, stageTex->GetHeight()));
+	mTimeTex->SetColor(Gdiplus::Color::White);
+	mTimeTex->SetFontSize(50.0f);
+	mTimeTex->SetStrokeWidth(1.0f);
+	mTimeTex->SetOutline(2.0f, Gdiplus::Color::Black);
+	mTimeTex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentCenter);
+
+	infoPanel->AddChild(mTimeTex);
 
 	CUIBase::OnCreate();
 }
@@ -149,6 +194,10 @@ void CPlaySceneUI::OnDestroy()
 void CPlaySceneUI::OnUpdate(float tDeltaTime)
 {
 	mMoneyTex->SetText(std::to_wstring(CPlayScene::GetPlayer()->GetComponent<CPlayerScript>()->GetMoney()));
+	mStageNumTex->SetText(std::to_wstring(CPlayScene::GetStageNum() + 1));
+	if (CMonsterSpawnMgr::GetTime() >= 0) {
+		mTimeTex->SetText(std::to_wstring((int)CMonsterSpawnMgr::GetTime()));
+	}
 	CUIBase::OnUpdate(tDeltaTime);
 }
 

@@ -25,6 +25,10 @@ public:
 		return mPlayer;
 	}
 
+	static int GetStageNum() {
+		return mStageNum;
+	}
+
 public:
 	void LoadBakedMap(const wchar_t* tPath);
 	void RandomBakedMap();
@@ -32,8 +36,7 @@ public:
 
 private:
 	static CPlayer* mPlayer;
+	static int mStageNum;
 
 	GameObject* mBakedMap;
-
-	int mStageNum = 0;
 };

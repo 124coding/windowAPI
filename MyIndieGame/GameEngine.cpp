@@ -99,7 +99,7 @@ void GameEngine::LoadScenes()
 	CSceneMgr::CreateScene <CToolScene>(L"ToolScene");
 	
 
-	CSceneMgr::LoadScene(L"EndingScene");
+	CSceneMgr::LoadScene(L"PlayScene");
 }
 
 void GameEngine::LoadResources()

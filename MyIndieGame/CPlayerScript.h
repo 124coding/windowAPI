@@ -30,7 +30,7 @@ public:
 
 		mDodge(0.0f),
 		mArmor(0.0f),
-		mBasicMoveSpeed(500.0f),
+		mBasicMoveSpeed(450.0f),
 		mSpeedPercent(0.0f),
 
 		mRange(0.0f),

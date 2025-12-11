@@ -61,20 +61,12 @@ public:
 		return this->mHP;
 	}
 
-	void SetButtDamage(int tButtDamage) {
-		this->mButtDamage = tButtDamage;
+	void SetDamage(int tDamage) {
+		this->mDamage = tDamage;
 	}
 
-	int GetButtDamage() {
-		return this->mButtDamage;
-	}
-
-	void SetAttackDamage(int tAttackDamage) {
-		this->mAttackDamage = tAttackDamage;
-	}
-
-	int GetAttackDamage() {
-		return this->mAttackDamage;
+	int GetDamage() {
+		return this->mDamage;
 	}
 
 	void SetSpeed(float tSpeed) {
@@ -118,8 +110,7 @@ private:
 	float mDeadTimeTaken = 1.0f;
 
 	int mHP = 0;
-	int mButtDamage = 0;
-	int mAttackDamage = 0;
+	int mDamage = 0;
 	float mSpeed = 0.0f;
 
 	float mDistanceToPlayer = 9999.9f;

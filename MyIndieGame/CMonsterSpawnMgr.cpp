@@ -4,9 +4,12 @@
 #include "CCircleCollider2D.h"
 #include "CTilemapRenderer.h"
 
-float CMonsterSpawnMgr::mHPMultiplier = 1.0f;
+#include "CDataMgr.h"
+
+float CMonsterSpawnMgr::mInitialTime = 0.0f;
+float CMonsterSpawnMgr::mTime = 0.0f;
+int CMonsterSpawnMgr::mStageNum = 0;
 std::vector<CMonsterSpawnMgr::SpawnEvent> CMonsterSpawnMgr::mActiveStageSpawnEvents;
-int CMonsterSpawnMgr::mEventIdx = 0;
 
 void CMonsterSpawnMgr::LoadStageSpawnEvents(int tStageNum) {
 	std::string stageFileName = "../Data/Stages/Stage_" + std::to_string(tStageNum) + ".json";
@@ -15,14 +18,22 @@ void CMonsterSpawnMgr::LoadStageSpawnEvents(int tStageNum) {
 	json j;
 	stageFile >> j;
 
-	mHPMultiplier = j["DefaultModifiers"]["HP_Multiplier"];
+	mStageNum = 1;
+	mInitialTime = j["DefaultModifiers"]["Time"];
+	mTime = mInitialTime;
 
 	SpawnEvent event;
 
 	for (auto& e : j["Events"]) {
-		event.time = e["SpawnTiming"];
-		event.ID = CDataMgr::ToWString(e["M_ID"]);
-		event.count = e["Count"];
+		event.spawnTiming = e["SpawnTiming"];
+		event.repeatingInterval = e["repeating_interval"];
+		event.minRepeatingInterval = e["min_repeating_interval"];
+		event.reduceRepeatingInterval = e["reduce_repeating_interval"];
+		event.nextSpawnTime = event.spawnTiming;
+		event.currentInterval = event.repeatingInterval;
+		for (auto& mId : e["M_IDS"]) {
+			event.IDs.push_back(CDataMgr::ToWString(mId));
+		}
 		event.spawnType = CDataMgr::ToWString(e["SpawnType"]);
 	}
 
@@ -78,26 +89,25 @@ SVector2D CMonsterSpawnMgr::GetRandomPosAroundObject(SVector2D tPlayerPos, float
 	return resultPos;
 }
 
-void CMonsterSpawnMgr::MonsterSpawnEvent(float tDeltaTime, GameObject* tTarget) {
-
-	// json 파일을 확인하여 개별적으로 스폰하는지 무리를 지어 스폰하는지
-	SVector2D targetPos = tTarget->GetComponent<CTransform>()->GetPos();
-
-	for (mEventIdx; mEventIdx < mActiveStageSpawnEvents.size(); mEventIdx++) {
-		if (mActiveStageSpawnEvents[mEventIdx].time <= tDeltaTime) {
-			if (mActiveStageSpawnEvents[mEventIdx].spawnType == L"Individual") {
-				for (int i = 0; i < mActiveStageSpawnEvents[mEventIdx].count; i++) {
-					MonsterSpawn(mActiveStageSpawnEvents[mEventIdx].ID, tTarget, GetRandomPosAroundObject(targetPos, 500.0f, 800.0f));
+void CMonsterSpawnMgr::MonsterSpawnEvent(GameObject* tTarget) {
+	for (auto& spawnEvent: mActiveStageSpawnEvents) {
+	
+		if (mInitialTime - mTime >= spawnEvent.nextSpawnTime) {
+			if (spawnEvent.spawnType == L"Individual") {
+				for (auto& mID : spawnEvent.IDs) {
+					MonsterSpawn(mID, tTarget, 500.0f, 1000.0f, true);
 				}
 			}
-			else if (mActiveStageSpawnEvents[mEventIdx].spawnType == L"cluster") {
-				SVector2D anchorPos = GetRandomPosAroundObject(targetPos, 500.0f, 800.0f);
-
-				for (int i = 0; i < mActiveStageSpawnEvents[mEventIdx].count; i++) {
-					MonsterSpawn(mActiveStageSpawnEvents[mEventIdx].ID, tTarget, GetRandomPosAroundObject(anchorPos, 0.0f, 50.0f));
+			else if (spawnEvent.spawnType == L"cluster") {
+				for (auto& mID : spawnEvent.IDs) {
+					MonsterSpawn(mID, tTarget, 0.0f, 50.0f, true);
 				}
 			}
 
+			if (spawnEvent.currentInterval > spawnEvent.minRepeatingInterval) {
+				spawnEvent.currentInterval -= spawnEvent.reduceRepeatingInterval;
+			}
+			spawnEvent.nextSpawnTime += spawnEvent.currentInterval;
 		}
 		else {
 			break;
@@ -105,7 +115,12 @@ void CMonsterSpawnMgr::MonsterSpawnEvent(float tDeltaTime, GameObject* tTarget) 
 	}
 }
 
-void CMonsterSpawnMgr::MonsterSpawn(const std::wstring tMonsterId, GameObject* tTarget, SVector2D tPosition) {
+void CMonsterSpawnMgr::MonsterSpawn(const std::wstring tMonsterId, GameObject* tTarget, float tMinDistance, float tMaxDistance, bool tIndividual) {
+	// json 파일을 확인하여 개별적으로 스폰하는지 무리를 지어 스폰하는지
+	SVector2D targetPos = tTarget->GetComponent<CTransform>()->GetPos();
+
+	SVector2D anchorPos = GetRandomPosAroundObject(targetPos, 500.0f, 800.0f);
+
 	CDataMgr::SMonster currentMonster;
 
 	auto it = CDataMgr::GetMonsterBasicStats().find(tMonsterId);
@@ -121,41 +136,57 @@ void CMonsterSpawnMgr::MonsterSpawn(const std::wstring tMonsterId, GameObject* t
 		return;
 	}
 
-	CEnemy* enemy = iter->second();
+	int offset = currentMonster.maxNumber - currentMonster.minNumber;
+	int rand = 0;
+	if (offset == 0) {
+		rand = currentMonster.minNumber;
+	}
+	else {
+		rand = std::rand() % offset + currentMonster.minNumber;
+	}
 
-	enemy->SetName(currentMonster.name);
+	for (int i = 0; i < rand; i++) {
+		if (CSceneMgr::GetGameObjects(eLayerType::Enemy).size() == 100) {
+			break;
+		}
 
-	CEnemyScript* enemyScript = enemy->GetComponent<CEnemyScript>();
-	enemyScript->SetTarget(tTarget);
+		CEnemy* enemy = iter->second();
 
-	enemyScript->SetHP(currentMonster.hp);
-	enemyScript->SetButtDamage(currentMonster.buttDamage);
+		enemy->SetName(currentMonster.name);
 
-	enemyScript->SetSpeed(currentMonster.speed);
+		CEnemyScript* enemyScript = enemy->GetComponent<CEnemyScript>();
+		enemyScript->SetTarget(tTarget);
 
-	CTexture* enemyImg = CResourceMgr::Find<CTexture>(currentMonster.name);
-	enemyScript->SetBaseTexture(enemyImg);
+		enemyScript->SetHP(currentMonster.hp + (mStageNum * currentMonster.hpIncreasedEachWave));
+		enemyScript->SetDamage(currentMonster.damage + (mStageNum * currentMonster.damageIncreaseEachWave));
 
-	CSpriteRenderer* sr = enemy->AddComponent<CSpriteRenderer>();
-	sr->SetTexture(CResourceMgr::Find<CTexture>(L"EnemyBirth"));
-	sr->GetTexture()->SetWidth(80.0f);
-	sr->GetTexture()->SetHeight(80.0f);
+		enemyScript->SetSpeed(currentMonster.speed);
 
-	sr->GetTexture()->CreateHBitmapFromGdiPlus(true);
+		CTexture* enemyImg = CResourceMgr::Find<CTexture>(currentMonster.name);
+		enemyScript->SetBaseTexture(enemyImg);
 
-	CTransform* enemyTr = enemy->GetComponent<CTransform>();
-	enemyTr->SetPos(tPosition);
+		CSpriteRenderer* sr = enemy->AddComponent<CSpriteRenderer>();
+		sr->SetTexture(CResourceMgr::Find<CTexture>(L"EnemyBirth"));
+		sr->GetTexture()->SetWidth(80.0f);
+		sr->GetTexture()->SetHeight(80.0f);
 
-	enemy->SetSize(SVector2D(currentMonster.sizeX, currentMonster.sizeY));
-	enemy->SetAnchorPoint(enemyImg->GetWidth() / 2, enemyImg->GetHeight());
+		sr->GetTexture()->CreateHBitmapFromGdiPlus(true);
 
-	CCollider* enemyCl = enemy->AddComponent<CCircleCollider2D>();
-	enemyCl->SetSize(SVector2D(currentMonster.collisionSizeX, currentMonster.collisionSizeY));
-	enemyCl->SetActivate(false);
+		CTransform* enemyTr = enemy->GetComponent<CTransform>();
+		if(tIndividual) {
+			enemyTr->SetPos(GetRandomPosAroundObject(targetPos, tMinDistance, tMaxDistance));
+		}
+		else {
+			enemyTr->SetPos(GetRandomPosAroundObject(anchorPos, tMinDistance, tMaxDistance));
+		}
 
-	enemy->OnCreate();
-}
+		enemy->SetSize(SVector2D(currentMonster.sizeX, currentMonster.sizeY));
+		enemy->SetAnchorPoint(enemyImg->GetWidth() / 2, enemyImg->GetHeight());
 
-void CMonsterSpawnMgr::SetEventIdxZero() {
-	mEventIdx = 0;
+		CCollider* enemyCl = enemy->AddComponent<CCircleCollider2D>();
+		enemyCl->SetSize(SVector2D(currentMonster.collisionSizeX, currentMonster.collisionSizeY));
+		enemyCl->SetActivate(false);
+
+		enemy->OnCreate();
+	}
 }
