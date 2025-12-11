@@ -1,7 +1,15 @@
 #include "CEndingScene.h"
 
+#include "Object.h"
+
+#include "CUIMgr.h"
+
 void CEndingScene::OnCreate()
 {
+	GameObject* bg = Instantiate<GameObject>(eLayerType::BackGround);
+	CSpriteRenderer* bgSr = bg->AddComponent<CSpriteRenderer>();
+	bgSr->SetTexture(CResourceMgr::Find<CTexture>(L"SettingMap"));
+
 	CScene::OnCreate();
 }
 
@@ -27,8 +35,12 @@ void CEndingScene::Render(HDC tHDC)
 
 void CEndingScene::OnEnter()
 {
+	CUIMgr::Push(eUIType::EndingSceneUI);
+	CScene::OnEnter();
 }
 
 void CEndingScene::OnExit()
 {
+	CUIMgr::ClearUI(eUIType::EndingSceneUI);
+	CScene::OnExit();
 }

@@ -20,7 +20,7 @@ void CMonsterSpawnMgr::LoadStageSpawnEvents(int tStageNum) {
 	SpawnEvent event;
 
 	for (auto& e : j["Events"]) {
-		event.time = e["Time"];
+		event.time = e["SpawnTiming"];
 		event.ID = CDataMgr::ToWString(e["M_ID"]);
 		event.count = e["Count"];
 		event.spawnType = CDataMgr::ToWString(e["SpawnType"]);

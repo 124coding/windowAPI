@@ -95,11 +95,11 @@ void GameEngine::LoadScenes()
 	CSceneMgr::CreateScene<CPlayScene>(L"PlayScene");
 	CSceneMgr::CreateScene<CTitleScene>(L"TitleScene");
 	CSceneMgr::CreateScene<CSettingScene>(L"SettingScene");
-	// CSceneMgr::CreateScene<CEndingScene>(L"EndingScene");
+	CSceneMgr::CreateScene<CEndingScene>(L"EndingScene");
 	CSceneMgr::CreateScene <CToolScene>(L"ToolScene");
 	
 
-	CSceneMgr::LoadScene(L"TitleScene");
+	CSceneMgr::LoadScene(L"EndingScene");
 }
 
 void GameEngine::LoadResources()
@@ -160,6 +160,24 @@ void GameEngine::LoadResources()
 	CResourceMgr::Load<CTexture>(L"권총", L"../resources/Weapons/Pistol/pistol.png");
 	CResourceMgr::Load<CTexture>(L"PistolIcon", L"../resources/Weapons/Pistol/pistol_icon.png");
 	CResourceMgr::Load<CTexture>(L"PlayerBullet", L"../resources/Weapons/bullet_0001.png");
+
+	// stats
+	CResourceMgr::Load<CTexture>(L"MaxHP", L"../resources/Items/Stats/max_hp.png");
+	CResourceMgr::Load<CTexture>(L"HPRegen", L"../resources/Items/Stats/hp_regeneration.png");
+	CResourceMgr::Load<CTexture>(L"LifeSteal", L"../resources/Items/Stats/lifesteal.png");
+	CResourceMgr::Load<CTexture>(L"Armor", L"../resources/Items/Stats/armor.png");
+	CResourceMgr::Load<CTexture>(L"Damage", L"../resources/Items/Stats/percent_damage.png");
+	CResourceMgr::Load<CTexture>(L"MeleeDamage", L"../resources/Items/Stats/melee_damage.png");
+	CResourceMgr::Load<CTexture>(L"RangedDamage", L"../resources/Items/Stats/ranged_damage.png");
+	CResourceMgr::Load<CTexture>(L"AttackSpeed", L"../resources/Items/Stats/attack_speed.png");
+	CResourceMgr::Load<CTexture>(L"CritChance", L"../resources/Items/Stats/crit_chance.png");
+	CResourceMgr::Load<CTexture>(L"Range", L"../resources/Items/Stats/range.png");
+	CResourceMgr::Load<CTexture>(L"Dodge", L"../resources/Items/Stats/dodge.png");
+	CResourceMgr::Load<CTexture>(L"Speed", L"../resources/Items/Stats/speed.png");
+
+	// upgrades
+	CResourceMgr::Load<CTexture>(L"UpgradeIcon", L"../resources/Items/Upgrades/upgrade_icon.png");
+
 
 	// UI
 	CResourceMgr::Load<CTexture>(L"UIHUDBg", L"../resources/UI/uiHUD/ui_lifebar_bg.png");

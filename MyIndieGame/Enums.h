@@ -6,6 +6,7 @@ enum class eComponentType {
 	Script,
 	SpriteRenderer,
 	WeaponMgr,
+	ItemMgr,
 	AutoSpriteFlipper,
 	TileRenderer,
 	Animator,
@@ -56,9 +57,13 @@ enum class eUIType {
 	// SettingScene
 	CharacterSelectUI,
 	WeaponSelectUI,
+	ShopUI,
 
 	// PlayScene
 	PlaySceneUI,
+
+	// EndingScene,
+	EndingSceneUI,
 
 	// Commonness
 	OptionUI,

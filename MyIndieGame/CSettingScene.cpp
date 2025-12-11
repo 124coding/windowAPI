@@ -36,15 +36,14 @@ void CSettingScene::Render(HDC tHDC)
 void CSettingScene::OnEnter()
 {
 	CScene::OnEnter();
-
-	CUIMgr::Push(eUIType::CharacterSelectUI);
+	CUIMgr::Push(eUIType::ShopUI);
+	// CUIMgr::Push(eUIType::CharacterSelectUI);
 }
 
 void CSettingScene::OnExit()
 {
 	CScene::OnExit();
-
-	CUIMgr::ClearUI(eUIType::CharacterSelectUI);
+	/*CUIMgr::ClearUI(eUIType::CharacterSelectUI);
 	CUIMgr::ClearUI(eUIType::WeaponSelectUI);
-	CUIMgr::ClearUI(eUIType::TitleSceneUI);
+	CUIMgr::ClearUI(eUIType::TitleSceneUI);*/
 }

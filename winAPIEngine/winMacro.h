@@ -2,7 +2,7 @@
 
 #define PI 3.141592f
 
-#define windowWidth 1280
+#define windowWidth 1600
 #define windowHeight 900
 
 #define mapWidth 1600

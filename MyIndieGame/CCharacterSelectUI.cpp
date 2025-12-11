@@ -250,6 +250,7 @@ void CCharacterSelectUI::OnCreate()
 
 		charButton->SetEventClick([=]() {
 			CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
+
 			plSc->SetStartingCharacterID(character.ID);
 			CUIMgr::Pop(eUIType::CharacterSelectUI);
 			CUIMgr::Push(eUIType::WeaponSelectUI);

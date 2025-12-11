@@ -28,6 +28,7 @@
 #include "CAudioListner.h"
 #include "CAudioSource.h"
 #include "CWeaponMgr.h"
+#include "CItemMgr.h"
 
 #include "CMeleeWeaponScript.h"
 #include "CRangedWeaponScript.h"
@@ -105,6 +106,7 @@ void CPlayScene::OnCreate()
 	plSr->GetTexture()->CreateHBitmapFromGdiPlus(false);
 
 	mPlayer->AddComponent<CWeaponMgr>();
+	mPlayer->AddComponent<CItemMgr>();
 
 
 	/*CWeapon* weapon = Instantiate<CWeapon>(eLayerType::MeleeWeapon, SVector2D(plTr->GetPos().mX - 10.0f, plTr->GetPos().mY));

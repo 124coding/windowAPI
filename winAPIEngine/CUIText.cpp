@@ -188,6 +188,73 @@ void CUIText::SetColor(Gdiplus::Color tColor)
     }
 }
 
+Gdiplus::SizeF CUIText::CalculateTextSize()
+{
+    if (mText.empty() && mFragments.empty()) return Gdiplus::SizeF(0.0f, 0.0f);
+
+    // 임시 Graphics 객체 생성
+    HDC hDC = GetDC(NULL);
+    Gdiplus::Graphics graphics(hDC);
+
+    // 폰트 설정
+    Gdiplus::FontFamily fontFamily(mFont.c_str());
+    int style = mbBold ? Gdiplus::FontStyleBold : Gdiplus::FontStyleRegular;
+    Gdiplus::Font font(&fontFamily, mFontSize, style, Gdiplus::UnitPixel);
+
+    // 줄 높이 측정
+    Gdiplus::RectF measureBox;
+    Gdiplus::PointF zero(0.0f, 0.0f);
+    graphics.MeasureString(L"TestHeight", -1, &font, zero,
+        Gdiplus::StringFormat::GenericTypographic(), &measureBox);
+    float lineHeight = measureBox.Height;
+
+    // 텍스트 프래그먼트 순회하며 너비/높이 계산
+    float maxLineWidth = 0.0f;  // 가장 긴 줄의 너비
+    float currentLineWidth = 0.0f; // 현재 줄의 너비
+    int lineCount = 1;          // 총 줄 수
+
+    std::vector<STextFragment> sources;
+    if (!mFragments.empty()) sources = mFragments;
+    else sources.push_back({ mText, mFontColor });
+
+    for (const auto& frag : sources)
+    {
+        std::wstring remaining = frag.text;
+
+        while (true)
+        {
+            size_t pos = remaining.find(L'\n');
+            std::wstring part;
+            bool isLineEnd = (pos != std::wstring::npos);
+
+            if (isLineEnd) part = remaining.substr(0, pos);
+            else part = remaining;
+
+            if (!part.empty()) {
+                float partWidth = GetTextWidth(&graphics, &font, part);
+                currentLineWidth += partWidth;
+            }
+
+            if (isLineEnd) {
+                if (currentLineWidth > maxLineWidth) maxLineWidth = currentLineWidth;
+
+                currentLineWidth = 0.0f;
+                lineCount++;
+                remaining = remaining.substr(pos + 1);
+            }
+            else {
+                break;
+            }
+        }
+    }
+
+    if (currentLineWidth > maxLineWidth) maxLineWidth = currentLineWidth;
+
+    ReleaseDC(NULL, hDC);
+
+    return Gdiplus::SizeF(maxLineWidth, lineCount * lineHeight);
+}
+
 void CUIText::ParseRichText(const std::wstring& tText)
 {
     mFragments.clear();

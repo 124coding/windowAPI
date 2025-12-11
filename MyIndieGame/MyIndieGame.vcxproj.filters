@@ -139,6 +139,18 @@
     <Filter Include="UI\PlaySceneUI">
       <UniqueIdentifier>{aec0f230-ad42-479a-8cdd-37f6b9d90226}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI\ShopUI">
+      <UniqueIdentifier>{88a9ebfb-95ba-4f05-8257-1f4d3e03f28f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Weapon">
+      <UniqueIdentifier>{f7e96531-c156-4345-a122-78e592482462}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Item">
+      <UniqueIdentifier>{54bc852e-92df-43b3-897d-0f22bd87b034}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\EndingUI">
+      <UniqueIdentifier>{300de68a-c4fb-4826-a8d4-7ca732357812}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -213,9 +225,6 @@
     <ClCompile Include="CBulletScript.cpp">
       <Filter>Scripts\Weapon\RangedWeapon\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="CWeaponMgr.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="CMonsterSpawnMgr.cpp">
       <Filter>Helpers\MonsterSpawn</Filter>
     </ClCompile>
@@ -272,6 +281,21 @@
     </ClCompile>
     <ClCompile Include="CPlaySceneUI.cpp">
       <Filter>UI\PlaySceneUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CShopUI.cpp">
+      <Filter>UI\ShopUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CWeaponMgr.cpp">
+      <Filter>Component\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="CItemMgr.cpp">
+      <Filter>Component\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="CEndingUI.cpp">
+      <Filter>UI\EndingUI</Filter>
+    </ClCompile>
+    <ClCompile Include="StatSet.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -347,9 +371,6 @@
     <ClInclude Include="CBulletScript.h">
       <Filter>Scripts\Weapon\RangedWeapon\Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="CWeaponMgr.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="CMonsterSpawnMgr.h">
       <Filter>Helpers\MonsterSpawn</Filter>
     </ClInclude>
@@ -409,6 +430,21 @@
     </ClInclude>
     <ClInclude Include="CPlaySceneUI.h">
       <Filter>UI\PlaySceneUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CShopUI.h">
+      <Filter>UI\ShopUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CWeaponMgr.h">
+      <Filter>Component\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="CItemMgr.h">
+      <Filter>Component\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="CEndingUI.h">
+      <Filter>UI\EndingUI</Filter>
+    </ClInclude>
+    <ClInclude Include="StatSet.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -31,14 +31,14 @@ public:
 		mDodge(0.0f),
 		mArmor(0.0f),
 		mBasicMoveSpeed(500.0f),
-		mSpeedPercent(1.0f),
+		mSpeedPercent(0.0f),
 
-		mRange(1.0f),
-		mDamagePer(1.0f),
+		mRange(0.0f),
+		mDamagePer(0.0f),
 		mCriticalChancePer(0.0f),
 		mMeleeDamage(0),
 		mRangedDamage(0),
-		mAttackSpeedPer(1.0f),
+		mAttackSpeedPer(0.0f),
 
 		mLifeSteal(0.0f),
 		

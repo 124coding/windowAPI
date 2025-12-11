@@ -71,6 +71,8 @@ public:
 		mAlignV = vAlign;
 	}
 
+	Gdiplus::SizeF CalculateTextSize();
+
 private:
 	void ParseRichText(const std::wstring& text);
 
