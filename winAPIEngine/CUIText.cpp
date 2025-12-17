@@ -49,11 +49,18 @@ void CUIText::Render(HDC tHDC)
 	int style = mbBold ? Gdiplus::FontStyleBold : Gdiplus::FontStyleRegular;
     Gdiplus::Font font(&fontFamily, mFontSize, style, Gdiplus::UnitPixel);
 
+    Gdiplus::StringFormat format(Gdiplus::StringFormatFlagsNoClip);
+    format.SetAlignment(Gdiplus::StringAlignmentNear);
+    format.SetLineAlignment(Gdiplus::StringAlignmentNear);
+
+    INT flags = Gdiplus::StringFormat::GenericTypographic()->GetFormatFlags();
+    flags |= Gdiplus::StringFormatFlagsMeasureTrailingSpaces;
+    format.SetFormatFlags(flags);
+
     // 텍스트 높이
     Gdiplus::RectF measureBox;
     Gdiplus::PointF zero(0.0f, 0.0f);
-    graphics.MeasureString(L"TestHeight", -1, &font, zero,
-        Gdiplus::StringFormat::GenericTypographic(), &measureBox);
+    graphics.MeasureString(L"TestHeight", -1, &font, zero, &format, &measureBox);
 
     float lineHeight = measureBox.Height;
 
@@ -84,7 +91,6 @@ void CUIText::Render(HDC tHDC)
                 // 각 부분마다의 넓이
                 float partWidth = GetTextWidth(&graphics, &font, part);
 
-                // 줄 정보 갱신
                 lines.back().frags.push_back({ part, frag.color });
                 lines.back().width += partWidth;
             }
@@ -138,7 +144,7 @@ void CUIText::Render(HDC tHDC)
             Gdiplus::GraphicsPath path(Gdiplus::FillModeWinding);
 
             path.AddString(frag.text.c_str(), -1, &fontFamily, style,
-                mFontSize, layoutRect, Gdiplus::StringFormat::GenericTypographic());
+                mFontSize, layoutRect, &format);
 
             // 외곽선
             if (mOutlineWidth > 0.0f) {
@@ -334,9 +340,104 @@ float CUIText::GetTextWidth(Gdiplus::Graphics* tGraphics, Gdiplus::Font* tFont, 
     Gdiplus::RectF boundingBox;
     Gdiplus::PointF origin(0.0f, 0.0f);
 
-    // GenericTypographic을 써야 여백 없이 정확한 너비가 나옴
-    tGraphics->MeasureString(tText.c_str(), -1, tFont, origin,
-        Gdiplus::StringFormat::GenericTypographic(), &boundingBox);
+    Gdiplus::StringFormat format(Gdiplus::StringFormatFlagsNoClip);
+
+    INT flags = Gdiplus::StringFormat::GenericTypographic()->GetFormatFlags();
+
+    flags |= Gdiplus::StringFormatFlagsMeasureTrailingSpaces;
+
+    format.SetFormatFlags(flags);
+
+    format.SetAlignment(Gdiplus::StringAlignmentNear);
+    format.SetLineAlignment(Gdiplus::StringAlignmentNear);
+
+    tGraphics->MeasureString(tText.c_str(), -1, tFont, origin, &format, &boundingBox);
 
     return boundingBox.Width;
+}
+
+std::wstring CUIText::InsertLineBreaks(const std::wstring& tText, float tMaxWidth, const std::wstring& tFontName, float tFontSize, bool tIsBold) {
+    if (tText.empty()) return L"";
+
+    HDC hdc = GetDC(NULL);
+    Gdiplus::Graphics graphics(hdc);
+    Gdiplus::FontFamily fontFamily(tFontName.c_str());
+    int style = tIsBold ? Gdiplus::FontStyleBold : Gdiplus::FontStyleRegular;
+    Gdiplus::Font font(&fontFamily, tFontSize, style, Gdiplus::UnitPixel);
+
+    Gdiplus::StringFormat format(Gdiplus::StringFormatFlagsNoClip);
+    INT flags = Gdiplus::StringFormat::GenericTypographic()->GetFormatFlags();
+    flags |= Gdiplus::StringFormatFlagsMeasureTrailingSpaces;
+    format.SetFormatFlags(flags);
+
+    std::wstring result = L"";
+    std::wstring currentLine = L"";
+    std::wstring visibleLine = L"";
+
+    float currentWidth = 0.0f;
+
+    // 문자열을 순회
+    for (size_t i = 0; i < tText.length(); ++i) {
+        wchar_t c = tText[i];
+
+        if (c == L'<') {
+            // 태그가 끝날 때(>)까지 그대로 currentLine에만 추가
+            size_t endTag = tText.find(L'>', i);
+            if (endTag != std::wstring::npos) {
+                std::wstring tag = tText.substr(i, endTag - i + 1);
+                currentLine += tag;
+                i = endTag;
+                continue;
+            }
+        }
+
+        if (c == L'\n') {
+            result += currentLine + c;
+            currentLine = L"";
+            visibleLine = L"";
+            continue;
+        }
+
+        currentLine += c;
+        visibleLine += c;
+
+        Gdiplus::RectF box;
+        Gdiplus::PointF origin(0, 0);
+        graphics.MeasureString(visibleLine.c_str(), -1, &font, origin, &format, &box);
+
+        if (box.Width > tMaxWidth) {
+            // 마지막 공백(띄어쓰기)을 찾아서 거기서 줄바꿈
+            size_t lastSpace = currentLine.find_last_of(L' ');
+
+            if (lastSpace != std::wstring::npos && lastSpace > 0) {
+                currentLine[lastSpace] = L'\n';
+
+                result += currentLine.substr(0, lastSpace + 1);
+
+                std::wstring remainder = currentLine.substr(lastSpace + 1);
+
+                // 단순히 남은 부분으로 다시 시작한다고 가정 (약간의 오차 허용)
+                currentLine = remainder;
+
+                // 태그를 제거한 순수 텍스트만 visibleLine에 다시 담아야 정확함
+                visibleLine = L"";
+
+                for (auto wc : remainder) {
+                    if (wc != L'<' && wc != L'>') visibleLine += wc;
+                }
+            }
+            else {
+                // 공백이 하나도 없는 긴 단어라면 그냥 강제로 자름
+                std::wstring temp = currentLine.substr(0, currentLine.length() - 1); // 현재 글자 빼고
+                result += temp + L"\n";
+                currentLine = std::wstring(1, c);
+                visibleLine = std::wstring(1, c);
+            }
+        }
+    }
+
+    result += currentLine;
+    ReleaseDC(NULL, hdc);
+
+    return result;
 }

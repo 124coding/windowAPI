@@ -14,13 +14,9 @@ void CEndingUI::OnCreate()
 	SetWidth(windowWidth);
 	SetHeight(windowHeight);
 
-	CUIPanel* basePanel = new CUIPanel();
-	basePanel->SetWidth(windowWidth);
-	basePanel->SetHeight(windowHeight);
-	this->AddChild(basePanel);
 
 	CUIText* endingTex = new CUIText();
-	endingTex->SetWidth(basePanel->GetWidth());
+	endingTex->SetWidth(this->GetWidth());
 	endingTex->SetHeight(50.0f);
 	endingTex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentCenter);
 	endingTex->SetText(L"Test");
@@ -35,16 +31,16 @@ void CEndingUI::OnCreate()
 	else {
 
 	}*/
-	basePanel->AddChild(endingTex);
+	this->AddChild(endingTex);
 
 	CUIPanel* endingMainPanel = new CUIPanel();
-	endingMainPanel->SetWidth(basePanel->GetWidth() - 200.0f);
-	endingMainPanel->SetHeight(basePanel->GetHeight() - 200.0f);
+	endingMainPanel->SetWidth(this->GetWidth() - 200.0f);
+	endingMainPanel->SetHeight(this->GetHeight() - 200.0f);
 	endingMainPanel->SetPos(SVector2D(100.0f, 100.0f));
 	endingMainPanel->SetBackColor(0xFF222222);
 	endingMainPanel->SetCornerRadius(10);
 
-	basePanel->AddChild(endingMainPanel);
+	this->AddChild(endingMainPanel);
 
 	CUIPanel* statPanel = new CUIPanel();
 	statPanel->SetWidth(endingMainPanel->GetWidth() / 4);
@@ -215,7 +211,7 @@ void CEndingUI::OnCreate()
 	buttonPanel->SetHeight(40.0f);
 	buttonPanel->SetPos(SVector2D(endingMainPanel->GetPos().mX + endingMainPanel->GetWidth() / 2 - buttonPanel->GetWidth() / 2, endingMainPanel->GetPos().mY + endingMainPanel->GetHeight() + 30.0f));
 
-	basePanel->AddChild(buttonPanel);
+	this->AddChild(buttonPanel);
 
 	CUIButton* restartButton = new CUIButton();
 	restartButton->SetWidth(buttonPanel->GetWidth() / 4 - 20.0f);

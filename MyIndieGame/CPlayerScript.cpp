@@ -1,5 +1,7 @@
 #include "CPlayerScript.h"
 
+#include "CEffectMgr.h"
+
 #include "GameObject.h"
 #include "CPlayer.h"
 
@@ -8,6 +10,7 @@
 #include "CCollider.h"
 #include "CSpriteRenderer.h"
 #include "CTilemapRenderer.h"
+#include "CEnemyScript.h"
 
 void CPlayerScript::OnCreate()
 {
@@ -22,6 +25,12 @@ void CPlayerScript::OnDestroy()
 void CPlayerScript::OnUpdate(float tDeltaTime)
 {
 	mTotalTime += tDeltaTime;
+	if (mMaxHP > mHP) {
+		mHPRegenTime += tDeltaTime;
+	}
+	else {
+		mHPRegenTime = 0.0f;
+	}
 
 	if (mAnimator == nullptr) {
 		mAnimator = GetOwner()->GetComponent<CAnimator>();
@@ -39,11 +48,17 @@ void CPlayerScript::OnUpdate(float tDeltaTime)
 
 	Bounce();
 
+	if (0.1f * mHPRegeneration * mHPRegenTime > 1.0f) {
+		IncreaseHP(1.0f);
+		mHPRegenTime = 0.0f;
+		CEffectMgr::ShowEffectText(GetOwner()->GetComponent<CTransform>()->GetPos(), std::to_wstring((int)1.0f), Gdiplus::Color::LimeGreen);
+	}
+
 	if (!mCanCollideEnemy) {
 		mGracePeriod -= tDeltaTime;
 		if (mGracePeriod <= 0) {
 			mCanCollideEnemy = true;
-			mGracePeriod = 1.0f;
+			mGracePeriod = 0.2f;
 		}
 	}
 
@@ -61,22 +76,18 @@ void CPlayerScript::Idle()
 {
 	if (mInputMgr->GetKeyPressed("DoMoveLt")) {
 		mState = eState::Walk;
-		// mAnimator->PlayAnimation(L"LeftWalk");
 	}
 
 	if (mInputMgr->GetKeyPressed("DoMoveRt")) {
 		mState = eState::Walk;
-		// mAnimator->PlayAnimation(L"RightWalk");
 	}
 
 	if (mInputMgr->GetKeyPressed("DoMoveFt")) {
 		mState = eState::Walk;
-		// mAnimator->PlayAnimation(L"DownWalk");
 	}
 
 	if (mInputMgr->GetKeyPressed("DoMoveBt")) {
 		mState = eState::Walk;
-		// mAnimator->PlayAnimation(L"UpWalk");
 	}
 }
 
@@ -133,7 +144,7 @@ void CPlayerScript::Translate(CTransform* tr)
 		currentVelocity = currentVelocity.Normalize();
 	}
 
-	tr->SetVelocity(currentVelocity * GetSpeed());
+	tr->SetVelocity(currentVelocity * GetSpeed() * (1 + mSpeedPercent / 100.0f));
 
 	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
 
@@ -145,20 +156,51 @@ void CPlayerScript::Translate(CTransform* tr)
 	}
 }
 
-//void CPlayerScript::GiveWater()
-//{
-//	if (mAnimator->IsCompleteAnimation()) {
-//		mState = eState::Idle;
-//		mAnimator->PlayAnimation(L"Idle", false);
-//	}
-//}
-
 void CPlayerScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther) {
+	if (mCanCollideEnemy) {
+		mCanCollideEnemy = false;
+		int rand = std::rand() % 100;
 
+		if (mDodge > mDodgeLimit) {
+			if (rand > mDodgeLimit) {
+				if (tOther->GetOwner()->GetLayerType() == eLayerType::Enemy) {
+					GameObject* enemy = tOther->GetOwner();
+					ButtDamageByEnemy(enemy);
+				}
+			}
+			else {
+				CEffectMgr::ShowEffectText(GetOwner()->GetComponent<CTransform>()->GetPos(), L"회피", Gdiplus::Color::White);
+			}
+		}
+		else {
+			if (rand > mDodge) {
+				if (tOther->GetOwner()->GetLayerType() == eLayerType::Enemy) {
+					GameObject* enemy = tOther->GetOwner();
+					ButtDamageByEnemy(enemy);
+				}
+			}
+			else {
+				CEffectMgr::ShowEffectText(GetOwner()->GetComponent<CTransform>()->GetPos(), L"회피", Gdiplus::Color::White);
+			}
+		}
+	}
 }
 
 void CPlayerScript::OnCollisionStay(float tDeltaTime, CCollider* tOther) {
 
+	if (mCanCollideEnemy) {
+		mCanCollideEnemy = false;
+		int rand = std::rand() % 100;
+		if (rand > mDodge) {
+			if (tOther->GetOwner()->GetLayerType() == eLayerType::Enemy) {
+				GameObject* enemy = tOther->GetOwner();
+				ButtDamageByEnemy(enemy);
+			}
+		}
+		else {
+			CEffectMgr::ShowEffectText(GetOwner()->GetComponent<CTransform>()->GetPos(), L"회피", Gdiplus::Color::White);
+		}
+	}
 }
 
 void CPlayerScript::OnCollisionExit(float tDeltaTime, CCollider* tOther) {
@@ -179,10 +221,30 @@ void CPlayerScript::IncreaseHP(int tIncreaseAmount) {
 
 void CPlayerScript::IncreaseMaxHP(int tIncreaseAmount)
 {
-	mMaxHP = mMaxHP + tIncreaseAmount;
+	mMaxHP = mMaxHP + tIncreaseAmount * GetStatMultiplier(L"MaxHP");
 
 	if (mMaxHP < 0) {
 		mMaxHP = 0;
 	}
 }
 
+void CPlayerScript::ButtDamageByEnemy(GameObject* tEnemy)
+{
+	float damage = tEnemy->GetComponent<CEnemyScript>()->GetDamage();
+	damage = DecreaseDamageBecauseArmor(damage);
+	IncreaseHP(-std::ceil(damage));
+	CEffectMgr::ShowEffectText(GetOwner()->GetComponent<CTransform>()->GetPos(), std::to_wstring((int)std::ceil(damage)), Gdiplus::Color::Red);
+}
+
+float CPlayerScript::DecreaseDamageBecauseArmor(float tDamage)
+{
+	float damage = 0;
+	if (mArmor >= 0) {
+		damage = tDamage * (1 / (1 + mArmor / 15));
+	}
+	else if (mArmor < 0) {
+		damage = tDamage * (15 - 2 * mArmor) / (15 - mArmor);
+	}
+
+	return damage;
+}

@@ -2,6 +2,8 @@
 
 #include "CUIBase.h"
 
+class CUIPanel;
+
 class CCharacterSelectUI : public CUIBase
 {
 public:
@@ -16,5 +18,12 @@ public:
 	virtual void OnLateUpdate(float tDeltaTime) override;
 	virtual void Render(HDC tHDC) override;
 	virtual void UIClear() override;
+
+	CUIPanel* GetCharDescPanel() {
+		return this->mCharDescriptionPanel;
+	}
+
+private:
+	CUIPanel* mCharDescriptionPanel = nullptr;
 };
 

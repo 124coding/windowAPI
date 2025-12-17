@@ -42,8 +42,8 @@ void CBulletScript::OnCollisionExit(float tDeltaTime, CCollider* tOther)
 {
 }
 
-CWeaponScript::SDamageInfo CBulletScript::GetFinalDamage() {
+CWeaponScript::SDamageInfo CBulletScript::GetFinalDamage(float tRangedDamage) {
 	CWeaponScript* wpSc = mWeapon->GetComponent<CWeaponScript>();
-	return wpSc->ApplyDamageModifiers(this->mDamage);
+	return wpSc->ApplyDamageModifiers(this->mDamage + tRangedDamage);
 }
 

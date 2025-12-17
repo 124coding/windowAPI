@@ -12,12 +12,20 @@
 #include <Windows.h>
 
 template<typename T>
-static T* Instantiate(eLayerType tType) {
+static T* Instantiate(eLayerType tType, CScene* targetScene = nullptr) {
 	T* gameObject = new T();
 	gameObject->SetLayerType(tType);
 
-	CScene* activeScene = CSceneMgr::GetActiveScene();
-	CLayer* layer = activeScene->GetLayer(tType);
+	CScene* scene = nullptr;
+
+	if (targetScene != nullptr) {
+		scene = targetScene;
+	}
+	else {
+		scene = CSceneMgr::GetActiveScene();
+	}
+
+	CLayer* layer = scene->GetLayer(tType);
 
 	layer->AddGameObject(gameObject);
 
@@ -25,7 +33,7 @@ static T* Instantiate(eLayerType tType) {
 }
 
 template<typename T>
-static T* Instantiate(eLayerType tType, SVector2D tPosition) {
+static T* Instantiate(eLayerType tType, SVector2D tPosition, CScene* targetScene = nullptr) {
 	T* gameObject = new T();
 	gameObject->SetLayerType(tType);
 

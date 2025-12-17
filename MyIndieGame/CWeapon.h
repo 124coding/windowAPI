@@ -17,6 +17,15 @@ public:
 	void OnLateUpdate(float tDeltaTime) override;
 	void Render(HDC tHDC) override;
 
+	void SetID(std::wstring tID) {
+		this->mID = tID;
+	}
+
+	std::wstring GetID() {
+		return this->mID;
+	}
+
 private:
+	std::wstring mID = L"";
 };
 

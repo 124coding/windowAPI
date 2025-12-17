@@ -2,6 +2,10 @@
 
 #include "CEffectMgr.h"
 
+#include "CPlayScene.h"
+
+#include "CPlayer.h"
+
 #include "CTransform.h"
 #include "CAnimator.h"
 #include "CCollider.h"
@@ -28,10 +32,7 @@ void CEnemyScript::OnUpdate(float tDeltaTime)
 {
 	mTotalTime += tDeltaTime;
 
-	CTransform* plTr = mTarget->GetComponent<CTransform>();
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
-
-	SetDistanceToPlayer((plTr->GetPos() - tr->GetPos()).Length());
 
 	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
 
@@ -107,12 +108,21 @@ void CEnemyScript::Render(HDC tHDC)
 
 void CEnemyScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther)
 {
-	if (tOther->GetOwner()->GetLayerType() == eLayerType::Player) {
-		GameObject* player = tOther->GetOwner();
-		ButtDamageToPlayer(player);
-	}
-
 	if (tOther->GetOwner()->GetLayerType() == eLayerType::MeleeWeapon || tOther->GetOwner()->GetLayerType() == eLayerType::Bullet) {
+		CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
+
+		if (plSc->GetMaxHP() > plSc->GetHP()) {
+			int rand = std::rand() % 100;
+
+			CWeaponScript* wpSc = tOther->GetOwner()->GetComponent<CWeaponScript>();
+			int lifeSteal = plSc->GetLifeSteal();
+
+			if (rand <= lifeSteal + wpSc->GetLifeSteal()) {
+				plSc->IncreaseHP(1);
+				CEffectMgr::ShowEffectText(CPlayScene::GetPlayer()->GetComponent<CTransform>()->GetPos(), std::to_wstring((int)1.0f), Gdiplus::Color::LimeGreen);
+			}
+		}
+
 		GameObject* weapon = tOther->GetOwner();
 		DamageByWeapon(weapon);
 
@@ -127,11 +137,6 @@ void CEnemyScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther)
 
 void CEnemyScript::OnCollisionStay(float tDeltaTime, CCollider* tOther)
 {
-
-	if (tOther->GetOwner()->GetLayerType() == eLayerType::Player) {
-		GameObject* player = tOther->GetOwner();
-		ButtDamageToPlayer(player);
-	}
 }
 
 void CEnemyScript::OnCollisionExit(float tDeltaTime, CCollider* tOther)
@@ -208,25 +213,19 @@ void CEnemyScript::Death(float tDeltaTime) {
 	}
 }
 
-void CEnemyScript::ButtDamageToPlayer(GameObject* tPlayer)
-{
-	if (tPlayer->GetComponent<CPlayerScript>()->GetCanCollideEnemy()) {
-		tPlayer->GetComponent<CPlayerScript>()->IncreaseHP(-mDamage);
-		tPlayer->GetComponent<CPlayerScript>()->SetCanCollideEnemy(false);
-	}
-}
-
 void CEnemyScript::DamageByWeapon(GameObject* tWeapon)
 {
+	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
 	CWeaponScript::SDamageInfo dmgInfo = { 0.0f, false };
 
 	if (tWeapon->GetLayerType() == eLayerType::MeleeWeapon) {
 		CWeaponScript* wpSc = tWeapon->GetComponent<CWeaponScript>();
+		wpSc->SetDamage(wpSc->GetDamage() + plSc->GetMeleeDamage());
 		dmgInfo = wpSc->GetFinalDamage();
 	}
 	else if (tWeapon->GetLayerType() == eLayerType::Bullet) {
 		CBulletScript* blSc = tWeapon->GetComponent<CBulletScript>();
-		dmgInfo = blSc->GetFinalDamage();
+		dmgInfo = blSc->GetFinalDamage(plSc->GetRangedDamage());
 	}
 
 	DecreaseHP(dmgInfo.damage);
@@ -243,5 +242,5 @@ void CEnemyScript::DamageByWeapon(GameObject* tWeapon)
 	SVector2D textPos = pos;
 	textPos.mY -= 50.0f; // 머리 위로 살짝 올리기
 
-	CEffectMgr::ShowDamageText(textPos, (int)dmgInfo.damage, textColor);
+	CEffectMgr::ShowEffectText(textPos, std::to_wstring((int)dmgInfo.damage), textColor);
 }

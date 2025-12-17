@@ -152,7 +152,7 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClCompile Include="CCat.cpp" />
     <ClCompile Include="CCharacterSelectUI.cpp" />
     <ClCompile Include="CDaggerScript.cpp" />
-    <ClCompile Include="CDamageText.cpp" />
+    <ClCompile Include="CEffectText.cpp" />
     <ClCompile Include="CDataMgr.cpp" />
     <ClCompile Include="CEffect.cpp" />
     <ClCompile Include="CEffectMgr.cpp" />
@@ -202,7 +202,7 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClInclude Include="CCat.h" />
     <ClInclude Include="CCharacterSelectUI.h" />
     <ClInclude Include="CDaggerScript.h" />
-    <ClInclude Include="CDamageText.h" />
+    <ClInclude Include="CEffectText.h" />
     <ClInclude Include="CDataMgr.h" />
     <ClInclude Include="CEffect.h" />
     <ClInclude Include="CEffectMgr.h" />

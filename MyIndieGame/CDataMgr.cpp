@@ -11,6 +11,7 @@ std::unordered_map<std::wstring, CDataMgr::SMonster> CDataMgr::mMonsterStats;
 std::unordered_map<std::wstring, CDataMgr::SWeapon> CDataMgr::mWeaponDatas;
 std::unordered_map<std::wstring, CDataMgr::SCharacter> CDataMgr::mCharacterDatas;
 std::unordered_map<std::wstring, CDataMgr::SEffect> CDataMgr::mEffectDatas;
+std::unordered_map<std::wstring, CDataMgr::SItem> CDataMgr::mItemDatas;
 
 
 std::unordered_map<std::wstring, std::function<CEnemy* ()>> CDataMgr::mMonsterCreator;
@@ -47,6 +48,7 @@ void CDataMgr::LoadDatas() {
 	json weaponDatas;
 	json characterDatas;
 	json effectDatas;
+	json itemDatas;
 
 	std::ifstream monsterFile("../Data/MonsterStats.json", std::ios::in);
 	monsterFile >> monsterStats;
@@ -126,6 +128,7 @@ void CDataMgr::LoadDatas() {
 			weapon.tier[i].critChancePer = t["CriticalChance"];
 			weapon.tier[i].delay = t["Delay"];
 			weapon.tier[i].range = t["Range"];
+			weapon.tier[i].lifeSteal = t["LifeSteal"];
 			weapon.tier[i++].basePrice = t["BasePrice"];
 		}
 
@@ -181,5 +184,40 @@ void CDataMgr::LoadDatas() {
 		effect.description = ToWString(effectData["Description"]);
 
 		mEffectDatas.insert({ effect.ID, effect });
+	}
+
+	std::ifstream itemFile("../Data/Items.json", std::ios::in);
+	itemFile >> itemDatas;
+
+	for (auto& itemData : itemDatas["Items"]) {
+		SItem item;
+
+		item.ID = ToWString(itemData["I_ID"]);
+		item.name = ToWString(itemData["Name"]);
+		item.tier = itemData["Tier"];
+		item.pos = ToWString(itemData["Pos"]);
+		item.basePrice = itemData["Base_Price"];
+
+		for (auto& effect : itemData["Effects"]) {
+
+			if (effect.contains("comment")) {
+				break;
+			}
+
+			std::wstring effectID = ToWString(effect["E_ID"]);
+			std::vector<SArg> effectArgs;
+
+			for (auto& arg : effect["Args"]) {
+				SArg effectArg;
+				effectArg.value = ToWString(arg["Value"]);
+				effectArg.color = ToWString(arg["Color"]);
+
+				effectArgs.push_back(effectArg);
+			}
+
+			item.effects.insert({ effectID, effectArgs });
+		}
+
+		mItemDatas.insert({ item.ID, item });
 	}
 }

@@ -4,6 +4,7 @@
 #include "CSceneMgr.h"
 #include "CDataMgr.h"
 
+#include "CCharacterSelectUI.h"
 #include "CUIButton.h"
 #include "CUIPanel.h"
 #include "CUIText.h"
@@ -15,6 +16,7 @@
 #include "CSettingScene.h"
 
 #include "CPlayerScript.h"
+#include "CWeaponMgr.h"
 
 #include "Effect.h"
 
@@ -25,11 +27,6 @@ void CWeaponSelectUI::OnCreate()
 	SetWidth(windowWidth);
 	SetHeight(windowHeight);
 
-	CUIPanel* basePanel = new CUIPanel();
-
-	basePanel->SetPos(SVector2D());
-	basePanel->SetWidth(this->GetWidth());
-	basePanel->SetHeight(this->GetHeight());
 
 	auto it = CDataMgr::GetCharacterDatas().find(CPlayScene::GetPlayer()->GetComponent<CPlayerScript>()->GetStartingCharacterID());
 	if (it == CDataMgr::GetCharacterDatas().end()) {
@@ -71,10 +68,12 @@ void CWeaponSelectUI::OnCreate()
 		});
 
 	backButton->SetEventClick([=]() {
-		CUIMgr::Pop(eUIType::WeaponSelectUI);
-		CUIMgr::Push(eUIType::CharacterSelectUI);
+		this->InActive();
+		CUIMgr::FindUI(eUIType::CharacterSelectUI)->Active();
+		mCharDescriptionPanel->Reparent(CUIMgr::FindUI(eUIType::CharacterSelectUI), true);
+		CUIMgr::ClearUI(eUIType::WeaponSelectUI);
 		});
-	basePanel->AddChild(backButton);
+	this->AddChild(backButton);
 
 	// 현재 창 텍스트
 	CUIText* currentUITex = new CUIText();
@@ -90,135 +89,9 @@ void CWeaponSelectUI::OnCreate()
 	currentUITex->SetPos(SVector2D(0.0f, currentUITex->GetHeight() / 3));
 	currentUITex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentNear);
 
-	basePanel->AddChild(currentUITex);
+	this->AddChild(currentUITex);
 
-	// 설명 패널
-	CUIPanel* descriptionCharPanel = new CUIPanel();
-
-	descriptionCharPanel->SetWidth(250.0f);
-	descriptionCharPanel->SetHeight(320.0f);
-	descriptionCharPanel->SetPos(SVector2D(basePanel->GetWidth() / 2 - descriptionCharPanel->GetWidth() / 2, this->GetHeight() / 7));
-	descriptionCharPanel->SetBackColor(Gdiplus::Color::Black);
-	descriptionCharPanel->SetCornerRadius(10.0f);
-
-	basePanel->AddChild(descriptionCharPanel);
-
-	CUIPanel* charDescriptionImgPanel = new CUIPanel();
-
-	charDescriptionImgPanel->SetWidth(75.0f);
-	charDescriptionImgPanel->SetHeight(75.0f);
-	charDescriptionImgPanel->SetPos(SVector2D(10.0f, 10.0f));
-	charDescriptionImgPanel->SetBackColor(Gdiplus::Color::Black);
-	charDescriptionImgPanel->SetCornerRadius(10.0f);
-
-	descriptionCharPanel->AddChild(charDescriptionImgPanel);
-
-	CUIImg* charDescriptionImg = new CUIImg();
-
-	charDescriptionImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
-	charDescriptionImg->SetWidth(charDescriptionImgPanel->GetWidth());
-	charDescriptionImg->SetHeight(charDescriptionImgPanel->GetHeight());
-
-	charDescriptionImgPanel->AddChild(charDescriptionImg);
-
-	CUIText* charNameTex = new CUIText();
-
-	charNameTex->SetPos(SVector2D(charDescriptionImgPanel->GetPos().mX + charDescriptionImgPanel->GetWidth() + 10.0f, charDescriptionImgPanel->GetPos().mY));
-	charNameTex->SetWidth(100.0f);
-	charNameTex->SetHeight(25.0f);
-
-	charNameTex->SetText(L"");
-	charNameTex->SetFont(L"Noto Sans KR Medium");
-	charNameTex->SetFontSize(20.0f);
-	charNameTex->SetColor(Gdiplus::Color::White);
-
-	descriptionCharPanel->AddChild(charNameTex);
-
-	CUIText* charTex = new CUIText();
-
-	charTex->SetPos(SVector2D(charDescriptionImgPanel->GetPos().mX + charDescriptionImgPanel->GetWidth() + 10.0f, charDescriptionImgPanel->GetPos().mY + 30.0f));
-	charTex->SetWidth(100.0f);
-	charTex->SetHeight(25.0f);
-
-	charTex->SetText(L"");
-	charTex->SetFont(L"Noto Sans KR Medium");
-	charTex->SetFontSize(15.0f);
-	charTex->SetColor(Gdiplus::Color::LightYellow);
-
-	descriptionCharPanel->AddChild(charTex);
-
-	CUIText* descriptionCharTex = new CUIText();
-
-	descriptionCharTex->SetPos(SVector2D(charDescriptionImgPanel->GetPos().mX, charDescriptionImgPanel->GetPos().mY + charDescriptionImgPanel->GetHeight() + 10.0f));
-	descriptionCharTex->SetWidth(200.0f);
-	descriptionCharTex->SetHeight(250.0f);
-
-	descriptionCharTex->SetFont(L"Noto Sans KR Medium");
-	descriptionCharTex->SetFontSize(15.0f);
-	descriptionCharTex->SetColor(Gdiplus::Color::White);
-
-	descriptionCharPanel->AddChild(descriptionCharTex);
-
-	charDescriptionImgPanel->SetBackColor(Gdiplus::Color::Gray);
-	charDescriptionImg->SetTexture(CResourceMgr::Find<CTexture>(curChar.iconTexture));
-	charNameTex->SetText(curChar.name);
-	charTex->SetText(L"캐릭터");
-
-	std::wstring charDiscription = L"";
-
-	for (auto& [effectID, args] : curChar.effects) {
-		auto it = CDataMgr::GetEffectDatas().find(effectID);
-		if (it == CDataMgr::GetEffectDatas().end()) {
-			continue;
-		}
-
-		std::wstring rawDesc = it->second.description;
-
-		int index = 0;
-
-		for (auto& arg : args) {
-			std::wstring value = arg.value;
-
-			std::wstring colorStr = L"#FFFFFF"; // 기본값
-			if (arg.color != L"") {
-				colorStr = arg.color;
-			}
-
-			if (colorStr == L"#00FF00")
-			{
-				try {
-					int iVal = std::stoi(arg.value);
-
-					if (iVal > 0) {
-						value = L"+" + value;
-					}
-				}
-				catch (...) {
-					// 변환 실패
-				}
-			}
-
-			std::wstring taggedStr = L"<c=" + colorStr + L">" + value + L"</c>";
-
-			// 설명글 치환 ({0} -> 태그 문자열)
-			// L"\\{" + 숫자 + L"\\}" 형태의 정규식 패턴 생성
-			std::wstring pattern = L"\\{" + std::to_wstring(index) + L"\\}";
-
-			try {
-				// rawDesc 안에 있는 {i}를 taggedStr로 교체
-				rawDesc = std::regex_replace(rawDesc, std::wregex(pattern), taggedStr);
-			}
-			catch (...) {
-				// 정규식 에러 예외처리 (원본 유지)
-			}
-			index++;
-		}
-
-		charDiscription += rawDesc + L"\n";
-	}
-
-	descriptionCharTex->SetText(charDiscription);
-
+	mCharDescriptionPanel = dynamic_cast<CUIPanel*>(dynamic_cast<CCharacterSelectUI*>(CUIMgr::FindUI(eUIType::CharacterSelectUI))->GetCharDescPanel()->Reparent(this, true));
 
 	// 무기 설명 패널
 	CUIPanel* descriptionWeaponPanel = new CUIPanel();
@@ -230,7 +103,7 @@ void CWeaponSelectUI::OnCreate()
 	descriptionWeaponPanel->SetCornerRadius(10.0f);
 	descriptionWeaponPanel->InActive();
 
-	basePanel->AddChild(descriptionWeaponPanel);
+	this->AddChild(descriptionWeaponPanel);
 
 	CUIPanel* weaponDescriptionImgPanel = new CUIPanel();
 
@@ -290,10 +163,11 @@ void CWeaponSelectUI::OnCreate()
 
 	CUIPanel* weaponSelectPanel = new CUIPanel;
 
-	weaponSelectPanel->SetPos(SVector2D(basePanel->GetPos().mX, basePanel->GetPos().mY + basePanel->GetHeight() / 2));
-	weaponSelectPanel->SetWidth(basePanel->GetWidth());
-	weaponSelectPanel->SetHeight(basePanel->GetHeight() / 2);
+	weaponSelectPanel->SetPos(SVector2D(this->GetPos().mX, this->GetPos().mY + this->GetHeight() / 2));
+	weaponSelectPanel->SetWidth(this->GetWidth());
+	weaponSelectPanel->SetHeight(this->GetHeight() / 2);
 
+	this->AddChild(weaponSelectPanel);
 
 	int x = 30;
 	int y = 100;
@@ -347,7 +221,7 @@ void CWeaponSelectUI::OnCreate()
 		descriptionStat(L"데미지", data.damage);
 
 		if (data.critDamagePer > 0.0f) {
-			weaponDiscription += L"<c=#FFFFE0>치명타:</c> X" + GetCleanVal(data.critDamagePer);
+			weaponDiscription += L"<c=#FFFFE0>치명타:</c> x" + GetCleanVal(data.critDamagePer);
 
 			if (data.critChancePer > 0.0f) {
 				weaponDiscription += L" (" + GetCleanVal(data.critChancePer) + L"% 확률)";
@@ -359,13 +233,11 @@ void CWeaponSelectUI::OnCreate()
 		descriptionStat(L"범위", data.range);
 
 
-		/* 특별한 능력에서 따로 설명 가져오는거 필요 */
-
 		weaponButton->SetEventHover([=]() {
 			weaponButton->SetBackColor(Gdiplus::Color::White);
 			descriptionWeaponPanel->Active();
-			descriptionCharPanel->SetPos(SVector2D(basePanel->GetWidth() / 2 - descriptionCharPanel->GetWidth() - 10, descriptionCharPanel->GetPos().mY));
-			descriptionWeaponPanel->SetPos(SVector2D(basePanel->GetWidth() / 2 + 10, descriptionCharPanel->GetPos().mY));
+			mCharDescriptionPanel->SetPos(SVector2D(this->GetWidth() / 2 - mCharDescriptionPanel->GetWidth() - 10, mCharDescriptionPanel->GetPos().mY));
+			descriptionWeaponPanel->SetPos(SVector2D(this->GetWidth() / 2 + 10, mCharDescriptionPanel->GetPos().mY));
 			weaponDescriptionImgPanel->SetBackColor(Gdiplus::Color::Gray);
 			weaponDescriptionImg->SetTexture(uiImg->GetTexture());
 			weaponNameTex->SetText(curWeapon.name);
@@ -379,24 +251,24 @@ void CWeaponSelectUI::OnCreate()
 			});
 
 		weaponButton->SetEventClick([=]() {
-			CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
+			CPlayer* pl = CPlayScene::GetPlayer();
+			CPlayerScript* plSc = pl->GetComponent<CPlayerScript>();
+			CWeaponMgr* plWeaponMgr = pl->GetComponent<CWeaponMgr>();
 
 			plSc->SetClothTexture(CResourceMgr::Find<CTexture>(curChar.clothTexture));
 			plSc->SetMouthTexture(CResourceMgr::Find<CTexture>(curChar.mouthTexture));
 			plSc->SetEyesTexture(CResourceMgr::Find<CTexture>(curChar.eyesTexture));
 			plSc->SetHairTexture(CResourceMgr::Find<CTexture>(curChar.hairTexture));
-			plSc->SetStartingWeaponID(curWeapon.ID);
+
+			if (curWeapon.ID[0] == L'M') {
+				plWeaponMgr->PlusWeapon(eLayerType::MeleeWeapon, curWeapon.ID, 1);
+			}
+			else if (curWeapon.ID[0] == L'R') {
+				plWeaponMgr->PlusWeapon(eLayerType::RangedWeapon, curWeapon.ID, 1);
+			}
 
 			for (auto& [ID, args] : curChar.effects) {
-				int value = 0;
-				for (auto& arg : args) {
-					value = std::stoi(arg.value);
-					if (value != 0) {
-						break;
-					}
-				}
-
-				ApplyEffect(ID, value);
+				ApplyEffect(ID, args);
 			}
 
 			CSceneMgr::LoadScene(L"PlayScene");
@@ -412,9 +284,6 @@ void CWeaponSelectUI::OnCreate()
 		}
 
 	}
-
-	basePanel->AddChild(weaponSelectPanel);
-	this->AddChild(basePanel);
 
 	CUIBase::OnCreate();
 	this->OnUpdate(0.0f);

@@ -1,0 +1,1012 @@
+{
+    "Items" :[
+        {
+            "I_ID" : "I_001",
+            "Name" : "산성",
+            "Tier" : 2,
+            "Pos" : "Mouth",
+            "Base_Price" : 65,
+            "Effects" : [
+                {
+                    "E_ID": "E_001",
+                    "Args": [
+                        {"Value" : "8", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_003",
+                    "Args": [
+                        {"Value" : "-2", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_002",
+            "Name" : "외계인 마법",
+            "Tier" : 3,
+            "Pos" : "Eyes",
+            "Base_Price" : 85,
+            "Effects" : [
+                {
+                    "E_ID": "E_001",
+                    "Args": [
+                        {"Value" : "8", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_002",
+                    "Args": [
+                        {"Value" : "3", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_004",
+                    "Args": [
+                        {"Value" : "-3", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_003",
+            "Name" : "합금",
+            "Tier" : 3,
+            "Pos" : "Body",
+            "Base_Price" : 80,
+            "Effects" : [
+                {
+                    "E_ID": "E_009",
+                    "Args": [
+                        {"Value" : "3", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_008",
+                    "Args": [
+                        {"Value" : "3", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_007",
+                    "Args": [
+                        {"Value" : "3", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_003",
+                    "Args" : [
+                        {"Value" : "-3", "Color" : "#FF0000" }
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_004",
+            "Name" : "가방",
+            "Tier" : 1,
+            "Pos" : "Body",
+            "Base_Price" : 15,
+            "Effects" : [
+                {
+                    "E_ID": "E_009",
+                    "Args": [
+                        {"Value" : "3", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "comment" : "여기에는 15 재료 더 먹는걸로 추가"
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_005",
+            "Name" : "비니",
+            "Tier" : 1,
+            "Pos" : "Hair",
+            "Base_Price" : 25,
+            "Effects" : [
+                {
+                    "E_ID": "E_011",
+                    "Args": [
+                        {"Value" : "4", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID": "E_005",
+                    "Args": [
+                        {"Value" : "-6", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_006",
+            "Name" : "눈가리개",
+            "Tier" : 2,
+            "Pos" : "Eyes",
+            "Base_Price" : 45,
+            "Effects" : [
+                {
+                    "E_ID": "E_007",
+                    "Args": [
+                        {"Value" : "5", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID": "E_003",
+                    "Args": [
+                        {"Value" : "5", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID": "E_005",
+                    "Args": [
+                        {"Value" : "-15", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_007",
+            "Name" : "거머리",
+            "Tier" : 2,
+            "Pos" : "Mouth",
+            "Base_Price" : 45,
+            "Effects" : [
+                {
+                    "E_ID": "E_012",
+                    "Args": [
+                        {"Value" : "2", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID": "E_002",
+                    "Args": [
+                        {"Value" : "2", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID": "E_001",
+                    "Args": [
+                        {"Value" : "-3", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_008",
+            "Name" : "깨진 입",
+            "Tier" : 1,
+            "Pos" : "Mouth",
+            "Base_Price" : 25,
+            "Effects" : [
+                {
+                    "E_ID": "E_001",
+                    "Args": [
+                        {"Value" : "5", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID": "E_002",
+                    "Args": [
+                        {"Value" : "1", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_009",
+            "Name" : "케이크",
+            "Tier" : 1,
+            "Pos" : "Eyes",
+            "Base_Price" : 15,
+            "Effects" : [
+                {
+                    "E_ID": "E_001",
+                    "Args": [
+                        {"Value" : "3", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID": "E_006",
+                    "Args": [
+                        {"Value" : "-1", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_010",
+            "Name" : "발톱 나무",
+            "Tier" : 1,
+            "Pos" : "None",
+            "Base_Price" : 20,
+            "Effects" : [
+                {
+                    "E_ID": "E_009",
+                    "Args": [
+                        {"Value" : "1", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID": "E_007",
+                    "Args": [
+                        {"Value" : "3", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID": "E_001",
+                    "Args": [
+                        {"Value" : "-1", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_011",
+            "Name" : "커피",
+            "Tier" : 1,
+            "Pos" : "Hair",
+            "Base_Price" : 20,
+            "Effects" : [
+                {
+                    "E_ID": "E_010",
+                    "Args": [
+                        {"Value" : "10", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID": "E_006",
+                    "Args": [
+                        {"Value" : "-2", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_012",
+            "Name" : "쿠폰",
+            "Tier" : 1,
+            "Pos" : "None",
+            "Base_Price" : 15,
+            "Effects" : [
+                {
+                    "comment" : "상점 가격 5프로 할인"
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_013",
+            "Name" : "외눈박이 벌레",
+            "Tier" : 2,
+            "Pos" : "Eyes",
+            "Base_Price" : 30,
+            "Effects" : [
+                {
+                    "E_ID": "E_006",
+                    "Args": [
+                        {"Value" : "12", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID": "E_005",
+                    "Args": [
+                        {"Value" : "-12", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_014",
+            "Name" : "위험한 토끼",
+            "Tier" : 2,
+            "Pos" : "Body",
+            "Base_Price" : 45,
+            "Effects" : [
+                {
+                    "comment" : "초기화 한 번 무료"
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_015",
+            "Name" : "불량 스테로이드",
+            "Tier" : 1,
+            "Pos" : "None",
+            "Base_Price" : 45,
+            "Effects" : [
+                {
+                    "E_ID": "E_001",
+                    "Args": [
+                        {"Value" : "2", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID": "E_009",
+                    "Args": [
+                        {"Value" : "2", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID": "E_010",
+                    "Args": [
+                        {"Value" : "-3", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_016",
+            "Name" : "외골격",
+            "Tier" : 4,
+            "Pos" : "None",
+            "Base_Price" : 90,
+            "Effects" : [
+                {
+                    "E_ID": "E_004",
+                    "Args": [
+                        {"Value" : "3", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID": "E_007",
+                    "Args": [
+                        {"Value" : "5", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID": "E_009",
+                    "Args": [
+                        {"Value" : "3", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID": "E_011",
+                    "Args": [
+                        {"Value" : "5", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID": "E_002",
+                    "Args": [
+                        {"Value" : "-2", "Color" : "#FF0000"}
+                    ]
+                },
+                {
+                    "E_ID": "E_012",
+                    "Args": [
+                        {"Value" : "-2", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_017",
+            "Name" : "지느러미",
+            "Tier" : 3,
+            "Pos" : "Hair",
+            "Base_Price" : 65,
+            "Effects" : [
+                {
+                    "E_ID": "E_010",
+                    "Args": [
+                        {"Value" : "10", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID": "E_012",
+                    "Args": [
+                        {"Value" : "3", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_001",
+                    "Args" : [
+                        {"Value" : "-3", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_018",
+            "Name" : "신선한 고기",
+            "Tier" : 1,
+            "Pos" : "Mouth",
+            "Base_Price" : 25,
+            "Effects" : [
+                {
+                    "E_ID": "E_012",
+                    "Args": [
+                        {"Value" : "2", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_002",
+                    "Args" : [
+                        {"Value" : "-1", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_019",
+            "Name" : "갬블링 토큰",
+            "Tier" : 2,
+            "Pos" : "None",
+            "Base_Price" : 50,
+            "Effects" : [
+                {
+                    "E_ID": "E_003",
+                    "Args": [
+                        {"Value" : "8", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_004",
+                    "Args" : [
+                        {"Value" : "-1", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_020",
+            "Name" : "유령 의상",
+            "Tier" : 3,
+            "Pos" : "Hair",
+            "Base_Price" : 80,
+            "Effects" : [
+                {
+                    "comment" : "Dodge 70프로 뚫게 하기"
+                },
+                {
+                    "E_ID" : "E_003",
+                    "Args" : [
+                        {"Value" : "10", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_011",
+                    "Args" : [
+                        {"Value" : "-5", "Color" : "#FF0000"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_004",
+                    "Args" : [
+                        {"Value" : "-3", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_021",
+            "Name" : "유리 대포",
+            "Tier" : 3,
+            "Pos" : "None",
+            "Base_Price" : 75,
+            "Effects" : [
+                {
+                    "E_ID" : "E_006",
+                    "Args" : [
+                        {"Value" : "25", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_004",
+                    "Args" : [
+                        {"Value" : "-3", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_022",
+            "Name" : "안경",
+            "Tier" : 1,
+            "Pos" : "Eyes",
+            "Base_Price" : 20,
+            "Effects" : [
+                {
+                    "E_ID" : "E_005",
+                    "Args" : [
+                        {"Value" : "20", "Color" : "#00FF00"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_023",
+            "Name" : "염소 두개골",
+            "Tier" : 1,
+            "Pos" : "None",
+            "Base_Price" : 25,
+            "Effects" : [
+                {
+                    "E_ID" : "E_009",
+                    "Args" : [
+                        {"Value" : "3", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_007",
+                    "Args" : [
+                        {"Value" : "-2", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_024",
+            "Name" : "진득한 버서커",
+            "Tier" : 1,
+            "Pos" : "Mouth",
+            "Base_Price" : 25,
+            "Effects" : [
+                {
+                    "E_ID" : "E_010",
+                    "Args" : [
+                        {"Value" : "5", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_005",
+                    "Args" : [
+                        {"Value" : "25", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_004",
+                    "Args" : [
+                        {"Value" : "-1", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_025",
+            "Name" : "머리 부상",
+            "Tier" : 1,
+            "Pos" : "Hair",
+            "Base_Price" : 25,
+            "Effects" : [
+                {
+                    "E_ID" : "E_006",
+                    "Args" : [
+                        {"Value" : "6", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_005",
+                    "Args" : [
+                        {"Value" : "-8", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_026",
+            "Name" : "고슴도치",
+            "Tier" : 1,
+            "Pos" : "Hair",
+            "Base_Price" : 30,
+            "Effects" : [
+                {
+                    "E_ID" : "E_009",
+                    "Args" : [
+                        {"Value" : "2", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_008",
+                    "Args" : [
+                        {"Value" : "1", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_002",
+                    "Args" : [
+                        {"Value" : "-1", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_027",
+            "Name" : "주입",
+            "Tier" : 1,
+            "Pos" : "None",
+            "Base_Price" : 20,
+            "Effects" : [
+                {
+                    "E_ID" : "E_006",
+                    "Args" : [
+                        {"Value" : "7", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_001",
+                    "Args" : [
+                        {"Value" : "-2", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_028",
+            "Name" : "광기",
+            "Tier" : 1,
+            "Pos" : "Eyes",
+            "Base_Price" : 20,
+            "Effects" : [
+                {
+                    "E_ID" : "E_007",
+                    "Args" : [
+                        {"Value" : "6", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_006",
+                    "Args" : [
+                        {"Value" : "-3", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_029",
+            "Name" : "제트팩",
+            "Tier" : 4,
+            "Pos" : "None",
+            "Base_Price" : 100,
+            "Effects" : [
+                {
+                    "E_ID" : "E_011",
+                    "Args" : [
+                        {"Value" : "15", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_003",
+                    "Args" : [
+                        {"Value" : "10", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_001",
+                    "Args" : [
+                        {"Value" : "-5", "Color" : "#FF0000"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_004",
+                    "Args" : [
+                        {"Value" : "-1", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_030",
+            "Name" : "가죽 조끼",
+            "Tier" : 2,
+            "Pos" : "Body",
+            "Base_Price" : 45,
+            "Effects" : [
+                {
+                    "E_ID" : "E_004",
+                    "Args" : [
+                        {"Value" : "2", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_003",
+                    "Args" : [
+                        {"Value" : "6", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_001",
+                    "Args" : [
+                        {"Value" : "-3", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_031",
+            "Name" : "렌즈",
+            "Tier" : 1,
+            "Pos" : "Eyes",
+            "Base_Price" : 20,
+            "Effects" : [
+                {
+                    "E_ID" : "E_008",
+                    "Args" : [
+                        {"Value" : "1", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_005",
+                    "Args" : [
+                        {"Value" : "-5", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_032",
+            "Name" : "작은 근육질의 친구",
+            "Tier" : 2,
+            "Pos" : "None",
+            "Base_Price" : 50,
+            "Effects" : [
+                {
+                    "E_ID" : "E_009",
+                    "Args" : [
+                        {"Value" : "3", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_001",
+                    "Args" : [
+                        {"Value" : "5", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_005",
+                    "Args" : [
+                        {"Value" : "-15", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_033",
+            "Name" : "맘모스",
+            "Tier" : 4,
+            "Pos" : "Mouth",
+            "Base_Price" : 110,
+            "Effects" : [
+                {
+                    "E_ID" : "E_009",
+                    "Args" : [
+                        {"Value" : "20", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_002",
+                    "Args" : [
+                        {"Value" : "5", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_006",
+                    "Args" : [
+                        {"Value" : "-8", "Color" : "#FF0000"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_011",
+                    "Args" : [
+                        {"Value" : "-3", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_034",
+            "Name" : "통달",
+            "Tier" : 2,
+            "Pos" : "Eyes",
+            "Base_Price" : 55,
+            "Effects" : [
+                {
+                    "E_ID" : "E_009",
+                    "Args" : [
+                        {"Value" : "6", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_008",
+                    "Args" : [
+                        {"Value" : "-3", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_035",
+            "Name" : "메달",
+            "Tier" : 2,
+            "Pos" : "Body",
+            "Base_Price" : 55,
+            "Effects" : [
+                {
+                    "E_ID" : "E_001",
+                    "Args" : [
+                        {"Value" : "3", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_006",
+                    "Args" : [
+                        {"Value" : "3", "Color" : "#FF0000"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_004",
+                    "Args" : [
+                        {"Value" : "1", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_011",
+                    "Args" : [
+                        {"Value" : "3", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_007",
+                    "Args" : [
+                        {"Value" : "-3", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_036",
+            "Name" : "철판",
+            "Tier" : 2,
+            "Pos" : "Body",
+            "Base_Price" : 40,
+            "Effects" : [
+                {
+                    "E_ID" : "E_004",
+                    "Args" : [
+                        {"Value" : "2", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_006",
+                    "Args" : [
+                        {"Value" : "-3", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_037",
+            "Name" : "미사일",
+            "Tier" : 2,
+            "Pos" : "None",
+            "Base_Price" : 45,
+            "Effects" : [
+                {
+                    "E_ID" : "E_006",
+                    "Args" : [
+                        {"Value" : "10", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_010",
+                    "Args" : [
+                        {"Value" : "-4", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_038",
+            "Name" : "식물",
+            "Tier" : 1,
+            "Pos" : "None",
+            "Base_Price" : 15,
+            "Effects" : [
+                {
+                    "E_ID" : "E_002",
+                    "Args" : [
+                        {"Value" : "3", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_012",
+                    "Args" : [
+                        {"Value" : "-1", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_039",
+            "Name" : "유독한 토닉",
+            "Tier" : 1,
+            "Pos" : "None",
+            "Base_Price" : 80,
+            "Effects" : [
+                {
+                    "E_ID" : "E_010",
+                    "Args" : [
+                        {"Value" : "10", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_007",
+                    "Args" : [
+                        {"Value" : "5", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_005",
+                    "Args" : [
+                        {"Value" : "15", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_002",
+                    "Args" : [
+                        {"Value" : "-2", "Color" : "#FF0000"}
+                    ]
+                }
+            ]
+        },
+        {
+            "I_ID" : "I_040",
+            "Name" : "감자",
+            "Tier" : 4,
+            "Pos" : "Body",
+            "Base_Price" : 95,
+            "Effects" : [
+                {
+                    "E_ID" : "E_001",
+                    "Args" : [
+                        {"Value" : "3", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_002",
+                    "Args" : [
+                        {"Value" : "2", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_012",
+                    "Args" : [
+                        {"Value" : "1", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_006",
+                    "Args" : [
+                        {"Value" : "5", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_010",
+                    "Args" : [
+                        {"Value" : "5", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_011",
+                    "Args" : [
+                        {"Value" : "3", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_003",
+                    "Args" : [
+                        {"Value" : "3", "Color" : "#00FF00"}
+                    ]
+                },
+                {
+                    "E_ID" : "E_004",
+                    "Args" : [
+                        {"Value" : "1", "Color" : "#00FF00"}
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -11,19 +11,14 @@ void CTitleSceneUI::OnCreate()
 	SetWidth(windowWidth);
 	SetHeight(windowHeight);
 
-	CUIPanel* basePanel = new CUIPanel();
-
-	basePanel->SetPos(SVector2D());
-	basePanel->SetWidth(this->GetWidth());
-	basePanel->SetHeight(this->GetHeight());
 
 	CUIPanel* menuPanel = new CUIPanel();
 
-	menuPanel->SetPos(SVector2D(30.0f, 3 * basePanel->GetHeight() / 5));
-	menuPanel->SetWidth(basePanel->GetWidth() / 5);
-	menuPanel->SetHeight(basePanel->GetHeight() / 3);
+	menuPanel->SetPos(SVector2D(30.0f, 3 * this->GetHeight() / 5));
+	menuPanel->SetWidth(this->GetWidth() / 5);
+	menuPanel->SetHeight(this->GetHeight() / 3);
 
-	basePanel->AddChild(menuPanel);
+	this->AddChild(menuPanel);
 
 	CUIButton* startButton = new CUIButton();
 
@@ -96,8 +91,6 @@ void CTitleSceneUI::OnCreate()
 	optionButton->AddChild(optionButtonTex);
 
 	menuPanel->AddChild(optionButton);
-
-	this->AddChild(basePanel);
 
 
 

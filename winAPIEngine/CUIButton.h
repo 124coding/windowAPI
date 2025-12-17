@@ -38,6 +38,14 @@ public:
 		return this->mMouseInTexture;
 	}
 
+	void SetSelected(bool tBool) {
+		this->mIsSelected = tBool;
+	}
+
+	bool IsSelected() {
+		return this->mIsSelected;
+	}
+
 	void SetToolTipText(const std::wstring& text) {
 		mToolTipText = text;
 	}
@@ -57,6 +65,8 @@ private:
 	CTexture* mMouseOutTexture = nullptr;
 	CTexture* mMouseInTexture = nullptr;
 	SEvent mOnClick;
+
+	bool mIsSelected = false;
 
 	std::wstring mToolTipText;
 };

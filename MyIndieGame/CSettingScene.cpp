@@ -43,7 +43,7 @@ void CSettingScene::OnEnter()
 void CSettingScene::OnExit()
 {
 	CScene::OnExit();
-	/*CUIMgr::ClearUI(eUIType::CharacterSelectUI);
+	CUIMgr::ClearUI(eUIType::CharacterSelectUI);
 	CUIMgr::ClearUI(eUIType::WeaponSelectUI);
-	CUIMgr::ClearUI(eUIType::TitleSceneUI);*/
+	CUIMgr::ClearUI(eUIType::TitleSceneUI);
 }

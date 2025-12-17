@@ -97,6 +97,18 @@ public:
 		mChilds.push_back(tChild);
 	}
 
+	void RemoveChild(CUIBase* tChild) {
+		if (tChild == nullptr) return;
+
+		for (auto it = mChilds.begin(); it != mChilds.end(); it++) {
+			if (tChild == *it) {
+				tChild->mParent = nullptr;
+				mChilds.erase(it);
+				return;
+			}
+		}
+	}
+
 	void SetHover(bool tIsHover) {
 		this->mIsHover = tIsHover;
 	}
@@ -145,6 +157,7 @@ public:
 	void AddRoundedRectToPath(Gdiplus::GraphicsPath* path, Gdiplus::Rect rect, int cornerRadius);
 	bool IsOutsideRect(CUIBase* tUIBase);
 	CUIBase* FindTargetUI(SVector2D mousePos);
+	CUIBase* Reparent(CUIBase* tNewParent, bool keepWorldPosition, SVector2D tWantPos = SVector2D());
 
 protected:
 	SVector2D mFinalPos;

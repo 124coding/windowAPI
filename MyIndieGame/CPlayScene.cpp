@@ -185,7 +185,9 @@ void CPlayScene::OnUpdate(float tDeltaTime)
 {
 	CScene::OnUpdate(tDeltaTime);
 	CMonsterSpawnMgr::MonsterSpawnEvent(mPlayer);
-	CMonsterSpawnMgr::MinusTime(tDeltaTime);
+	if (CMonsterSpawnMgr::GetTime() > 0) {
+		CMonsterSpawnMgr::MinusTime(tDeltaTime);
+	}
 	if (CMonsterSpawnMgr::GetTime() < 0) {
 
 	}
@@ -238,20 +240,8 @@ void CPlayScene::OnEnter()
 
 	CWeaponMgr* plWeaponMgr = mPlayer->GetComponent<CWeaponMgr>();
 
-	std::wstring weaponID = plSc->GetStartingWeaponID();
-
-	if (plSc->GetStartingWeaponID() != L"") {
-		if (plSc->GetStartingWeaponID()[0] == L'M') {
-			plWeaponMgr->PlusWeapon(eLayerType::MeleeWeapon, weaponID, 1);
-		}
-		else if (plSc->GetStartingWeaponID()[0] == L'R') {
-			plWeaponMgr->PlusWeapon(eLayerType::RangedWeapon, weaponID, 1);
-		}
-
-		plSc->SetStartingWeaponID(L"");
-	}
-
 	plWeaponMgr->WeaponsPosition();
+
 	CUIMgr::Push(eUIType::PlaySceneUI);
 	/*CUIMgr::Push(eUIType::HPBar);
 	dynamic_cast<CUIHPBar*>(CUIMgr::FindUI(eUIType::HPBar))->SetPlayer(mPlayer);

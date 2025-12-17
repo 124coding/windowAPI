@@ -23,6 +23,10 @@ public:
 	void PlusItem(std::wstring tName) {
 		mItems.push_back(tName);
 	};
+
+	std::vector<std::wstring> GetItems() {
+		return this->mItems;
+	}
 private:
 	std::vector<std::wstring> mItems;
 };

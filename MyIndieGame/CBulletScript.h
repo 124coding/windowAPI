@@ -33,7 +33,7 @@ public:
 		this->mDamage = tDamage;
 	}
 
-	CWeaponScript::SDamageInfo GetFinalDamage();
+	CWeaponScript::SDamageInfo GetFinalDamage(float tRangedDamage);
 private:
 	GameObject* mWeapon;
 	float mDamage;

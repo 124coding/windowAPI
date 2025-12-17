@@ -5,6 +5,12 @@
 #include "CSceneMgr.h"
 #include "CResourceMgr.h"
 
+#include "CPlayScene.h"
+
+#include "CPlayer.h"
+
+#include "CPlayerScript.h"
+
 #include "CCircleCollider2D.h"
 #include "CBulletScript.h"
 
@@ -64,6 +70,11 @@ void CRangedWeaponScript::OnCollisionExit(float tDeltaTime, CCollider* tOther)
 
 void CRangedWeaponScript::CanAttackCheck(std::vector<GameObject*> tEnemies)
 {
+	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
+
+	float range = plSc->GetRange();
+	int attackSpeed = plSc->GetAttackSpeedPercent();
+
 	if (tEnemies.empty()) {
 		return;
 	}
@@ -77,7 +88,7 @@ void CRangedWeaponScript::CanAttackCheck(std::vector<GameObject*> tEnemies)
 
 	float distanceToEnemy = (targetPos - GetClosedEnemyPos()).Length();
 
-	if (distanceToEnemy <= GetRange() && mTotalTime > GetDelay()) {
+	if (distanceToEnemy <= GetRange() + range && mTotalTime > GetDelay() / (1 + attackSpeed / 100.0f)) {
 		mTotalTime = 0.0f;
 
 		CTransform* blTr = mBullet->GetComponent<CTransform>();

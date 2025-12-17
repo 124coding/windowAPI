@@ -38,7 +38,6 @@ public:
 	virtual void OnCollisionStay(float tDeltaTime, CCollider* tOther) override;
 	virtual void OnCollisionExit(float tDeltaTime, CCollider* tOther) override;
 
-	virtual void ButtDamageToPlayer(GameObject* tPlayer);
 	virtual void DamageByWeapon(GameObject* tWeapon);
 
 public:
@@ -61,11 +60,11 @@ public:
 		return this->mHP;
 	}
 
-	void SetDamage(int tDamage) {
+	void SetDamage(float tDamage) {
 		this->mDamage = tDamage;
 	}
 
-	int GetDamage() {
+	float GetDamage() {
 		return this->mDamage;
 	}
 
@@ -75,14 +74,6 @@ public:
 
 	float GetSpeed() {
 		return this->mSpeed;
-	}
-
-	void SetDistanceToPlayer(float tDistance) {
-		this->mDistanceToPlayer = tDistance;
-	}
-
-	float GetDistanceToPlayer() {
-		return this->mDistanceToPlayer;
 	}
 
 	void SetBaseTexture(CTexture* tTex) {
@@ -110,10 +101,8 @@ private:
 	float mDeadTimeTaken = 1.0f;
 
 	int mHP = 0;
-	int mDamage = 0;
+	float mDamage = 0;
 	float mSpeed = 0.0f;
-
-	float mDistanceToPlayer = 9999.9f;
 
 	float mBlinkTime = 2.0f;
 	float mCurrentBlinkAlpha = 1.0f;

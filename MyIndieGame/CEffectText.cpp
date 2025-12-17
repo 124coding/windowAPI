@@ -1,12 +1,12 @@
-#include "CDamageText.h"
+#include "CEffectText.h"
 
 #include "CRenderer.h"
 #include "CTransform.h"
 
-CDamageText::CDamageText(const CDamageText& tDamageText) {
+CEffectText::CEffectText(const CEffectText& tEffectText) {
 
 }
-CDamageText& CDamageText::operator=(const CDamageText& tDamagetTExt) {
+CEffectText& CEffectText::operator=(const CEffectText& tDamagetTExt) {
     if (this == &tDamagetTExt)
     {
         return *this;
@@ -15,7 +15,7 @@ CDamageText& CDamageText::operator=(const CDamageText& tDamagetTExt) {
     GameObject::operator=(tDamagetTExt);
 }
 
-void CDamageText::OnCreate() {
+void CEffectText::OnCreate() {
     CEffect::OnCreate();
 
     mCurTime = 0.0f;
@@ -23,12 +23,12 @@ void CDamageText::OnCreate() {
     SetState(false);
 }
 
-void CDamageText::OnDestroy() {
+void CEffectText::OnDestroy() {
     CEffect::OnDestroy();
 }
 
 // 여기 문제인듯??
-void CDamageText::OnUpdate(float tDeltaTime) {
+void CEffectText::OnUpdate(float tDeltaTime) {
     CEffect::OnUpdate(tDeltaTime);
 
     CTransform* tr = this->GetComponent<CTransform>();
@@ -57,11 +57,11 @@ void CDamageText::OnUpdate(float tDeltaTime) {
 
 }
 
-void CDamageText::OnLateUpdate(float tDeltaTime) {
+void CEffectText::OnLateUpdate(float tDeltaTime) {
     CEffect::OnLateUpdate(tDeltaTime);
 }
 
-void CDamageText::Render(HDC tHDC) {
+void CEffectText::Render(HDC tHDC) {
     CEffect::Render(tHDC);
 
     CTransform* tr = this->GetComponent<CTransform>();
@@ -70,7 +70,7 @@ void CDamageText::Render(HDC tHDC) {
     Gdiplus::Graphics graphics(tHDC);
 
     Gdiplus::FontFamily fontFamily(L"Noto Sans KR Medium");
-    Gdiplus::Font font(&fontFamily, 20, Gdiplus::FontStyleBold, Gdiplus::UnitPixel);
+    Gdiplus::Font font(&fontFamily, 30, Gdiplus::FontStyleBold, Gdiplus::UnitPixel);
 
     Gdiplus::SolidBrush brush(mColor);
 
@@ -86,7 +86,7 @@ void CDamageText::Render(HDC tHDC) {
     graphics.ResetTransform();
 }
 
-void CDamageText::Reset(SVector2D tPos)
+void CEffectText::Reset(SVector2D tPos)
 {
     CTransform* tr = this->GetComponent<CTransform>();
     tr->SetVelocity(SVector2D(0.0f, -200.0f));
@@ -98,7 +98,7 @@ void CDamageText::Reset(SVector2D tPos)
     SetState(true);
 }
 
-void CDamageText::Reset(SVector2D tPos, int tDamage, Gdiplus::Color tColor)
+void CEffectText::Reset(SVector2D tPos, std::wstring tText, Gdiplus::Color tColor)
 {
     CTransform* tr = this->GetComponent<CTransform>();
     tr->SetVelocity(SVector2D(0.0f, -200.0f));
@@ -109,7 +109,7 @@ void CDamageText::Reset(SVector2D tPos, int tDamage, Gdiplus::Color tColor)
 
     mColor = tColor;
 
-    mText = std::to_wstring((int)tDamage);
+    mText = tText;
     mCurTime = 0.0f;
     SetState(true);
 }

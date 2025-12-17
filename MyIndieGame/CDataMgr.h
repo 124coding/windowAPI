@@ -41,6 +41,7 @@ public:
 		float critChancePer = 0.0f;
 		float delay = 0.0f;
 		float range = 0.0f;
+		float lifeSteal = 0.0f;
 		int basePrice = 0;
 	};
 
@@ -85,6 +86,15 @@ public:
 		std::unordered_map<std::wstring, std::vector<SArg>> effects;
 	};
 
+	struct SItem {
+		std::wstring ID = L"";
+		std::wstring name = L"";
+		int tier = 0;
+		std::wstring pos = L"";
+		int basePrice = 0;
+		std::unordered_map<std::wstring, std::vector<SArg>> effects;
+	};
+
 	static void OnCreate();
 	static void OnDestroy();
 	static void OnUpdate(float tDeltaTime);
@@ -106,7 +116,7 @@ public:
 	template<typename T>
 	static void WeaponRegister(const std::wstring& tID, eLayerType tType) {
 		mWeaponCreator[tID] = [=]() -> CWeapon* {
-			CWeapon* weapon = Instantiate<CWeapon>(tType);
+			CWeapon* weapon = Instantiate<CWeapon>(tType, CSceneMgr::GetWantScene(L"PlayScene"));
 			weapon->AddComponent<T>();
 			return weapon;
 			};
@@ -115,7 +125,7 @@ public:
 	template<typename T>
 	static void MonsterRegister(const std::wstring& tID) {
 		mMonsterCreator[tID] = []() -> CEnemy* {
-			CEnemy* enemy = Instantiate<CEnemy>(eLayerType::Enemy);
+			CEnemy* enemy = Instantiate<CEnemy>(eLayerType::Enemy, CSceneMgr::GetWantScene(L"PlayScene"));
 			enemy->AddComponent<T>();
 			return enemy;
 			};
@@ -139,6 +149,10 @@ public:
 		return mEffectDatas;
 	}
 
+	static const std::unordered_map<std::wstring, SItem>& GetItemDatas() {
+		return mItemDatas;
+	}
+
 
 
 	static const std::unordered_map<std::wstring, std::function<CEnemy* ()>>& GetMonsterCreator() {
@@ -154,6 +168,7 @@ private:
 	static std::unordered_map<std::wstring, SWeapon> mWeaponDatas;
 	static std::unordered_map<std::wstring, SCharacter> mCharacterDatas;
 	static std::unordered_map<std::wstring, SEffect> mEffectDatas;
+	static std::unordered_map<std::wstring, SItem> mItemDatas;
 	
 	static std::unordered_map<std::wstring, std::function<CEnemy* ()>> mMonsterCreator;
 	static std::unordered_map<std::wstring, std::function<CWeapon* ()>> mWeaponCreator;

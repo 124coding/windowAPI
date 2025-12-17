@@ -28,7 +28,7 @@ enum class eLayerType {
 	MeleeWeapon,
 	RangedWeapon,
 	Particle,
-	DamageText,
+	EffectText,
 	MAX = 16
 };
 

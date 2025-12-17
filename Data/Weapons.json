@@ -15,9 +15,10 @@
                     "Tier": 1,
                     "Damage": 6.0,
                     "Delay": 1.01,
-                    "Range": 150.0,
                     "CriticalDamage" : 2.5,
                     "CriticalChance" : 20,
+                    "Range": 150.0,
+                    "LifeSteal" : 0.0,
                     "BasePrice" : 15
                 },
                 {
@@ -27,6 +28,7 @@
                     "CriticalDamage" : 3,
                     "CriticalChance" : 30,
                     "Range": 150.0,
+                    "LifeSteal" : 0.0,
                     "BasePrice" : 31
                 },
                 {
@@ -36,6 +38,7 @@
                     "CriticalDamage" : 3.5,
                     "CriticalChance" : 40,
                     "Range": 150.0,
+                    "LifeSteal" : 0.0,
                     "BasePrice" : 61
                 },
                 {
@@ -45,6 +48,223 @@
                     "CriticalDamage" : 4,
                     "CriticalChance" : 50,
                     "Range": 150.0,
+                    "LifeSteal" : 0.0,
+                    "BasePrice" : 122
+                }
+            ],
+            "SpecialEffect" : ""
+        },
+        {
+            "W_ID":"MW_002",
+            "Class" : "Primitive",
+            "Name": "창",
+            "IconTexture" : "SpearIcon",
+            "Speed": 1000.0,
+            "SizeX": 0.8,
+            "SizeY": 0.8,
+            "CollisionSizeX": 0.6,
+            "CollisionSizeY": 0.4,
+            "Tiers":[
+                {
+                    "Tier": 1,
+                    "Damage": 15.0,
+                    "Delay": 1.52,
+                    "CriticalDamage" : 2,
+                    "CriticalChance" : 3,
+                    "Range": 350.0,
+                    "LifeSteal" : 0.0,
+                    "BasePrice" : 20
+                },
+                {
+                    "Tier": 2,
+                    "Damage": 25.0,
+                    "Delay": 1.4,
+                    "CriticalDamage" : 2,
+                    "CriticalChance" : 3,
+                    "Range": 375.0,
+                    "LifeSteal" : 0.0,
+                    "BasePrice" : 39
+                },
+                {
+                    "Tier": 3,
+                    "Damage": 40.0,
+                    "Delay": 1.28,
+                    "CriticalDamage" : 2,
+                    "CriticalChance" : 3,
+                    "Range": 400.0,
+                    "LifeSteal" : 0.0,
+                    "BasePrice" : 74
+                },
+                {
+                    "Tier": 4,
+                    "Damage": 60.0,
+                    "Delay": 1.24,
+                    "CriticalDamage" : 2,
+                    "CriticalChance" : 3,
+                    "Range": 500.0,
+                    "LifeSteal" : 0.0,
+                    "BasePrice" : 149
+                }
+            ],
+            "SpecialEffect" : ""
+        },
+        {
+            "W_ID":"MW_003",
+            "Class" : "Unarmed",
+            "Name": "주먹",
+            "IconTexture" : "FistIcon",
+            "Speed": 1000.0,
+            "SizeX": 0.8,
+            "SizeY": 0.8,
+            "CollisionSizeX": 0.6,
+            "CollisionSizeY": 0.4,
+            "Tiers":[
+                {
+                    "Tier": 1,
+                    "Damage": 8.0,
+                    "Delay": 0.78,
+                    "CriticalDamage" : 1.5,
+                    "CriticalChance" : 1,
+                    "Range": 150.0,
+                    "LifeSteal" : 0.0,
+                    "BasePrice" : 10
+                },
+                {
+                    "Tier": 2,
+                    "Damage": 16.0,
+                    "Delay": 0.73,
+                    "CriticalDamage" : 1.5,
+                    "CriticalChance" : 1,
+                    "Range": 150.0,
+                    "LifeSteal" : 0.0,
+                    "BasePrice" : 22
+                },
+                {
+                    "Tier": 3,
+                    "Damage": 32.0,
+                    "Delay": 0.69,
+                    "CriticalDamage" : 1.5,
+                    "CriticalChance" : 1,
+                    "Range": 150.0,
+                    "LifeSteal" : 0.0,
+                    "BasePrice" : 45
+                },
+                {
+                    "Tier": 4,
+                    "Damage": 64.0,
+                    "Delay": 0.59,
+                    "CriticalDamage" : 1.5,
+                    "CriticalChance" : 1,
+                    "Range": 150.0,
+                    "LifeSteal" : 0.0,
+                    "BasePrice" : 91
+                }
+            ],
+            "SpecialEffect" : ""
+        },
+        {
+            "W_ID":"MW_004",
+            "Class" : "Unarmed, Precise",
+            "Name": "클로",
+            "IconTexture" : "ClawIcon",
+            "Speed": 1000.0,
+            "SizeX": 0.8,
+            "SizeY": 0.8,
+            "CollisionSizeX": 0.6,
+            "CollisionSizeY": 0.4,
+            "Tiers":[
+                {
+                    "Tier": 1,
+                    "Damage": 5.0,
+                    "Delay": 0.78,
+                    "CriticalDamage" : 2,
+                    "CriticalChance" : 10,
+                    "Range": 150.0,
+                    "LifeSteal" : 0.0,
+                    "BasePrice" : 15
+                },
+                {
+                    "Tier": 2,
+                    "Damage": 10.0,
+                    "Delay": 0.74,
+                    "CriticalDamage" : 2.15,
+                    "CriticalChance" : 15,
+                    "Range": 150.0,
+                    "LifeSteal" : 0.0,
+                    "BasePrice" : 28
+                },
+                {
+                    "Tier": 3,
+                    "Damage": 15.0,
+                    "Delay": 0.69,
+                    "CriticalDamage" : 2.3,
+                    "CriticalChance" : 20,
+                    "Range": 150.0,
+                    "LifeSteal" : 0.0,
+                    "BasePrice" : 55
+                },
+                {
+                    "Tier": 4,
+                    "Damage": 25.0,
+                    "Delay": 0.61,
+                    "CriticalDamage" : 2.5,
+                    "CriticalChance" : 20,
+                    "Range": 150.0,
+                    "LifeSteal" : 0.0,
+                    "BasePrice" : 110
+                }
+            ],
+            "SpecialEffect" : ""
+        },
+        {
+            "W_ID":"MW_005",
+            "Class" : "Medical, Precise",
+            "Name": "가위",
+            "IconTexture" : "ScissorsIcon",
+            "Speed": 1000.0,
+            "SizeX": 0.8,
+            "SizeY": 0.8,
+            "CollisionSizeX": 0.6,
+            "CollisionSizeY": 0.4,
+            "Tiers":[
+                {
+                    "Tier": 1,
+                    "Damage": 5.0,
+                    "Delay": 1.01,
+                    "CriticalDamage" : 2,
+                    "CriticalChance" : 10,
+                    "Range": 150.0,
+                    "LifeSteal" : 40.0,
+                    "BasePrice" : 15
+                },
+                {
+                    "Tier": 2,
+                    "Damage": 10.0,
+                    "Delay": 0.98,
+                    "CriticalDamage" : 2.15,
+                    "CriticalChance" : 12,
+                    "Range": 150.0,
+                    "LifeSteal" : 45.0,
+                    "BasePrice" : 31
+                },
+                {
+                    "Tier": 3,
+                    "Damage": 15.0,
+                    "Delay": 0.94,
+                    "CriticalDamage" : 2.3,
+                    "CriticalChance" : 15,
+                    "Range": 150.0,
+                    "LifeSteal" : 50.0,
+                    "BasePrice" : 61
+                },
+                {
+                    "Tier": 4,
+                    "Damage": 20.0,
+                    "Delay": 0.86,
+                    "CriticalDamage" : 2.5,
+                    "CriticalChance" : 20,
+                    "Range": 150.0,
+                    "LifeSteal" : 60.0,
                     "BasePrice" : 122
                 }
             ],
@@ -58,7 +278,7 @@
             "Name": "권총",
             "BulletName": "PlayerBullet",
             "IconTexture" : "PistolIcon",
-            "Speed": 700.0,
+            "Speed": 1000.0,
             "SizeX": 0.8,
             "SizeY": 0.8,
             "BulletSizeX": 0.8,
@@ -70,9 +290,10 @@
                     "Tier": 1,
                     "Damage": 12.0,
                     "Delay": 1.2,
-                    "Range": 400.0,
                     "CriticalDamage" : 2,
                     "CriticalChance" : 5,
+                    "Range": 400.0,
+                    "LifeSteal" : 0,
                     "BasePrice" : 10
                 },
                 {
@@ -82,6 +303,7 @@
                     "CriticalDamage" : 2,
                     "CriticalChance" : 10,
                     "Range": 400.0,
+                    "LifeSteal" : 0,
                     "BasePrice" : 22
                 },
                 {
@@ -91,6 +313,7 @@
                     "CriticalDamage" : 2,
                     "CriticalChance" : 15,
                     "Range": 400.0,
+                    "LifeSteal" : 0,
                     "BasePrice" : 45
                 },
                 {
@@ -100,7 +323,122 @@
                     "CriticalDamage" : 2,
                     "CriticalChance" : 20,
                     "Range": 400.0,
+                    "LifeSteal" : 0,
                     "BasePrice" : 91
+                }
+            ],
+            "SpecialEffect" : ""
+        },
+        {
+            "W_ID":"RW_002",
+            "Class" : "Medical, Gun",
+            "Name": "의료 총",
+            "BulletName": "PlayerBullet",
+            "IconTexture" : "MedialGunIcon",
+            "Speed": 1000.0,
+            "SizeX": 0.8,
+            "SizeY": 0.8,
+            "BulletSizeX": 0.8,
+            "BulletSizeY": 0.8,
+            "CollisionSizeX": 0.3,
+            "CollisionSizeY": 0.3,
+            "Tiers":[
+                {
+                    "Tier": 1,
+                    "Damage": 10.0,
+                    "Delay": 0.87,
+                    "Range": 400.0,
+                    "CriticalDamage" : 2,
+                    "CriticalChance" : 3,
+                    "LifeSteal" : 40,
+                    "BasePrice" : 15
+                },
+                {
+                    "Tier": 2,
+                    "Damage": 15.0,
+                    "Delay": 0.77,
+                    "CriticalDamage" : 2,
+                    "CriticalChance" : 3,
+                    "Range": 400.0,
+                    "LifeSteal" : 45,
+                    "BasePrice" : 31
+                },
+                {
+                    "Tier": 3,
+                    "Damage": 20.0,
+                    "Delay": 0.65,
+                    "CriticalDamage" : 2,
+                    "CriticalChance" : 3,
+                    "Range": 400.0,
+                    "LifeSteal" : 50,
+                    "BasePrice" : 61
+                },
+                {
+                    "Tier": 4,
+                    "Damage": 30.0,
+                    "Delay": 0.53,
+                    "CriticalDamage" : 2,
+                    "CriticalChance" : 3,
+                    "Range": 400.0,
+                    "LifeSteal" : 60,
+                    "BasePrice" : 122
+                }
+            ],
+            "SpecialEffect" : ""
+        },
+        {
+            "W_ID":"RW_003",
+            "Class" : "Gun",
+            "Name": "SMG",
+            "BulletName": "PlayerBullet",
+            "IconTexture" : "SMGIcon",
+            "Speed": 1000.0,
+            "SizeX": 0.8,
+            "SizeY": 0.8,
+            "BulletSizeX": 0.8,
+            "BulletSizeY": 0.8,
+            "CollisionSizeX": 0.3,
+            "CollisionSizeY": 0.3,
+            "Tiers":[
+                {
+                    "Tier": 1,
+                    "Damage": 3.0,
+                    "Delay": 0.17,
+                    "Range": 400.0,
+                    "CriticalDamage" : 1.5,
+                    "CriticalChance" : 1,
+                    "LifeSteal" : 0,
+                    "BasePrice" : 20
+                },
+                {
+                    "Tier": 2,
+                    "Damage": 4.0,
+                    "Delay": 0.77,
+                    "CriticalDamage" : 1.5,
+                    "CriticalChance" : 1,
+                    "Range": 400.0,
+                    "LifeSteal" : 0,
+                    "BasePrice" : 39
+                },
+                {
+                    "Tier": 3,
+                    "Damage": 5.0,
+                    "Delay": 0.65,
+                    "CriticalDamage" : 1.5,
+                    "CriticalChance" : 1,
+                    "Range": 400.0,
+                    "LifeSteal" : 0,
+                    "BasePrice" : 74
+                },
+                {
+                    "Tier": 4,
+                    "Damage": 8.0,
+                    "Delay": 0.53,
+                    "CriticalDamage" : 1.5,
+                    "CriticalChance" : 1,
+                    "Range": 400.0,
+                    "LifeSteal" : 0,
+                    "BasePrice" : 149
                 }
             ],
             "SpecialEffect" : ""

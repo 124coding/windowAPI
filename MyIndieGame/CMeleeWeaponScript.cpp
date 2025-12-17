@@ -4,6 +4,12 @@
 
 #include "CSceneMgr.h"
 
+#include "CPlayScene.h"
+
+#include "CPlayer.h"
+
+#include "CPlayerScript.h"
+
 #include "CCollider.h"
 
 void CMeleeWeaponScript::OnCreate()
@@ -29,6 +35,7 @@ void CMeleeWeaponScript::OnUpdate(float tDeltaTime)
 		CanAttackCheck(CSceneMgr::GetGameObjects(eLayerType::Enemy));
 		break;
 	case eState::Attack:
+		SetRotForClosedEnemyWatch(CSceneMgr::GetGameObjects(eLayerType::Enemy));
 		AttackEndCheck();
 		break;
 	case eState::Back:
@@ -66,6 +73,11 @@ void CMeleeWeaponScript::OnCollisionExit(float tDeltaTime, CCollider* tOther)
 
 void CMeleeWeaponScript::CanAttackCheck(std::vector<GameObject*> tEnemies)
 {
+	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
+
+	float range = plSc->GetRange();
+	int attackSpeed = plSc->GetAttackSpeedPercent();
+
 	if (tEnemies.empty()) {
 		return;
 	}
@@ -80,7 +92,7 @@ void CMeleeWeaponScript::CanAttackCheck(std::vector<GameObject*> tEnemies)
 
 	float distanceToEnemy = (targetPos - GetClosedEnemyPos()).Length();
 
-	if (distanceToEnemy <= GetRange() && mTotalTime > GetDelay()) {
+	if (distanceToEnemy <= GetRange() + range / 2 && mTotalTime > GetDelay() / (1 + attackSpeed / 100.0f)) {
 		tr->SetVelocity((GetClosedEnemyPos() - tr->GetPos()).Normalize() * GetSpeed());
 		cl->SetActivate(true);
 

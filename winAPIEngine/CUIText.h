@@ -73,6 +73,9 @@ public:
 
 	Gdiplus::SizeF CalculateTextSize();
 
+public:
+	static std::wstring InsertLineBreaks(const std::wstring& text, float maxWidth, const std::wstring& fontName, float fontSize, bool isBold);
+
 private:
 	void ParseRichText(const std::wstring& text);
 

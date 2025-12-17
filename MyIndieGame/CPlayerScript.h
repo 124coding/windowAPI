@@ -6,6 +6,7 @@
 #include "CTexture.h"
 
 #include <vector>
+#include <map>
 
 class CAnimator;
 class CTransform;
@@ -28,19 +29,19 @@ public:
 		mMaxHP(10),
 		mHPRegeneration(0),
 
-		mDodge(0.0f),
-		mArmor(0.0f),
-		mBasicMoveSpeed(450.0f),
-		mSpeedPercent(0.0f),
+		mDodge(0),
+		mArmor(0),
+		mBasicMoveSpeed(450),
+		mSpeedPercent(0),
 
-		mRange(0.0f),
-		mDamagePer(0.0f),
-		mCriticalChancePer(0.0f),
+		mRange(0),
+		mDamagePer(0),
+		mCriticalChancePer(0),
 		mMeleeDamage(0),
 		mRangedDamage(0),
-		mAttackSpeedPer(0.0f),
+		mAttackSpeedPer(0),
 
-		mLifeSteal(0.0f),
+		mLifeSteal(0),
 		
 		mLevel(0),
 		mExp(0.0f),
@@ -65,7 +66,8 @@ private:
 	void Idle();
 	void Move();
 	void Translate(CTransform* tr);
-	// void GiveWater();
+	void ButtDamageByEnemy(GameObject* tEnemy);
+	float DecreaseDamageBecauseArmor(float tDamage);
 
 public:
 	void SetStartingCharacterID(std::wstring tCharacterID) {
@@ -106,7 +108,7 @@ public:
 	}
 
 	void InCreaseHPGeneration(int tIncreaseAmount) {
-		this->mHPRegeneration += tIncreaseAmount;
+		this->mHPRegeneration += tIncreaseAmount * GetStatMultiplier(L"HPRegen");
 	}
 
 	int GetHPGeneration() {
@@ -118,11 +120,15 @@ public:
 		this->mDodge = tAmount;
 	}
 	void IncreaseDodge(int tIncreaseAmount) {
-		this->mDodge += tIncreaseAmount;
+		this->mDodge += tIncreaseAmount * GetStatMultiplier(L"Dodge");
 	}
 
 	int GetDodge() {
 		return this->mDodge;
+	}
+
+	void SetDodgeLimit(int tAmount) {
+		this->mDodgeLimit = tAmount;
 	}
 
 
@@ -131,7 +137,7 @@ public:
 		this->mArmor = tAmount;
 	}
 	void IncreaseArmor(int tIncreaseAmount) {
-		this->mArmor += tIncreaseAmount;
+		this->mArmor += tIncreaseAmount * GetStatMultiplier(L"Armor");
 	}
 
 	int GetArmor() {
@@ -139,14 +145,14 @@ public:
 	}
 
 
-	void SetRange(int tAmount) {
+	void SetRange(float tAmount) {
 		this->mRange = tAmount;
 	}
-	void IncreaseRange(int tIncreaseAmount) {
-		this->mRange += tIncreaseAmount;
+	void IncreaseRange(float tIncreaseAmount) {
+		this->mRange += tIncreaseAmount * GetStatMultiplier(L"Range");
 	}
 
-	int GetRange() {
+	float GetRange() {
 		return this->mRange;
 	}
 
@@ -155,7 +161,7 @@ public:
 		this->mDamagePer = tAmount;
 	}
 	void IncreaseDamagePercent(int tIncreaseAmount) {
-		this->mDamagePer += tIncreaseAmount;
+		this->mDamagePer += tIncreaseAmount * GetStatMultiplier(L"DamagePercent");
 	}
 
 	int GetDamagePercent() {
@@ -167,7 +173,7 @@ public:
 		this->mCriticalChancePer = tAmount;
 	}
 	void IncreaseCriticalChancePercent(int tIncreaseAmount) {
-		this->mCriticalChancePer += tIncreaseAmount;
+		this->mCriticalChancePer += tIncreaseAmount * GetStatMultiplier(L"CritChancePercent");
 	}
 
 	int GetCriticalChancePercent() {
@@ -179,7 +185,7 @@ public:
 		this->mMeleeDamage = tAmount;
 	}
 	void IncreaseMeleeDamage(int tIncreaseAmount) {
-		this->mMeleeDamage += tIncreaseAmount;
+		this->mMeleeDamage += tIncreaseAmount * GetStatMultiplier(L"MeleeDamage");
 	}
 
 	int GetMeleeDamage() {
@@ -191,7 +197,7 @@ public:
 		this->mRangedDamage = tAmount;
 	}
 	void IncreaseRangedDamage(int tIncreaseAmount) {
-		this->mRangedDamage += tIncreaseAmount;
+		this->mRangedDamage += tIncreaseAmount * GetStatMultiplier(L"RangedDamage");
 	}
 
 	int GetRangedDamage() {
@@ -203,7 +209,7 @@ public:
 		this->mAttackSpeedPer = tAmount;
 	}
 	void IncreaseAttackSpeedPercent(int tIncreaseAmount) {
-		this->mAttackSpeedPer += tIncreaseAmount;
+		this->mAttackSpeedPer += tIncreaseAmount * GetStatMultiplier(L"AttackSpeed");
 	}
 
 	int GetAttackSpeedPercent() {
@@ -214,7 +220,7 @@ public:
 		this->mLifeSteal = tAmount;
 	}
 	void IncreaseLifeSteal(int tIncreaseAmount) {
-		this->mLifeSteal += tIncreaseAmount;
+		this->mLifeSteal += tIncreaseAmount * GetStatMultiplier(L"LifeSteal");
 	}
 
 	int GetLifeSteal() {
@@ -246,16 +252,20 @@ public:
 		return this->mLevel;
 	}
 
+	void ChangeMoney(int tChange) {
+		this->mMoney += tChange;
+	}
+
 	int GetMoney() {
 		return this->mMoney;
 	}
 
 
-	void SetBasicMoveSpeed(float tSpeed) {
+	void SetBasicMoveSpeed(int tSpeed) {
 		this->mBasicMoveSpeed = tSpeed;
 	}
 
-	float GetSpeed() {
+	int GetSpeed() {
 		return this->mBasicMoveSpeed;
 	}
 
@@ -264,14 +274,23 @@ public:
 		this->mSpeedPercent = tAmount;
 	}
 	void IncreaseSpeedPercent(int tIncreaseAmount) {
-		this->mSpeedPercent += tIncreaseAmount;
+		this->mSpeedPercent += tIncreaseAmount * GetStatMultiplier(L"SpeedPercent");
 	}
 
 	int GetSpeedPercent() {
 		return this->mSpeedPercent;
 	}
 
+	void AddStatModifier(const std::wstring& statName, float percent) {
+		mStatGainModifiers[statName] += percent;
+	}
 
+	float GetStatMultiplier(const std::wstring& statName) {
+		if (mStatGainModifiers.find(statName) != mStatGainModifiers.end()) {
+			return 1.0f + (mStatGainModifiers[statName] / 100.0f);
+		}
+		return 1.0f;
+	}
 
 	void SetCanCollideEnemy(bool tCanCollideEnemey) {
 		this->mCanCollideEnemy = tCanCollideEnemey;
@@ -279,14 +298,6 @@ public:
 
 	bool GetCanCollideEnemy() {
 		return this->mCanCollideEnemy;
-	}
-
-	void SetStartingWeaponID(const std::wstring& tID) {
-		this->mStartingWeaponID = tID;
-	}
-
-	std::wstring GetStartingWeaponID() {
-		return this->mStartingWeaponID;
 	}
 
 public:
@@ -338,14 +349,15 @@ private:
 	int mHP;
 	int mMaxHP;
 	int mHPRegeneration;
-
+	float mHPRegenTime = 0.0f;
 
 	int mDodge;
+	int mDodgeLimit = 60;
 	int mArmor;
 	int mBasicMoveSpeed;
 	int mSpeedPercent;
 
-	int mRange;
+	float mRange;
 	int mDamagePer;
 	int mCriticalChancePer;
 	int mMeleeDamage;
@@ -354,6 +366,8 @@ private:
 
 	int mLifeSteal;
 
+	std::map<std::wstring, float> mStatGainModifiers;
+
 	float mExp;
 	int mLevel;
 	int mMoney;
@@ -361,7 +375,6 @@ private:
 	float mGracePeriod = 0.2f;
 	bool mCanCollideEnemy = true;
 
-	std::wstring mStartingWeaponID = L"";
 	std::wstring mStartingCharacterID = L"";
 
 	CTexture* mBaseTexture = nullptr;

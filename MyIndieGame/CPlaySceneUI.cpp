@@ -19,9 +19,6 @@ void CPlaySceneUI::OnCreate()
 	SetWidth(windowWidth);
 	SetHeight(windowHeight);
 
-	CUIPanel* basePanel = new CUIPanel();
-	basePanel->SetWidth(this->GetWidth());
-	basePanel->SetHeight(this->GetHeight());
 
 
 
@@ -32,7 +29,7 @@ void CPlaySceneUI::OnCreate()
 
 	hudPanel->SetPos(SVector2D(20.0f, 20.0f));
 
-	basePanel->AddChild(hudPanel);
+	this->AddChild(hudPanel);
 
 
 
@@ -125,15 +122,12 @@ void CPlaySceneUI::OnCreate()
 	hudPanel->AddChild(mMoneyTex);
 
 
-	this->AddChild(basePanel);
-
-
 	CUIPanel* infoPanel = new CUIPanel();
 	infoPanel->SetWidth(200.0f);
 	infoPanel->SetHeight(100.0f);
-	infoPanel->SetPos(SVector2D(basePanel->GetWidth() / 2 - infoPanel->GetWidth() / 2, 20.0f));
+	infoPanel->SetPos(SVector2D(this->GetWidth() / 2 - infoPanel->GetWidth() / 2, 20.0f));
 
-	basePanel->AddChild(infoPanel);
+	this->AddChild(infoPanel);
 
 	CUIText* stageTex = new CUIText();
 	stageTex->SetText(L"¿þÀÌºê ");
@@ -195,9 +189,7 @@ void CPlaySceneUI::OnUpdate(float tDeltaTime)
 {
 	mMoneyTex->SetText(std::to_wstring(CPlayScene::GetPlayer()->GetComponent<CPlayerScript>()->GetMoney()));
 	mStageNumTex->SetText(std::to_wstring(CPlayScene::GetStageNum() + 1));
-	if (CMonsterSpawnMgr::GetTime() >= 0) {
-		mTimeTex->SetText(std::to_wstring((int)CMonsterSpawnMgr::GetTime()));
-	}
+	mTimeTex->SetText(std::to_wstring((int)CMonsterSpawnMgr::GetTime()));
 	CUIBase::OnUpdate(tDeltaTime);
 }
 

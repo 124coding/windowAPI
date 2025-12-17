@@ -165,3 +165,30 @@ CUIBase* CUIBase::FindTargetUI(SVector2D mousePos) {
 
 	return nullptr;
 }
+
+CUIBase* CUIBase::Reparent(CUIBase* tNewParent, bool keepWorldPosition, SVector2D tWantPos)
+{
+	if (!tNewParent || tNewParent == mParent) return nullptr;
+
+	SVector2D currentWorldPos = GetFinalPos();
+
+	if (mParent) {
+		mParent->RemoveChild(this); // 부모의 mChildren 벡터에서 제거
+	}
+
+	mParent = tNewParent;
+	mParent->AddChild(this);
+
+	if (keepWorldPosition) {
+		SVector2D parentWorldPos = tNewParent->GetFinalPos();
+		mPos = currentWorldPos - parentWorldPos;
+	}
+	else {
+		// 그냥 새 부모 기준 (0,0)이나 지정된 위치로 가고 싶을 때
+		mPos = tWantPos;
+	}
+
+	GetFinalPos();
+
+	return this;
+}

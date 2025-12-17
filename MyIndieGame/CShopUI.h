@@ -7,6 +7,11 @@ class CUIText;
 class CUIButton;
 class CUIImg;
 
+class CPlayer;
+
+class CWeapon;
+class CWeaponScript;
+
 class CShopUI : public CUIBase
 {
 public:
@@ -24,6 +29,8 @@ public:
 
 private:
 	CUIPanel* MakeGoods(float tWidth, float tHeight);
+	void ReSettingWeaponButton(CWeaponScript* tWpScript, CWeapon* tCurWp, CUIPanel* tParPanel, CUIButton* tWpButton, CUIText* tDescTex, CUIPanel* tWpImgPanel, CUIButton* tRecycleButton, CUIText* tRecycleTex);
+	void WeaponButtonsReSetting(float tX, float tY, float tOffset, float tMax);
 
 private:
 	CUIPanel* mShopMainPanel = nullptr;
@@ -38,6 +45,14 @@ private:
 
 	// 상품 목록
 	std::vector<CUIPanel*> mGoods = std::vector<CUIPanel*>(4, nullptr);
+	
+	// 무기 버튼 모음(수정이 필요한 부분들만 가져오는 것)
+	std::vector<CUIButton*> mWeapons;
+	std::vector<CUIPanel*> mWeaponsDescPanel;
+	std::vector<CUIButton*> mCombinationButtons;
+
+	bool mbHaveItemsRefresh = false;
+	bool mbHaveWeaponsRefresh = false;
 
 	// 능력치
 	CUIText* mLevel = nullptr;

@@ -97,6 +97,14 @@ public:
 		return this->mCriticalChance;
 	}
 
+	void SetLifeSteal(float tAmount) {
+		this->mLifeSteal = tAmount;
+	}
+
+	float GetLifeSteal() {
+		return this->mLifeSteal;
+	}
+
 	void SetBasePrice(float tPrice) {
 		this->mBasePrice = tPrice;
 	}
@@ -150,6 +158,7 @@ private:
 	float mRange;
 	float mCriticalDamage;
 	float mCriticalChance;
+	float mLifeSteal;
 	float mBasePrice;
 	float mSpeed; // 근접 무기가 날아가는 속도 겸 원거리 무기의 총알의 속도
 	int mTier = 1;

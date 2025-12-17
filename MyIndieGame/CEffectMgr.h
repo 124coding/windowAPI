@@ -6,7 +6,7 @@
 
 #include <unordered_map>
 
-class CDamageText;
+class CEffectText;
 
 class CEffectMgr
 {
@@ -18,10 +18,10 @@ public:
 	static void Render(HDC tHDC);
 
 	static void PlayEffect(std::wstring tParticleName, SVector2D tPos, GameObject* tObj = nullptr);
-	static void ShowDamageText(SVector2D tPos, int tDamage, Gdiplus::Color tColor);
+	static void ShowEffectText(SVector2D tPos, std::wstring tText, Gdiplus::Color tColor);
 
 private:
 	static std::unordered_map<std::wstring, std::vector<CEffect*>> mEffects;
-	static std::vector<CDamageText*> mDamageTexts;
+	static std::vector<CEffectText*> mEffectTexts;
 };
 

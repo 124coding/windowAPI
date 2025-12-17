@@ -20,15 +20,8 @@
 
 void CCharacterSelectUI::OnCreate()
 {
-
 	SetWidth(windowWidth);
 	SetHeight(windowHeight);
-
-	CUIPanel* basePanel = new CUIPanel();
-
-	basePanel->SetPos(SVector2D());
-	basePanel->SetWidth(this->GetWidth());
-	basePanel->SetHeight(this->GetHeight());
 
 	// 뒤로가기 버튼
 	CUIButton* backButton = new CUIButton();
@@ -65,7 +58,7 @@ void CCharacterSelectUI::OnCreate()
 	backButton->SetEventClick([=]() { 
 		CSceneMgr::LoadScene(L"TitleScene");
 		});
-	basePanel->AddChild(backButton);
+	this->AddChild(backButton);
 
 	// 현재 창 텍스트
 	CUIText* currentUITex = new CUIText();
@@ -81,20 +74,20 @@ void CCharacterSelectUI::OnCreate()
 	currentUITex->SetPos(SVector2D(0.0f, currentUITex->GetHeight() / 3));
 	currentUITex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentNear);
 
-	basePanel->AddChild(currentUITex);
+	this->AddChild(currentUITex);
 
 
 
 	// 설명 패널
-	CUIPanel* descriptionPanel = new CUIPanel();
+	mCharDescriptionPanel = new CUIPanel();
 
-	descriptionPanel->SetWidth(250.0f);
-	descriptionPanel->SetHeight(320.0f);
-	descriptionPanel->SetPos(SVector2D(basePanel->GetWidth() / 2 - descriptionPanel->GetWidth() / 2, this->GetHeight() / 7));
-	descriptionPanel->SetBackColor(Gdiplus::Color::Black);
-	descriptionPanel->SetCornerRadius(10.0f);
+	mCharDescriptionPanel->SetWidth(250.0f);
+	mCharDescriptionPanel->SetHeight(320.0f);
+	mCharDescriptionPanel->SetPos(SVector2D(this->GetWidth() / 2 - mCharDescriptionPanel->GetWidth() / 2, this->GetHeight() / 7));
+	mCharDescriptionPanel->SetBackColor(Gdiplus::Color::Black);
+	mCharDescriptionPanel->SetCornerRadius(10.0f);
 
-	basePanel->AddChild(descriptionPanel);
+	this->AddChild(mCharDescriptionPanel);
 
 	CUIPanel* charDescriptionImgPanel = new CUIPanel();
 
@@ -104,7 +97,7 @@ void CCharacterSelectUI::OnCreate()
 	charDescriptionImgPanel->SetBackColor(Gdiplus::Color::Black);
 	charDescriptionImgPanel->SetCornerRadius(10.0f);
 
-	descriptionPanel->AddChild(charDescriptionImgPanel);
+	mCharDescriptionPanel->AddChild(charDescriptionImgPanel);
 
 	CUIImg* charDescriptionImg = new CUIImg();
 	
@@ -125,7 +118,7 @@ void CCharacterSelectUI::OnCreate()
 	charNameTex->SetFontSize(20.0f);
 	charNameTex->SetColor(Gdiplus::Color::White);
 
-	descriptionPanel->AddChild(charNameTex);
+	mCharDescriptionPanel->AddChild(charNameTex);
 
 	CUIText* charTex = new CUIText();
 
@@ -138,7 +131,7 @@ void CCharacterSelectUI::OnCreate()
 	charTex->SetFontSize(15.0f);
 	charTex->SetColor(Gdiplus::Color::LightYellow);
 
-	descriptionPanel->AddChild(charTex);
+	mCharDescriptionPanel->AddChild(charTex);
 
 	CUIText* descriptionTex = new CUIText();
 
@@ -150,13 +143,13 @@ void CCharacterSelectUI::OnCreate()
 	descriptionTex->SetFontSize(15.0f);
 	descriptionTex->SetColor(Gdiplus::Color::White);
 
-	descriptionPanel->AddChild(descriptionTex);
+	mCharDescriptionPanel->AddChild(descriptionTex);
 
 	CUIPanel* charSelectPanel = new CUIPanel;
 
-	charSelectPanel->SetPos(SVector2D(basePanel->GetPos().mX, basePanel->GetPos().mY + basePanel->GetHeight() / 2));
-	charSelectPanel->SetWidth(basePanel->GetWidth());
-	charSelectPanel->SetHeight(basePanel->GetHeight() / 2);
+	charSelectPanel->SetPos(SVector2D(this->GetPos().mX, this->GetPos().mY + this->GetHeight() / 2));
+	charSelectPanel->SetWidth(this->GetWidth());
+	charSelectPanel->SetHeight(this->GetHeight() / 2);
 
 	int x = 30;
 	int y = 100;
@@ -234,6 +227,8 @@ void CCharacterSelectUI::OnCreate()
 			finalDiscription += rawDesc + L"\n";
 		}
 
+		finalDiscription = CUIText::InsertLineBreaks(finalDiscription, mCharDescriptionPanel->GetWidth() - charDescriptionImgPanel->GetPos().mX * 2, L"Noto Sans KR Medium", 15.0f, false);
+
 		charButton->SetEventHover([=]() {
 			charButton->SetBackColor(Gdiplus::Color::White);
 			charDescriptionImgPanel->SetBackColor(Gdiplus::Color::Gray);
@@ -252,7 +247,7 @@ void CCharacterSelectUI::OnCreate()
 			CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
 
 			plSc->SetStartingCharacterID(character.ID);
-			CUIMgr::Pop(eUIType::CharacterSelectUI);
+			this->InActive();
 			CUIMgr::Push(eUIType::WeaponSelectUI);
 			});
 		
@@ -266,8 +261,7 @@ void CCharacterSelectUI::OnCreate()
 		}
 	}
 
-	basePanel->AddChild(charSelectPanel);
-	this->AddChild(basePanel);
+	this->AddChild(charSelectPanel);
 
 	CUIBase::OnCreate();
 	this->OnUpdate(0.0f);

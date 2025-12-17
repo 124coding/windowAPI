@@ -2,14 +2,14 @@
 
 #include "CEffect.h"
 
-class CDamageText : public CEffect
+class CEffectText : public CEffect
 {
 public:
-	CDamageText() {}
-	virtual ~CDamageText() {}
+	CEffectText() {}
+	virtual ~CEffectText() {}
 
-	CDamageText(const CDamageText& tDamageText);
-	CDamageText& operator=(const CDamageText& tDamagetTExt);
+	CEffectText(const CEffectText& tEffectText);
+	CEffectText& operator=(const CEffectText& tEffectText);
 
 	virtual void OnCreate() override;
 	virtual void OnDestroy() override;
@@ -18,7 +18,7 @@ public:
 	virtual void Render(HDC tHDC) override;
 
 	virtual void Reset(SVector2D tPos) override;
-	void Reset(SVector2D tPos, int tDamage, Gdiplus::Color tColor);
+	void Reset(SVector2D tPos, std::wstring tText, Gdiplus::Color tColor);
 
 private:
 	std::wstring mText = L"";

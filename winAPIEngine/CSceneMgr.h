@@ -41,6 +41,16 @@ public:
 		return mActiveScene;
 	}
 
+	static CScene* GetWantScene(const std::wstring& tName) {
+		auto it = mScenes.find(tName);
+
+		if (it == mScenes.end()) {
+			return nullptr;
+		}
+
+		return it->second;
+	}
+
 	static CScene* GetDontDestroyOnLoadScene() { 
 		return mDontDestroyOnLoadScene; 
 	}

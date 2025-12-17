@@ -63,10 +63,10 @@ void CWeaponScript::SetRotForClosedEnemyWatch(std::vector<GameObject*> tEnemies)
 	}
 
 	for (GameObject* enemy : tEnemies) {
-		if (closedEnemy == nullptr || enemy->GetComponent<CEnemyScript>()->GetDistanceToPlayer() < closedEnemy->GetComponent<CEnemyScript>()->GetDistanceToPlayer()) {
+		if (closedEnemy == nullptr || (enemy->GetComponent<CTransform>()->GetPos() - tr->GetPos()).LengthSq() < (closedEnemy->GetComponent<CTransform>()->GetPos() - tr->GetPos()).LengthSq()) {
 			CEnemyScript* enemySc = enemy->GetComponent<CEnemyScript>();
 
-			if (enemySc->GetState() == CEnemyScript::eState::Spawn || enemySc->GetState() == CEnemyScript::eState::Dead) break;
+			if (enemySc->GetState() == CEnemyScript::eState::Spawn || enemySc->GetState() == CEnemyScript::eState::Dead) continue;
 			closedEnemy = enemy;
 		}
 	}
@@ -110,19 +110,19 @@ void CWeaponScript::CalculatePosNextToTarget()
 	tr->SetPos(ObjectCenterPos(mTarget) + mOffset);
 }
 
-CWeaponScript::SDamageInfo CWeaponScript::ApplyDamageModifiers(float _baseDamage)
+CWeaponScript::SDamageInfo CWeaponScript::ApplyDamageModifiers(float tBaseDamage)
 {
 	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
 
-	float damagePercent = plSc->GetDamagePercent();
+	int damagePercent = plSc->GetDamagePercent();
 
-	float finalDamage = _baseDamage * (1.0f + (damagePercent / 100.0f));
+	float finalDamage = tBaseDamage * (1.0f + (damagePercent / 100.0f));
 
 	int rand = std::rand() % 100;
 
 	bool isCritical = false;
 
-	if (rand <= mCriticalChance) {
+	if (rand <= mCriticalChance + plSc->GetCriticalChancePercent()) {
 		finalDamage *= mCriticalDamage;
 		isCritical = true;
 	}

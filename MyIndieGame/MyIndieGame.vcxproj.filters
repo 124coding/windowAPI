@@ -124,9 +124,6 @@
     <Filter Include="Objects\Effect">
       <UniqueIdentifier>{699654f3-f0b1-4f2a-92ae-ffd7afbdf978}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Objects\Effect\CDamageText">
-      <UniqueIdentifier>{6c17a2d7-cb23-4f3e-b999-29dfb852a2f7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Helpers\Effect">
       <UniqueIdentifier>{44bf1ada-3d39-4812-84d9-2b29690b2574}</UniqueIdentifier>
     </Filter>
@@ -150,6 +147,9 @@
     </Filter>
     <Filter Include="UI\EndingUI">
       <UniqueIdentifier>{300de68a-c4fb-4826-a8d4-7ca732357812}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Effect\CEffectText">
+      <UniqueIdentifier>{6c17a2d7-cb23-4f3e-b999-29dfb852a2f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -270,8 +270,8 @@
     <ClCompile Include="CEffectMgr.cpp">
       <Filter>Helpers\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="CDamageText.cpp">
-      <Filter>Objects\Effect\CDamageText</Filter>
+    <ClCompile Include="CEffectText.cpp">
+      <Filter>Objects\Effect\CEffectText</Filter>
     </ClCompile>
     <ClCompile Include="CAnimatedEffect.cpp">
       <Filter>Objects\Effect\CAnimatedEffect</Filter>
@@ -419,8 +419,8 @@
     <ClInclude Include="CEffectMgr.h">
       <Filter>Helpers\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="CDamageText.h">
-      <Filter>Objects\Effect\CDamageText</Filter>
+    <ClInclude Include="CEffectText.h">
+      <Filter>Objects\Effect\CEffectText</Filter>
     </ClInclude>
     <ClInclude Include="CAnimatedEffect.h">
       <Filter>Objects\Effect\CAnimatedEffect</Filter>
