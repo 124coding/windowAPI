@@ -7,7 +7,7 @@ class CUIPanel;
 class CWeaponSelectUI : public CUIBase
 {
 public:
-	CWeaponSelectUI() : CUIBase(eUIType::WeaponSelectUI) {}
+	CWeaponSelectUI(SVector2D tPos = SVector2D(), float tWidth = 0.0f, float tHeight = 0.0f) : CUIBase(tPos, tWidth, tHeight, eUIType::WeaponSelectUI) {}
 	~CWeaponSelectUI() {}
 
 	virtual void OnCreate() override;

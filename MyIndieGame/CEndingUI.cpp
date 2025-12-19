@@ -15,11 +15,8 @@ void CEndingUI::OnCreate()
 	SetHeight(windowHeight);
 
 
-	CUIText* endingTex = new CUIText();
-	endingTex->SetWidth(this->GetWidth());
-	endingTex->SetHeight(50.0f);
+	CUIText* endingTex = new CUIText(SVector2D(), this->GetWidth(), 50.0f, L"Test");
 	endingTex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentCenter);
-	endingTex->SetText(L"Test");
 	endingTex->SetColor(Gdiplus::Color::White);
 	endingTex->SetFontSize(50.0f);
 	endingTex->SetStrokeWidth(2.0f);
@@ -33,28 +30,19 @@ void CEndingUI::OnCreate()
 	}*/
 	this->AddChild(endingTex);
 
-	CUIPanel* endingMainPanel = new CUIPanel();
-	endingMainPanel->SetWidth(this->GetWidth() - 200.0f);
-	endingMainPanel->SetHeight(this->GetHeight() - 200.0f);
-	endingMainPanel->SetPos(SVector2D(100.0f, 100.0f));
+	CUIPanel* endingMainPanel = new CUIPanel(SVector2D(100.0f, 100.0f), this->GetWidth() - 200.0f, this->GetHeight() - 200.0f);
 	endingMainPanel->SetBackColor(0xFF222222);
 	endingMainPanel->SetCornerRadius(10);
 
 	this->AddChild(endingMainPanel);
 
-	CUIPanel* statPanel = new CUIPanel();
-	statPanel->SetWidth(endingMainPanel->GetWidth() / 4);
-	statPanel->SetHeight(endingMainPanel->GetHeight() - 6.0f);
-	statPanel->SetPos(SVector2D(3.0f, 3.0f));
+	CUIPanel* statPanel = new CUIPanel(SVector2D(3.0f, 3.0f), endingMainPanel->GetWidth() / 4, endingMainPanel->GetHeight() - 6.0f);
 	statPanel->SetBackColor(Gdiplus::Color::Black);
 	statPanel->SetCornerRadius(10);
 
 	endingMainPanel->AddChild(statPanel);
 
-	CUIText* statTex = new CUIText();
-	statTex->SetWidth(statPanel->GetWidth());
-	statTex->SetText(L"능력치");
-	statTex->SetHeight(40.0f);
+	CUIText* statTex = new CUIText(SVector2D(), statPanel->GetWidth(), 40.0f, L"능력치");
 	statTex->SetFontSize(30.0f);
 	statTex->SetColor(Gdiplus::Color::White);
 	statTex->SetStrokeWidth(1.0f);
@@ -158,74 +146,51 @@ void CEndingUI::OnCreate()
 	SettingStatTex(plSc->GetSpeedPercent(), speed);
 
 	
-	CUIPanel* endingItemPanel = new CUIPanel();
-	endingItemPanel->SetWidth(endingMainPanel->GetWidth() - (statPanel->GetPos().mX + statPanel->GetWidth() + 3.0f));
-	endingItemPanel->SetHeight(endingMainPanel->GetHeight());
-	endingItemPanel->SetPos(SVector2D(statPanel->GetPos().mX + statPanel->GetWidth() + 3.0f, 0.0f));
+	CUIPanel* endingItemPanel = new CUIPanel(SVector2D(statPanel->GetPos().mX + statPanel->GetWidth() + 3.0f, 0.0f), endingMainPanel->GetWidth() - (statPanel->GetPos().mX + statPanel->GetWidth() + 3.0f), endingMainPanel->GetHeight());
 
 	endingMainPanel->AddChild(endingItemPanel);
 
-	CUIPanel* weaponPanel = new CUIPanel();
-	weaponPanel->SetWidth(endingItemPanel->GetWidth());
-	weaponPanel->SetHeight(endingItemPanel->GetHeight() / 3);
-	weaponPanel->SetPos(SVector2D());
+	CUIPanel* weaponPanel = new CUIPanel(SVector2D(), endingItemPanel->GetWidth(), endingItemPanel->GetHeight() / 3);
 
 	endingItemPanel->AddChild(weaponPanel);
 
-	CUIText* weaponTex = new CUIText();
-	weaponTex->SetText(L"무기");
+	CUIText* weaponTex = new CUIText(SVector2D(20.0f, 20.0f), 0.0f, 40.0f, L"무기");
 	weaponTex->SetWidth(weaponTex->CalculateTextSize().Width);
-	weaponTex->SetHeight(40.0f);
 	weaponTex->SetFontSize(30.0f);
 	weaponTex->SetColor(Gdiplus::Color::White);
 	weaponTex->SetStrokeWidth(1.0f);
-	weaponTex->SetPos(SVector2D(20.0f, 20.0f));
 
 	weaponPanel->AddChild(weaponTex);
 
 	/* 가지고 있던 무기들 구현 (ShopUI랑 똑같이)*/
 
-	CUIPanel* itemPanel = new CUIPanel();
-	itemPanel->SetWidth(endingItemPanel->GetWidth());
-	itemPanel->SetHeight(2 * endingItemPanel->GetHeight() / 3);
-	itemPanel->SetPos(SVector2D(0.0f, weaponPanel->GetHeight()));
+	CUIPanel* itemPanel = new CUIPanel(SVector2D(0.0f, weaponPanel->GetHeight()), endingItemPanel->GetWidth(), 2 * endingItemPanel->GetHeight() / 3);
 
 	endingItemPanel->AddChild(itemPanel);
 
-	CUIText* itemTex = new CUIText();
-	itemTex->SetText(L"아이템");
+	CUIText* itemTex = new CUIText(SVector2D(20.0f, 20.0f), 0.0f, 40.0f, L"아이템");
 	itemTex->SetWidth(itemTex->CalculateTextSize().Width);
-	itemTex->SetHeight(40.0f);
 	itemTex->SetFontSize(30.0f);
 	itemTex->SetColor(Gdiplus::Color::White);
 	itemTex->SetStrokeWidth(1.0f);
-	itemTex->SetPos(SVector2D(20.0f, 20.0f));
 
 	itemPanel->AddChild(itemTex);
 
 	/* 가지고 있던 아이템들 구현 (ShopUI랑 똑같이)*/
 
 
-	CUIPanel* buttonPanel = new CUIPanel();
-	buttonPanel->SetWidth(3 * endingMainPanel->GetWidth() / 4);
-	buttonPanel->SetHeight(40.0f);
+	CUIPanel* buttonPanel = new CUIPanel(SVector2D(), 3 * endingMainPanel->GetWidth() / 4, 40.0f);
 	buttonPanel->SetPos(SVector2D(endingMainPanel->GetPos().mX + endingMainPanel->GetWidth() / 2 - buttonPanel->GetWidth() / 2, endingMainPanel->GetPos().mY + endingMainPanel->GetHeight() + 30.0f));
 
 	this->AddChild(buttonPanel);
 
-	CUIButton* restartButton = new CUIButton();
-	restartButton->SetWidth(buttonPanel->GetWidth() / 4 - 20.0f);
-	restartButton->SetHeight(buttonPanel->GetHeight());
-	restartButton->SetPos(SVector2D(10.0f, 0.0f));
+	CUIButton* restartButton = new CUIButton(SVector2D(10.0f, 0.0f), buttonPanel->GetWidth() / 4 - 20.0f, buttonPanel->GetHeight());
 	restartButton->SetBackColor(Gdiplus::Color::Black);
 	restartButton->SetCornerRadius(10);
 
 	buttonPanel->AddChild(restartButton);
 
-	CUIText* restartTex = new CUIText();
-	restartTex->SetText(L"재시작");
-	restartTex->SetWidth(restartButton->GetWidth());
-	restartTex->SetHeight(restartButton->GetHeight());
+	CUIText* restartTex = new CUIText(SVector2D(), restartButton->GetWidth(), restartButton->GetHeight(), L"재시작");
 	restartTex->SetFontSize(30.0f);
 	restartTex->SetColor(Gdiplus::Color::White);
 	restartTex->SetStrokeWidth(1.0f);
@@ -246,19 +211,13 @@ void CEndingUI::OnCreate()
 		});
 
 
-	CUIButton* newStartButton = new CUIButton();
-	newStartButton->SetWidth(buttonPanel->GetWidth() / 4 - 20.0f);
-	newStartButton->SetHeight(buttonPanel->GetHeight());
-	newStartButton->SetPos(SVector2D(restartButton->GetPos().mX + restartButton->GetWidth() + 20.0f, 0.0f));
+	CUIButton* newStartButton = new CUIButton(SVector2D(restartButton->GetPos().mX + restartButton->GetWidth() + 20.0f, 0.0f), buttonPanel->GetWidth() / 4 - 20.0f, buttonPanel->GetHeight());
 	newStartButton->SetBackColor(Gdiplus::Color::Black);
 	newStartButton->SetCornerRadius(10);
 
 	buttonPanel->AddChild(newStartButton);
 
-	CUIText* newStartTex = new CUIText();
-	newStartTex->SetText(L"새로운 달리기");
-	newStartTex->SetWidth(newStartButton->GetWidth());
-	newStartTex->SetHeight(newStartButton->GetHeight());
+	CUIText* newStartTex = new CUIText(SVector2D(), newStartButton->GetWidth(), newStartButton->GetHeight(), L"새로운 달리기");
 	newStartTex->SetFontSize(30.0f);
 	newStartTex->SetColor(Gdiplus::Color::White);
 	newStartTex->SetStrokeWidth(1.0f);
@@ -280,19 +239,13 @@ void CEndingUI::OnCreate()
 		});
 
 
-	CUIButton* returnMenuButton = new CUIButton();
-	returnMenuButton->SetWidth(buttonPanel->GetWidth() / 2 - 20.0f);
-	returnMenuButton->SetHeight(buttonPanel->GetHeight());
-	returnMenuButton->SetPos(SVector2D(newStartButton->GetPos().mX + newStartButton->GetWidth() + 20.0f, 0.0f));
+	CUIButton* returnMenuButton = new CUIButton(SVector2D(newStartButton->GetPos().mX + newStartButton->GetWidth() + 20.0f, 0.0f), buttonPanel->GetWidth() / 2 - 20.0f, buttonPanel->GetHeight());
 	returnMenuButton->SetBackColor(Gdiplus::Color::Black);
 	returnMenuButton->SetCornerRadius(10);
 
 	buttonPanel->AddChild(returnMenuButton);
 
-	CUIText* returnMenuTex = new CUIText();
-	returnMenuTex->SetText(L"메인 메뉴로 돌아가기");
-	returnMenuTex->SetWidth(returnMenuButton->GetWidth());
-	returnMenuTex->SetHeight(returnMenuButton->GetHeight());
+	CUIText* returnMenuTex = new CUIText(SVector2D(), returnMenuButton->GetWidth(), returnMenuButton->GetHeight(), L"메인 메뉴로 돌아가기");
 	returnMenuTex->SetFontSize(30.0f);
 	returnMenuTex->SetColor(Gdiplus::Color::White);
 	returnMenuTex->SetStrokeWidth(1.0f);

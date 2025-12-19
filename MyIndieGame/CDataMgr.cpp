@@ -12,6 +12,8 @@ std::unordered_map<std::wstring, CDataMgr::SWeapon> CDataMgr::mWeaponDatas;
 std::unordered_map<std::wstring, CDataMgr::SCharacter> CDataMgr::mCharacterDatas;
 std::unordered_map<std::wstring, CDataMgr::SEffect> CDataMgr::mEffectDatas;
 std::unordered_map<std::wstring, CDataMgr::SItem> CDataMgr::mItemDatas;
+std::vector<CDataMgr::SWeapon> CDataMgr::mWeaponList;
+std::vector<std::vector<CDataMgr::SItem>> CDataMgr::mItemClassificationByTier = std::vector<std::vector<CDataMgr::SItem>>(4);
 
 
 std::unordered_map<std::wstring, std::function<CEnemy* ()>> CDataMgr::mMonsterCreator;
@@ -103,6 +105,7 @@ void CDataMgr::LoadDatas() {
 		}
 		weapon.specialEffect = ToWString(weaponData["SpecialEffect"]);
 		mWeaponDatas.insert({ weapon.ID, weapon });
+		mWeaponList.push_back(weapon);
 	}
 	for (auto& weaponData : weaponDatas["RangedWeapons"]) {
 		weapon.weaponType = L"원거리";
@@ -134,6 +137,7 @@ void CDataMgr::LoadDatas() {
 
 		weapon.specialEffect = ToWString(weaponData["SpecialEffect"]);
 		mWeaponDatas.insert({ weapon.ID, weapon });
+		mWeaponList.push_back(weapon);
 	}
 
 	std::ifstream characterFile("../Data/Characters.json", std::ios::in);
@@ -219,5 +223,183 @@ void CDataMgr::LoadDatas() {
 		}
 
 		mItemDatas.insert({ item.ID, item });
+		mItemClassificationByTier[item.tier - 1].push_back(item);
 	}
+}
+
+std::pair<int, CDataMgr::SWeapon> CDataMgr::GetRandomWeaponByStage(int curStage)
+{
+	int rarityRand = std::rand() % 100;
+	int targetTier = 1;
+	switch (curStage) {
+	case 0:
+	case 1:
+		if (rarityRand < 70) {
+			targetTier = 1;
+		}
+		else {
+			targetTier = 2;
+		}
+		break;
+	case 2:
+		if (rarityRand < 60) {
+			targetTier = 1;
+		}
+		else if (rarityRand < 90) {
+			targetTier = 2;
+		}
+		else {
+			targetTier = 3;
+		}
+		break;
+	case 3:
+		if (rarityRand < 50) {
+			targetTier = 1;
+		}
+		else if (rarityRand < 80) {
+			targetTier = 2;
+		}
+		else {
+			targetTier = 3;
+		}
+		break;
+	case 4:
+		if (rarityRand < 40) {
+			targetTier = 1;
+		}
+		else if (rarityRand < 70) {
+			targetTier = 2;
+		}
+		else if (rarityRand < 95) {
+			targetTier = 3;
+		}
+		else {
+			targetTier = 4;
+		}
+		break;
+	case 5:
+		if (rarityRand < 35) {
+			targetTier = 1;
+		}
+		else if (rarityRand < 65) {
+			targetTier = 2;
+		}
+		else if (rarityRand < 90) {
+			targetTier = 3;
+		}
+		else {
+			targetTier = 4;
+		}
+		break;
+	default:
+		if (rarityRand < 30) {
+			targetTier = 1;
+		}
+		else if (rarityRand < 55) {
+			targetTier = 2;
+		}
+		else if (rarityRand < 80) {
+			targetTier = 3;
+		}
+		else {
+			targetTier = 4;
+		}
+		break;
+	}
+
+	int rand = std::rand() % mWeaponList.size();
+
+	return std::make_pair(targetTier, mWeaponList[rand]);
+}
+
+CDataMgr::SItem CDataMgr::GetRandomItemByStage(int curStage)
+{
+	int rarityRand = std::rand() % 100;
+	int targetTier = 1;
+	switch (curStage) {
+	case 0:
+	case 1:
+		if (rarityRand < 70) {
+			targetTier = 1;
+		}
+		else {
+			targetTier = 2;
+		}
+		break;
+	case 2:
+		if (rarityRand < 60) {
+			targetTier = 1;
+		}
+		else if (rarityRand < 90) {
+			targetTier = 2;
+		}
+		else {
+			targetTier = 3;
+		}
+		break;
+	case 3:
+		if (rarityRand < 50) {
+			targetTier = 1;
+		}
+		else if (rarityRand < 80) {
+			targetTier = 2;
+		}
+		else {
+			targetTier = 3;
+		}
+		break;
+	case 4:
+		if (rarityRand < 40) {
+			targetTier = 1;
+		}
+		else if (rarityRand < 70) {
+			targetTier = 2;
+		}
+		else if (rarityRand < 95) {
+			targetTier = 3;
+		}
+		else {
+			targetTier = 4;
+		}
+		break;
+	case 5:
+		if (rarityRand < 35) {
+			targetTier = 1;
+		}
+		else if (rarityRand < 65) {
+			targetTier = 2;
+		}
+		else if (rarityRand < 90) {
+			targetTier = 3;
+		}
+		else {
+			targetTier = 4;
+		}
+		break;
+	default:
+		if (rarityRand < 30) {
+			targetTier = 1;
+		}
+		else if (rarityRand < 55) {
+			targetTier = 2;
+		}
+		else if (rarityRand < 80) {
+			targetTier = 3;
+		}
+		else {
+			targetTier = 4;
+		}
+		break;
+	}
+
+	if (mItemClassificationByTier[targetTier - 1].empty()) {
+		// 해당 티어 아이템이 없으면 1티어에서 뽑거나, 빈 아이템 리턴
+		if (!mItemClassificationByTier[1].empty()) return mItemClassificationByTier[1][0];
+		return SItem{};
+	}
+
+	// 해당 티어 벡터의 크기 내에서 랜덤 인덱스 생성
+	int idx = std::rand() % mItemClassificationByTier[targetTier - 1].size();
+
+	return mItemClassificationByTier[targetTier - 1][idx];
 }

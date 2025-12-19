@@ -105,17 +105,17 @@ CUIBase* CUIMgr::CreateUI(eUIType tType)
 {
 	switch (tType) {
 	case eUIType::CharacterSelectUI:
-		return new CCharacterSelectUI;
+		return new CCharacterSelectUI();
 	case eUIType::WeaponSelectUI:
-		return new CWeaponSelectUI;
+		return new CWeaponSelectUI();
 	case eUIType::TitleSceneUI:
-		return new CTitleSceneUI;
+		return new CTitleSceneUI();
 	case eUIType::PlaySceneUI:
-		return new CPlaySceneUI;
+		return new CPlaySceneUI();
 	case eUIType::ShopUI:
-		return new CShopUI;
+		return new CShopUI();
 	case eUIType::EndingSceneUI:
-		return new CEndingUI;
+		return new CEndingUI();
 	}
 	return nullptr;
 }

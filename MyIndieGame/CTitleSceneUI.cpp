@@ -12,32 +12,20 @@ void CTitleSceneUI::OnCreate()
 	SetHeight(windowHeight);
 
 
-	CUIPanel* menuPanel = new CUIPanel();
-
-	menuPanel->SetPos(SVector2D(30.0f, 3 * this->GetHeight() / 5));
-	menuPanel->SetWidth(this->GetWidth() / 5);
-	menuPanel->SetHeight(this->GetHeight() / 3);
+	CUIPanel* menuPanel = new CUIPanel(SVector2D(30.0f, 3 * this->GetHeight() / 5), this->GetWidth() / 5, this->GetHeight() / 3);
 
 	this->AddChild(menuPanel);
 
-	CUIButton* startButton = new CUIButton();
+	CUIButton* startButton = new CUIButton(SVector2D(50.0f, 0.0f), menuPanel->GetWidth() / 3, 45.0f);
 
-	startButton->SetPos(SVector2D(50.0f, 0.0f));
 	startButton->SetBackColor(Gdiplus::Color::Black);
-	startButton->SetWidth(menuPanel->GetWidth() / 3);
-	startButton->SetHeight(45.0f);
 	startButton->SetCornerRadius(10.0f);
 
-	CUIText* startButtonTex = new CUIText();
+	CUIText* startButtonTex = new CUIText(SVector2D(), startButton->GetWidth(), startButton->GetHeight(), L"矫累");
 	
-	startButtonTex->SetText(L"矫累");
-	startButtonTex->SetFont(L"Noto Sans KR Medium");
 	startButtonTex->SetFontSize(28.0f);
 	startButtonTex->SetStrokeWidth(1.0f);
 	startButtonTex->SetColor(Gdiplus::Color::White);
-	startButtonTex->SetWidth(startButton->GetWidth());
-	startButtonTex->SetHeight(startButton->GetHeight());
-	startButtonTex->SetIgnoreMouse(true);
 	startButtonTex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentNear);
 
 	startButton->SetEventHover([=]() {
@@ -57,24 +45,17 @@ void CTitleSceneUI::OnCreate()
 	menuPanel->AddChild(startButton);
 
 
-	CUIButton* optionButton = new CUIButton();
+	CUIButton* optionButton = new CUIButton(SVector2D(50.0f, startButton->GetHeight() + 10.0f), menuPanel->GetWidth() / 3, 45.0f);
 
-	optionButton->SetPos(SVector2D(50.0f, startButton->GetHeight() + 10.0f));
 	optionButton->SetBackColor(Gdiplus::Color::Black);
-	optionButton->SetWidth(menuPanel->GetWidth() / 3);
-	optionButton->SetHeight(45.0f);
 	optionButton->SetCornerRadius(10.0f);
 
-	CUIText* optionButtonTex = new CUIText();
+	CUIText* optionButtonTex = new CUIText(SVector2D(), optionButton->GetWidth(), optionButton->GetHeight(), L"可记");
 
-	optionButtonTex->SetText(L"可记");
 	optionButtonTex->SetFont(L"Noto Sans KR Medium");
 	optionButtonTex->SetFontSize(28.0f);
 	optionButtonTex->SetStrokeWidth(1.0f);
 	optionButtonTex->SetColor(Gdiplus::Color::White);
-	optionButtonTex->SetWidth(optionButton->GetWidth());
-	optionButtonTex->SetHeight(optionButton->GetHeight());
-	optionButtonTex->SetIgnoreMouse(true);
 	optionButtonTex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentNear);
 
 	optionButton->SetEventHover([=]() {

@@ -8,7 +8,7 @@ class CUIText;
 class CUIEXPBar : public CUIHUD
 {
 public:
-	CUIEXPBar() {}
+	CUIEXPBar(SVector2D tPos, float tWidth, float tHeight) : CUIHUD(tPos, tWidth, tHeight) {}
 	virtual ~CUIEXPBar() {}
 
 	virtual void OnCreate() override;

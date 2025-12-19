@@ -13,9 +13,7 @@ void CUIHPBar::OnCreate()
     mHPFill->SetWidth(this->GetWidth());
     mHPFill->SetHeight(this->GetHeight());
 
-    mHpInfo = new CUIText();
-    mHpInfo->SetWidth(this->GetWidth());
-    mHpInfo->SetHeight(this->GetHeight());
+    mHpInfo = new CUIText(SVector2D(), this->GetWidth(), this->GetHeight());
     mHpInfo->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentCenter);
 
     this->AddChild(mHpInfo);

@@ -21,13 +21,20 @@ public:
 	void Render(HDC tHDC) override;
 
 	void PlusItem(std::wstring tName) {
-		mItems.push_back(tName);
+		for (auto& item : mItems) {
+			if (item.first == tName) {
+				item.second++;
+				return;
+			}
+		}
+		
+		mItems.push_back(std::make_pair(tName, 1));
 	};
 
-	std::vector<std::wstring> GetItems() {
+	std::vector<std::pair<std::wstring, int>> GetItems() {
 		return this->mItems;
 	}
 private:
-	std::vector<std::wstring> mItems;
+	std::vector<std::pair<std::wstring, int>> mItems;
 };
 

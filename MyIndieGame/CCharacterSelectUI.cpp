@@ -24,23 +24,15 @@ void CCharacterSelectUI::OnCreate()
 	SetHeight(windowHeight);
 
 	// 뒤로가기 버튼
-	CUIButton* backButton = new CUIButton();
-	backButton->SetPos(SVector2D(windowWidth / 20, windowHeight / 20));
-	backButton->SetWidth(200.0f);
-	backButton->SetHeight(50.0f);
+	CUIButton* backButton = new CUIButton(SVector2D(windowWidth / 20, windowHeight / 20), 200.0f, 50.0f);
 	backButton->SetBackColor(Gdiplus::Color::Black);
 	backButton->SetCornerRadius(10.0f);
 
-	CUIText* backButtonTex = new CUIText();
+	CUIText* backButtonTex = new CUIText(SVector2D(), backButton->GetWidth(), backButton->GetHeight(), L"뒤로");
 
-	backButtonTex->SetText(L"뒤로");
-	backButtonTex->SetFont(L"Noto Sans KR Medium");
 	backButtonTex->SetFontSize(24.0f);
 	backButtonTex->SetStrokeWidth(1.0f);
 	backButtonTex->SetColor(Gdiplus::Color::White);
-	backButtonTex->SetPos(SVector2D());
-	backButtonTex->SetWidth(backButton->GetWidth());
-	backButtonTex->SetHeight(backButton->GetHeight());
 	backButtonTex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentCenter);
 
 	backButton->AddChild(backButtonTex);
@@ -61,16 +53,13 @@ void CCharacterSelectUI::OnCreate()
 	this->AddChild(backButton);
 
 	// 현재 창 텍스트
-	CUIText* currentUITex = new CUIText();
+	CUIText* currentUITex = new CUIText(SVector2D(), this->GetWidth(), this->GetHeight() / 5, L"캐릭터 선택");
 
-	currentUITex->SetText(L"캐릭터 선택");
 	currentUITex->SetFont(L"Noto Sans KR Medium");
 	currentUITex->SetFontSize(40.0f);
 	currentUITex->SetStrokeWidth(1.0f);
 	currentUITex->SetOutline(3.0f, Gdiplus::Color::Black);
 	currentUITex->SetColor(Gdiplus::Color::White);
-	currentUITex->SetWidth(this->GetWidth());
-	currentUITex->SetHeight(this->GetHeight() / 5);
 	currentUITex->SetPos(SVector2D(0.0f, currentUITex->GetHeight() / 3));
 	currentUITex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentNear);
 
@@ -79,7 +68,7 @@ void CCharacterSelectUI::OnCreate()
 
 
 	// 설명 패널
-	mCharDescriptionPanel = new CUIPanel();
+	mCharDescriptionPanel = new CUIPanel(SVector2D(), 250.0f, 320.0f);
 
 	mCharDescriptionPanel->SetWidth(250.0f);
 	mCharDescriptionPanel->SetHeight(320.0f);
@@ -89,67 +78,40 @@ void CCharacterSelectUI::OnCreate()
 
 	this->AddChild(mCharDescriptionPanel);
 
-	CUIPanel* charDescriptionImgPanel = new CUIPanel();
-
-	charDescriptionImgPanel->SetWidth(75.0f);
-	charDescriptionImgPanel->SetHeight(75.0f);
-	charDescriptionImgPanel->SetPos(SVector2D(10.0f, 10.0f));
+	CUIPanel* charDescriptionImgPanel = new CUIPanel(SVector2D(10.0f, 10.0f), 75.0f, 75.0f);
 	charDescriptionImgPanel->SetBackColor(Gdiplus::Color::Black);
 	charDescriptionImgPanel->SetCornerRadius(10.0f);
 
 	mCharDescriptionPanel->AddChild(charDescriptionImgPanel);
 
-	CUIImg* charDescriptionImg = new CUIImg();
+	CUIImg* charDescriptionImg = new CUIImg(SVector2D(), charDescriptionImgPanel->GetWidth(), charDescriptionImgPanel->GetHeight());
 	
 	charDescriptionImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
-	charDescriptionImg->SetWidth(charDescriptionImgPanel->GetWidth());
-	charDescriptionImg->SetHeight(charDescriptionImgPanel->GetHeight());
 
 	charDescriptionImgPanel->AddChild(charDescriptionImg);
 
-	CUIText* charNameTex = new CUIText();
+	CUIText* charNameTex = new CUIText(SVector2D(charDescriptionImgPanel->GetPos().mX + charDescriptionImgPanel->GetWidth() + 10.0f, charDescriptionImgPanel->GetPos().mY), 100.0f, 25.0f);
 
-	charNameTex->SetPos(SVector2D(charDescriptionImgPanel->GetPos().mX + charDescriptionImgPanel->GetWidth() + 10.0f, charDescriptionImgPanel->GetPos().mY));
-	charNameTex->SetWidth(100.0f);
-	charNameTex->SetHeight(25.0f);
-
-	charNameTex->SetText(L"");
-	charNameTex->SetFont(L"Noto Sans KR Medium");
 	charNameTex->SetFontSize(20.0f);
 	charNameTex->SetColor(Gdiplus::Color::White);
 
 	mCharDescriptionPanel->AddChild(charNameTex);
 
-	CUIText* charTex = new CUIText();
+	CUIText* charTex = new CUIText(SVector2D(charDescriptionImgPanel->GetPos().mX + charDescriptionImgPanel->GetWidth() + 10.0f, charDescriptionImgPanel->GetPos().mY + 30.0f), 100.0f, 25.0f);
 
-	charTex->SetPos(SVector2D(charDescriptionImgPanel->GetPos().mX + charDescriptionImgPanel->GetWidth() + 10.0f, charDescriptionImgPanel->GetPos().mY + 30.0f));
-	charTex->SetWidth(100.0f);
-	charTex->SetHeight(25.0f);
-
-	charTex->SetText(L"");
-	charTex->SetFont(L"Noto Sans KR Medium");
 	charTex->SetFontSize(15.0f);
 	charTex->SetColor(Gdiplus::Color::LightYellow);
 
 	mCharDescriptionPanel->AddChild(charTex);
 
-	CUIText* descriptionTex = new CUIText();
+	CUIText* descriptionTex = new CUIText(SVector2D(charDescriptionImgPanel->GetPos().mX, charDescriptionImgPanel->GetPos().mY + charDescriptionImgPanel->GetHeight() + 10.0f), 200.0f, 250.0f);
 
-	descriptionTex->SetPos(SVector2D(charDescriptionImgPanel->GetPos().mX, charDescriptionImgPanel->GetPos().mY + charDescriptionImgPanel->GetHeight() + 10.0f));
-	descriptionTex->SetWidth(200.0f);
-	descriptionTex->SetHeight(250.0f);
-
-	descriptionTex->SetFont(L"Noto Sans KR Medium");
 	descriptionTex->SetFontSize(15.0f);
 	descriptionTex->SetColor(Gdiplus::Color::White);
 
 	mCharDescriptionPanel->AddChild(descriptionTex);
 
-	CUIPanel* charSelectPanel = new CUIPanel;
-
-	charSelectPanel->SetPos(SVector2D(this->GetPos().mX, this->GetPos().mY + this->GetHeight() / 2));
-	charSelectPanel->SetWidth(this->GetWidth());
-	charSelectPanel->SetHeight(this->GetHeight() / 2);
+	CUIPanel* charSelectPanel = new CUIPanel(SVector2D(this->GetPos().mX, this->GetPos().mY + this->GetHeight() / 2), this->GetWidth(), this->GetHeight() / 2);
 
 	int x = 30;
 	int y = 100;
@@ -157,18 +119,12 @@ void CCharacterSelectUI::OnCreate()
 
 	// 캐릭터 데이터 가져와서 버튼 만들기
 	for (auto& [id, character] : CDataMgr::GetCharacterDatas()) {
-		CUIButton* charButton = new CUIButton();
-		charButton->SetPos(SVector2D(x, y));
-		charButton->SetWidth(75.0f);
-		charButton->SetHeight(75.0f);
+		CUIButton* charButton = new CUIButton(SVector2D(x, y), 75.0f, 75.0f);
 		charButton->SetBackColor(Gdiplus::Color::Gray);
 		charButton->SetCornerRadius(10.0f);
 
-		CUIImg* uiImg = new CUIImg();
+		CUIImg* uiImg = new CUIImg(SVector2D(), charButton->GetWidth(), charButton->GetHeight(), CResourceMgr::Find<CTexture>(character.iconTexture));
 		uiImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
-		uiImg->SetTexture(CResourceMgr::Find<CTexture>(character.iconTexture));
-		uiImg->SetWidth(charButton->GetWidth());
-		uiImg->SetHeight(charButton->GetHeight());
 
 		charButton->AddChild(uiImg);
 

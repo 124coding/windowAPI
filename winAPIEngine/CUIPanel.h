@@ -6,7 +6,9 @@
 class CUIPanel : public CUIBase
 {
 public:
-	CUIPanel() : CUIBase(eUIType::None){}
+	CUIPanel(SVector2D tPos,
+		float tWidth, float tHeight)
+		: CUIBase(tPos, tWidth, tHeight, eUIType::None){}
 	virtual ~CUIPanel() {}
 
 	virtual void OnCreate() override;

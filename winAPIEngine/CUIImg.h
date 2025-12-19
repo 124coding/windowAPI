@@ -15,7 +15,13 @@ public:
 		OriginalCenter
 	};
 
-	CUIImg() : CUIBase(eUIType::None) {
+	CUIImg(SVector2D tPos,
+		float tWidth, float tHeight,
+		CTexture* tTex = nullptr)
+		: CUIBase(tPos,
+			tWidth, tHeight, 
+			eUIType::None),
+		mTex(tTex) {
 		mIgnoreMouse = true;
 	}
 	virtual ~CUIImg() {}

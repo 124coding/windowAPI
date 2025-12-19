@@ -32,6 +32,8 @@ void CUIImg::OnLateUpdate(float tDeltaTime)
 
 void CUIImg::Render(HDC tHDC)
 {
+    if (!this->GetEnabled()) return;
+
 	if (mTex == nullptr) return;
 	if (mWidth <= 0 || mHeight <= 0) return;
 
@@ -79,7 +81,7 @@ void CUIImg::Render(HDC tHDC)
 
     graphics.DrawImage(mTex->GetImage(), drawRect);
 
-	CUIBase::Render(tHDC);
+    CUIBase::Render(tHDC);
 }
 
 void CUIImg::UIClear()

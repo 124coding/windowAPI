@@ -153,6 +153,17 @@ public:
 		return mItemDatas;
 	}
 
+	static const std::vector<SWeapon>& GetWeaponList() {
+		return mWeaponList;
+	}
+
+	static const std::vector<std::vector<SItem>>& GetItemClassificationByTier() {
+		return mItemClassificationByTier;
+	}
+
+	static std::pair<int, SWeapon> GetRandomWeaponByStage(int curStage);
+	static SItem GetRandomItemByStage(int curStage);
+
 
 
 	static const std::unordered_map<std::wstring, std::function<CEnemy* ()>>& GetMonsterCreator() {
@@ -169,6 +180,8 @@ private:
 	static std::unordered_map<std::wstring, SCharacter> mCharacterDatas;
 	static std::unordered_map<std::wstring, SEffect> mEffectDatas;
 	static std::unordered_map<std::wstring, SItem> mItemDatas;
+	static std::vector<SWeapon> mWeaponList;
+	static std::vector<std::vector<SItem>> mItemClassificationByTier;
 	
 	static std::unordered_map<std::wstring, std::function<CEnemy* ()>> mMonsterCreator;
 	static std::unordered_map<std::wstring, std::function<CWeapon* ()>> mWeaponCreator;

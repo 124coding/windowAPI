@@ -36,23 +36,15 @@ void CWeaponSelectUI::OnCreate()
 	CDataMgr::SCharacter curChar = it->second;
 
 	// 뒤로가기 버튼
-	CUIButton* backButton = new CUIButton();
-	backButton->SetPos(SVector2D(windowWidth / 20, windowHeight / 20));
-	backButton->SetWidth(200.0f);
-	backButton->SetHeight(50.0f);
+	CUIButton* backButton = new CUIButton(SVector2D(windowWidth / 20, windowHeight / 20), 200.0f, 50.0f);
 	backButton->SetBackColor(Gdiplus::Color::Black);
 	backButton->SetCornerRadius(10.0f);
 
-	CUIText* backButtonTex = new CUIText();
+	CUIText* backButtonTex = new CUIText(SVector2D(), backButton->GetWidth(), backButton->GetHeight(), L"뒤로");
 
-	backButtonTex->SetText(L"뒤로");
-	backButtonTex->SetFont(L"Noto Sans KR Medium");
 	backButtonTex->SetFontSize(24.0f);
 	backButtonTex->SetStrokeWidth(1.0f);
 	backButtonTex->SetColor(Gdiplus::Color::White);
-	backButtonTex->SetPos(SVector2D());
-	backButtonTex->SetWidth(backButton->GetWidth());
-	backButtonTex->SetHeight(backButton->GetHeight());
 	backButtonTex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentCenter);
 
 	backButton->AddChild(backButtonTex);
@@ -76,16 +68,12 @@ void CWeaponSelectUI::OnCreate()
 	this->AddChild(backButton);
 
 	// 현재 창 텍스트
-	CUIText* currentUITex = new CUIText();
+	CUIText* currentUITex = new CUIText(SVector2D(), this->GetWidth(), this->GetHeight() / 5, L"무기 선택");
 
-	currentUITex->SetText(L"무기 선택");
-	currentUITex->SetFont(L"Noto Sans KR Medium");
 	currentUITex->SetFontSize(40.0f);
 	currentUITex->SetStrokeWidth(1.0f);
 	currentUITex->SetOutline(3.0f, Gdiplus::Color::Black);
 	currentUITex->SetColor(Gdiplus::Color::White);
-	currentUITex->SetWidth(this->GetWidth());
-	currentUITex->SetHeight(this->GetHeight() / 5);
 	currentUITex->SetPos(SVector2D(0.0f, currentUITex->GetHeight() / 3));
 	currentUITex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentNear);
 
@@ -94,78 +82,47 @@ void CWeaponSelectUI::OnCreate()
 	mCharDescriptionPanel = dynamic_cast<CUIPanel*>(dynamic_cast<CCharacterSelectUI*>(CUIMgr::FindUI(eUIType::CharacterSelectUI))->GetCharDescPanel()->Reparent(this, true));
 
 	// 무기 설명 패널
-	CUIPanel* descriptionWeaponPanel = new CUIPanel();
+	CUIPanel* descriptionWeaponPanel = new CUIPanel(SVector2D(), 250.0f, 320.0f);
 
-	descriptionWeaponPanel->SetWidth(250.0f);
-	descriptionWeaponPanel->SetHeight(320.0f);
-	descriptionWeaponPanel->SetPos(SVector2D());
 	descriptionWeaponPanel->SetBackColor(Gdiplus::Color::Black);
 	descriptionWeaponPanel->SetCornerRadius(10.0f);
 	descriptionWeaponPanel->InActive();
 
 	this->AddChild(descriptionWeaponPanel);
 
-	CUIPanel* weaponDescriptionImgPanel = new CUIPanel();
+	CUIPanel* weaponDescriptionImgPanel = new CUIPanel(SVector2D(10.0f, 10.0f), 75.0f, 75.0f);
 
-	weaponDescriptionImgPanel->SetWidth(75.0f);
-	weaponDescriptionImgPanel->SetHeight(75.0f);
-	weaponDescriptionImgPanel->SetPos(SVector2D(10.0f, 10.0f));
 	weaponDescriptionImgPanel->SetBackColor(Gdiplus::Color::Black);
 	weaponDescriptionImgPanel->SetCornerRadius(10.0f);
 
 	descriptionWeaponPanel->AddChild(weaponDescriptionImgPanel);
 
-	CUIImg* weaponDescriptionImg = new CUIImg();
+	CUIImg* weaponDescriptionImg = new CUIImg(SVector2D(), weaponDescriptionImgPanel->GetWidth(), weaponDescriptionImgPanel->GetHeight());
 
 	weaponDescriptionImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
-	weaponDescriptionImg->SetWidth(weaponDescriptionImgPanel->GetWidth());
-	weaponDescriptionImg->SetHeight(weaponDescriptionImgPanel->GetHeight());
 
 	weaponDescriptionImgPanel->AddChild(weaponDescriptionImg);
 
-	CUIText* weaponNameTex = new CUIText();
-
-	weaponNameTex->SetPos(SVector2D(weaponDescriptionImgPanel->GetPos().mX + weaponDescriptionImgPanel->GetWidth() + 10.0f, weaponDescriptionImgPanel->GetPos().mY));
-	weaponNameTex->SetWidth(100.0f);
-	weaponNameTex->SetHeight(25.0f);
-
-	weaponNameTex->SetText(L"");
-	weaponNameTex->SetFont(L"Noto Sans KR Medium");
+	CUIText* weaponNameTex = new CUIText(SVector2D(weaponDescriptionImgPanel->GetPos().mX + weaponDescriptionImgPanel->GetWidth() + 10.0f, weaponDescriptionImgPanel->GetPos().mY), 100.0f, 25.0f);
 	weaponNameTex->SetFontSize(20.0f);
 	weaponNameTex->SetColor(Gdiplus::Color::White);
 
 	descriptionWeaponPanel->AddChild(weaponNameTex);
 
-	CUIText* weaponTex = new CUIText();
-
-	weaponTex->SetPos(SVector2D(weaponDescriptionImgPanel->GetPos().mX + weaponDescriptionImgPanel->GetWidth() + 10.0f, weaponDescriptionImgPanel->GetPos().mY + 30.0f));
-	weaponTex->SetWidth(100.0f);
-	weaponTex->SetHeight(25.0f);
-
-	weaponTex->SetText(L"");
-	weaponTex->SetFont(L"Noto Sans KR Medium");
+	CUIText* weaponTex = new CUIText(SVector2D(weaponDescriptionImgPanel->GetPos().mX + weaponDescriptionImgPanel->GetWidth() + 10.0f, weaponDescriptionImgPanel->GetPos().mY + 30.0f), 100.0f, 25.0f);
 	weaponTex->SetFontSize(15.0f);
 	weaponTex->SetColor(Gdiplus::Color::LightYellow);
 
 	descriptionWeaponPanel->AddChild(weaponTex);
 
-	CUIText* descriptionWeaponTex = new CUIText();
+	CUIText* descriptionWeaponTex = new CUIText(SVector2D(weaponDescriptionImgPanel->GetPos().mX, weaponDescriptionImgPanel->GetPos().mY + weaponDescriptionImgPanel->GetHeight() + 10.0f), 200.0f, 250.0f);
 
-	descriptionWeaponTex->SetPos(SVector2D(weaponDescriptionImgPanel->GetPos().mX, weaponDescriptionImgPanel->GetPos().mY + weaponDescriptionImgPanel->GetHeight() + 10.0f));
-	descriptionWeaponTex->SetWidth(200.0f);
-	descriptionWeaponTex->SetHeight(250.0f);
-
-	descriptionWeaponTex->SetFont(L"Noto Sans KR Medium");
 	descriptionWeaponTex->SetFontSize(15.0f);
 	descriptionWeaponTex->SetColor(Gdiplus::Color::White);
 
 	descriptionWeaponPanel->AddChild(descriptionWeaponTex);
 
-	CUIPanel* weaponSelectPanel = new CUIPanel;
-
-	weaponSelectPanel->SetPos(SVector2D(this->GetPos().mX, this->GetPos().mY + this->GetHeight() / 2));
-	weaponSelectPanel->SetWidth(this->GetWidth());
-	weaponSelectPanel->SetHeight(this->GetHeight() / 2);
+	CUIPanel* weaponSelectPanel = new CUIPanel(SVector2D(this->GetPos().mX, this->GetPos().mY + this->GetHeight() / 2), this->GetWidth(), this->GetHeight() / 2);
 
 	this->AddChild(weaponSelectPanel);
 
@@ -181,18 +138,12 @@ void CWeaponSelectUI::OnCreate()
 		}
 		CDataMgr::SWeapon curWeapon = it->second;
 
-		CUIButton* weaponButton = new CUIButton();
-		weaponButton->SetPos(SVector2D(x, y));
-		weaponButton->SetWidth(75.0f);
-		weaponButton->SetHeight(75.0f);
+		CUIButton* weaponButton = new CUIButton(SVector2D(x, y), 75.0f, 75.0f);
 		weaponButton->SetBackColor(Gdiplus::Color::Gray);
 		weaponButton->SetCornerRadius(10.0f);
 
-		CUIImg* uiImg = new CUIImg();
+		CUIImg* uiImg = new CUIImg(SVector2D(), weaponButton->GetWidth(), weaponButton->GetHeight(), CResourceMgr::Find<CTexture>(curWeapon.iconTexture));
 		uiImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
-		uiImg->SetTexture(CResourceMgr::Find<CTexture>(curWeapon.iconTexture));
-		uiImg->SetWidth(weaponButton->GetWidth());
-		uiImg->SetHeight(weaponButton->GetHeight());
 
 		weaponButton->AddChild(uiImg);
 

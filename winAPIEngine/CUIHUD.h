@@ -7,7 +7,10 @@
 class CUIHUD : public CUIBase
 {
 public:
-	CUIHUD() : CUIBase(eUIType::None) {}
+	CUIHUD(SVector2D tPos,
+		float tWidth, float tHeight) 
+		: CUIBase(tPos,
+			tWidth, tHeight, eUIType::None) {}
 	virtual ~CUIHUD() {}
 
 	virtual void OnCreate() override;

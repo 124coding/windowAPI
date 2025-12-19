@@ -39,6 +39,8 @@ struct RenderLineInfo {
 
 void CUIText::Render(HDC tHDC)
 {
+    if (!this->GetEnabled()) return;
+
     if (mText == L"" && mFragments.empty()) return;
 
 	Gdiplus::Graphics graphics(tHDC);

@@ -8,7 +8,7 @@ class CUIText;
 class CUIHPBar : public CUIHUD
 {
 public:
-	CUIHPBar() {}
+	CUIHPBar(SVector2D tPos, float tWidth, float tHeight) : CUIHUD(tPos, tWidth, tHeight) {}
 	virtual ~CUIHPBar() {}
 
 	virtual void OnCreate() override;

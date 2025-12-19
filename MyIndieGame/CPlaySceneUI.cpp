@@ -23,46 +23,24 @@ void CPlaySceneUI::OnCreate()
 
 
 
-	CUIPanel* hudPanel = new CUIPanel();
-	hudPanel->SetWidth(330);
-	hudPanel->SetHeight(140);
-
-	hudPanel->SetPos(SVector2D(20.0f, 20.0f));
-
+	CUIPanel* hudPanel = new CUIPanel(SVector2D(20.0f, 20.0f), 330.0f, 140.0f);
 	this->AddChild(hudPanel);
 
 
-
-
-
-	CUIHUD* hpHUD = new CUIHUD();
-	hpHUD->SetPos(SVector2D());
-	hpHUD->SetWidth(320);
-	hpHUD->SetHeight(48);
-
+	CUIHUD* hpHUD = new CUIHUD(SVector2D(), 320.0f, 48.0f);
 	hudPanel->AddChild(hpHUD);
 
-	CUIImg* hpBg = new CUIImg();
 
-	hpBg->SetTexture(CResourceMgr::Find<CTexture>(L"UIHUDBg"));
-	hpBg->SetWidth(hpHUD->GetWidth());
-	hpBg->SetHeight(hpHUD->GetHeight());
+	CUIImg* hpBg = new CUIImg(SVector2D(), hpHUD->GetWidth(), hpHUD->GetHeight(), CResourceMgr::Find<CTexture>(L"UIHUDBg"));
 
 	hpHUD->AddChild(hpBg);
 
-	CUIHPBar* hpBar = new CUIHPBar();
-	hpBar->SetWidth(hpHUD->GetWidth());
-	hpBar->SetHeight(hpHUD->GetHeight());
-
+	CUIHPBar* hpBar = new CUIHPBar(SVector2D(), hpHUD->GetWidth(), hpHUD->GetHeight());
 	hpBar->SetPlayer(CPlayScene::GetPlayer());
 
 	hpHUD->AddChild(hpBar);
 
-	CUIImg* hpFrame = new CUIImg();
-
-	hpFrame->SetTexture(CResourceMgr::Find<CTexture>(L"UIHUDFrame"));
-	hpFrame->SetWidth(hpHUD->GetWidth());
-	hpFrame->SetHeight(hpHUD->GetHeight());
+	CUIImg* hpFrame = new CUIImg(SVector2D(), hpHUD->GetWidth(), hpHUD->GetHeight(), CResourceMgr::Find<CTexture>(L"UIHUDFrame"));
 
 	hpHUD->AddChild(hpFrame);
 
@@ -70,50 +48,28 @@ void CPlaySceneUI::OnCreate()
 
 
 
-	CUIHUD* EXPHUD = new CUIHUD();
-	EXPHUD->SetPos(SVector2D(0.0f, 53.0f));
-	EXPHUD->SetWidth(320);
-	EXPHUD->SetHeight(48);
-
+	CUIHUD* EXPHUD = new CUIHUD(SVector2D(0.0f, 53.0f), 320.0f, 48.0f);
 	hudPanel->AddChild(EXPHUD);
 
-	CUIImg* epxBg = new CUIImg();
-
-	epxBg->SetTexture(CResourceMgr::Find<CTexture>(L"UIHUDBg"));
-	epxBg->SetWidth(EXPHUD->GetWidth());
-	epxBg->SetHeight(EXPHUD->GetHeight());
+	CUIImg* epxBg = new CUIImg(SVector2D(), EXPHUD->GetWidth(), EXPHUD->GetHeight(), CResourceMgr::Find<CTexture>(L"UIHUDBg"));
 
 	EXPHUD->AddChild(epxBg);
 
-	CUIEXPBar* expBar = new CUIEXPBar();
-	expBar->SetWidth(EXPHUD->GetWidth());
-	expBar->SetHeight(EXPHUD->GetHeight());
-
+	CUIEXPBar* expBar = new CUIEXPBar(SVector2D(), EXPHUD->GetWidth(), EXPHUD->GetHeight());
 	expBar->SetPlayer(CPlayScene::GetPlayer());
 
 	EXPHUD->AddChild(expBar);
 
-	CUIImg* expFrame = new CUIImg();
-
-	expFrame->SetTexture(CResourceMgr::Find<CTexture>(L"UIHUDFrame"));
-	expFrame->SetWidth(EXPHUD->GetWidth());
-	expFrame->SetHeight(EXPHUD->GetHeight());
+	CUIImg* expFrame = new CUIImg(SVector2D(), EXPHUD->GetWidth(), EXPHUD->GetHeight(), CResourceMgr::Find<CTexture>(L"UIHUDFrame"));
 
 	EXPHUD->AddChild(expFrame);
 
-	CUIImg* moneyIcon = new CUIImg();
-	moneyIcon->SetTexture(CResourceMgr::Find<CTexture>(L"HarvestIcon"));
-	moneyIcon->SetPos(SVector2D(0.0f, 100.0f));
-	moneyIcon->SetWidth(50.0f);
-	moneyIcon->SetHeight(50.0f);
+	CUIImg* moneyIcon = new CUIImg(SVector2D(0.0f, 100.0f), 50.0f, 50.0f, CResourceMgr::Find<CTexture>(L"HarvestIcon"));
 	moneyIcon->SetImageMode(CUIImg::eImageMode::KeepAspect);
 
 	hudPanel->AddChild(moneyIcon);
 
-	mMoneyTex = new CUIText();
-	mMoneyTex->SetPos(SVector2D(55.0f, 100.0f));
-	mMoneyTex->SetWidth(hudPanel->GetWidth() - moneyIcon->GetWidth() - 5.0f);
-	mMoneyTex->SetHeight(50.0f);
+	mMoneyTex = new CUIText(SVector2D(55.0f, 100.0f), hudPanel->GetWidth() - moneyIcon->GetWidth() - 5.0f, 50.0f);
 	mMoneyTex->SetFontSize(30.0f);
 	mMoneyTex->SetColor(Gdiplus::Color::White);
 	mMoneyTex->SetStrokeWidth(1.0f);
@@ -122,18 +78,12 @@ void CPlaySceneUI::OnCreate()
 	hudPanel->AddChild(mMoneyTex);
 
 
-	CUIPanel* infoPanel = new CUIPanel();
-	infoPanel->SetWidth(200.0f);
-	infoPanel->SetHeight(100.0f);
+	CUIPanel* infoPanel = new CUIPanel(SVector2D(), 200.0f, 100.0f);
 	infoPanel->SetPos(SVector2D(this->GetWidth() / 2 - infoPanel->GetWidth() / 2, 20.0f));
 
 	this->AddChild(infoPanel);
 
-	CUIText* stageTex = new CUIText();
-	stageTex->SetText(L"웨이브 ");
-	stageTex->SetWidth(2 * infoPanel->GetWidth() / 3 - 20.0f);
-	stageTex->SetHeight(50.0f);
-	stageTex->SetPos(SVector2D());
+	CUIText* stageTex = new CUIText(SVector2D(), 2 * infoPanel->GetWidth() / 3 - 20.0f, 50.0f, L"웨이브 ");
 	stageTex->SetColor(Gdiplus::Color::White);
 	stageTex->SetFontSize(30.0f);
 	stageTex->SetStrokeWidth(1.0f);
@@ -142,10 +92,7 @@ void CPlaySceneUI::OnCreate()
 
 	infoPanel->AddChild(stageTex);
 
-	mStageNumTex = new CUIText();
-	mStageNumTex->SetWidth(infoPanel->GetWidth() - stageTex->GetWidth());
-	mStageNumTex->SetHeight(stageTex->GetHeight());
-	mStageNumTex->SetPos(SVector2D(stageTex->GetWidth() + 20.0f, 0.0f));
+	mStageNumTex = new CUIText(SVector2D(stageTex->GetWidth() + 20.0f, 0.0f), infoPanel->GetWidth() - stageTex->GetWidth(), stageTex->GetHeight());
 	mStageNumTex->SetColor(Gdiplus::Color::White);
 	mStageNumTex->SetFontSize(30.0f);
 	mStageNumTex->SetStrokeWidth(1.0f);
@@ -155,10 +102,7 @@ void CPlaySceneUI::OnCreate()
 	infoPanel->AddChild(mStageNumTex);
 
 
-	mTimeTex = new CUIText();
-	mTimeTex->SetWidth(infoPanel->GetWidth());
-	mTimeTex->SetHeight(stageTex->GetHeight());
-	mTimeTex->SetPos(SVector2D(0.0f, stageTex->GetHeight()));
+	mTimeTex = new CUIText(SVector2D(0.0f, stageTex->GetHeight()), infoPanel->GetWidth(), stageTex->GetHeight());
 	mTimeTex->SetColor(Gdiplus::Color::White);
 	mTimeTex->SetFontSize(50.0f);
 	mTimeTex->SetStrokeWidth(1.0f);

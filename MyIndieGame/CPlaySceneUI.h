@@ -8,7 +8,7 @@ class CUIText;
 class CPlaySceneUI : public CUIBase
 {
 public:
-	CPlaySceneUI() : CUIBase(eUIType::PlaySceneUI) {}
+	CPlaySceneUI(SVector2D tPos = SVector2D(), float tWidth = 0.0f, float tHeight = 0.0f) : CUIBase(tPos, tWidth, tHeight, eUIType::PlaySceneUI) {}
 	~CPlaySceneUI() {}
 
 	virtual void OnCreate() override;

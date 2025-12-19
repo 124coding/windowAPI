@@ -7,7 +7,7 @@ class CUIPanel;
 class CCharacterSelectUI : public CUIBase
 {
 public:
-	CCharacterSelectUI() : CUIBase(eUIType::CharacterSelectUI) {}
+	CCharacterSelectUI(SVector2D tPos = SVector2D(), float tWidth = 0.0f, float tHeight = 0.0f) : CUIBase(tPos, tWidth, tHeight, eUIType::CharacterSelectUI) {}
 	~CCharacterSelectUI() {}
 
 	virtual void OnCreate() override;

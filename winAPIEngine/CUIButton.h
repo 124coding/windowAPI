@@ -10,7 +10,10 @@
 class CUIButton : public CUIBase
 {
 public:
-	CUIButton() : CUIBase(eUIType::None) {}
+	CUIButton(SVector2D tPos,
+		float tWidth, float tHeight) 
+		: CUIBase(tPos,
+			tWidth, tHeight, eUIType::None) {}
 	virtual ~CUIButton() {}
 
 	virtual void OnCreate() override;
@@ -21,22 +24,6 @@ public:
 	virtual void OnLateUpdate(float tDeltaTime) override;
 	virtual void Render(HDC tHDC) override;
 	virtual void UIClear() override;
-
-	void SetMouseOutTexture(const std::wstring& tKey) {
-		this->mMouseOutTexture = CResourceMgr::Find<CTexture>(tKey);
-	}
-
-	CTexture* GetMouseOutTexture() {
-		return this->mMouseOutTexture;
-	}
-	
-	void SetMouseInTexture(const std::wstring& tKey) {
-		this->mMouseInTexture = CResourceMgr::Find<CTexture>(tKey);
-	}
-
-	CTexture* GetMouseInTexture() {
-		return this->mMouseInTexture;
-	}
 
 	void SetSelected(bool tBool) {
 		this->mIsSelected = tBool;
@@ -62,8 +49,6 @@ public:
 
 
 private:
-	CTexture* mMouseOutTexture = nullptr;
-	CTexture* mMouseInTexture = nullptr;
 	SEvent mOnClick;
 
 	bool mIsSelected = false;

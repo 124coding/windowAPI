@@ -1,6 +1,7 @@
 #include "CShopUI.h"
 
 #include "StatSet.h"
+#include "Effect.h"
 
 #include "CDataMgr.h"
 
@@ -26,23 +27,17 @@ void CShopUI::OnCreate()
 	// 기본적으로 필요한 데이터 가져오기
 	CPlayer* pl = CPlayScene::GetPlayer();
 	CPlayerScript* plSc = pl->GetComponent<CPlayerScript>();
-	std::vector<std::wstring> plItems = pl->GetComponent<CItemMgr>()->GetItems();
+	std::vector<std::pair<std::wstring, int>> plItems = pl->GetComponent<CItemMgr>()->GetItems();
 	std::vector<CWeapon*> plWeapons = pl->GetComponent<CWeaponMgr>()->GetWeapons();
 
 	// 상점의 메인이 될 패널
-	mShopMainPanel = new CUIPanel();
-	mShopMainPanel->SetWidth(3 * this->GetWidth() / 4);
-	mShopMainPanel->SetHeight(this->GetHeight());
+	mShopMainPanel = new CUIPanel(SVector2D(), 3 * this->GetWidth() / 4, this->GetHeight());
 
 	this->AddChild(mShopMainPanel);
 
 
-	CUIText* shopTex = new CUIText();
+	CUIText* shopTex = new CUIText(SVector2D(20.0f, 20.0f), 200.0f, 40.0f, L"상점");
 
-	shopTex->SetPos(SVector2D(20.0f, 20.0f));
-	shopTex->SetWidth(200.0f);
-	shopTex->SetHeight(40.0f);
-	shopTex->SetText(L"상점");
 	shopTex->SetColor(Gdiplus::Color::White);
 	shopTex->SetFontSize(35.0f);
 	shopTex->SetStrokeWidth(1.0f);
@@ -51,28 +46,19 @@ void CShopUI::OnCreate()
 	mShopMainPanel->AddChild(shopTex);
 
 
-	CUIPanel* shopMoneyPanel = new CUIPanel();
-	shopMoneyPanel->SetWidth(300.0f);
-	shopMoneyPanel->SetHeight(40.0f);
+	CUIPanel* shopMoneyPanel = new CUIPanel(SVector2D(), 300.0f, 40.0f);
 
 	shopMoneyPanel->SetPos(SVector2D(mShopMainPanel->GetWidth() / 2 - shopMoneyPanel->GetWidth() / 2, 20.0f));
 
 	mShopMainPanel->AddChild(shopMoneyPanel);
 
 
-	CUIImg* shopMoneyIcon = new CUIImg();
-	shopMoneyIcon->SetTexture(CResourceMgr::Find<CTexture>(L"HarvestIcon"));
-	shopMoneyIcon->SetPos(SVector2D(0.0f, 5.0f));
-	shopMoneyIcon->SetWidth(50.0f);
-	shopMoneyIcon->SetHeight(40.0f);
+	CUIImg* shopMoneyIcon = new CUIImg(SVector2D(0.0f, 5.0f), 50.0f, 40.0f, CResourceMgr::Find<CTexture>(L"HarvestIcon"));
 	shopMoneyIcon->SetImageMode(CUIImg::eImageMode::KeepAspect);
 
 	shopMoneyPanel->AddChild(shopMoneyIcon);
 
-	mMoneyTex = new CUIText();
-	mMoneyTex->SetPos(SVector2D(55.0f, 0.0f));
-	mMoneyTex->SetWidth(mShopMainPanel->GetWidth() - shopMoneyIcon->GetWidth() - 5.0f);
-	mMoneyTex->SetHeight(40.0f);
+	mMoneyTex = new CUIText(SVector2D(55.0f, 0.0f), mShopMainPanel->GetWidth() - shopMoneyIcon->GetWidth() - 5.0f, 40.0f);
 	mMoneyTex->SetFontSize(30.0f);
 	mMoneyTex->SetColor(Gdiplus::Color::White);
 	mMoneyTex->SetStrokeWidth(1.0f);
@@ -82,25 +68,20 @@ void CShopUI::OnCreate()
 
 	
 
-	mResetButton = new CUIButton();
-	mResetButton->SetHeight(50.0f);
-	mResetButton->SetCornerRadius(10.0f);
+	mResetButton = new CUIButton(SVector2D(), 0.0f, 40.0f);
 	mResetButton->SetBackColor(Gdiplus::Color::Black);
+	mResetButton->SetCornerRadius(10);
 
-	mResetTex = new CUIText();
-	mResetTex->SetPos(SVector2D(10.0f, 0.0f));
-	mResetTex->SetHeight(40.0f);
+	mResetTex = new CUIText(SVector2D(10.0f, 0.0f), 0.0f, 40.0f);
 	mResetTex->SetFontSize(30.0f);
 	mResetTex->SetStrokeWidth(1.0f);
 	mResetTex->SetColor(Gdiplus::Color::White);
+	mResetTex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentCenter);
 
 	mResetButton->AddChild(mResetTex);
 
 
-	mResetImg = new CUIImg();
-	mResetImg->SetTexture(CResourceMgr::Find<CTexture>(L"HarvestIcon"));
-	mResetImg->SetWidth(50.0f);
-	mResetImg->SetHeight(40.0f);
+	mResetImg = new CUIImg(SVector2D(), 50.0f, 40.0f, CResourceMgr::Find<CTexture>(L"HarvestIcon"));
 	mResetImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
 
 	mResetButton->AddChild(mResetImg);
@@ -114,21 +95,78 @@ void CShopUI::OnCreate()
 		mResetButton->SetBackColor(Gdiplus::Color::Black);
 		mResetTex->SetColor(Gdiplus::Color::White);
 		});
-	mResetButton->SetEventClick([=]() {
-
-		});
 
 	mShopMainPanel->AddChild(mResetButton);
 
 
 	// 상점에서 구매할 수 있는 아이템들을 보여주는 패널
-	CUIPanel* goodsPanel = new CUIPanel();
-	goodsPanel->SetPos(SVector2D(0.0f, 100.0f));
-	goodsPanel->SetWidth(mShopMainPanel->GetWidth());
-	goodsPanel->SetHeight(mShopMainPanel->GetHeight() / 2);
+	CUIPanel* goodsPanel = new CUIPanel(SVector2D(0.0f, 100.0f), mShopMainPanel->GetWidth(), mShopMainPanel->GetHeight() / 2);
 
 	mShopMainPanel->AddChild(goodsPanel);
 
+	mResetButton->SetEventClick([=]() {
+
+		if (plSc->GetMoney() > mResetCost) {
+			plSc->ChangeMoney(-mResetCost);
+			mResetCount++;
+			mResetCost *= 2;
+		}
+		else {
+			return;
+		}
+
+		std::vector<std::pair<CUIPanel*, bool>> lockedItems;
+		lockedItems.reserve(4);
+
+		for (int i = 0; i < 4; ++i)
+		{
+			if (mGoods[i].second == true) {
+				lockedItems.push_back(mGoods[i]);
+			}
+			else
+			{
+				if (mGoods[i].first != nullptr)
+				{
+					mGoods[i].first->GetParent()->RemoveChild(mGoods[i].first);
+					mGoods[i].first->OnDestroy();
+					SAFE_DELETE(mGoods[i].first);
+				}
+			}
+		}
+
+		mGoods.clear();
+
+		for (const auto& item : lockedItems)
+		{
+			mGoods.push_back(item);
+		}
+
+		int currentCount = (int)mGoods.size();
+
+		float panelW = goodsPanel->GetWidth();
+		float panelH = goodsPanel->GetHeight();
+		float margin = 30.0f;
+
+		float cellWidth = panelW / (float)4;
+		float itemWidth = cellWidth - margin;
+		float itemHeight = 4.0f * panelH / 5.0f;
+
+		for (int i = mGoods.size(); i < 4; i++) {
+			mGoods.push_back(MakeGoods(i, itemWidth, itemHeight));
+			goodsPanel->AddChild(mGoods[i].first);
+		}
+
+		for (int i = 0; i < 4; i++) {
+			CUIPanel* panel = mGoods[i].first;
+			if (panel == nullptr) continue;
+		
+			float xPos = (i * cellWidth) + (margin / 2.0f);
+			float yPos = 5.0f;
+
+			mGoods[i].first->SetPos(SVector2D(xPos, yPos));
+		}
+		
+		});
 
 	for (int i = 0; i < 4; i++) {
 		int itemCount = 4;
@@ -140,28 +178,22 @@ void CShopUI::OnCreate()
 		float itemWidth = cellWidth - margin;       
 		float itemHeight = 4.0f * panelH / 5.0f;    
 
-		mGoods[i] = MakeGoods(itemWidth, itemHeight);
+		mGoods[i] = MakeGoods(i, itemWidth, itemHeight);
 
 		float xPos = (i * cellWidth) + (margin / 2.0f);
 		float yPos = 5.0f;
 
-		mGoods[i]->SetPos(SVector2D(xPos, yPos));
-
-		goodsPanel->AddChild(mGoods[i]);
+		mGoods[i].first->SetPos(SVector2D(xPos, yPos));
+		goodsPanel->AddChild(mGoods[i].first);
 	}
 
 	// 현재 가지고 있는 아이템들을 표시해주는 패널
-	CUIPanel* haveItemPanel = new CUIPanel();
-	haveItemPanel->SetPos(SVector2D(0.0f, goodsPanel->GetPos().mY + goodsPanel->GetHeight()));
-	haveItemPanel->SetWidth(2 * goodsPanel->GetWidth() / 3);
-	haveItemPanel->SetHeight(windowHeight - (goodsPanel->GetHeight() + goodsPanel->GetPos().mY));
+	CUIPanel* haveItemPanel = new CUIPanel(SVector2D(0.0f, goodsPanel->GetPos().mY + goodsPanel->GetHeight()), 2 * goodsPanel->GetWidth() / 3, windowHeight - (goodsPanel->GetHeight() + goodsPanel->GetPos().mY));
 
 	mShopMainPanel->AddChild(haveItemPanel);
 
-	CUIText* haveItemText = new CUIText();
-	haveItemText->SetText(L"아이템");
+	CUIText* haveItemText = new CUIText(SVector2D(20.0f, 20.0f), 0.0f, 0.0f, L"아이템");
 	haveItemText->SetFontSize(30.0f);
-	haveItemText->SetPos(SVector2D(20.0f, 20.0f));
 	haveItemText->SetColor(Gdiplus::Color::White);
 	haveItemText->SetOutline(2.0f, Gdiplus::Color::Black);
 
@@ -176,181 +208,14 @@ void CShopUI::OnCreate()
 
 	// 플레이어 아이템 정보에서 가져옴
 	for (auto& item : plItems) {
-		auto currentItem = CDataMgr::GetItemDatas().find(item);
+		CUIPanel* itemPanel = MakeItemPanel(item.first, x, y);
 
-		if (currentItem == CDataMgr::GetItemDatas().end()) continue;
+		CUIText* itemCountTex = new CUIText(SVector2D(), itemPanel->GetWidth(), itemPanel->GetHeight(), std::to_wstring(item.second));
+		itemCountTex->SetBold(true);
+		itemCountTex->SetFontSize(10.0f);
+		itemCountTex->SetAlign(Gdiplus::StringAlignmentFar, Gdiplus::StringAlignmentFar);
 
-		UINT color = 0;
-
-		switch(currentItem->second.tier) {
-		case 2:
-			color = Gdiplus::Color::SteelBlue;
-			break;
-		case 3:
-			color = Gdiplus::Color::BlueViolet;
-			break;
-		case 4:
-			color = Gdiplus::Color::DarkRed;
-			break;
-		default:
-			color = 0xFF111111;
-			break;
-		}
-
-		CUIPanel* itemPanel = new CUIPanel();
-		itemPanel->SetWidth(75.0f);
-		itemPanel->SetHeight(75.0f);
-		itemPanel->SetPos(SVector2D(x, y));
 		x += itemPanel->GetWidth() + offset;
-		itemPanel->SetCornerRadius(10);
-		itemPanel->SetBackColor(color);
-		itemPanel->SetUsedClipping(true);
-
-		haveItemPanel->AddChild(itemPanel);
-
-		CUIImg* itemImg = new CUIImg();
-		itemImg->SetTexture(CResourceMgr::Find<CTexture>(currentItem->second.name + L"Icon"));
-		itemImg->SetWidth(itemPanel->GetWidth());
-		itemImg->SetHeight(itemPanel->GetHeight());
-		itemImg->SetIgnoreMouse(true);
-		itemImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
-
-		itemPanel->AddChild(itemImg);
-
-
-
-
-		CUIPanel* itemDescPanel = new CUIPanel();
-		itemDescPanel->SetWidth(goodsPanel->GetWidth() / 4.0f - 30.0f);
-		itemDescPanel->SetCornerRadius(10);
-		itemDescPanel->InActive();
-		itemDescPanel->SetBackColor(0xDD000000);
-
-		haveItemPanel->AddChild(itemDescPanel);
-
-		CUIPanel* itemImgPanel = new CUIPanel();
-		itemImgPanel->SetWidth(75.0f);
-		itemImgPanel->SetHeight(75.0f);
-		itemImgPanel->SetPos(SVector2D(10.0f, 10.0f));
-		itemImgPanel->SetCornerRadius(10);
-		itemImgPanel->SetBackColor(color);
-
-		itemDescPanel->AddChild(itemImgPanel);
-
-		CUIImg* itemDescImg = new CUIImg();
-		itemDescImg->SetTexture(CResourceMgr::Find<CTexture>(currentItem->second.name + L"Icon"));
-		itemDescImg->SetWidth(itemImgPanel->GetWidth());
-		itemDescImg->SetHeight(itemImgPanel->GetHeight());
-		itemDescImg->SetIgnoreMouse(true);
-		itemDescImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
-
-		itemDescPanel->AddChild(itemDescImg);
-
-		CUIText* itemNameTex = new CUIText();
-
-		itemNameTex->SetPos(SVector2D(itemImgPanel->GetPos().mX + itemImgPanel->GetWidth() + 10.0f, itemDescPanel->GetPos().mY));
-		itemNameTex->SetWidth(100.0f);
-		itemNameTex->SetHeight(25.0f);
-
-		itemNameTex->SetText(currentItem->second.name);
-		itemNameTex->SetFont(L"Noto Sans KR Medium");
-		itemNameTex->SetFontSize(20.0f);
-		itemNameTex->SetColor(Gdiplus::Color::White);
-
-		itemDescPanel->AddChild(itemNameTex);
-
-		CUIText* itemCategoryTex = new CUIText();
-
-		itemCategoryTex->SetPos(SVector2D(itemImgPanel->GetPos().mX + itemImgPanel->GetWidth() + 10.0f, itemDescPanel->GetPos().mY + 30.0f));
-		itemCategoryTex->SetWidth(100.0f);
-		itemCategoryTex->SetHeight(25.0f);
-
-		itemCategoryTex->SetText(L"아이템");
-		itemCategoryTex->SetFont(L"Noto Sans KR Medium");
-		itemCategoryTex->SetFontSize(15.0f);
-		itemCategoryTex->SetColor(Gdiplus::Color::LightYellow);
-
-		itemDescPanel->AddChild(itemCategoryTex);
-
-		CUIText* itemDescTex = new CUIText();
-
-		itemDescTex->SetPos(SVector2D(itemImgPanel->GetPos().mX, itemImgPanel->GetPos().mY + itemImgPanel->GetHeight() + 10.0f));
-		itemDescTex->SetWidth(200.0f);
-
-		itemDescTex->SetFont(L"Noto Sans KR Medium");
-		itemDescTex->SetFontSize(15.0f);
-		itemDescTex->SetColor(Gdiplus::Color::White);
-
-		itemDescPanel->AddChild(itemDescTex);
-
-		std::wstring finalDiscription = L"";
-
-		for (auto& [effectID, args] : currentItem->second.effects) {
-			auto it = CDataMgr::GetEffectDatas().find(effectID);
-			if (it == CDataMgr::GetEffectDatas().end()) {
-				continue;
-			}
-
-			std::wstring rawDesc = it->second.description;
-
-			int index = 0;
-
-			for (auto& arg : args) {
-				std::wstring value = arg.value;
-
-				std::wstring colorStr = L"#FFFFFF"; // 기본값
-				if (arg.color != L"") {
-					colorStr = arg.color;
-				}
-
-				if (colorStr == L"#00FF00")
-				{
-					try {
-						int iVal = std::stoi(arg.value);
-
-						if (iVal > 0) {
-							value = L"+" + value;
-						}
-					}
-					catch (...) {
-						// 변환 실패
-					}
-				}
-
-				std::wstring taggedStr = L"<c=" + colorStr + L">" + value + L"</c>";
-
-				// 설명글 치환 ({0} -> 태그 문자열)
-				// L"\\{" + 숫자 + L"\\}" 형태의 정규식 패턴 생성
-				std::wstring pattern = L"\\{" + std::to_wstring(index) + L"\\}";
-
-				try {
-					// rawDesc 안에 있는 {i}를 taggedStr로 교체
-					rawDesc = std::regex_replace(rawDesc, std::wregex(pattern), taggedStr);
-				}
-				catch (...) {
-					// 정규식 에러 예외처리 (원본 유지)
-				}
-				index++;
-			}
-
-			finalDiscription += rawDesc + L"\n";
-		}
-
-		finalDiscription = CUIText::InsertLineBreaks(finalDiscription, itemDescPanel->GetWidth() - itemDescPanel->GetPos().mX * 2, L"Noto Sans KR Medium", 15.0f, false);
-
-		itemDescTex->SetText(finalDiscription);
-		itemDescTex->SetHeight(itemDescTex->CalculateTextSize().Height);
-		itemDescPanel->SetHeight(itemImgPanel->GetPos().mY * 2 + itemImgPanel->GetHeight() + itemDescTex->GetHeight());
-		itemDescPanel->SetPos(SVector2D(itemPanel->GetPos().mX, itemPanel->GetPos().mY - (10.0f + itemDescPanel->GetHeight())));
-
-		itemPanel->SetEventHover([=]() {
-			itemPanel->SetBackColor(Gdiplus::Color::White);
-			itemDescPanel->Active();
-			});
-		itemPanel->SetEventOutHover([=]() {
-			itemPanel->SetBackColor(color);
-			itemDescPanel->InActive();
-			});
 
 		if (x > haveItemPanel->GetWidth()) {
 			x = 20.0f;
@@ -360,18 +225,13 @@ void CShopUI::OnCreate()
 
 
 	// 현재 가지고 있는 무기들을 보여주는 패널
-	CUIPanel* haveWeaponPanel = new CUIPanel();
-	haveWeaponPanel->SetPos(SVector2D(haveItemPanel->GetWidth(), goodsPanel->GetPos().mY + goodsPanel->GetHeight()));
-	haveWeaponPanel->SetWidth(goodsPanel->GetWidth() / 3);
-	haveWeaponPanel->SetHeight(windowHeight - (goodsPanel->GetHeight() + goodsPanel->GetPos().mY));
+	CUIPanel* haveWeaponPanel = new CUIPanel(SVector2D(haveItemPanel->GetWidth(), goodsPanel->GetPos().mY + goodsPanel->GetHeight()), goodsPanel->GetWidth() / 3, windowHeight - (goodsPanel->GetHeight() + goodsPanel->GetPos().mY));
 
 	mShopMainPanel->AddChild(haveWeaponPanel);
 
-	CUIText* haveWeaponText = new CUIText();
+	CUIText* haveWeaponText = new CUIText(SVector2D(20.0f, 20.0f), 0.0f, 0.0f, L"무기");
 
-	haveWeaponText->SetText(L"무기");
 	haveWeaponText->SetFontSize(30.0f);
-	haveWeaponText->SetPos(SVector2D(20.0f, 20.0f));
 	haveWeaponText->SetColor(Gdiplus::Color::White);
 	haveWeaponText->SetOutline(2.0f, Gdiplus::Color::Black);
 
@@ -413,10 +273,7 @@ void CShopUI::OnCreate()
 			break;
 		}
 
-		CUIButton* weaponButton = new CUIButton();
-		weaponButton->SetWidth(75.0f);
-		weaponButton->SetHeight(75.0f);
-		weaponButton->SetPos(SVector2D(x, y));
+		CUIButton* weaponButton = new CUIButton(SVector2D(x, y), 75.0f, 75.0f);
 		x += weaponButton->GetWidth() + offset;
 		weaponButton->SetCornerRadius(10);
 		weaponButton->SetBackColor(color);
@@ -426,11 +283,7 @@ void CShopUI::OnCreate()
 
 		haveWeaponPanel->AddChild(weaponButton);
 
-		CUIImg* weaponImg = new CUIImg();
-		weaponImg->SetTexture(CResourceMgr::Find<CTexture>(currentWeapon->second.iconTexture));
-		weaponImg->SetWidth(weaponButton->GetWidth());
-		weaponImg->SetHeight(weaponButton->GetHeight());
-		weaponImg->SetIgnoreMouse(true);
+		CUIImg* weaponImg = new CUIImg(SVector2D(), weaponButton->GetWidth(), weaponButton->GetHeight(), CResourceMgr::Find<CTexture>(currentWeapon->second.iconTexture));
 		weaponImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
 
 		weaponButton->AddChild(weaponImg);
@@ -438,8 +291,7 @@ void CShopUI::OnCreate()
 
 
 
-		CUIPanel* weaponDescPanel = new CUIPanel();
-		weaponDescPanel->SetWidth(goodsPanel->GetWidth() / 4.0f - 30.0f);
+		CUIPanel* weaponDescPanel = new CUIPanel(SVector2D(), goodsPanel->GetWidth() / 4.0f - 30.0f, 0.0f);
 		weaponDescPanel->SetCornerRadius(10);
 		weaponDescPanel->InActive();
 		weaponDescPanel->SetBackColor(0xDD000000);
@@ -447,56 +299,31 @@ void CShopUI::OnCreate()
 
 		haveWeaponPanel->AddChild(weaponDescPanel);
 
-		CUIPanel* weaponImgPanel = new CUIPanel();
-		weaponImgPanel->SetWidth(75.0f);
-		weaponImgPanel->SetHeight(75.0f);
-		weaponImgPanel->SetPos(SVector2D(10.0f, 10.0f));
+		CUIPanel* weaponImgPanel = new CUIPanel(SVector2D(10.0f, 10.0f), 75.0f, 75.0f);
 		weaponImgPanel->SetCornerRadius(10);
 		weaponImgPanel->SetBackColor(color);
 
 		weaponDescPanel->AddChild(weaponImgPanel);
 
-		CUIImg* weaponDescImg = new CUIImg();
-		weaponDescImg->SetTexture(CResourceMgr::Find<CTexture>(currentWeapon->second.iconTexture));
-		weaponDescImg->SetWidth(weaponImgPanel->GetWidth());
-		weaponDescImg->SetHeight(weaponImgPanel->GetHeight());
-		weaponDescImg->SetIgnoreMouse(true);
+		CUIImg* weaponDescImg = new CUIImg(SVector2D(), weaponImgPanel->GetWidth(), weaponImgPanel->GetHeight(), CResourceMgr::Find<CTexture>(currentWeapon->second.iconTexture));
 		weaponDescImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
 
 		weaponImgPanel->AddChild(weaponDescImg);
 
-		CUIText* weaponNameTex = new CUIText();
-
-		weaponNameTex->SetPos(SVector2D(weaponImgPanel->GetPos().mX + weaponImgPanel->GetWidth() + 10.0f, weaponDescPanel->GetPos().mY));
-		weaponNameTex->SetWidth(100.0f);
-		weaponNameTex->SetHeight(25.0f);
-
-		weaponNameTex->SetText(currentWeapon->second.name);
-		weaponNameTex->SetFont(L"Noto Sans KR Medium");
+		CUIText* weaponNameTex = new CUIText(SVector2D(weaponImgPanel->GetPos().mX + weaponImgPanel->GetWidth() + 10.0f, weaponDescPanel->GetPos().mY), 100.0f, 25.0f, currentWeapon->second.name);
 		weaponNameTex->SetFontSize(20.0f);
 		weaponNameTex->SetColor(Gdiplus::Color::White);
 
 		weaponDescPanel->AddChild(weaponNameTex);
 
-		CUIText* weaponCategoryTex = new CUIText();
-
-		weaponCategoryTex->SetPos(SVector2D(weaponImgPanel->GetPos().mX + weaponImgPanel->GetWidth() + 10.0f, weaponImgPanel->GetPos().mY + 30.0f));
-		weaponCategoryTex->SetWidth(100.0f);
-		weaponCategoryTex->SetHeight(25.0f);
-
-		weaponCategoryTex->SetText(currentWeapon->second.classType);
-		weaponCategoryTex->SetFont(L"Noto Sans KR Medium");
+		CUIText* weaponCategoryTex = new CUIText(SVector2D(weaponImgPanel->GetPos().mX + weaponImgPanel->GetWidth() + 10.0f, weaponImgPanel->GetPos().mY + 30.0f), 100.0f, 25.0f, currentWeapon->second.classType);
 		weaponCategoryTex->SetFontSize(15.0f);
 		weaponCategoryTex->SetColor(Gdiplus::Color::LightYellow);
 
 		weaponDescPanel->AddChild(weaponCategoryTex);
 
-		CUIText* weaponDescTex = new CUIText();
+		CUIText* weaponDescTex = new CUIText(SVector2D(weaponImgPanel->GetPos().mX, weaponImgPanel->GetPos().mY + weaponImgPanel->GetHeight() + 10.0f), 200.0f, 0.0f);
 
-		weaponDescTex->SetPos(SVector2D(weaponImgPanel->GetPos().mX, weaponImgPanel->GetPos().mY + weaponImgPanel->GetHeight() + 10.0f));
-		weaponDescTex->SetWidth(200.0f);
-
-		weaponDescTex->SetFont(L"Noto Sans KR Medium");
 		weaponDescTex->SetFontSize(15.0f);
 		weaponDescTex->SetColor(Gdiplus::Color::White);
 
@@ -545,25 +372,17 @@ void CShopUI::OnCreate()
 
 
 
-		CUIButton* combinationButton = new CUIButton();
+		CUIButton* combinationButton = new CUIButton(SVector2D(weaponImgPanel->GetPos().mX, weaponDescTex->GetPos().mY + weaponDescTex->GetHeight() + 10.0f), weaponDescPanel->GetWidth() - 20.0f, 20.0f);
 		combinationButton->InActive();
-		combinationButton->SetWidth(weaponDescPanel->GetWidth() - 20.0f);
-		combinationButton->SetHeight(20.0f);
-		combinationButton->SetPos(SVector2D(weaponImgPanel->GetPos().mX, weaponDescTex->GetPos().mY + weaponDescTex->GetHeight() + 10.0f));
 		combinationButton->SetBackColor(Gdiplus::Color::Gray);
 		combinationButton->SetCornerRadius(10);
 		mCombinationButtons.push_back(combinationButton);
 
 		weaponDescPanel->AddChild(combinationButton);
 
-		CUIText* combinationTex = new CUIText();
-		combinationTex->SetWidth(combinationButton->GetWidth());
-		combinationTex->SetHeight(combinationButton->GetHeight());
-		combinationTex->SetPos(SVector2D());
-		combinationTex->SetIgnoreMouse(true);
+		CUIText* combinationTex = new CUIText(SVector2D(), combinationButton->GetWidth(), combinationButton->GetHeight(), L"결합");
 		combinationTex->SetColor(Gdiplus::Color::White);
 		combinationTex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentCenter);
-		combinationTex->SetText(L"결합");
 
 		combinationButton->AddChild(combinationTex);
 
@@ -589,10 +408,7 @@ void CShopUI::OnCreate()
 		}
 
 		// 재활용 버튼(무기 판매)
-		CUIButton* recycleButton = new CUIButton();
-		recycleButton->SetWidth(weaponDescPanel->GetWidth() - 20.0f);
-		recycleButton->SetHeight(20.0f);
-		recycleButton->SetPos(SVector2D(combinationButton->GetPos().mX, combinationButton->GetPos().mY + combinationButton->GetHeight() + 10.0f));
+		CUIButton* recycleButton = new CUIButton(SVector2D(combinationButton->GetPos().mX, combinationButton->GetPos().mY + combinationButton->GetHeight() + 10.0f), weaponDescPanel->GetWidth() - 20.0f, 20.0f);
 		recycleButton->SetBackColor(Gdiplus::Color::Gray);
 		recycleButton->SetCornerRadius(10);
 
@@ -600,14 +416,9 @@ void CShopUI::OnCreate()
 
 		int recycleCost = data.basePrice / 3.0f;
 		
-		CUIText* recycleTex = new CUIText();
-		recycleTex->SetWidth(recycleButton->GetWidth());
-		recycleTex->SetHeight(recycleButton->GetHeight());
-		recycleTex->SetPos(SVector2D());
-		recycleTex->SetIgnoreMouse(true);
+		CUIText* recycleTex = new CUIText(SVector2D(), recycleButton->GetWidth(), recycleButton->GetHeight(), L"재활용 (+" + std::to_wstring(recycleCost) + L")");
 		recycleTex->SetColor(Gdiplus::Color::White);
 		recycleTex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentCenter);
-		recycleTex->SetText(L"재활용 (+" + std::to_wstring(recycleCost) + L")");
 
 		recycleButton->AddChild(recycleTex);
 
@@ -667,30 +478,22 @@ void CShopUI::OnCreate()
 				}
 			}
 			ReSettingWeaponButton(curSc, weapon, haveWeaponPanel, weaponButton, weaponDescTex, weaponImgPanel, recycleButton, recycleTex);
-			WeaponButtonsReSetting(20.0f, haveWeaponText->GetPos().mY + haveWeaponText->GetHeight() + 20.0f, 10.0f, haveItemPanel->GetWidth());
+			WeaponButtonsReSetting(20.0f, haveWeaponText->GetPos().mY + haveWeaponText->GetHeight() + 20.0f, 10.0f, haveWeaponPanel->GetWidth());
 			weaponDescPanel->InActive();
 			});
 
 
 
 		// 무기 버튼이 선택되어도 아무것도 안하고 넘길 수 있게 취소 버튼
-		CUIButton* cancleButton = new CUIButton();
-		cancleButton->SetWidth(weaponDescPanel->GetWidth() - 20.0f);
-		cancleButton->SetHeight(20.0f);
-		cancleButton->SetPos(SVector2D(recycleButton->GetPos().mX, recycleButton->GetPos().mY + recycleButton->GetHeight() + 10.0f));
+		CUIButton* cancleButton = new CUIButton(SVector2D(recycleButton->GetPos().mX, recycleButton->GetPos().mY + recycleButton->GetHeight() + 10.0f), weaponDescPanel->GetWidth() - 20.0f, 20.0f);
 		cancleButton->SetBackColor(Gdiplus::Color::Gray);
 		cancleButton->SetCornerRadius(10);
 
 		weaponDescPanel->AddChild(cancleButton);
 
-		CUIText* cancleTex = new CUIText();
-		cancleTex->SetWidth(cancleButton->GetWidth());
-		cancleTex->SetHeight(cancleButton->GetHeight());
-		cancleTex->SetPos(SVector2D());
-		cancleTex->SetIgnoreMouse(true);
+		CUIText* cancleTex = new CUIText(SVector2D(), cancleButton->GetWidth(), cancleButton->GetHeight(), L"취소");
 		cancleTex->SetColor(Gdiplus::Color::White);
 		cancleTex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentCenter);
-		cancleTex->SetText(L"취소");
 
 		cancleButton->AddChild(cancleTex);
 
@@ -737,24 +540,18 @@ void CShopUI::OnCreate()
 
 
 	// 사이드에서 현재 플레이어의 스탯을 보여주기 위한 패널
-	CUIPanel* shopSidePanel = new CUIPanel();
-	shopSidePanel->SetWidth(this->GetWidth() - mShopMainPanel->GetWidth());
-	shopSidePanel->SetHeight(this->GetHeight());
+	CUIPanel* shopSidePanel = new CUIPanel(SVector2D(mShopMainPanel->GetWidth(), 0.0f), this->GetWidth() - mShopMainPanel->GetWidth(), this->GetHeight());
 	shopSidePanel->SetPos(SVector2D(mShopMainPanel->GetWidth(), 0.0f));
 
 	this->AddChild(shopSidePanel);
 
-	CUIPanel* statPanel = new CUIPanel();
-	statPanel->SetWidth(shopSidePanel->GetWidth() - 40.0f);
-	statPanel->SetHeight(3 * shopSidePanel->GetHeight() / 4);
-	statPanel->SetPos(SVector2D(20.0f, 20.0f));
+	CUIPanel* statPanel = new CUIPanel(SVector2D(20.0f, 20.0f), shopSidePanel->GetWidth() - 40.0f, 3 * shopSidePanel->GetHeight() / 4);
 	statPanel->SetBackColor(Gdiplus::Color::Gray);
 	statPanel->SetCornerRadius(10);
 
 	shopSidePanel->AddChild(statPanel);
 
-	CUIText* statTex = new CUIText();
-	statTex->SetText(L"능력치");
+	CUIText* statTex = new CUIText(SVector2D(), 0.0f, 0.0f, L"능력치");
 	statTex->SetFontSize(30.0f);
 	statTex->SetStrokeWidth(1.0f);
 	statTex->SetOutline(2.0f, Gdiplus::Color::Black);
@@ -824,20 +621,15 @@ void CShopUI::OnCreate()
 
 
 	// 다음 스테이지로 이동하는 이동 버튼
-	CUIButton* nextStageButton = new CUIButton();
-	nextStageButton->SetWidth(statPanel->GetWidth());
-	nextStageButton->SetHeight(50.0f);
+	CUIButton* nextStageButton = new CUIButton(SVector2D(), statPanel->GetWidth(), 50.0f);
 	nextStageButton->SetCornerRadius(10);
 	nextStageButton->SetBackColor(Gdiplus::Color::Black);
 	nextStageButton->SetPos(SVector2D(20.0f, shopSidePanel->GetHeight() - nextStageButton->GetHeight() - 10.0f));
 
 	shopSidePanel->AddChild(nextStageButton);
 
-	CUIText* nextTex = new CUIText();
-	nextTex->SetText(L"이동");
+	CUIText* nextTex = new CUIText(SVector2D(), nextStageButton->GetWidth(), nextStageButton->GetHeight(), L"이동");
 	nextTex->SetFontSize(35.0f);
-	nextTex->SetWidth(nextStageButton->GetWidth());
-	nextTex->SetHeight(nextStageButton->GetHeight());
 	nextTex->SetColor(Gdiplus::Color::White);
 	nextTex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentCenter);
 
@@ -852,7 +644,7 @@ void CShopUI::OnCreate()
 		nextStageButton->SetBackColor(Gdiplus::Color::Black);
 		});
 	nextStageButton->SetEventClick([=]() {
-		// 스테이지 넘어가는 것 구현
+		CSceneMgr::LoadScene(L"PlayScene");
 		});
 
 	CUIBase::OnCreate();
@@ -880,8 +672,9 @@ void CShopUI::OnUpdate(float tDeltaTime)
 
 	mResetTex->SetText(L"초기화 -" + std::to_wstring(mResetCost));
 	mResetTex->SetWidth(mResetTex->CalculateTextSize().Width);
+	mResetTex->SetPos(SVector2D(mResetButton->GetWidth() / 2 - 2 * mResetTex->GetWidth() / 3, 0.0f));
 
-	mResetImg->SetPos(SVector2D(mResetTex->GetWidth() + 5.0f, 5.0f));
+	mResetImg->SetPos(SVector2D(mResetTex->GetPos().mX + mResetTex->GetWidth() + 5.0f, 0.0f));
 
 	mResetButton->SetWidth(mResetTex->GetWidth() + 60.0f);
 	mResetButton->SetPos(SVector2D(mShopMainPanel->GetWidth() - mResetButton->GetWidth() - 20.0f, 20.0f));
@@ -902,6 +695,17 @@ void CShopUI::OnUpdate(float tDeltaTime)
 	SettingStatTex(plSc->GetDodge(), mDodge);
 	SettingStatTex(plSc->GetSpeedPercent(), mSpeed);
 
+	for (int i = 0; i < mGoods.size(); i++) {
+		if (mGoods[i].first == nullptr) continue;
+
+		if (!mGoods[i].first->GetEnabled()) {
+			mGoods[i].first->GetParent()->RemoveChild(mGoods[i].first);
+			mGoods[i].first->OnDestroy();
+			SAFE_DELETE(mGoods[i].first);
+			mGoods[i].second = false;
+		}
+	}
+
 	CUIBase::OnUpdate(tDeltaTime);
 }
 
@@ -920,89 +724,63 @@ void CShopUI::UIClear()
 	CUIBase::UIClear();
 }
 
-CUIPanel* CShopUI::MakeGoods(float tWidth, float tHeight)
+std::pair<CUIPanel*, bool> CShopUI::MakeGoods(int tIdx, float tWidth, float tHeight)
 {
-	int rand = std::rand() % 2;
+	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
+	CItemMgr* plItemMgr = CPlayScene::GetPlayer()->GetComponent<CItemMgr>();
+	CWeaponMgr* plWeaponMgr = CPlayScene::GetPlayer()->GetComponent<CWeaponMgr>();
+
+	int rand = std::rand() % 3;
 	// 아이템과 무기 중 랜덤하게
 
-	CUIPanel* goodsPanel = new CUIPanel();
-	goodsPanel->SetPos(SVector2D(5.0f, 5.0f));
-	goodsPanel->SetWidth(tWidth);
-	goodsPanel->SetHeight(tHeight);
+	int curStage = CPlayScene::GetStageNum();
+
+	CUIPanel* goodsPanel = new CUIPanel(SVector2D(5.0f, 5.0f), tWidth, tHeight);
 	goodsPanel->SetBackColor(Gdiplus::Color::Black);
 	goodsPanel->SetCornerRadius(10);
 
-	CUIPanel* goodsImgPanel = new CUIPanel();
-
-	goodsImgPanel->SetWidth(75.0f);
-	goodsImgPanel->SetHeight(75.0f);
-	goodsImgPanel->SetPos(SVector2D(10.0f, 10.0f));
+	CUIPanel* goodsImgPanel = new CUIPanel(SVector2D(10.0f, 10.0f), 75.0f, 75.0f);
 	goodsImgPanel->SetBackColor(Gdiplus::Color::LightGray);
 	goodsImgPanel->SetCornerRadius(10.0f);
 
 	goodsPanel->AddChild(goodsImgPanel);
 
-	CUIImg* goodsImg = new CUIImg();
+	CUIImg* goodsImg = new CUIImg(SVector2D(), goodsImgPanel->GetWidth(), goodsImgPanel->GetHeight());
 
 	goodsImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
-	goodsImg->SetWidth(goodsImgPanel->GetWidth());
-	goodsImg->SetHeight(goodsImgPanel->GetHeight());
 
 	goodsImgPanel->AddChild(goodsImg);
 
-	CUIText* goodsNameTex = new CUIText();
-
-	goodsNameTex->SetPos(SVector2D(goodsImgPanel->GetPos().mX + goodsImgPanel->GetWidth() + 10.0f, goodsImgPanel->GetPos().mY));
-	goodsNameTex->SetWidth(100.0f);
-	goodsNameTex->SetHeight(25.0f);
-
-	goodsNameTex->SetText(L"Test");
-	goodsNameTex->SetFont(L"Noto Sans KR Medium");
+	CUIText* goodsNameTex = new CUIText(SVector2D(goodsImgPanel->GetPos().mX + goodsImgPanel->GetWidth() + 10.0f, goodsImgPanel->GetPos().mY), 100.0f, 25.0f);
 	goodsNameTex->SetFontSize(20.0f);
 	goodsNameTex->SetColor(Gdiplus::Color::White);
 
 	goodsPanel->AddChild(goodsNameTex);
 
-	CUIText* goodsTex = new CUIText();
-
-	goodsTex->SetPos(SVector2D(goodsImgPanel->GetPos().mX + goodsImgPanel->GetWidth() + 10.0f, goodsImgPanel->GetPos().mY + 30.0f));
-	goodsTex->SetWidth(100.0f);
-	goodsTex->SetHeight(25.0f);
-
-	goodsTex->SetText(L"Test");
-	goodsTex->SetFont(L"Noto Sans KR Medium");
+	CUIText* goodsTex = new CUIText(SVector2D(goodsImgPanel->GetPos().mX + goodsImgPanel->GetWidth() + 10.0f, goodsImgPanel->GetPos().mY + 30.0f), 100.0f, 25.0f);
 	goodsTex->SetFontSize(15.0f);
 	goodsTex->SetColor(Gdiplus::Color::LightYellow);
 
 	goodsPanel->AddChild(goodsTex);
 
 
-	CUIText* descriptionGoodsTex = new CUIText();
-
-	descriptionGoodsTex->SetPos(SVector2D(goodsImgPanel->GetPos().mX, goodsImgPanel->GetPos().mY + goodsImgPanel->GetHeight() + 10.0f));
-	descriptionGoodsTex->SetWidth(200.0f);
-	descriptionGoodsTex->SetHeight(250.0f);
-
-	descriptionGoodsTex->SetFont(L"Noto Sans KR Medium");
+	CUIText* descriptionGoodsTex = new CUIText(SVector2D(goodsImgPanel->GetPos().mX, goodsImgPanel->GetPos().mY + goodsImgPanel->GetHeight() + 10.0f), 200.0f, 250.0f);
 	descriptionGoodsTex->SetFontSize(15.0f);
 	descriptionGoodsTex->SetColor(Gdiplus::Color::White);
 
 	goodsPanel->AddChild(descriptionGoodsTex);
 
-	// 각 아이템 or 무기 가져오기
-	if (rand == 0) {
+	CUIButton* buyButton = new CUIButton(SVector2D(), 0.0f, 0.0f);
 
+	int cost = 0;
+
+	if (curStage != 0) {
+		cost += std::rand() % (10 * curStage) - std::rand() % (10 * curStage * 2);
 	}
-	else {
 
-	}
-
-	CUIButton* buyButton = new CUIButton();
-
-	CUIText* buyCost = new CUIText();
-	buyCost->SetText(std::to_wstring(10));
+	CUIText* buyCost = new CUIText(SVector2D(5.0f, -5.0f), 0.0f, 0.0f);
+	buyCost->SetText(std::to_wstring(cost));
 	buyCost->SetWidth(buyCost->CalculateTextSize().Width + 10.0f);
-	buyCost->SetPos(SVector2D(5.0f, -5.0f));
 	buyCost->SetHeight(buyCost->CalculateTextSize().Height + 20.0f);
 	buyCost->SetFontSize(30.0f);
 	buyCost->SetColor(Gdiplus::Color::White);
@@ -1010,11 +788,164 @@ CUIPanel* CShopUI::MakeGoods(float tWidth, float tHeight)
 
 	buyButton->AddChild(buyCost);
 
-	CUIImg* buyImg = new CUIImg();
-	buyImg->SetTexture(CResourceMgr::Find<CTexture>(L"HarvestIcon"));
-	buyImg->SetPos(SVector2D(buyCost->GetWidth() + 5.0f, 0.0f));
-	buyImg->SetWidth(40.0f);
-	buyImg->SetHeight(buyCost->GetHeight());
+	CDataMgr::SItem curItem = CDataMgr::SItem();
+	std::pair<int, CDataMgr::SWeapon> curWeapon = std::make_pair(0, CDataMgr::SWeapon());
+
+	// 각 아이템 or 무기 가져오기
+	if (rand > 0) {
+		curItem = CDataMgr::GetRandomItemByStage(curStage);
+		goodsImg->SetTexture(CResourceMgr::Find<CTexture>(curItem.name + L"Icon"));
+		UINT color = 0;
+
+		switch (curItem.tier) {
+		case 2:
+			color = Gdiplus::Color::SteelBlue;
+			break;
+		case 3:
+			color = Gdiplus::Color::BlueViolet;
+			break;
+		case 4:
+			color = Gdiplus::Color::DarkRed;
+			break;
+		default:
+			color = 0xFF111111;
+			break;
+		}
+
+		goodsImgPanel->SetBackColor(color);
+		goodsNameTex->SetText(curItem.name);
+		goodsTex->SetText(L"아이템");
+
+		std::wstring finalDiscription = L"";
+
+		for (auto& [effectID, args] : curItem.effects) {
+			auto it = CDataMgr::GetEffectDatas().find(effectID);
+			if (it == CDataMgr::GetEffectDatas().end()) {
+				continue;
+			}
+
+			std::wstring rawDesc = it->second.description;
+
+			int index = 0;
+
+			for (auto& arg : args) {
+				std::wstring value = arg.value;
+
+				std::wstring colorStr = L"#FFFFFF"; // 기본값
+				if (arg.color != L"") {
+					colorStr = arg.color;
+				}
+
+				if (colorStr == L"#00FF00")
+				{
+					try {
+						int iVal = std::stoi(arg.value);
+
+						if (iVal > 0) {
+							value = L"+" + value;
+						}
+					}
+					catch (...) {
+						// 변환 실패
+					}
+				}
+
+				std::wstring taggedStr = L"<c=" + colorStr + L">" + value + L"</c>";
+
+				// 설명글 치환 ({0} -> 태그 문자열)
+				// L"\\{" + 숫자 + L"\\}" 형태의 정규식 패턴 생성
+				std::wstring pattern = L"\\{" + std::to_wstring(index) + L"\\}";
+
+				try {
+					// rawDesc 안에 있는 {i}를 taggedStr로 교체
+					rawDesc = std::regex_replace(rawDesc, std::wregex(pattern), taggedStr);
+				}
+				catch (...) {
+					// 정규식 에러 예외처리 (원본 유지)
+				}
+				index++;
+			}
+
+			finalDiscription += rawDesc + L"\n";
+		}
+
+		finalDiscription = CUIText::InsertLineBreaks(finalDiscription, goodsPanel->GetWidth() - descriptionGoodsTex->GetPos().mX * 2, L"Noto Sans KR Medium", 15.0f, false);
+
+		descriptionGoodsTex->SetText(finalDiscription);
+
+		cost += curItem.basePrice * (1.0f + curStage * 0.2f - 0.2f);
+		buyCost->SetText(std::to_wstring(cost));
+	}
+	else {
+		curWeapon = CDataMgr::GetRandomWeaponByStage(curStage);
+
+		UINT color = 0;
+
+		switch (curWeapon.first) {
+		case 2:
+			color = Gdiplus::Color::SteelBlue;
+			break;
+		case 3:
+			color = Gdiplus::Color::BlueViolet;
+			break;
+		case 4:
+			color = Gdiplus::Color::DarkRed;
+			break;
+		default:
+			color = 0xFF111111;
+			break;
+		}
+		goodsImg->SetTexture(CResourceMgr::Find<CTexture>(curWeapon.second.iconTexture));
+
+		goodsImgPanel->SetBackColor(color);
+		goodsNameTex->SetText(curWeapon.second.name);
+		goodsTex->SetText(curWeapon.second.classType);
+
+		std::wstring weaponDiscription = L"";
+
+		auto& data = curWeapon.second.tier[curWeapon.first];
+
+		// 깔끔한 wstring으로 바꿔주는 도우미 람다
+		auto GetCleanVal = [](float value) -> std::wstring {
+			std::wstring valStr = std::to_wstring(value);
+			if (valStr.find(L'.') != std::wstring::npos) {
+				valStr.erase(valStr.find_last_not_of(L'0') + 1);
+				if (valStr.back() == L'.') valStr.pop_back();
+			}
+			return valStr;
+			};
+
+		// 텍스트를 붙여주는 도우미 람다
+		auto descriptionStat = [&](std::wstring label, float value, std::wstring suffix = L"") {
+			if (value <= 0.0f) return;
+			weaponDiscription += L"<c=#FFFFE0>" + label + L":</c> " + GetCleanVal(value) + suffix + L"\n";
+			};
+
+		descriptionStat(L"데미지", data.damage);
+
+		if (data.critDamagePer > 0.0f) {
+			weaponDiscription += L"<c=#FFFFE0>치명타:</c> x" + GetCleanVal(data.critDamagePer);
+
+			if (data.critChancePer > 0.0f) {
+				weaponDiscription += L" (" + GetCleanVal(data.critChancePer) + L"% 확률)";
+			}
+			weaponDiscription += L"\n";
+		}
+
+		descriptionStat(L"쿨다운", data.delay, L"s");
+		descriptionStat(L"범위", data.range);
+
+		if (data.lifeSteal != 0.0f) {
+			descriptionStat(L"생명 훔침", data.lifeSteal, L"%");
+		}
+
+		descriptionGoodsTex->SetText(weaponDiscription);
+
+		cost += curWeapon.second.tier[curWeapon.first].basePrice * (1.0f + curStage * 0.2f - 0.2f);
+		buyCost->SetText(std::to_wstring(cost));
+	}
+
+	CUIImg* buyImg = new CUIImg(SVector2D(buyCost->GetWidth() + 5.0f, 0.0f), 40.0f, buyCost->GetHeight(), CResourceMgr::Find<CTexture>(L"HarvestIcon"));
 	buyImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
 
 	buyButton->AddChild(buyImg);
@@ -1036,28 +967,56 @@ CUIPanel* CShopUI::MakeGoods(float tWidth, float tHeight)
 		buyCost->SetColor(Gdiplus::Color::White);
 		});
 	buyButton->SetEventClick([=]() {
-		// 아이템 능력 구현
+		if (plSc->GetMoney() < cost) return;
+
+		if (curItem.ID != L"") {
+			for (auto effect : curItem.effects) {
+				ApplyEffect(effect.first, effect.second);
+			}
+
+			plItemMgr->PlusItem(curItem.ID);
+		}
+		else if (curWeapon.first != 0) {
+			eLayerType type = eLayerType::None;
+
+			if (curWeapon.second.ID[0] == L'M') {
+				type = eLayerType::MeleeWeapon;
+			}
+			else if (curWeapon.second.ID[0] == L'R') {
+				type = eLayerType::RangedWeapon;
+			}
+
+			if (!plWeaponMgr->PlusWeapon(type, curWeapon.second.ID, curWeapon.first)) {
+				return;
+			}
+			// WeaponButtonsReSetting(20.0f, haveWeaponText->GetPos().mY + haveWeaponText->GetHeight() + 20.0f, 10.0f, haveItemPanel->GetWidth());
+		}
+
+		goodsPanel->InActive();
+
+		plSc->ChangeMoney(-cost);
 		});
 
 
-	CUIButton* rockButton = new CUIButton();
-	rockButton->SetWidth(60.0f);
-	rockButton->SetHeight(40.0f);
+	CUIButton* rockButton = new CUIButton(SVector2D(), 60.0f, 40.0f);
 	rockButton->SetPos(SVector2D(goodsPanel->GetWidth() / 2 - rockButton->GetWidth() / 2, goodsPanel->GetHeight() + 30.0f));
 	rockButton->SetBackColor(Gdiplus::Color::Black);
 	rockButton->SetCornerRadius(10);
 
 	goodsPanel->AddChild(rockButton);
 
-	CUIText* rockText = new CUIText();
-	rockText->SetText(L"잠금");
-	rockText->SetWidth(60.0f);
-	rockText->SetHeight(40.0f);
+	CUIText* rockText = new CUIText(SVector2D(), 60.0f, 40.0f, L"잠금");
 	rockText->SetColor(Gdiplus::Color::White);
 	rockText->SetStrokeWidth(1.0f);
 	rockText->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentCenter);
 
 	rockButton->AddChild(rockText);
+
+	CUIImg* rockImg = new CUIImg(SVector2D(rockButton->GetPos().mX + rockButton->GetWidth() + 10.0f, rockButton->GetPos().mY), 30.0f, 30.0f, CResourceMgr::Find<CTexture>(L""));
+	rockImg->InActive();
+	rockImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
+
+	goodsPanel->AddChild(rockImg);
 
 	rockButton->SetEventHover([=]() {
 		rockButton->SetBackColor(Gdiplus::Color::White);
@@ -1068,12 +1027,163 @@ CUIPanel* CShopUI::MakeGoods(float tWidth, float tHeight)
 		rockText->SetColor(Gdiplus::Color::White);
 		});
 	rockButton->SetEventClick([=]() {
-		
-		// 잠금 구현
+		mGoods[tIdx].second = !mGoods[tIdx].second;
+		bool isLocked = mGoods[tIdx].second;
+
+		if (isLocked) {
+			rockImg->Active();
+		}
+		else {
+			rockImg->InActive();
+		}
 		});
 
 
-	return goodsPanel;
+	return std::make_pair(goodsPanel, false);
+}
+
+CUIPanel* CShopUI::MakeItemPanel(std::wstring tItemID, float tX, float tY)
+{
+	auto currentItem = CDataMgr::GetItemDatas().find(tItemID);
+
+	if (currentItem == CDataMgr::GetItemDatas().end()) return nullptr;
+
+	UINT color = 0;
+
+	switch (currentItem->second.tier) {
+	case 2:
+		color = Gdiplus::Color::SteelBlue;
+		break;
+	case 3:
+		color = Gdiplus::Color::BlueViolet;
+		break;
+	case 4:
+		color = Gdiplus::Color::DarkRed;
+		break;
+	default:
+		color = 0xFF111111;
+		break;
+	}
+
+	CUIPanel* itemPanel = new CUIPanel(SVector2D(tX, tY), 75.0f, 75.0f);
+	itemPanel->SetCornerRadius(10);
+	itemPanel->SetBackColor(color);
+	itemPanel->SetUsedClipping(true);
+
+	CUIImg* itemImg = new CUIImg(SVector2D(), itemPanel->GetWidth(), itemPanel->GetHeight(), CResourceMgr::Find<CTexture>(currentItem->second.name + L"Icon"));
+	itemImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
+
+	itemPanel->AddChild(itemImg);
+
+
+
+
+	CUIPanel* itemDescPanel = new CUIPanel(SVector2D(), mShopMainPanel->GetWidth() / 4.0f - 30.0f, 0.0f);
+	itemDescPanel->SetCornerRadius(10);
+	itemDescPanel->InActive();
+	itemDescPanel->SetBackColor(0xDD000000);
+
+	itemPanel->AddChild(itemDescPanel);
+
+	CUIPanel* itemImgPanel = new CUIPanel(SVector2D(10.0f, 10.0f), 75.0f, 75.0f);
+	itemImgPanel->SetCornerRadius(10);
+	itemImgPanel->SetBackColor(color);
+
+	itemDescPanel->AddChild(itemImgPanel);
+
+	CUIImg* itemDescImg = new CUIImg(SVector2D(), itemImgPanel->GetWidth(), itemImgPanel->GetHeight(), CResourceMgr::Find<CTexture>(currentItem->second.name + L"Icon"));
+	itemDescImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
+
+	itemDescPanel->AddChild(itemDescImg);
+
+	CUIText* itemNameTex = new CUIText(SVector2D(itemImgPanel->GetPos().mX + itemImgPanel->GetWidth() + 10.0f, itemDescPanel->GetPos().mY), 100.0f, 25.0f, currentItem->second.name);
+	itemNameTex->SetFontSize(20.0f);
+	itemNameTex->SetColor(Gdiplus::Color::White);
+
+	itemDescPanel->AddChild(itemNameTex);
+
+	CUIText* itemCategoryTex = new CUIText(SVector2D(itemImgPanel->GetPos().mX + itemImgPanel->GetWidth() + 10.0f, itemDescPanel->GetPos().mY + 30.0f), 100.0f, 25.0f, L"아이템");
+	itemCategoryTex->SetFontSize(15.0f);
+	itemCategoryTex->SetColor(Gdiplus::Color::LightYellow);
+
+	itemDescPanel->AddChild(itemCategoryTex);
+
+	CUIText* itemDescTex = new CUIText(SVector2D(itemImgPanel->GetPos().mX, itemImgPanel->GetPos().mY + itemImgPanel->GetHeight() + 10.0f), 200.0f, 0.0f);
+	itemDescTex->SetFontSize(15.0f);
+	itemDescTex->SetColor(Gdiplus::Color::White);
+
+	itemDescPanel->AddChild(itemDescTex);
+
+	std::wstring finalDiscription = L"";
+
+	for (auto& [effectID, args] : currentItem->second.effects) {
+		auto it = CDataMgr::GetEffectDatas().find(effectID);
+		if (it == CDataMgr::GetEffectDatas().end()) {
+			continue;
+		}
+
+		std::wstring rawDesc = it->second.description;
+
+		int index = 0;
+
+		for (auto& arg : args) {
+			std::wstring value = arg.value;
+
+			std::wstring colorStr = L"#FFFFFF"; // 기본값
+			if (arg.color != L"") {
+				colorStr = arg.color;
+			}
+
+			if (colorStr == L"#00FF00")
+			{
+				try {
+					int iVal = std::stoi(arg.value);
+
+					if (iVal > 0) {
+						value = L"+" + value;
+					}
+				}
+				catch (...) {
+					// 변환 실패
+				}
+			}
+
+			std::wstring taggedStr = L"<c=" + colorStr + L">" + value + L"</c>";
+
+			// 설명글 치환 ({0} -> 태그 문자열)
+			// L"\\{" + 숫자 + L"\\}" 형태의 정규식 패턴 생성
+			std::wstring pattern = L"\\{" + std::to_wstring(index) + L"\\}";
+
+			try {
+				// rawDesc 안에 있는 {i}를 taggedStr로 교체
+				rawDesc = std::regex_replace(rawDesc, std::wregex(pattern), taggedStr);
+			}
+			catch (...) {
+				// 정규식 에러 예외처리 (원본 유지)
+			}
+			index++;
+		}
+
+		finalDiscription += rawDesc + L"\n";
+	}
+
+	finalDiscription = CUIText::InsertLineBreaks(finalDiscription, itemDescPanel->GetWidth() - itemDescPanel->GetPos().mX * 2, L"Noto Sans KR Medium", 15.0f, false);
+
+	itemDescTex->SetText(finalDiscription);
+	itemDescTex->SetHeight(itemDescTex->CalculateTextSize().Height);
+	itemDescPanel->SetHeight(itemImgPanel->GetPos().mY * 2 + itemImgPanel->GetHeight() + itemDescTex->GetHeight());
+	itemDescPanel->SetPos(SVector2D(itemPanel->GetPos().mX, -(10.0f + itemDescPanel->GetHeight())));
+
+	itemPanel->SetEventHover([=]() {
+		itemPanel->SetBackColor(Gdiplus::Color::White);
+		itemDescPanel->Active();
+		});
+	itemPanel->SetEventOutHover([=]() {
+		itemPanel->SetBackColor(color);
+		itemDescPanel->InActive();
+		});
+
+	return itemPanel;
 }
 
 // 결합이 클릭된 버튼의 수정 사항들을 보이기 위한 함수

@@ -12,9 +12,7 @@ void CUIEXPBar::OnCreate()
     mExpFill->SetWidth(this->GetWidth());
     mExpFill->SetHeight(this->GetHeight());
 
-    mLevelInfo = new CUIText();
-    mLevelInfo->SetWidth(this->GetWidth() - 20.0f);
-    mLevelInfo->SetHeight(this->GetHeight());
+    mLevelInfo = new CUIText(SVector2D(), this->GetWidth() - 20.0f, this->GetHeight());
     mLevelInfo->SetAlign(Gdiplus::StringAlignmentFar, Gdiplus::StringAlignmentCenter);
 
     this->AddChild(mLevelInfo);

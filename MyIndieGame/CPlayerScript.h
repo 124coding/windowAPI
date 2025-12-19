@@ -45,7 +45,7 @@ public:
 		
 		mLevel(0),
 		mExp(0.0f),
-		mMoney(0) {}
+		mMoney(1000) {}
 	virtual ~CPlayerScript() {}
 
 	virtual CComponent* Clone() override {

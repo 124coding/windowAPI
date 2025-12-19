@@ -15,7 +15,7 @@ class CWeaponScript;
 class CShopUI : public CUIBase
 {
 public:
-	CShopUI() : CUIBase(eUIType::TitleSceneUI) {}
+	CShopUI(SVector2D tPos = SVector2D(), float tWidth = 0.0f, float tHeight = 0.0f) : CUIBase(tPos, tWidth, tHeight, eUIType::TitleSceneUI) {}
 	virtual ~CShopUI() {}
 
 	virtual void OnCreate() override;
@@ -28,9 +28,11 @@ public:
 	virtual void UIClear() override;
 
 private:
-	CUIPanel* MakeGoods(float tWidth, float tHeight);
+	std::pair<CUIPanel*, bool> MakeGoods(int tIdx, float tWidth, float tHeight);
+	CUIPanel* MakeItemPanel(std::wstring tItemID, float tX, float tY);
 	void ReSettingWeaponButton(CWeaponScript* tWpScript, CWeapon* tCurWp, CUIPanel* tParPanel, CUIButton* tWpButton, CUIText* tDescTex, CUIPanel* tWpImgPanel, CUIButton* tRecycleButton, CUIText* tRecycleTex);
 	void WeaponButtonsReSetting(float tX, float tY, float tOffset, float tMax);
+
 
 private:
 	CUIPanel* mShopMainPanel = nullptr;
@@ -42,17 +44,17 @@ private:
 	CUIText* mResetTex = nullptr;
 	CUIImg* mResetImg = nullptr;
 	int mResetCost = 1;
+	int mResetCount = 0;
 
 	// 상품 목록
-	std::vector<CUIPanel*> mGoods = std::vector<CUIPanel*>(4, nullptr);
+	std::vector<std::pair<CUIPanel*, bool>> mGoods = std::vector<std::pair<CUIPanel*, bool>>(4);
+
+	std::vector<CUIPanel*> mItems;
 	
 	// 무기 버튼 모음(수정이 필요한 부분들만 가져오는 것)
 	std::vector<CUIButton*> mWeapons;
 	std::vector<CUIPanel*> mWeaponsDescPanel;
 	std::vector<CUIButton*> mCombinationButtons;
-
-	bool mbHaveItemsRefresh = false;
-	bool mbHaveWeaponsRefresh = false;
 
 	// 능력치
 	CUIText* mLevel = nullptr;

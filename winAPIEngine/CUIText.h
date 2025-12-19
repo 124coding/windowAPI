@@ -17,8 +17,11 @@ public:
 		SAutoColor(std::wstring t, int v) : text(t), refValue(v) {}
 	};
 
-	CUIText() : CUIBase(eUIType::None)
-		, mText(L"")
+	CUIText(SVector2D tPos,
+		float tWidth, float tHeight,
+		std::wstring tText = L"")
+		: CUIBase(tPos, tWidth, tHeight, eUIType::None)
+		, mText(tText)
 		, mFont(L"Noto Sans KR Medium")
 		, mFontSize(20.0f)
 		, mFontColor(Gdiplus::Color::Black)

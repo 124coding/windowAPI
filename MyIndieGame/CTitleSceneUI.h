@@ -6,7 +6,7 @@
 class CTitleSceneUI : public CUIBase
 {
 public:
-	CTitleSceneUI() : CUIBase(eUIType::TitleSceneUI) {}
+	CTitleSceneUI(SVector2D tPos = SVector2D(), float tWidth = 0.0f, float tHeight = 0.0f) : CUIBase(tPos, tWidth, tHeight, eUIType::TitleSceneUI) {}
 	~CTitleSceneUI() {}
 
 	virtual void OnCreate() override;

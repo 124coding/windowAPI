@@ -24,7 +24,15 @@ public:
 		}
 	};
 
-	CUIBase(eUIType tType) : mType(tType), mbFullScreen(false), mbEnabled(true) {}
+	CUIBase(SVector2D tPos,
+		float tWidth, float tHeight, 
+		eUIType tType) 
+		: mPos(tPos), 
+		mWidth(tWidth), mHeight(tHeight), 
+		mType(tType), 
+		mbFullScreen(false), 
+		mbEnabled(true) {
+	}
 	virtual ~CUIBase() {}
 
 	virtual void OnCreate();
@@ -90,6 +98,10 @@ public:
 
 	float GetHeight() {
 		return this->mHeight;
+	}
+
+	CUIBase* GetParent() {
+		return this->mParent;
 	}
 
 	void AddChild(CUIBase* tChild) {
@@ -165,7 +177,7 @@ protected:
 	float mWidth;
 	float mHeight;
 
-	bool mbUseClipping;
+	bool mbUseClipping = false;
 
 	CUIBase* mParent = nullptr;
 	std::vector<CUIBase*> mChilds;
