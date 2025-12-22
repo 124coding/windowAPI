@@ -83,10 +83,9 @@ void CRangedWeaponScript::CanAttackCheck(std::vector<GameObject*> tEnemies)
 		return;
 	}
 
-	SVector2D targetPos = ObjectCenterPos(GetTarget());
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 
-	float distanceToEnemy = (targetPos - GetClosedEnemyPos()).Length();
+	float distanceToEnemy = (ObjectCenterPos(GetOwner()) - GetClosedEnemyPos()).Length();
 
 	if (distanceToEnemy <= GetRange() + range && mTotalTime > GetDelay() / (1 + attackSpeed / 100.0f)) {
 		mTotalTime = 0.0f;

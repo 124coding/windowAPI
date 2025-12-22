@@ -12,6 +12,8 @@
 
 void CWeaponMgr::OnCreate()
 {
+	PlusWeapon(eLayerType::MeleeWeapon, L"MW_001", 1);
+	PlusWeapon(eLayerType::MeleeWeapon, L"MW_001", 1);
 }
 
 void CWeaponMgr::OnDestroy()
@@ -30,22 +32,45 @@ void CWeaponMgr::Render(HDC tHDC)
 {
 }
 
-bool CWeaponMgr::PlusWeapon(eLayerType tType, std::wstring tWeaponId, int tWeaponTier) {
+std::pair<int, CWeapon*> CWeaponMgr::PlusWeapon(eLayerType tType, std::wstring tWeaponId, int tWeaponTier) {
 
 	if (mWeapons.size() >= mWeaponCount) {
-		return false;
+		for (int i = 0; i < mWeapons.size(); i++) {
+			CWeaponScript* wpSc = mWeapons[i]->GetComponent<CWeaponScript>();
+			if (mWeapons[i]->GetID() == tWeaponId && wpSc->GetTier() == tWeaponTier) {
+				auto weaponIter = CDataMgr::GetWeaponDatas().find(tWeaponId);
+				if (weaponIter == CDataMgr::GetWeaponDatas().end()) {
+					return std::make_pair(i, mWeapons[i]);
+				}
+
+				CDataMgr::SWeapon currentWeapon = weaponIter->second;
+
+				wpSc->SetDamage(currentWeapon.tier[tWeaponTier].damage);
+				wpSc->SetDelay(currentWeapon.tier[tWeaponTier].delay);
+				wpSc->SetCriticalDamage(currentWeapon.tier[tWeaponTier].critDamagePer);
+				wpSc->SetCriticalChance(currentWeapon.tier[tWeaponTier].critChancePer);
+				wpSc->SetRange(currentWeapon.tier[tWeaponTier].range);
+				wpSc->SetLifeSteal(currentWeapon.tier[tWeaponTier].lifeSteal);
+				wpSc->SetBasePrice(currentWeapon.tier[tWeaponTier].basePrice);
+				wpSc->SetSpeed(currentWeapon.speed);
+				wpSc->SetTier(tWeaponTier + 1);
+
+				return std::make_pair(i, mWeapons[i]);
+			}
+		}
+		return std::make_pair(-1, nullptr);
 	}
 
 	auto weaponIter = CDataMgr::GetWeaponDatas().find(tWeaponId);
 	if (weaponIter == CDataMgr::GetWeaponDatas().end()) {
-		return false;
+		return std::make_pair(-1, nullptr);
 	}
 
 	CDataMgr::SWeapon currentWeapon = weaponIter->second;
 
 	auto iter = CDataMgr::GetWeaponCreator().find(currentWeapon.ID);
 	if (iter == CDataMgr::GetWeaponCreator().end()) {
-		return false;
+		return std::make_pair(-1, nullptr);
 	}
 	
 	CWeapon* weapon = iter->second();
@@ -85,7 +110,7 @@ bool CWeaponMgr::PlusWeapon(eLayerType tType, std::wstring tWeaponId, int tWeapo
 	}
 
 	mWeapons.push_back(weapon);
-	return true;
+	return std::make_pair(mWeapons.size() - 1, mWeapons[mWeapons.size() - 1]);
 }
 
 bool CWeaponMgr::RemoveWeapon(int tIndex)

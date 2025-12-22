@@ -7,8 +7,6 @@ class CWeaponMgr : public CComponent
 {
 public:
 	CWeaponMgr() : CComponent(eComponentType::WeaponMgr) {
-		PlusWeapon(eLayerType::MeleeWeapon, L"MW_001", 1);
-		PlusWeapon(eLayerType::MeleeWeapon, L"MW_001", 1);
 	};
 	virtual ~CWeaponMgr() {};
 
@@ -22,12 +20,12 @@ public:
 	void OnLateUpdate(float tDeltaTime) override;
 	void Render(HDC tHDC) override;
 
-	bool PlusWeapon(eLayerType tType, std::wstring tWeaponId, int tWeaponTier);
+	std::pair<int, CWeapon*> PlusWeapon(eLayerType tType, std::wstring tWeaponId, int tWeaponTier);
 	bool RemoveWeapon(int tIndex);
 
 	void WeaponsPosition();
 
-	std::vector<CWeapon*> GetWeapons() {
+	std::vector<CWeapon*>& GetWeapons() {
 		return this->mWeapons;
 	}
 

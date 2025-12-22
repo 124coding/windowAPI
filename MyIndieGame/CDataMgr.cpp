@@ -6,6 +6,10 @@
 #include "CRangedWeaponScript.h"
 
 #include "CDaggerScript.h"
+#include "CSpearScript.h"
+#include "CFistScript.h"
+#include "CClawScript.h"
+#include "CScissorsScript.h"
 
 std::unordered_map<std::wstring, CDataMgr::SMonster> CDataMgr::mMonsterStats;
 std::unordered_map<std::wstring, CDataMgr::SWeapon> CDataMgr::mWeaponDatas;
@@ -28,9 +32,15 @@ void CDataMgr::OnCreate() {
 
 	// MeleeWeapons
 	WeaponRegister<CDaggerScript>(L"MW_001", eLayerType::MeleeWeapon);
+	WeaponRegister<CSpearScript>(L"MW_002", eLayerType::MeleeWeapon);
+	WeaponRegister<CFistScript>(L"MW_003", eLayerType::MeleeWeapon);
+	WeaponRegister<CClawScript>(L"MW_004", eLayerType::MeleeWeapon);
+	WeaponRegister<CScissorsScript>(L"MW_005", eLayerType::MeleeWeapon);
 
 	// RangedWeapons
 	WeaponRegister<CRangedWeaponScript>(L"RW_001", eLayerType::RangedWeapon);
+	WeaponRegister<CRangedWeaponScript>(L"RW_002", eLayerType::RangedWeapon);
+	WeaponRegister<CRangedWeaponScript>(L"RW_003", eLayerType::RangedWeapon);
 }
 
 void CDataMgr::OnDestroy() {

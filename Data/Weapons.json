@@ -334,7 +334,7 @@
             "Class" : "Medical, Gun",
             "Name": "의료 총",
             "BulletName": "PlayerBullet",
-            "IconTexture" : "MedialGunIcon",
+            "IconTexture" : "MedicalGunIcon",
             "Speed": 1000.0,
             "SizeX": 0.8,
             "SizeY": 0.8,

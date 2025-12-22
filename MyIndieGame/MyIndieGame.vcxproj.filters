@@ -151,6 +151,24 @@
     <Filter Include="Objects\Effect\CEffectText">
       <UniqueIdentifier>{6c17a2d7-cb23-4f3e-b999-29dfb852a2f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Weapon\MeleeWeapon\Spear">
+      <UniqueIdentifier>{ec602409-04ce-434c-bf3e-2ea5adf7c862}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Weapon\MeleeWeapon\Fist">
+      <UniqueIdentifier>{11a37158-2f45-4605-9f03-86ddc6ece999}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Weapon\MeleeWeapon\Claw">
+      <UniqueIdentifier>{9518f656-322b-4f61-92c4-16528da66e2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Weapon\MeleeWeapon\Scissors">
+      <UniqueIdentifier>{fd6a6576-d844-4aed-b1f8-7583a40078f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Weapon\RangedWeapon\MedicalGun">
+      <UniqueIdentifier>{309a1d3a-4433-47eb-a698-6a7048aff1db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Weapon\RangedWeapon\SMG">
+      <UniqueIdentifier>{2c6dc82c-2483-49d4-b2b7-9f7f537b3ecd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -296,6 +314,24 @@
     </ClCompile>
     <ClCompile Include="StatSet.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpearScript.cpp">
+      <Filter>Scripts\Weapon\MeleeWeapon\Spear</Filter>
+    </ClCompile>
+    <ClCompile Include="CFistScript.cpp">
+      <Filter>Scripts\Weapon\MeleeWeapon\Fist</Filter>
+    </ClCompile>
+    <ClCompile Include="CClawScript.cpp">
+      <Filter>Scripts\Weapon\MeleeWeapon\Claw</Filter>
+    </ClCompile>
+    <ClCompile Include="CScissorsScript.cpp">
+      <Filter>Scripts\Weapon\MeleeWeapon\Scissors</Filter>
+    </ClCompile>
+    <ClCompile Include="CMedicalGunScript.cpp">
+      <Filter>Scripts\Weapon\RangedWeapon\MedicalGun</Filter>
+    </ClCompile>
+    <ClCompile Include="CSMGScript.cpp">
+      <Filter>Scripts\Weapon\RangedWeapon\SMG</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -445,6 +481,24 @@
     </ClInclude>
     <ClInclude Include="StatSet.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpearScript.h">
+      <Filter>Scripts\Weapon\MeleeWeapon\Spear</Filter>
+    </ClInclude>
+    <ClInclude Include="CFistScript.h">
+      <Filter>Scripts\Weapon\MeleeWeapon\Fist</Filter>
+    </ClInclude>
+    <ClInclude Include="CClawScript.h">
+      <Filter>Scripts\Weapon\MeleeWeapon\Claw</Filter>
+    </ClInclude>
+    <ClInclude Include="CScissorsScript.h">
+      <Filter>Scripts\Weapon\MeleeWeapon\Scissors</Filter>
+    </ClInclude>
+    <ClInclude Include="CMedicalGunScript.h">
+      <Filter>Scripts\Weapon\RangedWeapon\MedicalGun</Filter>
+    </ClInclude>
+    <ClInclude Include="CSMGScript.h">
+      <Filter>Scripts\Weapon\RangedWeapon\SMG</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

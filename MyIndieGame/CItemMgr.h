@@ -20,18 +20,21 @@ public:
 	void OnLateUpdate(float tDeltaTime) override;
 	void Render(HDC tHDC) override;
 
-	void PlusItem(std::wstring tName) {
+	int PlusItem(std::wstring tName) {
+		int index = 0;
 		for (auto& item : mItems) {
 			if (item.first == tName) {
 				item.second++;
-				return;
+				return index;
 			}
+			index++;
 		}
 		
 		mItems.push_back(std::make_pair(tName, 1));
+		return index;
 	};
 
-	std::vector<std::pair<std::wstring, int>> GetItems() {
+	std::vector<std::pair<std::wstring, int>>& GetItems() {
 		return this->mItems;
 	}
 private:

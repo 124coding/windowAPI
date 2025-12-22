@@ -151,6 +151,7 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClCompile Include="CCatScript.cpp" />
     <ClCompile Include="CCat.cpp" />
     <ClCompile Include="CCharacterSelectUI.cpp" />
+    <ClCompile Include="CClawScript.cpp" />
     <ClCompile Include="CDaggerScript.cpp" />
     <ClCompile Include="CEffectText.cpp" />
     <ClCompile Include="CDataMgr.cpp" />
@@ -161,10 +162,12 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClCompile Include="CEnemy.cpp" />
     <ClCompile Include="CEnemyHit.cpp" />
     <ClCompile Include="CEnemyScript.cpp" />
+    <ClCompile Include="CFistScript.cpp" />
     <ClCompile Include="CFloor.cpp" />
     <ClCompile Include="CFloorScript.cpp" />
     <ClCompile Include="CFMOD.cpp" />
     <ClCompile Include="CItemMgr.cpp" />
+    <ClCompile Include="CMedicalGunScript.cpp" />
     <ClCompile Include="CMeleeWeaponScript.cpp" />
     <ClCompile Include="CMonsterSpawnMgr.cpp" />
     <ClCompile Include="CPistolScript.cpp" />
@@ -173,8 +176,11 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClCompile Include="CPlayScene.cpp" />
     <ClCompile Include="CPlaySceneUI.cpp" />
     <ClCompile Include="CRangedWeaponScript.cpp" />
+    <ClCompile Include="CScissorsScript.cpp" />
     <ClCompile Include="CSettingScene.cpp" />
     <ClCompile Include="CShopUI.cpp" />
+    <ClCompile Include="CSMGScript.cpp" />
+    <ClCompile Include="CSpearScript.cpp" />
     <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTitleBrotato.cpp" />
     <ClCompile Include="CTitleObjectScript.cpp" />
@@ -201,6 +207,7 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClInclude Include="CCatScript.h" />
     <ClInclude Include="CCat.h" />
     <ClInclude Include="CCharacterSelectUI.h" />
+    <ClInclude Include="CClawScript.h" />
     <ClInclude Include="CDaggerScript.h" />
     <ClInclude Include="CEffectText.h" />
     <ClInclude Include="CDataMgr.h" />
@@ -211,10 +218,12 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClInclude Include="CEnemy.h" />
     <ClInclude Include="CEnemyHit.h" />
     <ClInclude Include="CEnemyScript.h" />
+    <ClInclude Include="CFistScript.h" />
     <ClInclude Include="CFloor.h" />
     <ClInclude Include="CFloorScript.h" />
     <ClInclude Include="CFMOD.h" />
     <ClInclude Include="CItemMgr.h" />
+    <ClInclude Include="CMedicalGunScript.h" />
     <ClInclude Include="CMeleeWeaponScript.h" />
     <ClInclude Include="CMonsterSpawnMgr.h" />
     <ClInclude Include="CPistolScript.h" />
@@ -223,8 +232,11 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClInclude Include="CPlayScene.h" />
     <ClInclude Include="CPlaySceneUI.h" />
     <ClInclude Include="CRangedWeaponScript.h" />
+    <ClInclude Include="CScissorsScript.h" />
     <ClInclude Include="CSettingScene.h" />
     <ClInclude Include="CShopUI.h" />
+    <ClInclude Include="CSMGScript.h" />
+    <ClInclude Include="CSpearScript.h" />
     <ClInclude Include="CTile.h" />
     <ClInclude Include="CTitleBrotato.h" />
     <ClInclude Include="CTitleObjectScript.h" />

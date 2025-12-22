@@ -35,7 +35,6 @@ void CMeleeWeaponScript::OnUpdate(float tDeltaTime)
 		CanAttackCheck(CSceneMgr::GetGameObjects(eLayerType::Enemy));
 		break;
 	case eState::Attack:
-		SetRotForClosedEnemyWatch(CSceneMgr::GetGameObjects(eLayerType::Enemy));
 		AttackEndCheck();
 		break;
 	case eState::Back:
@@ -86,11 +85,10 @@ void CMeleeWeaponScript::CanAttackCheck(std::vector<GameObject*> tEnemies)
 		return;
 	}
 
-	SVector2D targetPos = ObjectCenterPos(GetTarget());
 	CTransform* tr = GetOwner()->GetComponent<CTransform>();
 	CCollider* cl = GetOwner()->GetComponent<CCollider>();
 
-	float distanceToEnemy = (targetPos - GetClosedEnemyPos()).Length();
+	float distanceToEnemy = (ObjectCenterPos(GetOwner()) - GetClosedEnemyPos()).Length();
 
 	if (distanceToEnemy <= GetRange() + range / 2 && mTotalTime > GetDelay() / (1 + attackSpeed / 100.0f)) {
 		tr->SetVelocity((GetClosedEnemyPos() - tr->GetPos()).Normalize() * GetSpeed());
