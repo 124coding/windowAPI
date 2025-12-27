@@ -222,6 +222,8 @@ void CWeaponSelectUI::OnCreate()
 				ApplyEffect(ID, args);
 			}
 
+			plSc->SetStartWeaponID(curWeapon.ID);
+
 			CSceneMgr::LoadScene(L"PlayScene");
 			});
 

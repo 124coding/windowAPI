@@ -22,6 +22,7 @@ public:
 
 	std::pair<int, CWeapon*> PlusWeapon(eLayerType tType, std::wstring tWeaponId, int tWeaponTier);
 	bool RemoveWeapon(int tIndex);
+	void ResetWeapons();
 
 	void WeaponsPosition();
 

@@ -1,10 +1,12 @@
 #include "CEnemyScript.h"
 
 #include "CEffectMgr.h"
+#include "CMonsterSpawnMgr.h"
 
 #include "CPlayScene.h"
 
 #include "CPlayer.h"
+#include "CMaterial.h"
 
 #include "CTransform.h"
 #include "CAnimator.h"
@@ -57,8 +59,9 @@ void CEnemyScript::OnUpdate(float tDeltaTime)
 		mTextureChangeDelay = 0.0f;
 	}
 
-	if (mHP == 0) {
+	if (mHP == 0 && mDeadTimeTaken >= 1.0f) {
 		mState = eState::Dead;
+
 		CCollider* cl = GetOwner()->GetComponent<CCollider>();
 		cl->SetActivate(false);
 
@@ -79,6 +82,11 @@ void CEnemyScript::OnUpdate(float tDeltaTime)
 		curPos.mX -= modifyWidth;
 		curPos.mY -= modifyHeight;
 		tr->SetPos(curPos);
+
+		if (CMonsterSpawnMgr::GetTime() > 0) {
+			CMaterial* material = Instantiate<CMaterial>(eLayerType::Material, ObjectCenterPos(GetOwner()));
+			material->OnCreate();
+		}
 	}
 
 	switch (mState) {
@@ -114,7 +122,18 @@ void CEnemyScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther)
 		if (plSc->GetMaxHP() > plSc->GetHP()) {
 			int rand = std::rand() % 100;
 
-			CWeaponScript* wpSc = tOther->GetOwner()->GetComponent<CWeaponScript>();
+
+
+			CWeaponScript* wpSc = nullptr;
+			
+			if (tOther->GetOwner()->GetLayerType() == eLayerType::Bullet) {
+				wpSc = tOther->GetOwner()->GetComponent<CBulletScript>()->GetWeapon()->GetComponent<CWeaponScript>();
+			}
+			else {
+				wpSc = tOther->GetOwner()->GetComponent<CWeaponScript>();
+			}
+			
+			
 			int lifeSteal = plSc->GetLifeSteal();
 
 			if (rand <= lifeSteal + wpSc->GetLifeSteal()) {

@@ -18,6 +18,7 @@
 
 #include "CPlayScene.h"
 #include "CTitleScene.h"
+#include "CShopScene.h"
 #include "CEndingScene.h"
 #include "CToolScene.h"
 #include "CSettingScene.h"
@@ -95,11 +96,12 @@ void GameEngine::LoadScenes()
 	CSceneMgr::CreateScene<CPlayScene>(L"PlayScene");
 	CSceneMgr::CreateScene<CTitleScene>(L"TitleScene");
 	CSceneMgr::CreateScene<CSettingScene>(L"SettingScene");
+	CSceneMgr::CreateScene <CShopScene>(L"ShopScene");
 	CSceneMgr::CreateScene<CEndingScene>(L"EndingScene");
 	CSceneMgr::CreateScene <CToolScene>(L"ToolScene");
 	
 
-	CSceneMgr::LoadScene(L"SettingScene");
+	CSceneMgr::LoadScene(L"TitleScene");
 }
 
 void GameEngine::LoadResources()
@@ -352,6 +354,20 @@ void GameEngine::LoadResources()
 	CResourceMgr::Load<CTexture>(L"Range", L"../resources/Items/Stats/range.png");
 	CResourceMgr::Load<CTexture>(L"Dodge", L"../resources/Items/Stats/dodge.png");
 	CResourceMgr::Load<CTexture>(L"Speed", L"../resources/Items/Stats/speed.png");
+
+	// materials
+	CTexture::ApplyOtherColorToWantedAreas(30, 255, 0, 255, 0, CResourceMgr::Load<CTexture>(L"Material_0", L"../resources/Items/materials/material_0000.png")->GetImage());
+	CTexture::ApplyOtherColorToWantedAreas(30, 255, 0, 255, 0, CResourceMgr::Load<CTexture>(L"Material_1", L"../resources/Items/materials/material_0001.png")->GetImage());
+	CTexture::ApplyOtherColorToWantedAreas(30, 255, 0, 255, 0, CResourceMgr::Load<CTexture>(L"Material_2", L"../resources/Items/materials/material_0002.png")->GetImage());
+	CTexture::ApplyOtherColorToWantedAreas(30, 255, 0, 255, 0, CResourceMgr::Load<CTexture>(L"Material_3", L"../resources/Items/materials/material_0003.png")->GetImage());
+	CTexture::ApplyOtherColorToWantedAreas(30, 255, 0, 255, 0, CResourceMgr::Load<CTexture>(L"Material_4", L"../resources/Items/materials/material_0004.png")->GetImage());
+	CTexture::ApplyOtherColorToWantedAreas(30, 255, 0, 255, 0, CResourceMgr::Load<CTexture>(L"Material_5", L"../resources/Items/materials/material_0005.png")->GetImage());
+	CTexture::ApplyOtherColorToWantedAreas(30, 255, 0, 255, 0, CResourceMgr::Load<CTexture>(L"Material_6", L"../resources/Items/materials/material_0006.png")->GetImage());
+	CTexture::ApplyOtherColorToWantedAreas(30, 255, 0, 255, 0, CResourceMgr::Load<CTexture>(L"Material_7", L"../resources/Items/materials/material_0007.png")->GetImage());
+	CTexture::ApplyOtherColorToWantedAreas(30, 255, 0, 255, 0, CResourceMgr::Load<CTexture>(L"Material_8", L"../resources/Items/materials/material_0008.png")->GetImage());
+	CTexture::ApplyOtherColorToWantedAreas(30, 255, 0, 255, 0, CResourceMgr::Load<CTexture>(L"Material_9", L"../resources/Items/materials/material_0009.png")->GetImage());
+	CTexture::ApplyOtherColorToWantedAreas(30, 255, 0, 255, 0, CResourceMgr::Load<CTexture>(L"Material_10", L"../resources/Items/materials/material_0010.png")->GetImage());
+
 
 	// upgrades
 	CResourceMgr::Load<CTexture>(L"UpgradeIcon", L"../resources/Items/Upgrades/upgrade_icon.png");

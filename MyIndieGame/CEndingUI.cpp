@@ -1,19 +1,37 @@
 #include "CEndingUI.h"
 
+#include "Effect.h"
+
+#include "CDataMgr.h"
+
 #include "CPlayScene.h"
 #include "StatSet.h"
 
 #include "CPlayer.h";
+#include "CWeapon.h"
 
 #include "CPlayerScript.h"
+#include "CWeaponScript.h"
+#include "CItemMgr.h"
+#include "CWeaponMgr.h"
 
 #include "CUIButton.h"
 
+#include <regex>
+
 void CEndingUI::OnCreate()
 {
+	CPlayer* pl = CPlayScene::GetPlayer();
+	CPlayerScript* plSc = pl->GetComponent<CPlayerScript>();
+	CItemMgr* plItemMgr = pl->GetComponent<CItemMgr>();
+	CWeaponMgr* plWeaponMgr = pl->GetComponent<CWeaponMgr>();
+	std::vector<std::pair<std::wstring, int>>* plItems = &plItemMgr->GetItems();
+	std::vector<CWeapon*>* plWeapons = &plWeaponMgr->GetWeapons();
+
+
+
 	SetWidth(windowWidth);
 	SetHeight(windowHeight);
-
 
 	CUIText* endingTex = new CUIText(SVector2D(), this->GetWidth(), 50.0f, L"Test");
 	endingTex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentCenter);
@@ -21,13 +39,14 @@ void CEndingUI::OnCreate()
 	endingTex->SetFontSize(50.0f);
 	endingTex->SetStrokeWidth(2.0f);
 	endingTex->SetOutline(2.0f, Gdiplus::Color::Black);
-	// 한 5라운드까지만 해서 갔는지 못갔는지 확인해서 Text 수정
-	/*if () {
-
+	if (CPlayScene::GetStageNum() == 5 && CPlayScene::GetPlayer()->GetComponent<CPlayerScript>()->GetHP() > 0) {
+		endingTex->SetText(L"달리기 성공!");
+		endingTex->SetColor(Gdiplus::Color::Green);
 	}
 	else {
-
-	}*/
+		endingTex->SetText(L"달리기 실패.");
+		endingTex->SetColor(Gdiplus::Color::Red);
+	}
 	this->AddChild(endingTex);
 
 	CUIPanel* endingMainPanel = new CUIPanel(SVector2D(100.0f, 100.0f), this->GetWidth() - 200.0f, this->GetHeight() - 200.0f);
@@ -49,8 +68,6 @@ void CEndingUI::OnCreate()
 	statTex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentCenter);
 
 	statPanel->AddChild(statTex);
-
-	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
 
 	CUIText* level = nullptr;
 	CUIPanel* statLevel = MakeStat(statPanel->GetWidth(), 30.0f, L"UpgradeIcon", L"현재 레벨", level);
@@ -150,9 +167,7 @@ void CEndingUI::OnCreate()
 
 	endingMainPanel->AddChild(endingItemPanel);
 
-	CUIPanel* weaponPanel = new CUIPanel(SVector2D(), endingItemPanel->GetWidth(), endingItemPanel->GetHeight() / 3);
-
-	endingItemPanel->AddChild(weaponPanel);
+	CUIPanel* weaponsPanel = new CUIPanel(SVector2D(), endingItemPanel->GetWidth(), endingItemPanel->GetHeight() / 3);
 
 	CUIText* weaponTex = new CUIText(SVector2D(20.0f, 20.0f), 0.0f, 40.0f, L"무기");
 	weaponTex->SetWidth(weaponTex->CalculateTextSize().Width);
@@ -160,13 +175,32 @@ void CEndingUI::OnCreate()
 	weaponTex->SetColor(Gdiplus::Color::White);
 	weaponTex->SetStrokeWidth(1.0f);
 
-	weaponPanel->AddChild(weaponTex);
+	weaponsPanel->AddChild(weaponTex);
 
-	/* 가지고 있던 무기들 구현 (ShopUI랑 똑같이)*/
+	float x = 20.0f;
+	float y = weaponTex->GetPos().mY + weaponTex->GetHeight() + 10.0f;
+	float offset = 10.0f;
 
-	CUIPanel* itemPanel = new CUIPanel(SVector2D(0.0f, weaponPanel->GetHeight()), endingItemPanel->GetWidth(), 2 * endingItemPanel->GetHeight() / 3);
+	for (int i = 0; i < plWeapons->size(); i++) {		
+		bool right = false;
+		if (i < 8) {
+			right = true;
+		}
 
-	endingItemPanel->AddChild(itemPanel);
+		CUIButton* weaponButton = MakeWeaponButton(plWeapons, (*plWeapons)[i], x, y, right);
+		weaponsPanel->AddChild(weaponButton);
+		x += weaponButton->GetWidth() + offset;
+
+		if (x > weaponsPanel->GetWidth()) {
+			x = 20.0f;
+			y += weaponButton->GetPos().mY + weaponButton->GetHeight() + offset;
+		}
+	}
+
+	CUIPanel* itemsPanel = new CUIPanel(SVector2D(0.0f, weaponsPanel->GetHeight()), endingItemPanel->GetWidth(), 2 * endingItemPanel->GetHeight() / 3);
+
+	endingItemPanel->AddChild(itemsPanel);
+	endingItemPanel->AddChild(weaponsPanel);
 
 	CUIText* itemTex = new CUIText(SVector2D(20.0f, 20.0f), 0.0f, 40.0f, L"아이템");
 	itemTex->SetWidth(itemTex->CalculateTextSize().Width);
@@ -174,10 +208,31 @@ void CEndingUI::OnCreate()
 	itemTex->SetColor(Gdiplus::Color::White);
 	itemTex->SetStrokeWidth(1.0f);
 
-	itemPanel->AddChild(itemTex);
+	itemsPanel->AddChild(itemTex);
 
-	/* 가지고 있던 아이템들 구현 (ShopUI랑 똑같이)*/
+	x = 20.0f;
+	y = itemTex->GetPos().mY + itemTex->GetHeight() + 10.0f;
 
+	for (int i = 0; i < plItems->size(); i++) {
+		bool right = false;
+		if (i < 8) {
+			right = true;
+		}
+
+		bool up = false;
+		if (y > 200.0f) {
+			up = true;
+		}
+
+		CUIPanel* itemPanel = MakeItemPanel((*plItems)[i].first, x, y, right, up);
+		itemsPanel->AddChild(itemPanel);
+		x += itemPanel->GetWidth() + offset;
+
+		if (x > itemsPanel->GetWidth()) {
+			x = 20.0f;
+			y += itemPanel->GetPos().mY + itemPanel->GetHeight() + offset;
+		}
+	}
 
 	CUIPanel* buttonPanel = new CUIPanel(SVector2D(), 3 * endingMainPanel->GetWidth() / 4, 40.0f);
 	buttonPanel->SetPos(SVector2D(endingMainPanel->GetPos().mX + endingMainPanel->GetWidth() / 2 - buttonPanel->GetWidth() / 2, endingMainPanel->GetPos().mY + endingMainPanel->GetHeight() + 30.0f));
@@ -207,7 +262,44 @@ void CEndingUI::OnCreate()
 		restartButton->SetBackColor(Gdiplus::Color::Black);
 		});
 	restartButton->SetEventClick([=]() {
-		/*버튼 클릭 구현*/
+		plSc->ResetStats();
+		plItemMgr->ResetItems();
+		plWeaponMgr->ResetWeapons();
+
+		auto startChar = CDataMgr::GetCharacterDatas().find(plSc->GetStartingCharacterID());
+		if (startChar == CDataMgr::GetCharacterDatas().end()) {
+			return;
+		}
+
+		CDataMgr::SCharacter curChar = startChar->second;
+
+		auto startWeapon = CDataMgr::GetWeaponDatas().find(plSc->GetStartWeaponID());
+		if (startWeapon == CDataMgr::GetWeaponDatas().end()) {
+			return;
+		}
+		CDataMgr::SWeapon curWeapon = startWeapon->second;
+
+
+
+		plSc->SetClothTexture(CResourceMgr::Find<CTexture>(curChar.clothTexture));
+		plSc->SetMouthTexture(CResourceMgr::Find<CTexture>(curChar.mouthTexture));
+		plSc->SetEyesTexture(CResourceMgr::Find<CTexture>(curChar.eyesTexture));
+		plSc->SetHairTexture(CResourceMgr::Find<CTexture>(curChar.hairTexture));
+
+		if (curWeapon.ID[0] == L'M') {
+			plWeaponMgr->PlusWeapon(eLayerType::MeleeWeapon, curWeapon.ID, 1);
+		}
+		else if (curWeapon.ID[0] == L'R') {
+			plWeaponMgr->PlusWeapon(eLayerType::RangedWeapon, curWeapon.ID, 1);
+		}
+
+		for (auto& [ID, args] : curChar.effects) {
+			ApplyEffect(ID, args);
+		}
+
+		CPlayScene::ResetStageNum();
+
+		CSceneMgr::LoadScene(L"PlayScene");
 		});
 
 
@@ -234,8 +326,16 @@ void CEndingUI::OnCreate()
 		newStartButton->SetBackColor(Gdiplus::Color::Black);
 		});
 	newStartButton->SetEventClick([=]() {
-		/*버튼 클릭 구현*/
+		plSc->ResetStats();
+		plItemMgr->ResetItems();
+		plWeaponMgr->ResetWeapons();
 
+		plSc->SetStartingCharacterID(L"");
+		plSc->SetStartWeaponID(L"");
+
+		CPlayScene::ResetStageNum();
+
+		CSceneMgr::LoadScene(L"SettingScene");
 		});
 
 
@@ -262,7 +362,16 @@ void CEndingUI::OnCreate()
 		returnMenuButton->SetBackColor(Gdiplus::Color::Black);
 		});
 	returnMenuButton->SetEventClick([=]() {
-		/*버튼 클릭 구현*/
+		plSc->ResetStats();
+		plItemMgr->ResetItems();
+		plWeaponMgr->ResetWeapons();
+
+		plSc->SetStartingCharacterID(L"");
+		plSc->SetStartWeaponID(L"");
+
+		CPlayScene::ResetStageNum();
+
+		CSceneMgr::LoadScene(L"TitleScene");
 
 		});
 
@@ -302,4 +411,299 @@ void CEndingUI::Render(HDC tHDC)
 void CEndingUI::UIClear()
 {
 	CUIBase::UIClear();
+}
+
+CUIButton* CEndingUI::MakeWeaponButton(std::vector<CWeapon*>* tWeapons, CWeapon* tWeapon, float tX, float tY, bool tRight)
+{
+	CWeaponScript* curSc = tWeapon->GetComponent<CWeaponScript>();
+	auto currentWeapon = CDataMgr::GetWeaponDatas().find(tWeapon->GetID());
+
+	if (currentWeapon == CDataMgr::GetWeaponDatas().end()) return nullptr;
+
+	UINT color = 0;
+
+	switch (curSc->GetTier()) {
+	case 2:
+		color = Gdiplus::Color::SteelBlue;
+		break;
+	case 3:
+		color = Gdiplus::Color::BlueViolet;
+		break;
+	case 4:
+		color = Gdiplus::Color::DarkRed;
+		break;
+	default:
+		color = 0xFF111111;
+		break;
+	}
+
+	CUIButton* weaponButton = new CUIButton(SVector2D(tX, tY), 75.0f, 75.0f);
+	weaponButton->SetCornerRadius(10);
+	weaponButton->SetBackColor(color);
+	// weaponButton->SetUsedClipping(true);
+
+	CUIImg* weaponImg = new CUIImg(SVector2D(), weaponButton->GetWidth(), weaponButton->GetHeight(), CResourceMgr::Find<CTexture>(currentWeapon->second.iconTexture));
+	weaponImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
+
+	weaponButton->AddChild(weaponImg);
+
+	CUIPanel* weaponDescPanel = new CUIPanel(SVector2D(), 245.0f, 0.0f);
+	weaponDescPanel->SetCornerRadius(10);
+	weaponDescPanel->InActive();
+	weaponDescPanel->SetBackColor(0xDD000000);
+
+	weaponButton->AddChild(weaponDescPanel);
+
+	CUIPanel* weaponImgPanel = new CUIPanel(SVector2D(10.0f, 10.0f), 75.0f, 75.0f);
+	weaponImgPanel->SetCornerRadius(10);
+	weaponImgPanel->SetBackColor(color);
+
+	weaponDescPanel->AddChild(weaponImgPanel);
+
+	CUIImg* weaponDescImg = new CUIImg(SVector2D(), weaponImgPanel->GetWidth(), weaponImgPanel->GetHeight(), CResourceMgr::Find<CTexture>(currentWeapon->second.iconTexture));
+	weaponDescImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
+
+	weaponImgPanel->AddChild(weaponDescImg);
+
+	CUIText* weaponNameTex = new CUIText(SVector2D(weaponImgPanel->GetPos().mX + weaponImgPanel->GetWidth() + 10.0f, weaponDescPanel->GetPos().mY), 100.0f, 25.0f, currentWeapon->second.name);
+	weaponNameTex->SetFontSize(20.0f);
+	weaponNameTex->SetColor(Gdiplus::Color::White);
+
+	weaponDescPanel->AddChild(weaponNameTex);
+
+	CUIText* weaponCategoryTex = new CUIText(SVector2D(weaponImgPanel->GetPos().mX + weaponImgPanel->GetWidth() + 10.0f, weaponImgPanel->GetPos().mY + 30.0f), 100.0f, 25.0f, currentWeapon->second.classType);
+	weaponCategoryTex->SetFontSize(15.0f);
+	weaponCategoryTex->SetColor(Gdiplus::Color::LightYellow);
+
+	weaponDescPanel->AddChild(weaponCategoryTex);
+
+	CUIText* weaponDescTex = new CUIText(SVector2D(weaponImgPanel->GetPos().mX, weaponImgPanel->GetPos().mY + weaponImgPanel->GetHeight() + 10.0f), 200.0f, 0.0f);
+
+	weaponDescTex->SetFontSize(15.0f);
+	weaponDescTex->SetColor(Gdiplus::Color::White);
+
+	weaponDescPanel->AddChild(weaponDescTex);
+
+	std::wstring weaponDiscription = L"";
+
+	auto& data = currentWeapon->second.tier[curSc->GetTier() - 1];
+
+	// 깔끔한 wstring으로 바꿔주는 도우미 람다
+	auto GetCleanVal = [](float value) -> std::wstring {
+		std::wstring valStr = std::to_wstring(value);
+		if (valStr.find(L'.') != std::wstring::npos) {
+			valStr.erase(valStr.find_last_not_of(L'0') + 1);
+			if (valStr.back() == L'.') valStr.pop_back();
+		}
+		return valStr;
+		};
+
+	// 텍스트를 붙여주는 도우미 람다
+	auto descriptionStat = [&](std::wstring label, float value, std::wstring suffix = L"") {
+		if (value <= 0.0f) return;
+		weaponDiscription += L"<c=#FFFFE0>" + label + L":</c> " + GetCleanVal(value) + suffix + L"\n";
+		};
+
+	descriptionStat(L"데미지", data.damage);
+
+	if (data.critDamagePer > 0.0f) {
+		weaponDiscription += L"<c=#FFFFE0>치명타:</c> x" + GetCleanVal(data.critDamagePer);
+
+		if (data.critChancePer > 0.0f) {
+			weaponDiscription += L" (" + GetCleanVal(data.critChancePer) + L"% 확률)";
+		}
+		weaponDiscription += L"\n";
+	}
+
+	descriptionStat(L"쿨다운", data.delay, L"s");
+	descriptionStat(L"범위", data.range);
+
+	if (data.lifeSteal != 0.0f) {
+		descriptionStat(L"생명 훔침", data.lifeSteal, L"%");
+	}
+
+	weaponDescTex->SetText(weaponDiscription);
+	weaponDescTex->SetHeight(weaponDescTex->CalculateTextSize().Height);
+
+	weaponDescPanel->SetHeight(weaponDescTex->GetPos().mY + weaponDescTex->GetHeight() + 10.0f);
+
+	float posX = 0.0f;
+	float posY = 0.0f;
+
+	if (!tRight) {
+		posX = -weaponDescPanel->GetWidth() + weaponButton->GetWidth();
+	}
+
+	posY = weaponButton->GetHeight() + 10.0f;
+
+	weaponDescPanel->SetPos(SVector2D(posX, posY));
+
+	weaponButton->SetEventHover([=]() {
+		weaponButton->SetBackColor(Gdiplus::Color::White);
+		weaponDescPanel->Active();
+		});
+	weaponButton->SetEventOutHover([=]() {
+		weaponButton->SetBackColor(color);
+		weaponDescPanel->InActive();
+		});
+
+	return weaponButton;
+}
+
+CUIPanel* CEndingUI::MakeItemPanel(std::wstring tItemID, float tX, float tY, bool tRight, bool tUp) {
+	auto currentItem = CDataMgr::GetItemDatas().find(tItemID);
+
+	if (currentItem == CDataMgr::GetItemDatas().end()) return nullptr;
+
+	UINT color = 0;
+
+	switch (currentItem->second.tier) {
+	case 2:
+		color = Gdiplus::Color::SteelBlue;
+		break;
+	case 3:
+		color = Gdiplus::Color::BlueViolet;
+		break;
+	case 4:
+		color = Gdiplus::Color::DarkRed;
+		break;
+	default:
+		color = 0xFF111111;
+		break;
+	}
+
+	CUIPanel* itemPanel = new CUIPanel(SVector2D(tX, tY), 75.0f, 75.0f);
+	itemPanel->SetCornerRadius(10);
+	itemPanel->SetBackColor(color);
+	// itemPanel->SetUsedClipping(true);
+
+	CUIImg* itemImg = new CUIImg(SVector2D(), itemPanel->GetWidth(), itemPanel->GetHeight(), CResourceMgr::Find<CTexture>(currentItem->second.name + L"Icon"));
+	itemImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
+
+	itemPanel->AddChild(itemImg);
+
+
+
+
+	CUIPanel* itemDescPanel = new CUIPanel(SVector2D(), 245.0f, 0.0f);
+	itemDescPanel->SetCornerRadius(10);
+	itemDescPanel->InActive();
+	itemDescPanel->SetBackColor(0xDD000000);
+
+	itemPanel->AddChild(itemDescPanel);
+
+	CUIPanel* itemImgPanel = new CUIPanel(SVector2D(10.0f, 10.0f), 75.0f, 75.0f);
+	itemImgPanel->SetCornerRadius(10);
+	itemImgPanel->SetBackColor(color);
+
+	itemDescPanel->AddChild(itemImgPanel);
+
+	CUIImg* itemDescImg = new CUIImg(SVector2D(), itemImgPanel->GetWidth(), itemImgPanel->GetHeight(), CResourceMgr::Find<CTexture>(currentItem->second.name + L"Icon"));
+	itemDescImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
+
+	itemImgPanel->AddChild(itemDescImg);
+
+	CUIText* itemNameTex = new CUIText(SVector2D(itemImgPanel->GetPos().mX + itemImgPanel->GetWidth() + 10.0f, itemDescPanel->GetPos().mY), 100.0f, 25.0f, currentItem->second.name);
+	itemNameTex->SetFontSize(20.0f);
+	itemNameTex->SetColor(Gdiplus::Color::White);
+
+	itemDescPanel->AddChild(itemNameTex);
+
+	CUIText* itemCategoryTex = new CUIText(SVector2D(itemImgPanel->GetPos().mX + itemImgPanel->GetWidth() + 10.0f, itemDescPanel->GetPos().mY + 30.0f), 100.0f, 25.0f, L"아이템");
+	itemCategoryTex->SetFontSize(15.0f);
+	itemCategoryTex->SetColor(Gdiplus::Color::LightYellow);
+
+	itemDescPanel->AddChild(itemCategoryTex);
+
+	CUIText* itemDescTex = new CUIText(SVector2D(itemImgPanel->GetPos().mX, itemImgPanel->GetPos().mY + itemImgPanel->GetHeight() + 10.0f), 200.0f, 0.0f);
+	itemDescTex->SetFontSize(15.0f);
+	itemDescTex->SetColor(Gdiplus::Color::White);
+
+	itemDescPanel->AddChild(itemDescTex);
+
+	std::wstring finalDiscription = L"";
+
+	for (auto& [effectID, args] : currentItem->second.effects) {
+		auto it = CDataMgr::GetEffectDatas().find(effectID);
+		if (it == CDataMgr::GetEffectDatas().end()) {
+			continue;
+		}
+
+		std::wstring rawDesc = it->second.description;
+
+		int index = 0;
+
+		for (auto& arg : args) {
+			std::wstring value = arg.value;
+
+			std::wstring colorStr = L"#FFFFFF"; // 기본값
+			if (arg.color != L"") {
+				colorStr = arg.color;
+			}
+
+			if (colorStr == L"#00FF00")
+			{
+				try {
+					int iVal = std::stoi(arg.value);
+
+					if (iVal > 0) {
+						value = L"+" + value;
+					}
+				}
+				catch (...) {
+					// 변환 실패
+				}
+			}
+
+			std::wstring taggedStr = L"<c=" + colorStr + L">" + value + L"</c>";
+
+			// 설명글 치환 ({0} -> 태그 문자열)
+			// L"\\{" + 숫자 + L"\\}" 형태의 정규식 패턴 생성
+			std::wstring pattern = L"\\{" + std::to_wstring(index) + L"\\}";
+
+			try {
+				// rawDesc 안에 있는 {i}를 taggedStr로 교체
+				rawDesc = std::regex_replace(rawDesc, std::wregex(pattern), taggedStr);
+			}
+			catch (...) {
+				// 정규식 에러 예외처리 (원본 유지)
+			}
+			index++;
+		}
+
+		finalDiscription += rawDesc + L"\n";
+	}
+
+	finalDiscription = CUIText::InsertLineBreaks(finalDiscription, itemDescPanel->GetWidth() - itemDescPanel->GetPos().mX * 2, L"Noto Sans KR Medium", 15.0f, false);
+
+	itemDescTex->SetText(finalDiscription);
+	itemDescTex->SetHeight(itemDescTex->CalculateTextSize().Height);
+	itemDescPanel->SetHeight(itemImgPanel->GetPos().mY * 2 + itemImgPanel->GetHeight() + itemDescTex->GetHeight());
+
+	float posX = 0.0f;
+	float posY = 0.0f;
+
+	if (!tRight) {
+		posX = -itemDescPanel->GetWidth() + itemPanel->GetWidth();
+	}
+
+	if (tUp) {
+		posY = (10.0f + itemDescPanel->GetHeight());
+	}
+	else {
+		posY = itemPanel->GetHeight() + 10.0f;
+	}
+
+	itemDescPanel->SetPos(SVector2D(posX, posY));
+
+	itemPanel->SetEventHover([=]() {
+		itemPanel->SetBackColor(Gdiplus::Color::White);
+		itemDescPanel->Active();
+		});
+	itemPanel->SetEventOutHover([=]() {
+		itemPanel->SetBackColor(color);
+		itemDescPanel->InActive();
+		});
+
+	return itemPanel;
 }

@@ -21,12 +21,19 @@ public:
 	void OnEnter() override;
 	void OnExit() override;
 
+	void StagePass();
+	void GameEnd();
+
 	static CPlayer* GetPlayer() {
 		return mPlayer;
 	}
 
 	static int GetStageNum() {
 		return mStageNum;
+	}
+
+	static void ResetStageNum() {
+		mStageNum = 0;
 	}
 
 public:
@@ -39,4 +46,6 @@ private:
 	static int mStageNum;
 
 	GameObject* mBakedMap;
+
+	float mWaitTime = 3.0f;
 };

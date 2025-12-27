@@ -12,8 +12,6 @@
 
 void CWeaponMgr::OnCreate()
 {
-	PlusWeapon(eLayerType::MeleeWeapon, L"MW_001", 1);
-	PlusWeapon(eLayerType::MeleeWeapon, L"MW_001", 1);
 }
 
 void CWeaponMgr::OnDestroy()
@@ -116,9 +114,17 @@ std::pair<int, CWeapon*> CWeaponMgr::PlusWeapon(eLayerType tType, std::wstring t
 bool CWeaponMgr::RemoveWeapon(int tIndex)
 {
 	if (mWeapons[tIndex] == nullptr || tIndex < 0 || tIndex >= mWeapons.size()) return false;
+	CWeapon* w = mWeapons[tIndex];
 	ObjDestroy(mWeapons[tIndex]);
 	mWeapons.erase(mWeapons.begin() + tIndex);
 	return true;
+}
+
+void CWeaponMgr::ResetWeapons()
+{
+	for (int i = mWeapons.size() - 1; i >= 0; i--) {
+		RemoveWeapon(i);
+	}
 }
 
 void CWeaponMgr::WeaponsPosition()

@@ -37,6 +37,10 @@ public:
 	std::vector<std::pair<std::wstring, int>>& GetItems() {
 		return this->mItems;
 	}
+
+	void ResetItems() {
+		mItems.clear();
+	}
 private:
 	std::vector<std::pair<std::wstring, int>> mItems;
 };

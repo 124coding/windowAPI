@@ -6,38 +6,51 @@
 
 #include "CDataMgr.h"
 
+float CMonsterSpawnMgr::mExpMultiple = 0.0f;
+float CMonsterSpawnMgr::mMoneyMultiple = 0.0f;
 float CMonsterSpawnMgr::mInitialTime = 0.0f;
 float CMonsterSpawnMgr::mTime = 0.0f;
 int CMonsterSpawnMgr::mStageNum = 0;
 std::vector<CMonsterSpawnMgr::SpawnEvent> CMonsterSpawnMgr::mActiveStageSpawnEvents;
 
 void CMonsterSpawnMgr::LoadStageSpawnEvents(int tStageNum) {
+	mActiveStageSpawnEvents.clear();
+
 	std::string stageFileName = "../Data/Stages/Stage_" + std::to_string(tStageNum) + ".json";
 	std::ifstream stageFile(stageFileName, std::ios::in);
+
+	if (!stageFile.is_open()) {
+		return;
+	}
 
 	json j;
 	stageFile >> j;
 
-	mStageNum = 1;
+	mStageNum = tStageNum;
+
 	mInitialTime = j["DefaultModifiers"]["Time"];
+	mExpMultiple = j["DefaultModifiers"]["Exp_Multiplier"];
+	mMoneyMultiple = j["DefaultModifiers"]["Money_Multiplier"];
 	mTime = mInitialTime;
 
-	SpawnEvent event;
-
 	for (auto& e : j["Events"]) {
+		SpawnEvent event;
+
 		event.spawnTiming = e["SpawnTiming"];
 		event.repeatingInterval = e["repeating_interval"];
 		event.minRepeatingInterval = e["min_repeating_interval"];
 		event.reduceRepeatingInterval = e["reduce_repeating_interval"];
+
 		event.nextSpawnTime = event.spawnTiming;
 		event.currentInterval = event.repeatingInterval;
+
 		for (auto& mId : e["M_IDS"]) {
 			event.IDs.push_back(CDataMgr::ToWString(mId));
 		}
 		event.spawnType = CDataMgr::ToWString(e["SpawnType"]);
-	}
 
-	mActiveStageSpawnEvents.push_back(event);
+		mActiveStageSpawnEvents.push_back(event);
+	}
 }
 
 void CMonsterSpawnMgr::OnCreate() {

@@ -2,6 +2,10 @@
 
 #include "CUIBase.h"
 
+class CWeapon;
+class CUIButton;
+class CUIPanel;
+
 class CEndingUI : public CUIBase
 {
 public:
@@ -18,6 +22,7 @@ public:
 	virtual void UIClear() override;
 
 private:
-
+	CUIButton* MakeWeaponButton(std::vector<CWeapon*>* tWeapons, CWeapon* tWeapon, float tX, float tY, bool tRight);
+	CUIPanel* MakeItemPanel(std::wstring tItemID, float tX, float tY, bool tRight, bool tUp);
 };
 

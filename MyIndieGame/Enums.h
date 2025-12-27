@@ -21,6 +21,7 @@ enum class eLayerType {
 	None,
 	BackGround,
 	Tile,
+	Material,
 	Enemy,
 	Player,
 	Effect,
@@ -61,6 +62,7 @@ enum class eUIType {
 
 	// PlayScene
 	PlaySceneUI,
+	LevelUpUI,
 
 	// EndingScene,
 	EndingSceneUI,

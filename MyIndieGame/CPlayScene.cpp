@@ -92,6 +92,8 @@ void CPlayScene::OnCreate()
 	
 	plSc->SetBaseTexture(plImg);
 
+	mPlayer->AddComponent<CSpriteRenderer>();
+
 	// Player 외모 변화 체크
 	/*CTexture* rangerEyesImg = CResourceMgr::Find<CTexture>(L"RangerEyes");
 	CTexture* rangerMouthImg = CResourceMgr::Find<CTexture>(L"RangerMouth");
@@ -101,10 +103,6 @@ void CPlayScene::OnCreate()
 
 	plImg->BakedTex(0.0f, 0.0f, plImg->GetWidth(), plImg->GetHeight(), rangerEyesImg->GetImage());
 	plImg->BakedTex(0.0f, 0.0f, plImg->GetWidth(), plImg->GetHeight(), rangerMouthImg->GetImage());*/
-
-	CSpriteRenderer* plSr = mPlayer->AddComponent<CSpriteRenderer>();
-	plSr->SetTexture(plImg);
-	plSr->GetTexture()->CreateHBitmapFromGdiPlus(false);
 
 	mPlayer->AddComponent<CWeaponMgr>();
 	mPlayer->AddComponent<CItemMgr>();
@@ -185,12 +183,44 @@ void CPlayScene::OnUpdate(float tDeltaTime)
 {
 	CScene::OnUpdate(tDeltaTime);
 	CMonsterSpawnMgr::MonsterSpawnEvent(mPlayer);
-	if (CMonsterSpawnMgr::GetTime() > 0) {
-		CMonsterSpawnMgr::MinusTime(tDeltaTime);
-	}
-	if (CMonsterSpawnMgr::GetTime() < 0) {
 
+	// (WaitTime 어떻게 굴릴 지랑 체력 없을 때랑 시간 다 되었을 때에 대해서)수정 필요
+	if (mPlayer->GetComponent<CPlayerScript>()->GetHP() <= 0) {
+		if (CSceneMgr::GetGameObjects(eLayerType::Enemy).size() > 0) {
+			for (auto& enemy : CSceneMgr::GetGameObjects(eLayerType::Enemy)) {
+				enemy->GetComponent<CEnemyScript>()->SetHP(0);
+			}
+		}
+		else if (mWaitTime <= 0.0f) {
+			mWaitTime = 3.0f;
+			GameEnd();
+		}
+
+		mWaitTime -= tDeltaTime;
 	}
+	else {
+		if (CMonsterSpawnMgr::GetTime() > 0) {
+			CMonsterSpawnMgr::MinusTime(tDeltaTime);
+		}
+		else {
+			if (CSceneMgr::GetGameObjects(eLayerType::Enemy).size() > 0) {
+				for (auto& enemy : CSceneMgr::GetGameObjects(eLayerType::Enemy)) {
+					enemy->GetComponent<CEnemyScript>()->SetHP(0);
+				}
+			}
+			else if (mWaitTime <= 0.0f) {
+				mWaitTime = 3.0f;
+				if (mStageNum == 4) {
+					GameEnd();
+					return;
+				}
+				StagePass();
+			}
+
+			mWaitTime -= tDeltaTime;
+		}
+	}
+
 }
 
 void CPlayScene::OnLateUpdate(float tDeltaTime)
@@ -211,14 +241,24 @@ void CPlayScene::OnEnter()
 	RandomBakedMap();
 
 	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Enemy, true);
+	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Material, true);
 	CCollisionMgr::CollisionLayerCheck(eLayerType::MeleeWeapon, eLayerType::Enemy, true);
 	CCollisionMgr::CollisionLayerCheck(eLayerType::Bullet, eLayerType::Enemy, true);
 
-	mPlayer->GetComponent<CWeaponMgr>()->WeaponsPosition();
+	mPlayer->SetState(true);
 
+	CTransform* plTr = mPlayer->GetComponent<CTransform>();
 	CSpriteRenderer* plSr = mPlayer->GetComponent<CSpriteRenderer>();
 	CPlayerScript* plSc = mPlayer->GetComponent<CPlayerScript>();
+	plSc->SetHP(plSc->GetMaxHP());
+	plSc->SetState(true);
+	plSr->SetGdiplusDraw(false);
 
+	plTr->SetPos(SVector2D(mapWidth / 2, mapHeight / 2 + 55.0f));
+	plTr->SetScale(SVector2D(1.0f, 1.0f));
+	mPlayer->SetAnchorPoint(CResourceMgr::Find<CTexture>(L"PlayerBase")->GetWidth() / 2, CResourceMgr::Find<CTexture>(L"PlayerBase")->GetHeight());
+
+	plSr->SetTexture(plSc->GetBaseTexture()->Clone());
 	CTexture* plImg = plSr->GetTexture();
 
 	if (plSc->GetClothTexture() != nullptr) {
@@ -239,15 +279,13 @@ void CPlayScene::OnEnter()
 	}
 
 	CWeaponMgr* plWeaponMgr = mPlayer->GetComponent<CWeaponMgr>();
+	for (auto& weapon : plWeaponMgr->GetWeapons()) {
+		weapon->SetState(true);
+	}
 
 	plWeaponMgr->WeaponsPosition();
 
 	CUIMgr::Push(eUIType::PlaySceneUI);
-	/*CUIMgr::Push(eUIType::HPBar);
-	dynamic_cast<CUIHPBar*>(CUIMgr::FindUI(eUIType::HPBar))->SetPlayer(mPlayer);
-
-	CUIMgr::Push(eUIType::EXPBar);
-	dynamic_cast<CUIEXPBar*>(CUIMgr::FindUI(eUIType::EXPBar))->SetPlayer(mPlayer);*/
 
 	CMonsterSpawnMgr::LoadStageSpawnEvents(mStageNum);
 
@@ -260,11 +298,35 @@ void CPlayScene::OnExit()
 {
 	CScene::OnExit();
 
+	if (mPlayer != nullptr)
+	{
+		CSpriteRenderer* plSr = mPlayer->GetComponent<CSpriteRenderer>();
+		if (plSr != nullptr)
+		{
+			CTexture* pTex = plSr->GetTexture();
+
+			if (pTex != nullptr)
+			{
+				SAFE_DELETE(pTex);
+			}
+		}
+	}
+
 	mStageNum++;
 	CMonsterSpawnMgr::DestroyStageSpawnEvents();
 	CUIMgr::Pop(eUIType::PlaySceneUI);
-	//CUIMgr::Pop(eUIType::HPBar);
-	//CUIMgr::Pop(eUIType::EXPBar);
+}
+
+void CPlayScene::StagePass()
+{
+	mPlayer->GetComponent<CTransform>()->SetPos(SVector2D(windowWidth / 2, windowHeight / 2 + 55.0f));
+	CSceneMgr::LoadScene(L"ShopScene");
+}
+
+void CPlayScene::GameEnd()
+{
+	mPlayer->GetComponent<CTransform>()->SetPos(SVector2D(windowWidth / 2, windowHeight / 2 + 55.0f));
+	CSceneMgr::LoadScene(L"EndingScene");
 }
 
 void CPlayScene::LoadBakedMap(const wchar_t* tPath)

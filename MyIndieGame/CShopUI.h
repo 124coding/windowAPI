@@ -21,7 +21,7 @@ class CWeaponScript;
 class CShopUI : public CUIBase
 {
 public:
-	CShopUI(SVector2D tPos = SVector2D(), float tWidth = 0.0f, float tHeight = 0.0f) : CUIBase(tPos, tWidth, tHeight, eUIType::TitleSceneUI) {}
+	CShopUI(SVector2D tPos = SVector2D(), float tWidth = 0.0f, float tHeight = 0.0f) : CUIBase(tPos, tWidth, tHeight, eUIType::ShopUI) {}
 	virtual ~CShopUI() {}
 
 	virtual void OnCreate() override;

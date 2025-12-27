@@ -18,7 +18,8 @@ class CPlayerScript : public CScript
 public:
 	enum class eState {
 		Idle,
-		Walk
+		Walk,
+		Dead
 	};
 
 	CPlayerScript() : 
@@ -45,7 +46,9 @@ public:
 		
 		mLevel(0),
 		mExp(0.0f),
-		mMoney(1000) {}
+		mNeedLevelUpExp(20.0f),
+		mCurStageLevelUpCount(0),
+		mMoney(0) {}
 	virtual ~CPlayerScript() {}
 
 	virtual CComponent* Clone() override {
@@ -68,14 +71,33 @@ private:
 	void Translate(CTransform* tr);
 	void ButtDamageByEnemy(GameObject* tEnemy);
 	float DecreaseDamageBecauseArmor(float tDamage);
+	void Death(float tDeltaTime);
+	void Acquire();
 
 public:
-	void SetStartingCharacterID(std::wstring tCharacterID) {
-		this->mStartingCharacterID = tCharacterID;
+	void SetState(bool tPower) {
+		if (tPower) {
+			mState = eState::Idle;
+		}
+		else {
+			mState = eState::Dead;
+		}
+	}
+
+	void SetStartingCharacterID(std::wstring tID) {
+		this->mStartingCharacterID = tID;
 	}
 
 	std::wstring GetStartingCharacterID() {
 		return this->mStartingCharacterID;
+	}
+
+	void SetStartWeaponID(std::wstring tID) {
+		this->mStartWeaponID = tID;
+	}
+
+	std::wstring GetStartWeaponID() {
+		return this->mStartWeaponID;
 	}
 
 	void SetHP(int tHP) {
@@ -240,6 +262,18 @@ public:
 		return this->mExp;
 	}
 
+	float GetNeedLevelUpExp() {
+		return this->mNeedLevelUpExp;
+	}
+
+	void ResetCurStage() {
+		this->mCurStageLevelUpCount = 0;
+	}
+
+	int GetCurStageLevelUpCount() {
+		return this->mCurStageLevelUpCount;
+	}
+
 	void SetLevel(int tAmount) {
 		this->mLevel = tAmount;
 	}
@@ -300,6 +334,8 @@ public:
 		return this->mCanCollideEnemy;
 	}
 
+	void ResetStats();
+
 public:
 	void SetBaseTexture(CTexture* tTexture) {
 		this->mBaseTexture = tTexture;
@@ -346,6 +382,8 @@ private:
 	CAnimator* mAnimator;
 	CInputMgr* mInputMgr = CInputMgr::GetInst();
 
+	float mDeadTimeTaken = 1.0f;
+
 	int mHP;
 	int mMaxHP;
 	int mHPRegeneration;
@@ -370,12 +408,15 @@ private:
 
 	float mExp;
 	int mLevel;
+	float mNeedLevelUpExp;
+	int mCurStageLevelUpCount;
 	int mMoney;
 
 	float mGracePeriod = 0.2f;
 	bool mCanCollideEnemy = true;
 
 	std::wstring mStartingCharacterID = L"";
+	std::wstring mStartWeaponID = L"";
 
 	CTexture* mBaseTexture = nullptr;
 	CTexture* mEyesTexture = nullptr;

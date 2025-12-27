@@ -19,9 +19,6 @@ CTexture* CTexture::Create(const std::wstring& tName, UINT tWidth, UINT tHeight)
 	image->SetBaseWidth(tWidth);
 	image->SetBaseHeight(tHeight);
 
-	HDC hDC = mainEngine->GetmhDC();
-	HWND hWND = mainEngine->GetmhWnd();
-
 	HDC mainDC = mainEngine->GetmhDC();
 	
 	image->mhRightBitmap = nullptr;
@@ -35,6 +32,26 @@ CTexture* CTexture::Create(const std::wstring& tName, UINT tWidth, UINT tHeight)
 	CResourceMgr::Insert(tName, image);
 
 	return image;
+}
+
+CTexture* CTexture::Clone() {
+	CTexture* pCloneTex = new CTexture();
+	HDC mainDC = mainEngine->GetmhDC();
+
+	pCloneTex->mType = this->mType;
+	pCloneTex->mbAlpha = this->mbAlpha;
+	pCloneTex->mBaseWidth = this->mBaseWidth;
+	pCloneTex->mBaseHeight = this->mBaseHeight;
+	pCloneTex->mWidth = this->mWidth;
+	pCloneTex->mHeight = this->mHeight;
+	pCloneTex->mhDCMem = CreateCompatibleDC(mainDC);
+
+	if (this->mImage != nullptr)
+	{
+		pCloneTex->mImage = this->mImage->Clone();
+	}
+
+	return pCloneTex;
 }
 
 HRESULT CTexture::Load(const std::wstring& tPath)

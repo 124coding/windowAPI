@@ -10,6 +10,12 @@ public:
 		Gdiplus::Color color;
 	};
 
+	// 줄바꿈 전용 구조체
+	struct RenderLineInfo {
+		float width = 0.0f; // 이 줄의 총 가로 길이
+		std::vector<CUIText::STextFragment> frags; // 이 줄에 포함된 텍스트 조각들
+	};
+
 	struct SAutoColor {
 		std::wstring text;
 		int refValue;
@@ -47,11 +53,19 @@ public:
 public:
 	void SetText(const std::wstring& tText);
 
-	void SetFont(const std::wstring& tFont) {
-		this->mFont = tFont;
+	void SetFont(const std::wstring& tFontName)
+	{
+		if (mFont == tFontName) return;
+		mFont = tFontName;
+
+		UpdateTextLayout();
 	}
+
 	void SetFontSize(float tFontSize) {
-		this->mFontSize = tFontSize;
+		if (mFontSize == tFontSize) return;
+		mFontSize = tFontSize;
+
+		UpdateTextLayout();
 	}
 
 	void SetColor(Gdiplus::Color tColor);
@@ -60,8 +74,12 @@ public:
 		this->mStrokeWidth = tStrokeWidth;
 	}
 
-	void SetBold(bool tbBold) {
-		this->mbBold = tbBold;
+	void SetBold(bool tBold)
+	{
+		if (mbBold == tBold) return;
+		mbBold = tBold;
+
+		UpdateTextLayout();
 	}
 
 	void SetOutline(float tWidth, Gdiplus::Color tColor) {
@@ -88,10 +106,14 @@ private:
 	// 텍스트 폭 계산 함수
 	float GetTextWidth(Gdiplus::Graphics* graphics, Gdiplus::Font* font, const std::wstring& text);
 
+	void UpdateTextLayout();
+
 private:
+	std::vector<RenderLineInfo> mCachedLines;
+
 	std::wstring mText;
 	std::wstring mFont;
-	
+
 	float mFontSize;
 	Gdiplus::Color mFontColor;
 	float mStrokeWidth;

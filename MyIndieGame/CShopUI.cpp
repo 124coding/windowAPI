@@ -629,7 +629,7 @@ std::pair<CUIPanel*, bool> CShopUI::MakeGoods(int tIdx, float tWidth, float tHei
 
 		std::wstring weaponDiscription = L"";
 
-		auto& data = curWeapon.second.tier[curWeapon.first];
+		auto& data = curWeapon.second.tier[curWeapon.first - 1];
 
 		// ±ò²ûÇÑ wstringÀ¸·Î ¹Ù²ãÁÖ´Â µµ¿ì¹Ì ¶÷´Ù
 		auto GetCleanVal = [](float value) -> std::wstring {

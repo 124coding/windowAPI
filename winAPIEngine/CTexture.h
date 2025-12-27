@@ -21,6 +21,7 @@ public:
 	};
 
 	static CTexture* Create(const std::wstring& tName, UINT tWidth, UINT tHeight);
+	CTexture* Clone();
 
 	CTexture() : CResource(eResourceType::Texture), mbAlpha(false) { 
 		memset(&mBitmapInfo, 0, sizeof(BITMAP));

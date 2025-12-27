@@ -116,6 +116,10 @@ void CSpriteRenderer::Render(HDC tHDC)
 
 		graphics.TranslateTransform(pos.mX, pos.mY);
 		graphics.RotateTransform(rot);
+		if (mbFlipX)
+		{
+			fScaleX *= -1.0f;
+		}
 		graphics.ScaleTransform(fScaleX, fScaleY);
 
 		float originalWidth = mTexture->GetWidth();

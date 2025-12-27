@@ -29,6 +29,10 @@ public:
 		this->mWeapon = tWeapon;
 	}
 
+	GameObject* GetWeapon() {
+		return this->mWeapon;
+	}
+
 	void SetDamage(float tDamage) {
 		this->mDamage = tDamage;
 	}

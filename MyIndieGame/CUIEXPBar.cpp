@@ -51,15 +51,15 @@ void CUIEXPBar::OnLateUpdate(float tDeltaTime)
 
 void CUIEXPBar::Render(HDC tHDC)
 {
-    /*float ratio = (float)mPlayer->GetComponent<CPlayerScript>()->GetExp() / mPlayer->GetComponent<CPlayerScript>()->GetMaxHP();
+    float ratio = (float)mPlayer->GetComponent<CPlayerScript>()->GetExp() / mPlayer->GetComponent<CPlayerScript>()->GetNeedLevelUpExp();
 
     TransparentBlt(tHDC,
         mFinalPos.mX, mFinalPos.mY,
-        mHPFill->GetWidth() * ratio, mHPFill->GetHeight(),
-        mHPFill->GetDCMem(),
+        mExpFill->GetWidth() * ratio, mExpFill->GetHeight(),
+        mExpFill->GetDCMem(),
         0, 0,
-        mHPFill->GetWidth() * ratio, mHPFill->GetHeight(),
-        RGB(255, 0, 255));*/
+        mExpFill->GetWidth() * ratio, mExpFill->GetHeight(),
+        RGB(255, 0, 255));
 
     CUIHUD::Render(tHDC);
 }

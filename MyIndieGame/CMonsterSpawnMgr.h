@@ -52,7 +52,17 @@ public:
 		return mTime;
 	}
 
+	static float GetExpMultiple() {
+		return mExpMultiple;
+	}
+
+	static float GetMoneyMultiple() {
+		return mMoneyMultiple;
+	}
+
 private:
+	static float mExpMultiple;
+	static float mMoneyMultiple;
 	static float mInitialTime;
 	static float mTime;
 	static int mStageNum;

@@ -1,6 +1,7 @@
 #include "CPlayerScript.h"
 
 #include "CEffectMgr.h"
+#include "CMonsterSpawnMgr.h"
 
 #include "GameObject.h"
 #include "CPlayer.h"
@@ -11,6 +12,8 @@
 #include "CSpriteRenderer.h"
 #include "CTilemapRenderer.h"
 #include "CEnemyScript.h"
+#include "CWeaponMgr.h"
+#include "CMaterialScript.h"
 
 void CPlayerScript::OnCreate()
 {
@@ -38,27 +41,68 @@ void CPlayerScript::OnUpdate(float tDeltaTime)
 	switch (mState) {
 	case eState::Idle:
 		Idle();
+		Bounce();
+		Acquire();
 		break;
 	case eState::Walk:
 		Move();
+		Bounce();
+		Acquire();
+		break;
+	case eState::Dead:
+		Death(tDeltaTime);
 		break;
 	default:
 		break;
 	}
 
-	Bounce();
+	if (mState != eState::Dead) {
+		if (mHP == 0) {
+			CWeaponMgr* plWeaponMgr = GetOwner()->GetComponent<CWeaponMgr>();
+			for (auto& weapon : plWeaponMgr->GetWeapons()) {
+				weapon->SetState(false);
+			}
+			mState = eState::Dead;
 
-	if (0.1f * mHPRegeneration * mHPRegenTime > 1.0f) {
-		IncreaseHP(1.0f);
-		mHPRegenTime = 0.0f;
-		CEffectMgr::ShowEffectText(GetOwner()->GetComponent<CTransform>()->GetPos(), std::to_wstring((int)1.0f), Gdiplus::Color::LimeGreen);
-	}
+			CCollider* cl = GetOwner()->GetComponent<CCollider>();
+			CTransform* tr = GetOwner()->GetComponent<CTransform>();
+			CPlayerScript* sc = GetOwner()->GetComponent<CPlayerScript>();
+			cl->SetActivate(false);
 
-	if (!mCanCollideEnemy) {
-		mGracePeriod -= tDeltaTime;
-		if (mGracePeriod <= 0) {
-			mCanCollideEnemy = true;
-			mGracePeriod = 0.2f;
+			tr->SetVelocity(SVector2D());
+
+			SVector2D size = GetOwner()->GetSize();
+			SVector2D scale = tr->GetScale();
+
+			SVector2D originAnchor = GetOwner()->GetAnchorPoint();
+			GetOwner()->SetAnchorPoint(sc->GetBaseTexture()->GetWidth() / 2, sc->GetBaseTexture()->GetHeight() / 2);
+
+			float modifyWidth = originAnchor.mX - sc->GetBaseTexture()->GetWidth() / 2;
+			float modifyHeight = originAnchor.mY - sc->GetBaseTexture()->GetHeight() / 2;
+
+			modifyWidth *= (size.mX * scale.mX);
+			modifyHeight *= (size.mY * scale.mY);
+
+			SVector2D curPos = tr->GetPos();
+			curPos.mX -= modifyWidth;
+			curPos.mY -= modifyHeight;
+			tr->SetPos(curPos);
+
+			return;
+		}
+
+		if (0.1f * mHPRegeneration * mHPRegenTime > 1.0f) {
+			IncreaseHP(1.0f);
+			mHPRegenTime = 0.0f;
+			CEffectMgr::ShowEffectText(GetOwner()->GetComponent<CTransform>()->GetPos(), std::to_wstring((int)1.0f), Gdiplus::Color::LimeGreen);
+		}
+
+		if (!mCanCollideEnemy) {
+			mGracePeriod -= tDeltaTime;
+			if (mGracePeriod <= 0) {
+				mCanCollideEnemy = true;
+				mGracePeriod = 0.2f;
+			}
 		}
 	}
 
@@ -184,6 +228,21 @@ void CPlayerScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther) {
 			}
 		}
 	}
+
+	if (tOther->GetOwner()->GetLayerType() == eLayerType::Material) {
+		this->ChangeMoney(tOther->GetOwner()->GetComponent<CMaterialScript>()->GetMoney() * CMonsterSpawnMgr::GetMoneyMultiple());
+		this->IncreasedExp(tOther->GetOwner()->GetComponent<CMaterialScript>()->GetExp() * CMonsterSpawnMgr::GetExpMultiple());
+
+		if (this->mExp >= this->mNeedLevelUpExp) {
+			this->mExp -= this->mNeedLevelUpExp;
+			this->IncreaseLevel();
+			this->mCurStageLevelUpCount++;
+			this->IncreaseMaxHP(1);
+			this->mNeedLevelUpExp *= 1.2f;
+		}
+
+		ObjDestroy(tOther->GetOwner());
+	}
 }
 
 void CPlayerScript::OnCollisionStay(float tDeltaTime, CCollider* tOther) {
@@ -247,4 +306,68 @@ float CPlayerScript::DecreaseDamageBecauseArmor(float tDamage)
 	}
 
 	return damage;
+}
+
+void CPlayerScript::ResetStats()
+{
+	mHP = 10;
+	mMaxHP = 10;
+	mHPRegeneration = 0;
+
+	mDodge = 0;
+	mArmor = 0;
+	mBasicMoveSpeed = 450;
+	mSpeedPercent = 0;
+
+	mRange = 0;
+	mDamagePer = 0;
+	mCriticalChancePer = 0;
+	mMeleeDamage = 0;
+	mRangedDamage = 0;
+	mAttackSpeedPer = 0;
+
+	mLifeSteal = 0;
+
+	mLevel = 0;
+	mExp = 0.0f;
+	mNeedLevelUpExp = 20.0f;
+	mMoney = 0;
+
+	mStatGainModifiers.clear();
+}
+
+void CPlayerScript::Death(float tDeltaTime) {
+	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
+	if (tr->GetScale().mX <= 0.0f && tr->GetScale().mY <= 0.0f) return;
+
+	mDeadTimeTaken -= tDeltaTime;
+	
+	if (sr->GetTexture()->GetHBitmap(false) != nullptr || sr->GetTexture()->GetHBitmap(true) != nullptr) {
+		sr->SetGdiplusDraw(true);
+	}
+
+	float curRot = tr->GetRot();
+	float rotSpeed = 720.0f;
+
+	tr->SetRot(curRot + (rotSpeed * tDeltaTime));
+
+	float totalTime = 1.0f;
+	float ratio = mDeadTimeTaken / totalTime;
+	if (ratio < 0.0f) {
+		ratio = 0.0f;
+		GetOwner()->SetState(false);
+	}
+	tr->SetScale(SVector2D(ratio, ratio));
+}
+
+void CPlayerScript::Acquire()
+{
+	CTransform* plTr = GetOwner()->GetComponent<CTransform>();
+	for (auto& material : CSceneMgr::GetGameObjects(eLayerType::Material)) {
+		CTransform* materialTr = material->GetComponent<CTransform>();
+		if ((plTr->GetPos() - materialTr->GetPos()).LengthSq() <= 200.0f * 200.0f) {
+			material->GetComponent<CMaterialScript>()->SetStateFollow();
+		}
+	}
 }

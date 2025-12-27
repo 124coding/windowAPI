@@ -36,8 +36,7 @@ void CSettingScene::Render(HDC tHDC)
 void CSettingScene::OnEnter()
 {
 	CScene::OnEnter();
-	CUIMgr::Push(eUIType::ShopUI);
-	// CUIMgr::Push(eUIType::CharacterSelectUI);
+	CUIMgr::Push(eUIType::CharacterSelectUI);
 }
 
 void CSettingScene::OnExit()

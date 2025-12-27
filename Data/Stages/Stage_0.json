@@ -1,7 +1,8 @@
 {
     "DefaultModifiers":{
-        "HP_Multiplier": 1.0,
-        "Time" : 20.0
+        "Time" : 20.0,
+        "Exp_Multiplier" : 1.0,
+        "Money_Multiplier" : 1.0
     },
     "Events": [
         {"SpawnTiming": 1,

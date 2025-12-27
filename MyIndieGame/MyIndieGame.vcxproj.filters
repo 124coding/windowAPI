@@ -169,6 +169,15 @@
     <Filter Include="Scripts\Weapon\RangedWeapon\SMG">
       <UniqueIdentifier>{2c6dc82c-2483-49d4-b2b7-9f7f537b3ecd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scenes\Shop">
+      <UniqueIdentifier>{c32e6669-aeb3-448a-873d-2143452385ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Material">
+      <UniqueIdentifier>{bd90fad8-792e-4546-bd34-36aaa9d6e293}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Material">
+      <UniqueIdentifier>{d91a923c-4c9a-4ed0-942e-10e11fb8ff3a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -332,6 +341,15 @@
     </ClCompile>
     <ClCompile Include="CSMGScript.cpp">
       <Filter>Scripts\Weapon\RangedWeapon\SMG</Filter>
+    </ClCompile>
+    <ClCompile Include="CShopScene.cpp">
+      <Filter>Scenes\Shop</Filter>
+    </ClCompile>
+    <ClCompile Include="CMaterial.cpp">
+      <Filter>Objects\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="CMaterialScript.cpp">
+      <Filter>Scripts\Material</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -499,6 +517,15 @@
     </ClInclude>
     <ClInclude Include="CSMGScript.h">
       <Filter>Scripts\Weapon\RangedWeapon\SMG</Filter>
+    </ClInclude>
+    <ClInclude Include="CShopScene.h">
+      <Filter>Scenes\Shop</Filter>
+    </ClInclude>
+    <ClInclude Include="CMaterial.h">
+      <Filter>Objects\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="CMaterialScript.h">
+      <Filter>Scripts\Material</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
