@@ -45,7 +45,9 @@ private:
 	static CPlayer* mPlayer;
 	static int mStageNum;
 
+	bool mStatUpgrading = false;
+
 	GameObject* mBakedMap;
 
-	float mWaitTime = 3.0f;
+	float mWaitTime = 2.0f;
 };

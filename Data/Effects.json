@@ -28,12 +28,12 @@
         {
             "E_ID" : "E_006",
             "Name" : "Percent_Damage",
-            "Description" : "{0}% 데미지"
+            "Description" : "{0} % 데미지"
         },
         {
             "E_ID" : "E_007",
             "Name" : "Percent_Critical_Chance",
-            "Description" : "{0}% 치명타 확률"
+            "Description" : "{0} % 치명타 확률"
         },
         {
             "E_ID" : "E_008",
@@ -48,17 +48,17 @@
         {
             "E_ID" : "E_010",
             "Name" : "Percent_Attack_Speed",
-            "Description" : "{0}% 공격 속도"
+            "Description" : "{0} % 공격 속도"
         },
         {
             "E_ID" : "E_011",
             "Name" : "Speed",
-            "Description" : "{0}% 속도"
+            "Description" : "{0} % 속도"
         },
         {
             "E_ID" : "E_012",
             "Name" : "Life_Steal",
-            "Description" : "{0}% 생명 훔침"
+            "Description" : "{0} % 생명 훔침"
         },
         {
             "E_ID" : "E_013",

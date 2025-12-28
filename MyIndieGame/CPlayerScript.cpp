@@ -249,7 +249,7 @@ void CPlayerScript::OnCollisionStay(float tDeltaTime, CCollider* tOther) {
 
 	if (mCanCollideEnemy) {
 		mCanCollideEnemy = false;
-		int rand = std::rand() % 100;
+		int rand = std::rand() % 100 + 1;
 		if (rand > mDodge) {
 			if (tOther->GetOwner()->GetLayerType() == eLayerType::Enemy) {
 				GameObject* enemy = tOther->GetOwner();

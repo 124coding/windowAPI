@@ -270,6 +270,10 @@ public:
 		this->mCurStageLevelUpCount = 0;
 	}
 
+	void MinusCurStage() {
+		this->mCurStageLevelUpCount--;
+	}
+
 	int GetCurStageLevelUpCount() {
 		return this->mCurStageLevelUpCount;
 	}

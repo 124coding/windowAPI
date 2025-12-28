@@ -9,6 +9,7 @@
 #include "CPlaySceneUI.h"
 #include "CShopUI.h"
 #include "CEndingUI.h"
+#include "CLevelUpUI.h"
 
 #include "winMacro.h"
 
@@ -116,6 +117,8 @@ CUIBase* CUIMgr::CreateUI(eUIType tType)
 		return new CShopUI();
 	case eUIType::EndingSceneUI:
 		return new CEndingUI();
+	case eUIType::LevelUpUI:
+		return new CLevelUpUI();
 	}
 	return nullptr;
 }
@@ -224,5 +227,13 @@ void CUIMgr::CheckMouseHover()
 		}
 
 		mPrevHoverUI = pTargetUI;
+	}
+}
+
+void CUIMgr::NotifyUIDead(CUIBase* tDeadUI)
+{
+	if (mPrevHoverUI == tDeadUI)
+	{
+		mPrevHoverUI = nullptr;
 	}
 }

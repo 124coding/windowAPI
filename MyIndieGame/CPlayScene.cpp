@@ -184,6 +184,8 @@ void CPlayScene::OnUpdate(float tDeltaTime)
 	CScene::OnUpdate(tDeltaTime);
 	CMonsterSpawnMgr::MonsterSpawnEvent(mPlayer);
 
+	if (mStatUpgrading) return;
+
 	// (WaitTime 어떻게 굴릴 지랑 체력 없을 때랑 시간 다 되었을 때에 대해서)수정 필요
 	if (mPlayer->GetComponent<CPlayerScript>()->GetHP() <= 0) {
 		if (CSceneMgr::GetGameObjects(eLayerType::Enemy).size() > 0) {
@@ -192,7 +194,7 @@ void CPlayScene::OnUpdate(float tDeltaTime)
 			}
 		}
 		else if (mWaitTime <= 0.0f) {
-			mWaitTime = 3.0f;
+			mWaitTime = 2.0f;
 			GameEnd();
 		}
 
@@ -209,12 +211,18 @@ void CPlayScene::OnUpdate(float tDeltaTime)
 				}
 			}
 			else if (mWaitTime <= 0.0f) {
-				mWaitTime = 3.0f;
+				mWaitTime = 2.0f;
 				if (mStageNum == 4) {
 					GameEnd();
 					return;
 				}
-				StagePass();
+				if (mPlayer->GetComponent<CPlayerScript>()->GetCurStageLevelUpCount() > 0) {
+					CUIMgr::Push(eUIType::LevelUpUI);
+					mStatUpgrading = true;
+				}
+				else {
+					StagePass();
+				}
 			}
 
 			mWaitTime -= tDeltaTime;
@@ -238,6 +246,7 @@ void CPlayScene::Render(HDC tHDC)
 void CPlayScene::OnEnter()
 {
 	// LoadBakedMap(L"..\\resources\\Maps\\Here");
+	mStatUpgrading = false;
 	RandomBakedMap();
 
 	CCollisionMgr::CollisionLayerCheck(eLayerType::Player, eLayerType::Enemy, true);
@@ -313,8 +322,14 @@ void CPlayScene::OnExit()
 	}
 
 	mStageNum++;
+
+	for (auto& material : CSceneMgr::GetGameObjects(eLayerType::Material)) {
+		ObjDestroy(material);
+	}
+
 	CMonsterSpawnMgr::DestroyStageSpawnEvents();
 	CUIMgr::Pop(eUIType::PlaySceneUI);
+	CUIMgr::Pop(eUIType::LevelUpUI);
 }
 
 void CPlayScene::StagePass()

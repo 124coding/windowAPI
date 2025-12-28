@@ -2,6 +2,9 @@
 
 #include "CUIBase.h"
 
+#include "CDataMgr.h"
+
+class CUIPanel;
 class CUIText;
 class CUIButton;
 class CUIImg;
@@ -21,7 +24,17 @@ public:
 	virtual void Render(HDC tHDC) override;
 	virtual void UIClear() override;
 
+public:
+	std::pair<std::wstring, CUIPanel*> MakeStatUpPanel(float tX, float tY, int tStageNum);
+	std::pair<int, CDataMgr::SUpgrades> ChooseRandomUpgradeByStageNum(int tStageNum);
+	void ResetLevelUpPanels(int tStageNum);
+
 private:
+	CUIPanel* mLevelUpMainPanel = nullptr;
+	std::vector<std::pair<std::wstring, CUIPanel*>> mStatUpPanels;
+
+	CUIPanel* mStatPanel = nullptr;
+
 	// 초기화 버튼
 	CUIButton* mResetButton = nullptr;
 	CUIText* mResetTex = nullptr;

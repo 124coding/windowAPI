@@ -3,6 +3,7 @@
 #include "CUIBase.h"
 
 class CUIText;
+class CUIPanel;
 
 class CPlaySceneUI : public CUIBase
 {
@@ -19,8 +20,15 @@ public:
 	virtual void Render(HDC tHDC) override;
 	virtual void UIClear() override;
 
+public:
+	CUIPanel* MakeUpgradeCheckPanel();
+
 private:
 	CUIText* mMoneyTex = nullptr;
 	CUIText* mStageNumTex = nullptr;
 	CUIText* mTimeTex = nullptr;
+
+	int mCurCheckLevel = 0;
+
+	std::vector<CUIPanel*> mUpgradeCheckPanels;
 };

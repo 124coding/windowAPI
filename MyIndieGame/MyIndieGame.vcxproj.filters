@@ -178,6 +178,9 @@
     <Filter Include="Scripts\Material">
       <UniqueIdentifier>{d91a923c-4c9a-4ed0-942e-10e11fb8ff3a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI\LevelUp">
+      <UniqueIdentifier>{99a2815f-bd67-4894-9f12-e52e5e060225}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -350,6 +353,9 @@
     </ClCompile>
     <ClCompile Include="CMaterialScript.cpp">
       <Filter>Scripts\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelUpUI.cpp">
+      <Filter>UI\LevelUp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -526,6 +532,9 @@
     </ClInclude>
     <ClInclude Include="CMaterialScript.h">
       <Filter>Scripts\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevelUpUI.h">
+      <Filter>UI\LevelUp</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

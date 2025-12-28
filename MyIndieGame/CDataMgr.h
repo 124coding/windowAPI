@@ -95,6 +95,19 @@ public:
 		std::unordered_map<std::wstring, std::vector<SArg>> effects;
 	};
 
+	struct SUpgradeTier {
+		int tier = 0;
+		SArg arg;
+	};
+
+	struct SUpgrades {
+		std::wstring ID = L"";
+		std::wstring effectID = L"";
+		std::wstring texName = L"";
+		std::wstring name = L"";
+		std::array<SUpgradeTier, 4> tiers;
+	};
+
 	static void OnCreate();
 	static void OnDestroy();
 	static void OnUpdate(float tDeltaTime);
@@ -153,6 +166,9 @@ public:
 		return mItemDatas;
 	}
 
+	static const std::unordered_map<std::wstring, SUpgrades>& GetUpgradeDatas() {
+		return mUpgradeDatas;
+	}
 	static const std::vector<SWeapon>& GetWeaponList() {
 		return mWeaponList;
 	}
@@ -180,6 +196,7 @@ private:
 	static std::unordered_map<std::wstring, SCharacter> mCharacterDatas;
 	static std::unordered_map<std::wstring, SEffect> mEffectDatas;
 	static std::unordered_map<std::wstring, SItem> mItemDatas;
+	static std::unordered_map<std::wstring, SUpgrades> mUpgradeDatas;
 	static std::vector<SWeapon> mWeaponList;
 	static std::vector<std::vector<SItem>> mItemClassificationByTier;
 	

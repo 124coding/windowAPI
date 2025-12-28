@@ -45,7 +45,7 @@ void CTitleSceneUI::OnCreate()
 	menuPanel->AddChild(startButton);
 
 
-	CUIButton* optionButton = new CUIButton(SVector2D(50.0f, startButton->GetHeight() + 10.0f), menuPanel->GetWidth() / 3, 45.0f);
+	/*CUIButton* optionButton = new CUIButton(SVector2D(50.0f, startButton->GetHeight() + 10.0f), menuPanel->GetWidth() / 3, 45.0f);
 
 	optionButton->SetBackColor(Gdiplus::Color::Black);
 	optionButton->SetCornerRadius(10.0f);
@@ -69,9 +69,9 @@ void CTitleSceneUI::OnCreate()
 	optionButton->SetEventClick([=]() {
 		});
 
-	optionButton->AddChild(optionButtonTex);
+	optionButton->AddChild(optionButtonTex);*/
 
-	menuPanel->AddChild(optionButton);
+	// menuPanel->AddChild(optionButton);
 
 
 

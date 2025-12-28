@@ -16,6 +16,7 @@ std::unordered_map<std::wstring, CDataMgr::SWeapon> CDataMgr::mWeaponDatas;
 std::unordered_map<std::wstring, CDataMgr::SCharacter> CDataMgr::mCharacterDatas;
 std::unordered_map<std::wstring, CDataMgr::SEffect> CDataMgr::mEffectDatas;
 std::unordered_map<std::wstring, CDataMgr::SItem> CDataMgr::mItemDatas;
+std::unordered_map<std::wstring, CDataMgr::SUpgrades> CDataMgr::mUpgradeDatas;
 std::vector<CDataMgr::SWeapon> CDataMgr::mWeaponList;
 std::vector<std::vector<CDataMgr::SItem>> CDataMgr::mItemClassificationByTier = std::vector<std::vector<CDataMgr::SItem>>(4);
 
@@ -61,6 +62,7 @@ void CDataMgr::LoadDatas() {
 	json characterDatas;
 	json effectDatas;
 	json itemDatas;
+	json upgradeDatas;
 
 	std::ifstream monsterFile("../Data/MonsterStats.json", std::ios::in);
 	monsterFile >> monsterStats;
@@ -234,6 +236,34 @@ void CDataMgr::LoadDatas() {
 
 		mItemDatas.insert({ item.ID, item });
 		mItemClassificationByTier[item.tier - 1].push_back(item);
+	}
+
+	std::ifstream upgradeFile("../Data/Upgrades.json", std::ios::in);
+	upgradeFile >> upgradeDatas;
+
+	for (auto& upgradeData : upgradeDatas["Upgrades"]) {
+		SUpgrades upgrade;
+
+		upgrade.ID = ToWString(upgradeData["ID"]);
+		upgrade.effectID = ToWString(upgradeData["Effect_ID"]);
+		upgrade.texName = ToWString(upgradeData["TexName"]);
+		upgrade.name = ToWString(upgradeData["Name"]);
+
+		int i = 0;
+		for (auto& tier : upgradeData["Tiers"]) {
+			SUpgradeTier upgradeTier;
+			upgradeTier.tier = tier["Tier"];
+
+			SArg arg;
+			arg.value = ToWString(tier["Arg"]["Value"]);
+			arg.color = ToWString(tier["Arg"]["Color"]);
+
+			upgradeTier.arg = arg;
+
+			upgrade.tiers[i++] = upgradeTier;
+		}
+
+		mUpgradeDatas.insert({ upgrade.ID, upgrade });
 	}
 }
 

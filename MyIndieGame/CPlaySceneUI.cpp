@@ -20,9 +20,6 @@ void CPlaySceneUI::OnCreate()
 	SetHeight(windowHeight);
 
 
-
-
-
 	CUIPanel* hudPanel = new CUIPanel(SVector2D(20.0f, 20.0f), 330.0f, 140.0f);
 	this->AddChild(hudPanel);
 
@@ -121,6 +118,18 @@ void CPlaySceneUI::Active()
 
 void CPlaySceneUI::InActive()
 {
+	for (int i = 0; i < mUpgradeCheckPanels.size(); ++i)
+	{
+		if (mUpgradeCheckPanels[i] != nullptr)
+		{
+			mUpgradeCheckPanels[i]->GetParent()->RemoveChild(mUpgradeCheckPanels[i]);
+			mUpgradeCheckPanels[i]->OnDestroy();
+			SAFE_DELETE(mUpgradeCheckPanels[i]);
+		}
+	}
+
+	mUpgradeCheckPanels.clear();
+
 	CUIBase::InActive();
 }
 
@@ -134,6 +143,19 @@ void CPlaySceneUI::OnUpdate(float tDeltaTime)
 	mMoneyTex->SetText(std::to_wstring(CPlayScene::GetPlayer()->GetComponent<CPlayerScript>()->GetMoney()));
 	mStageNumTex->SetText(std::to_wstring(CPlayScene::GetStageNum() + 1));
 	mTimeTex->SetText(std::to_wstring((int)CMonsterSpawnMgr::GetTime()));
+
+	if (mCurCheckLevel < CPlayScene::GetPlayer()->GetComponent<CPlayerScript>()->GetLevel()) {
+		mCurCheckLevel++;
+		MakeUpgradeCheckPanel();
+	}
+
+	int x = this->GetWidth() - 75.0f;
+
+	for (int i = 0; i < mUpgradeCheckPanels.size(); i++) {
+		mUpgradeCheckPanels[i]->SetPos(SVector2D(x, 0.0f));
+		x -= 75.0f;
+	}
+
 	CUIBase::OnUpdate(tDeltaTime);
 }
 
@@ -150,4 +172,17 @@ void CPlaySceneUI::Render(HDC tHDC)
 void CPlaySceneUI::UIClear()
 {
 	CUIBase::UIClear();
+}
+
+CUIPanel* CPlaySceneUI::MakeUpgradeCheckPanel()
+{
+	CUIPanel* upgradeImgPanel = new CUIPanel(SVector2D(), 75.0f, 75.0f);
+	this->AddChild(upgradeImgPanel);
+	mUpgradeCheckPanels.push_back(upgradeImgPanel);
+
+	CUIImg* upgradeImg = new CUIImg(SVector2D(), 75.0f, 75.0f, CResourceMgr::Find<CTexture>(L"UpgradeIcon"));
+	upgradeImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
+	upgradeImgPanel->AddChild(upgradeImg);
+
+	return upgradeImgPanel;
 }

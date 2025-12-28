@@ -1,0 +1,305 @@
+{
+    "Upgrades" : [
+        {
+            "ID" : "U_001",
+            "Effect_ID" : "E_001",
+            "TexName" : "심장",
+            "Name" : "최대 HP",
+            "Tiers" :[
+                {
+                    "Tier" : 1,
+                    "Arg": {"Value" : "3", "Color" : "#00FF00"}
+
+                },
+                {
+                    "Tier" : 2,
+                    "Arg": {"Value" : "6", "Color" : "#00FF00"}
+
+                },
+                {
+                    "Tier" : 3,
+                    "Arg": {"Value" : "9", "Color" : "#00FF00"}
+
+                },
+                {
+                    "Tier" : 4,
+                    "Arg": {"Value" : "12", "Color" : "#00FF00"}
+
+                }
+            ]
+        },
+        {
+            "ID" : "U_002",
+            "Effect_ID" : "E_002",
+            "TexName" : "폐",
+            "Name" : "HP 재생",
+            "Tiers" :[
+                {
+                    "Tier" : 1,
+                    "Arg": {"Value" : "2", "Color" : "#00FF00"}
+
+                },
+                {
+                    "Tier" : 2,
+                    "Arg": {"Value" : "3", "Color" : "#00FF00"}
+
+                },
+                {
+                    "Tier" : 3,
+                    "Arg": {"Value" : "4", "Color" : "#00FF00"}
+
+                },
+                {
+                    "Tier" : 4,
+                    "Arg": {"Value" : "5", "Color" : "#00FF00"}
+
+                }
+            ]
+        },
+        {
+            "ID" : "U_003",
+            "Effect_ID" : "E_003",
+            "TexName" : "이빨",
+            "Name" : "% 회피",
+            "Tiers" :[
+                {
+                    "Tier" : 1,
+                    "Arg": {"Value" : "3", "Color" : "#00FF00"}
+
+                },
+                {
+                    "Tier" : 2,
+                    "Arg": {"Value" : "6", "Color" : "#00FF00"}
+
+                },
+                {
+                    "Tier" : 3,
+                    "Arg": {"Value" : "9", "Color" : "#00FF00"}
+
+                },
+                {
+                    "Tier" : 4,
+                    "Arg": {"Value" : "12", "Color" : "#00FF00"}
+
+                }
+            ]
+        },
+        {
+            "ID" : "U_004",
+            "Effect_ID" : "E_004",
+            "TexName" : "가슴",
+            "Name" : "방어구",
+            "Tiers" :[
+                {
+                    "Tier" : 1,
+                    "Arg": {"Value" : "1", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 2,
+                    "Arg": {"Value" : "2", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 3,
+                    "Arg": {"Value" : "3", "Color" : "#00FF00"}
+
+                },
+                {
+                    "Tier" : 4,
+                    "Arg": {"Value" : "4", "Color" : "#00FF00"}
+                }
+            ]
+        },
+        {
+            "ID" : "U_005",
+            "Effect_ID" : "E_005",
+            "TexName" : "눈",
+            "Name" : "범위",
+            "Tiers" :[
+                {
+                    "Tier" : 1,
+                    "Arg": {"Value" : "15", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 2,
+                    "Arg": {"Value" : "30", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 3,
+                    "Arg": {"Value" : "45", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 4,
+                    "Arg": {"Value" : "60", "Color" : "#00FF00"}
+                }
+            ]
+        },
+        {
+            "ID" : "U_006",
+            "Effect_ID" : "E_006",
+            "TexName" : "삼두",
+            "Name" : "% 데미지",
+            "Tiers" :[
+                {
+                    "Tier" : 1,
+                    "Arg": {"Value" : "5", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 2,
+                    "Arg": {"Value" : "8", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 3,
+                    "Arg": {"Value" : "12", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 4,
+                    "Arg": {"Value" : "16", "Color" : "#00FF00"}
+                }
+            ]
+        },
+        {
+            "ID" : "U_007",
+            "Effect_ID" : "E_007",
+            "TexName" : "손가락",
+            "Name" : "% 치명타 확률",
+            "Tiers" :[
+                {
+                    "Tier" : 1,
+                    "Arg": {"Value" : "3", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 2,
+                    "Arg": {"Value" : "5", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 3,
+                    "Arg": {"Value" : "7", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 4,
+                    "Arg": {"Value" : "9", "Color" : "#00FF00"}
+                }
+            ]
+        },
+        {
+            "ID" : "U_008",
+            "Effect_ID" : "E_008",
+            "TexName" : "어깨",
+            "Name" : "원거리 데미지",
+            "Tiers" :[
+                {
+                    "Tier" : 1,
+                    "Arg": {"Value" : "1", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 2,
+                    "Arg": {"Value" : "2", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 3,
+                    "Arg": {"Value" : "3", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 4,
+                    "Arg": {"Value" : "4", "Color" : "#00FF00"}
+                }
+            ]
+        },
+        {
+            "ID" : "U_009",
+            "Effect_ID" : "E_009",
+            "TexName" : "전완근",
+            "Name" : "근거리 데미지",
+            "Tiers" :[
+                {
+                    "Tier" : 1,
+                    "Arg": {"Value" : "2", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 2,
+                    "Arg": {"Value" : "4", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 3,
+                    "Arg": {"Value" : "6", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 4,
+                    "Arg": {"Value" : "8", "Color" : "#00FF00"}
+                }
+            ]
+        },
+        {
+            "ID" : "U_010",
+            "Effect_ID" : "E_010",
+            "TexName" : "반사 신경",
+            "Name" : "% 공격 속도",
+            "Tiers" : [
+                {
+                    "Tier" : 1,
+                    "Arg": {"Value" : "5", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 2,
+                    "Arg": {"Value" : "10", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 3,
+                    "Arg": {"Value" : "15", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 4,
+                    "Arg": {"Value" : "20", "Color" : "#00FF00"}
+                }
+            ]
+        },
+        {
+            "ID" : "U_011",
+            "Effect_ID" : "E_011",
+            "TexName" : "다리",
+            "Name" : "% 속도",
+            "Tiers" : [
+                {
+                    "Tier" : 1,
+                    "Arg": {"Value" : "3", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 2,
+                    "Arg": {"Value" : "6", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 3,
+                    "Arg": {"Value" : "9", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 4,
+                    "Arg": {"Value" : "12", "Color" : "#00FF00"}
+                }
+            ]
+        },
+        {
+            "ID" : "U_012",
+            "Effect_ID" : "E_012",
+            "TexName" : "이빨",
+            "Name" : "% 생명 훔침",
+            "Tiers" : [
+                {
+                    "Tier" : 1,
+                     "Arg": {"Value" : "1", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 2,
+                    "Arg": {"Value" : "2", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 3,
+                     "Arg": {"Value" : "3", "Color" : "#00FF00"}
+                },
+                {
+                    "Tier" : 4,
+                     "Arg": {"Value" : "4", "Color" : "#00FF00"}
+                }
+            ]
+        }
+    ]
+}

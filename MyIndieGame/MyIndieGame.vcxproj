@@ -167,6 +167,7 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClCompile Include="CFloorScript.cpp" />
     <ClCompile Include="CFMOD.cpp" />
     <ClCompile Include="CItemMgr.cpp" />
+    <ClCompile Include="CLevelUpUI.cpp" />
     <ClCompile Include="CMaterial.cpp" />
     <ClCompile Include="CMaterialScript.cpp" />
     <ClCompile Include="CMedicalGunScript.cpp" />
@@ -226,6 +227,7 @@ copy "$(SolutionDir)\External\Library\FMOD\Release\fmodstudio.dll" "$(SolutionDi
     <ClInclude Include="CFloorScript.h" />
     <ClInclude Include="CFMOD.h" />
     <ClInclude Include="CItemMgr.h" />
+    <ClInclude Include="CLevelUpUI.h" />
     <ClInclude Include="CMaterial.h" />
     <ClInclude Include="CMaterialScript.h" />
     <ClInclude Include="CMedicalGunScript.h" />
