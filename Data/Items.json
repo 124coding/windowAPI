@@ -850,7 +850,7 @@
         {
             "I_ID" : "I_035",
             "Name" : "유독한 토닉",
-            "Tier" : 1,
+            "Tier" : 3,
             "Pos" : "None",
             "Base_Price" : 80,
             "Effects" : [

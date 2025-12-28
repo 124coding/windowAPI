@@ -59,7 +59,7 @@
         {
             "ID" : "U_003",
             "Effect_ID" : "E_003",
-            "TexName" : "이빨",
+            "TexName" : "등",
             "Name" : "% 회피",
             "Tiers" :[
                 {

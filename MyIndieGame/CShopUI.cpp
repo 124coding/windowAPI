@@ -667,7 +667,7 @@ std::pair<CUIPanel*, bool> CShopUI::MakeGoods(int tIdx, float tWidth, float tHei
 
 		descriptionGoodsTex->SetText(weaponDiscription);
 
-		cost += curWeapon.second.tier[curWeapon.first].basePrice * (1.0f + curStage * 0.2f - 0.2f);
+		cost += curWeapon.second.tier[curWeapon.first - 1].basePrice * (1.0f + curStage * 0.2f - 0.2f);
 		buyCost->SetText(std::to_wstring(cost));
 	}
 

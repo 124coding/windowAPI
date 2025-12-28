@@ -272,7 +272,7 @@ std::pair<std::wstring, CUIPanel*> CLevelUpUI::MakeStatUpPanel(float tX, float t
 
 	statUpPanel->AddChild(statUpImgPanel);
 
-	CUIImg* statUpImg = new CUIImg(SVector2D(), statUpImgPanel->GetWidth(), statUpImgPanel->GetHeight() /*여기 채워야 됨 nullptr*/);
+	CUIImg* statUpImg = new CUIImg(SVector2D(), statUpImgPanel->GetWidth(), statUpImgPanel->GetHeight(), CResourceMgr::Find<CTexture>(curStat.second.texName));
 	statUpImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
 
 	statUpImgPanel->AddChild(statUpImg);

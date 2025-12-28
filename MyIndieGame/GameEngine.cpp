@@ -371,6 +371,18 @@ void GameEngine::LoadResources()
 
 	// upgrades
 	CResourceMgr::Load<CTexture>(L"UpgradeIcon", L"../resources/Items/Upgrades/upgrade_icon.png");
+	CResourceMgr::Load<CTexture>(L"반사 신경", L"../resources/Items/Upgrades/attack_speed.png");
+	CResourceMgr::Load<CTexture>(L"손가락", L"../resources/Items/Upgrades/crit_chance.png");
+	CResourceMgr::Load<CTexture>(L"등", L"../resources/Items/Upgrades/dodge.png");
+	CResourceMgr::Load<CTexture>(L"가슴", L"../resources/Items/Upgrades/flat_dmg_reduction.png");
+	CResourceMgr::Load<CTexture>(L"심장", L"../resources/Items/Upgrades/health.png");
+	CResourceMgr::Load<CTexture>(L"폐", L"../resources/Items/Upgrades/health_regen.png");
+	CResourceMgr::Load<CTexture>(L"이빨", L"../resources/Items/Upgrades/lifesteal.png");
+	CResourceMgr::Load<CTexture>(L"전완근", L"../resources/Items/Upgrades/melee_dmg.png");
+	CResourceMgr::Load<CTexture>(L"삼두", L"../resources/Items/Upgrades/percent_dmg.png");
+	CResourceMgr::Load<CTexture>(L"눈", L"../resources/Items/Upgrades/range.png");
+	CResourceMgr::Load<CTexture>(L"어깨", L"../resources/Items/Upgrades/ranged_dmg.png");
+	CResourceMgr::Load<CTexture>(L"다리", L"../resources/Items/Upgrades/speed.png");
 
 
 	// UI
