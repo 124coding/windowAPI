@@ -48,7 +48,7 @@ public:
 		mExp(0.0f),
 		mNeedLevelUpExp(20.0f),
 		mCurStageLevelUpCount(0),
-		mMoney(0) {}
+		mMoney(1000) {}
 	virtual ~CPlayerScript() {}
 
 	virtual CComponent* Clone() override {

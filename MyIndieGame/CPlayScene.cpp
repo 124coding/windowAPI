@@ -69,6 +69,7 @@ void CPlayScene::OnCreate()
 
 
 	mBakedMap = Instantiate<GameObject>(eLayerType::BackGround);
+	mBakedMap->AddComponent<CSpriteRenderer>();
 
 	mPlayer = Instantiate<CPlayer>(eLayerType::Player, SVector2D(mapWidth / 2, mapHeight / 2 + 55.0f));
 	// DontDestroyOnLoad(mPlayer);
@@ -404,7 +405,7 @@ void CPlayScene::RandomBakedMap()
 	std::wstring tileName = L"Tile" + std::to_wstring(randTile);
 	CTexture* randomMapTex = CResourceMgr::Find<CTexture>(tileName);
 
-	CSpriteRenderer* mBakedMapSr = mBakedMap->AddComponent<CSpriteRenderer>();
+	CSpriteRenderer* mBakedMapSr = mBakedMap->GetComponent<CSpriteRenderer>();
 	CTexture* mBakedMapImg = CTexture::Create(L"BakedBG", mapWidth, mapHeight);
 
 	mBakedMapSr->SetTexture(mBakedMapImg);

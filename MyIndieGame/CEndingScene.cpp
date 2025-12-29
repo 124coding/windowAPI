@@ -35,8 +35,9 @@ void CEndingScene::Render(HDC tHDC)
 
 void CEndingScene::OnEnter()
 {
-	CUIMgr::Push(eUIType::EndingSceneUI);
 	CScene::OnEnter();
+	CUIMgr::Push(eUIType::EndingSceneUI);
+	CUIMgr::ClearUI(eUIType::PlaySceneUI);
 }
 
 void CEndingScene::OnExit()

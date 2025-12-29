@@ -230,10 +230,7 @@ void CUIMgr::CheckMouseHover()
 	}
 }
 
-void CUIMgr::NotifyUIDead(CUIBase* tDeadUI)
+void CUIMgr::CurHoverNull()
 {
-	if (mPrevHoverUI == tDeadUI)
-	{
-		mPrevHoverUI = nullptr;
-	}
+	mPrevHoverUI = nullptr;
 }

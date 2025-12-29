@@ -299,8 +299,6 @@ void CEndingUI::OnCreate()
 		}
 
 		CPlayScene::ResetStageNum();
-
-		CUIMgr::ClearUI(eUIType::PlaySceneUI);
 		CSceneMgr::LoadScene(L"PlayScene");
 		});
 
@@ -336,8 +334,6 @@ void CEndingUI::OnCreate()
 		plSc->SetStartWeaponID(L"");
 
 		CPlayScene::ResetStageNum();
-
-		CUIMgr::ClearUI(eUIType::PlaySceneUI);
 		CSceneMgr::LoadScene(L"SettingScene");
 		});
 
@@ -374,7 +370,6 @@ void CEndingUI::OnCreate()
 
 		CPlayScene::ResetStageNum();
 
-		CUIMgr::ClearUI(eUIType::PlaySceneUI);
 		CSceneMgr::LoadScene(L"TitleScene");
 
 		});

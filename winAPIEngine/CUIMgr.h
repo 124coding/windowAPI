@@ -31,7 +31,7 @@ public:
 	static void Pop(eUIType tType);
 
 	static void CheckMouseHover();
-	static void NotifyUIDead(CUIBase* tDeadUI);
+	static void CurHoverNull();
 
 	static CUIBase* FindUI(eUIType tType) {
 		return mUIs.find(tType)->second;

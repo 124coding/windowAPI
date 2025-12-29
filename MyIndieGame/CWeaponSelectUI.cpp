@@ -63,6 +63,7 @@ void CWeaponSelectUI::OnCreate()
 		this->InActive();
 		CUIMgr::FindUI(eUIType::CharacterSelectUI)->Active();
 		mCharDescriptionPanel->Reparent(CUIMgr::FindUI(eUIType::CharacterSelectUI), true);
+		mCharDescriptionPanel->SetPos(SVector2D(this->GetWidth() / 2 - mCharDescriptionPanel->GetWidth() / 2, this->GetHeight() / 7));
 		CUIMgr::ClearUI(eUIType::WeaponSelectUI);
 		});
 	this->AddChild(backButton);

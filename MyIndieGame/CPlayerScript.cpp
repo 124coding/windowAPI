@@ -64,10 +64,8 @@ void CPlayerScript::OnUpdate(float tDeltaTime)
 			}
 			mState = eState::Dead;
 
-			CCollider* cl = GetOwner()->GetComponent<CCollider>();
 			CTransform* tr = GetOwner()->GetComponent<CTransform>();
 			CPlayerScript* sc = GetOwner()->GetComponent<CPlayerScript>();
-			cl->SetActivate(false);
 
 			tr->SetVelocity(SVector2D());
 
@@ -201,16 +199,14 @@ void CPlayerScript::Translate(CTransform* tr)
 }
 
 void CPlayerScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther) {
-	if (mCanCollideEnemy) {
+	if (mCanCollideEnemy && tOther->GetOwner()->GetLayerType() == eLayerType::Enemy) {
 		mCanCollideEnemy = false;
 		int rand = std::rand() % 100;
 
 		if (mDodge > mDodgeLimit) {
 			if (rand > mDodgeLimit) {
-				if (tOther->GetOwner()->GetLayerType() == eLayerType::Enemy) {
-					GameObject* enemy = tOther->GetOwner();
-					ButtDamageByEnemy(enemy);
-				}
+				GameObject* enemy = tOther->GetOwner();
+				ButtDamageByEnemy(enemy);
 			}
 			else {
 				CEffectMgr::ShowEffectText(GetOwner()->GetComponent<CTransform>()->GetPos(), L"회피", Gdiplus::Color::White);
@@ -218,10 +214,8 @@ void CPlayerScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther) {
 		}
 		else {
 			if (rand > mDodge) {
-				if (tOther->GetOwner()->GetLayerType() == eLayerType::Enemy) {
-					GameObject* enemy = tOther->GetOwner();
-					ButtDamageByEnemy(enemy);
-				}
+				GameObject* enemy = tOther->GetOwner();
+				ButtDamageByEnemy(enemy);
 			}
 			else {
 				CEffectMgr::ShowEffectText(GetOwner()->GetComponent<CTransform>()->GetPos(), L"회피", Gdiplus::Color::White);

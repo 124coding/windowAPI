@@ -209,6 +209,7 @@ void CShopUI::OnCreate()
 
 	// 플레이어 아이템 정보에서 가져옴
 	for (auto& item : *mPlItems) {
+
 		CUIPanel* itemPanel = MakeItemPanel(item.first, x, y);
 
 		CUIText* itemCountTex = new CUIText(SVector2D(), itemPanel->GetWidth(), itemPanel->GetHeight(), std::to_wstring(item.second));
@@ -223,9 +224,9 @@ void CShopUI::OnCreate()
 
 		x += itemPanel->GetWidth() + offset;
 
-		if (x > mHaveItemPanel->GetWidth()) {
+		if (x + itemPanel->GetWidth() > mHaveItemPanel->GetWidth()) {
 			x = 20.0f;
-			y += itemPanel->GetPos().mY + itemPanel->GetHeight() + offset;
+			y = itemPanel->GetPos().mY + itemPanel->GetHeight() + offset;
 		}
 	}
 
@@ -260,9 +261,9 @@ void CShopUI::OnCreate()
 		CUIButton* weaponButton = MakeWeaponButton(mPlWeapons, weapon, x, y);
 		x += weaponButton->GetWidth() + offset;
 
-		if (x > mHaveWeaponPanel->GetWidth()) {
+		if (x + weaponButton->GetWidth() > mHaveWeaponPanel->GetWidth()) {
 			x = 20.0f;
-			y = y + weaponButton->GetPos().mY + weaponButton->GetHeight() + offset;
+			y = weaponButton->GetPos().mY + weaponButton->GetHeight() + offset;
 		}
 	}
 
@@ -499,8 +500,8 @@ std::pair<CUIPanel*, bool> CShopUI::MakeGoods(int tIdx, float tWidth, float tHei
 
 	int cost = 0;
 
-	if (curStage != 0) {
-		cost += std::rand() % (10 * curStage) - std::rand() % (10 * curStage * 2);
+	if (curStage > 0) {
+		cost += std::rand() % (6 * curStage) - curStage * 3;
 	}
 
 	CUIText* buyCost = new CUIText(SVector2D(5.0f, -5.0f), 0.0f, 0.0f);
@@ -667,7 +668,7 @@ std::pair<CUIPanel*, bool> CShopUI::MakeGoods(int tIdx, float tWidth, float tHei
 
 		descriptionGoodsTex->SetText(weaponDiscription);
 
-		cost += curWeapon.second.tier[curWeapon.first - 1].basePrice * (1.0f + curStage * 0.2f - 0.2f);
+		cost += data.basePrice * (1.0f + curStage * 0.2f - 0.2f);
 		buyCost->SetText(std::to_wstring(cost));
 	}
 
@@ -694,6 +695,19 @@ std::pair<CUIPanel*, bool> CShopUI::MakeGoods(int tIdx, float tWidth, float tHei
 		});
 	buyButton->SetEventClick([=]() {
 		if (mPlSc->GetMoney() < cost) return;
+
+		if(curItem.pos == L"Mouth") {
+			mPlSc->SetMouthTexture(CResourceMgr::Find<CTexture>(curItem.name));
+		}
+		else if (curItem.pos == L"Eyes") {
+			mPlSc->SetEyesTexture(CResourceMgr::Find<CTexture>(curItem.name));
+		}
+		else if (curItem.pos == L"Hair") {
+			mPlSc->SetHairTexture(CResourceMgr::Find<CTexture>(curItem.name));
+		}
+		else if (curItem.pos == L"Body") {
+			mPlSc->SetClothTexture(CResourceMgr::Find<CTexture>(curItem.name));
+		}
 
 		if (curItem.ID != L"") {
 			for (auto effect : curItem.effects) {
@@ -870,7 +884,7 @@ CUIPanel* CShopUI::MakeItemPanel(std::wstring tItemID, float tX, float tY)
 	CUIImg* itemDescImg = new CUIImg(SVector2D(), itemImgPanel->GetWidth(), itemImgPanel->GetHeight(), CResourceMgr::Find<CTexture>(currentItem->second.name + L"Icon"));
 	itemDescImg->SetImageMode(CUIImg::eImageMode::KeepAspect);
 
-	itemDescPanel->AddChild(itemDescImg);
+	itemImgPanel->AddChild(itemDescImg);
 
 	CUIText* itemNameTex = new CUIText(SVector2D(itemImgPanel->GetPos().mX + itemImgPanel->GetWidth() + 10.0f, itemDescPanel->GetPos().mY), 100.0f, 25.0f, currentItem->second.name);
 	itemNameTex->SetFontSize(20.0f);
@@ -1387,10 +1401,6 @@ CUIButton* CShopUI::MakeWeaponButton(std::vector<CWeapon*>* tWeapons, CWeapon* t
 	return weaponButton;
 }
 
-void CShopUI::WeaponButtonAdd(int tIndex)
-{
-
-}
 
 void CShopUI::WeaponButtonRemove(int tIndex)
 {

@@ -40,7 +40,6 @@ private:
 	void WeaponButtonsReSetting(float tX, float tY, float tOffset, float tMax);
 	
 	CUIButton* MakeWeaponButton(std::vector<CWeapon*>* tWeapons, CWeapon* tWeapon, float tX, float tY);
-	void WeaponButtonAdd(int tIndex);
 	void WeaponButtonRemove(int tIndex);
 
 private:
