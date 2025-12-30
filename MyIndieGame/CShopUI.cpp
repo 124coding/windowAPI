@@ -153,7 +153,7 @@ void CShopUI::OnCreate()
 		float itemHeight = 4.0f * panelH / 5.0f;
 
 		for (int i = mGoods.size(); i < 4; i++) {
-			mGoods.push_back(MakeGoods(i, itemWidth, itemHeight));
+			mGoods.push_back(MakeGoods(i, itemWidth, itemHeight, CPlayScene::GetStageNum()));
 			goodsPanel->AddChild(mGoods[i].first);
 		}
 
@@ -179,7 +179,7 @@ void CShopUI::OnCreate()
 		float itemWidth = cellWidth - margin;       
 		float itemHeight = 4.0f * panelH / 5.0f;    
 
-		mGoods[i] = MakeGoods(i, itemWidth, itemHeight);
+		mGoods[i] = MakeGoods(i, itemWidth, itemHeight, CPlayScene::GetStageNum());
 
 		float xPos = (i * cellWidth) + (margin / 2.0f);
 		float yPos = 5.0f;
@@ -375,6 +375,57 @@ void CShopUI::OnCreate()
 		nextStageButton->SetBackColor(Gdiplus::Color::Black);
 		});
 	nextStageButton->SetEventClick([=]() {
+		std::vector<std::pair<CUIPanel*, bool>> lockedItems;
+		lockedItems.reserve(4);
+
+		for (int i = 0; i < 4; ++i)
+		{
+			if (mGoods[i].second == true) {
+				lockedItems.push_back(mGoods[i]);
+			}
+			else
+			{
+				if (mGoods[i].first != nullptr)
+				{
+					mGoods[i].first->GetParent()->RemoveChild(mGoods[i].first);
+					mGoods[i].first->OnDestroy();
+					SAFE_DELETE(mGoods[i].first);
+				}
+			}
+		}
+
+		mGoods.clear();
+
+		for (const auto& item : lockedItems)
+		{
+			mGoods.push_back(item);
+		}
+
+		int currentCount = (int)mGoods.size();
+
+		float panelW = goodsPanel->GetWidth();
+		float panelH = goodsPanel->GetHeight();
+		float margin = 30.0f;
+
+		float cellWidth = panelW / (float)4;
+		float itemWidth = cellWidth - margin;
+		float itemHeight = 4.0f * panelH / 5.0f;
+
+		for (int i = mGoods.size(); i < 4; i++) {
+			mGoods.push_back(MakeGoods(i, itemWidth, itemHeight, CPlayScene::GetStageNum() + 1));
+			goodsPanel->AddChild(mGoods[i].first);
+		}
+
+		for (int i = 0; i < 4; i++) {
+			CUIPanel* panel = mGoods[i].first;
+			if (panel == nullptr) continue;
+
+			float xPos = (i * cellWidth) + (margin / 2.0f);
+			float yPos = 5.0f;
+
+			mGoods[i].first->SetPos(SVector2D(xPos, yPos));
+		}
+
 		CSceneMgr::LoadScene(L"PlayScene");
 		});
 
@@ -454,12 +505,12 @@ void CShopUI::UIClear()
 	CUIBase::UIClear();
 }
 
-std::pair<CUIPanel*, bool> CShopUI::MakeGoods(int tIdx, float tWidth, float tHeight)
+std::pair<CUIPanel*, bool> CShopUI::MakeGoods(int tIdx, float tWidth, float tHeight, int tStageNum)
 {
 	int rand = std::rand() % 3;
 	// 아이템과 무기 중 랜덤하게
 
-	int curStage = CPlayScene::GetStageNum();
+	int curStage = tStageNum;
 
 	CUIPanel* goodsPanel = new CUIPanel(SVector2D(5.0f, 5.0f), tWidth, tHeight);
 	goodsPanel->SetBackColor(Gdiplus::Color::Black);
@@ -813,19 +864,13 @@ std::pair<CUIPanel*, bool> CShopUI::MakeGoods(int tIdx, float tWidth, float tHei
 		rockText->SetColor(Gdiplus::Color::Black);
 		});
 	rockButton->SetEventOutHover([=]() {
+		if (mGoods[tIdx].second) return;
 		rockButton->SetBackColor(Gdiplus::Color::Black);
 		rockText->SetColor(Gdiplus::Color::White);
 		});
 	rockButton->SetEventClick([=]() {
 		mGoods[tIdx].second = !mGoods[tIdx].second;
 		bool isLocked = mGoods[tIdx].second;
-
-		if (isLocked) {
-			rockImg->Active();
-		}
-		else {
-			rockImg->InActive();
-		}
 		});
 
 

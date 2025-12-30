@@ -34,7 +34,7 @@ public:
 	virtual void UIClear() override;
 
 private:
-	std::pair<CUIPanel*, bool> MakeGoods(int tIdx, float tWidth, float tHeight);
+	std::pair<CUIPanel*, bool> MakeGoods(int tIdx, float tWidth, float tHeight, int tStageNum);
 	CUIPanel* MakeItemPanel(std::wstring tItemID, float tX, float tY);
 	void ReSettingWeaponButton(CWeaponScript* tWpScript, CWeapon* tCurWp, CUIPanel* tParPanel, CUIButton* tWpButton, CUIText* tDescTex, CUIPanel* tWpImgPanel, CUIButton* tRecycleButton, CUIText* tRecycleTex);
 	void WeaponButtonsReSetting(float tX, float tY, float tOffset, float tMax);

@@ -42,5 +42,5 @@ void CShopScene::OnEnter()
 void CShopScene::OnExit()
 {
 	CScene::OnExit();
-	CUIMgr::ClearUI(eUIType::ShopUI);
+	CUIMgr::Pop(eUIType::ShopUI);
 }
