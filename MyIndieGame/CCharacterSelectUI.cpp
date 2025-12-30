@@ -48,6 +48,8 @@ void CCharacterSelectUI::OnCreate()
 		});
 
 	backButton->SetEventClick([=]() { 
+		CPlayScene::GetPlayer()->GetComponent<CTransform>()->SetPos(SVector2D(mapWidth / 2, mapHeight / 2 + 55.0f));
+
 		CSceneMgr::LoadScene(L"TitleScene");
 		});
 	this->AddChild(backButton);

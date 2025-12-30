@@ -192,9 +192,9 @@ void CEndingUI::OnCreate()
 		weaponsPanel->AddChild(weaponButton);
 		x += weaponButton->GetWidth() + offset;
 
-		if (x > weaponsPanel->GetWidth()) {
+		if (x + weaponButton->GetWidth() + offset > weaponsPanel->GetWidth()) {
 			x = 20.0f;
-			y += weaponButton->GetPos().mY + weaponButton->GetHeight() + offset;
+			y = weaponButton->GetPos().mY + weaponButton->GetHeight() + offset;
 		}
 	}
 
@@ -229,9 +229,9 @@ void CEndingUI::OnCreate()
 		itemsPanel->AddChild(itemPanel);
 		x += itemPanel->GetWidth() + offset;
 
-		if (x > itemsPanel->GetWidth()) {
+		if (x + itemPanel->GetWidth() + offset > itemsPanel->GetWidth()) {
 			x = 20.0f;
-			y += itemPanel->GetPos().mY + itemPanel->GetHeight() + offset;
+			y = itemPanel->GetPos().mY + itemPanel->GetHeight() + offset;
 		}
 	}
 

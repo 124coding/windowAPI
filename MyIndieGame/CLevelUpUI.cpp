@@ -348,6 +348,7 @@ std::pair<std::wstring, CUIPanel*> CLevelUpUI::MakeStatUpPanel(float tX, float t
 
 		plSc->MinusCurStage();
 		CUIMgr::CurHoverNull();
+		mResetCost = 1;
 
 		if (plSc->GetCurStageLevelUpCount() <= 0) {
 			CPlayScene::GetPlayer()->GetComponent<CTransform>()->SetPos(SVector2D(windowWidth / 2, windowHeight / 2 + 55.0f));
