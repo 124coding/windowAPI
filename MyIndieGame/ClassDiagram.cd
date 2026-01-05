@@ -1,0 +1,550 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CWeaponMgr" Collapsed="true">
+    <Position X="65.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIUBAAAAAIQQAAAgAAAAAAAAACAAAAIEABgAAAkAABA=</HashCode>
+      <FileName>CWeaponMgr.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CItemMgr" Collapsed="true">
+    <Position X="63.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAABAAAEAAQAAAAAAAAAAAAAACAQAgAAABQAAAFAABA=</HashCode>
+      <FileName>CItemMgr.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CDataMgr" Collapsed="true">
+    <Position X="109.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAERgACAEAQQAAIBABUAACBBACgAABAAwDAACAEkAAA=</HashCode>
+      <FileName>CDataMgr.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CMonsterSpawnMgr" Collapsed="true">
+    <Position X="109.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ISADAAAAgAQAIAAAAAAAAAAAgChgAgQBABAABAEEAAA=</HashCode>
+      <FileName>CMonsterSpawnMgr.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CEffectMgr" Collapsed="true">
+    <Position X="107.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAkBAAAAAAQAEAAAAAAAACAAACAAAAAAABAAAAEAAAA=</HashCode>
+      <FileName>CEffectMgr.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CEnemy" Collapsed="true">
+    <Position X="52" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAQAAAAAAAAACAAAADAAAAAAABAgAAEAAAA=</HashCode>
+      <FileName>CEnemy.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CBabyAlien" Collapsed="true">
+    <Position X="52" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAABAAAAAAQAAAAAAAAAAAAAACCAAAAAABAgAAEAAAA=</HashCode>
+      <FileName>CBabyAlien.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPlayer" Collapsed="true">
+    <Position X="60.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIABAAAAAAQAAAAAAAAAAAAAACAgAAAAABAgAAEAAAA=</HashCode>
+      <FileName>CPlayer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CWeapon" Collapsed="true">
+    <Position X="53.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAJEAAgAAQAAAAAAAAAgAAAACAAAABAABAgAAEAAAA=</HashCode>
+      <FileName>CWeapon.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CBullet" Collapsed="true">
+    <Position X="53.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAIAAAQAAAAAAAAAAAAAACAAAAAAABAgAAEAIAA=</HashCode>
+      <FileName>CBullet.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CEffect" Collapsed="true">
+    <Position X="56.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABBAAAoAIQABAAAAAABAAAEACAEAAAAABAgAAEQAAA=</HashCode>
+      <FileName>CEffect.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CAnimatedEffect" Collapsed="true">
+    <Position X="55.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAQABAAAAAGAAAAAACAAAAAAABAAAAEAAAA=</HashCode>
+      <FileName>CAnimatedEffect.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CEnemyHit" Collapsed="true">
+    <Position X="55.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAIQABAIAAAAAAAAAACAAAAAAABAAAAEAAAA=</HashCode>
+      <FileName>CEnemyHit.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CEffectText" Collapsed="true">
+    <Position X="57.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAABAAAAAAQABAAIAAAAAAACACAAAAAAABIggAEAAgA=</HashCode>
+      <FileName>CEffectText.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CMaterial" Collapsed="true">
+    <Position X="58.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgBAAAAAAQAAAAAAACAAAAAACAAAAAAABAgAAEAAAA=</HashCode>
+      <FileName>CMaterial.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CEndingScene" Collapsed="true">
+    <Position X="102.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAgAAAQAAAAAAAAAABAAACAQAAAAAJAAAAEAAAA=</HashCode>
+      <FileName>CEndingScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPlayScene" Collapsed="true">
+    <Position X="96" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAACCASACCABAAEAAACAECgQQAQAAJAAgAEAACA=</HashCode>
+      <FileName>CPlayScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSettingScene" Collapsed="true">
+    <Position X="100.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAABAAAQAAQAAAAAAAAAAAAAACAQAAAAAJAAAAEAAAA=</HashCode>
+      <FileName>CSettingScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTitleScene" Collapsed="true">
+    <Position X="93.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQBAAAAAAQAAAAACAAAAAAAACAQAAAAAJAAAAEAAAA=</HashCode>
+      <FileName>CTitleScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CToolScene" Collapsed="true">
+    <Position X="98.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAIRgIAREAQAAAAAAgAAgAAAACEQAAAQgJAAAQkIAAA=</HashCode>
+      <FileName>CToolScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CShopScene" Collapsed="true">
+    <Position X="105" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAEQAAAAAAAAAAAAAACIQAAAAAJAAAAEAAAA=</HashCode>
+      <FileName>CShopScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CEnemyScript" Collapsed="true">
+    <Position X="82" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IQARAMTADAwAAggAAIEBABAACSGAgAAvQJAEABEQAAI=</HashCode>
+      <FileName>CEnemyScript.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CBabyAlienScript" Collapsed="true">
+    <Position X="82" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAJAARAAAQAAAAAAAAAAAAAACAAAAAMABAEAAMAABA=</HashCode>
+      <FileName>CBabyAlienScript.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCameraScript" Collapsed="true">
+    <Position X="94.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgBAAAAAAQAAAAAAAIAAAAAACAAAAAAABCAAAEAABA=</HashCode>
+      <FileName>CCameraScript.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTitleBrotato" Collapsed="true">
+    <Position X="90.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAQAAAAAAAAAAAAAACAAAAAAABAAAAkAAhA=</HashCode>
+      <FileName>CTitleBrotato.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTitleObjectScript" Collapsed="true">
+    <Position X="97" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gABRAAAAAAQAAAABAAAAAFAAACAAAAAAABAAAAEgABA=</HashCode>
+      <FileName>CTitleObjectScript.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPlayerScript" Collapsed="true">
+    <Position X="101.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>UAhlRTZATpX0P9kGYwAwIZALOSHpkJFu8Vk/AAH0AZg=</HashCode>
+      <FileName>CPlayerScript.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CWeaponScript" Collapsed="true">
+    <Position X="92.25" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>u6QRAQaAiCwQQAkEgAAAEhAAIGEAIIAsAFpBgBEEABI=</HashCode>
+      <FileName>CWeaponScript.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CMeleeWeaponScript" Collapsed="true">
+    <Position X="95.5" Y="11.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAABAAQAAAQgAAAIAAAAAAAAACAAAAAMABQAAAUAABA=</HashCode>
+      <FileName>CMeleeWeaponScript.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CDaggerScript" Collapsed="true">
+    <Position X="91.25" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAIAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CDaggerScript.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSpearScript" Collapsed="true">
+    <Position X="93.5" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAIAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CSpearScript.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CFistScript" Collapsed="true">
+    <Position X="95.75" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAQ=</HashCode>
+      <FileName>CFistScript.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CClawScript" Collapsed="true">
+    <Position X="98" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAACAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CClawScript.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CScissorsScript" Collapsed="true">
+    <Position X="100.25" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>CScissorsScript.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CRangedWeaponScript" Collapsed="true">
+    <Position X="86.25" Y="11.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EAABgAQAAAQAAAAAAAAAAEAAACAAAAAMgBQAAAEAABE=</HashCode>
+      <FileName>CRangedWeaponScript.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CBulletScript" Collapsed="true">
+    <Position X="92.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EQIBAASAAAQAgAAAAAAAAAAAASAAAAAMABAAAAEACDA=</HashCode>
+      <FileName>CBulletScript.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPistolScript" Collapsed="true">
+    <Position X="84.25" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAIAAEAAAAA=</HashCode>
+      <FileName>CPistolScript.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CMedicalGunScript" Collapsed="true">
+    <Position X="86.5" Y="13" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>CMedicalGunScript.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSMGScript" Collapsed="true">
+    <Position X="89" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CSMGScript.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CMaterialScript" Collapsed="true">
+    <Position X="99.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAABAQQCCASAAAAAAAAAABAIACAAABAMABEAAAEAALA=</HashCode>
+      <FileName>CMaterialScript.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CUIEXPBar" Collapsed="true">
+    <Position X="39.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAABCAACAAQAQBAAAAAAAAAAACAAACAgBBAAAAEAAAA=</HashCode>
+      <FileName>CUIEXPBar.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CUIHPBar" Collapsed="true">
+    <Position X="42" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IABBCAACAAQAABAgAAAAAAAAACgAAgAgABAAAAEAAAA=</HashCode>
+      <FileName>CUIHPBar.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCharacterSelectUI" Collapsed="true">
+    <Position X="21.5" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>IAABWAAAAAQAAAAAAAAAAAgAACAAAAAgABAAAAEABAA=</HashCode>
+      <FileName>CCharacterSelectUI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CWeaponSelectUI" Collapsed="true">
+    <Position X="24" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAQBGAAAAAQAAAAAAAAAAAAAACAAAAggABAAAAEABAA=</HashCode>
+      <FileName>CWeaponSelectUI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTitleSceneUI" Collapsed="true">
+    <Position X="30.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAABCAAAAAQAAAAAAAAAAAAgACAAAAAgABAACAEAAAA=</HashCode>
+      <FileName>CTitleSceneUI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPlaySceneUI" Collapsed="true">
+    <Position X="26.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ICABCAYAAAQAAAAQQAAAAQABAiAEIAAgABQAAAFAAAE=</HashCode>
+      <FileName>CPlaySceneUI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CShopUI" Collapsed="true">
+    <Position X="33" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>/QARSAIAICQ0IIQASIACAQYRASBCAgAkABoBAFlECAA=</HashCode>
+      <FileName>CShopUI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CEndingUI" Collapsed="true">
+    <Position X="35.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAABCAKAAAQAAAAAAAAAAAAIACAAAAAgABgAAAEAAAA=</HashCode>
+      <FileName>CEndingUI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CLevelUpUI" Collapsed="true">
+    <Position X="28.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>OQERSAEAICQAIAAACICBAQgBACBBAgAgABCBAAkECAA=</HashCode>
+      <FileName>CLevelUpUI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CAudioListner" Collapsed="true">
+    <Position X="68" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAQAAAAEAAAAAAAAACAAAAAAAhAAAAEAABA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CAudioListner.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CAudioSource" Collapsed="true">
+    <Position X="72.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAACIQAACAAAAAAAAAAADAAAAABoRAAAAEAABA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CAudioSource.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCamera" Collapsed="true">
+    <Position X="77" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABBAAAACYAAABAAAAAAAAAQCAACAAAABAAABGAADI=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CCamera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CScript" Collapsed="true">
+    <Position X="85.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABBAQQAAAQAAAgBAAAAAAAAADAAAAAMABEAACEAABA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CScript.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CBoxCollider2D" Collapsed="true">
+    <Position X="81.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABABAAAAAAQAAAAAAAAAAAAAACAAAAAAABAAAAGAABA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CBoxCollider2D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCircleCollider2D" Collapsed="true">
+    <Position X="83.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAQAAAAAAAAAAAAAACACCAAAABAAAAEAAFA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CCircleCollider2D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCollider" Collapsed="true">
+    <Position X="82.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QIABEAQABAwAAAiAgAAIgBAAICAAAAAMwBoAAAEAABA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CCollider.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CAnimator" Collapsed="true">
+    <Position X="87.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAEQCAQQAEAAAAAAAgCAACBigAAAABEAAAUBBBA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CAnimator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CRigidbody" Collapsed="true">
+    <Position X="70.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAABAAAgAAQAgAgAABABAAAAACBAAAAAABAAEAUQABE=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CRigidbody.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTransform" Collapsed="true">
+    <Position X="74.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIADAAAEBAQAAAAAAAAAADgAADAACEAAIBgAAgEAAhA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CTransform.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSpriteRenderer" Collapsed="true">
+    <Position X="79.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAABCAEQQAABEAAAAAAAAACAQAAAAABAEAAEAgBA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CSpriteRenderer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTilemapRenderer" Collapsed="true">
+    <Position X="89.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAQAAANQAAEAAAAAACAAIAAAgBAAAAECABA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CTilemapRenderer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CComponent" Collapsed="true">
+    <Position X="85.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAIAIQAAEAAEAAAAFAAASAAAAEAABACAIEAABA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CComponent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CLayer" Collapsed="true">
+    <Position X="91.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABBAAAAAIQAQAAAAAAAACAAACAAQAAAABEAAAkEAAA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CLayer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CAudioClip" Collapsed="true">
+    <Position X="14.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAgAAAAAAAACAAABAAAACAACABAAAAoAQAQAAAIAA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CAudioClip.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTexture" Collapsed="true">
+    <Position X="19.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AYQCgACIEIEABQIAAAAKKJRYABQAAMCEAACIBEABABY=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CTexture.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CAnimation" Collapsed="true">
+    <Position X="17" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gQAAgAAAAAAABAhAAAgABAAAgAAQkAAAiBAEAAEAABA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CAnimation.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CResource" Collapsed="true">
+    <Position X="17" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAEAIABCAAAACIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CResource.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CUIHUD" Collapsed="true">
+    <Position X="40.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>oAABCBAAAAQAAAAAAAAAAAAAACAAAAAgABAAAAEAAAA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CUIHUD.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CUIText" Collapsed="true">
+    <Position X="44.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IEBBCAAAAIQEABAAAIAAAACCACGIACglUBgAABeAAww=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CUIText.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CUIImg" Collapsed="true">
+    <Position X="48.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAABiAECAAwAAAAAAAAAAAAAACAAAAAgABAIAAEAAAA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CUIImg.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CUIPanel" Collapsed="true">
+    <Position X="37.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAABCAAAAAQAAAAAAAAAAAAAACAAAAAgABAAAAEAABA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CUIPanel.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CUIButton" Collapsed="true">
+    <Position X="46.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IBABCAIAAAQAkAAAAACAAAAgACIAAABgAJEAAAEAAAA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CUIButton.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CUIBase" Collapsed="true">
+    <Position X="35" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IIRBCAAUSEQEFAAAEAsgABjBEDYAOwEoAhACDEUBCBY=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CUIBase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CAPIEngine" Collapsed="true">
+    <Position X="107.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgABAASACAYABBEBAFwQAAAAACAAAFQgATAgQAFAEAI=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CAPIEngine.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CEntity" Collapsed="true">
+    <Position X="67.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAgAQAAABAA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CEntity.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameObject" Collapsed="true">
+    <Position X="56.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AJIBBEAACAQIAGDAEgAIFAACACAAAAAkABAgAAsAgAA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\GameObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CScene" Collapsed="true">
+    <Position X="99.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABBAAAQAAQAQAAAAAAAAAAAACAQAAAABJEAAAEAAAg=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\CScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="SVector2D" Collapsed="true">
+    <Position X="107.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIABAAAkAAAAABACAAAAAAAABAgCAAAAQA=</HashCode>
+      <FileName>C:\Users\s7162\study\DirectX_Project\winAPIEngine\SVector2D.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>

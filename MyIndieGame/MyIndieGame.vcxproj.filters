@@ -16,9 +16,6 @@
     <Filter Include="Scenes">
       <UniqueIdentifier>{072388ff-d4ff-448b-8ab0-4b6ef76b6c54}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources">
-      <UniqueIdentifier>{30623cd1-44c2-4835-b85f-db48cfc2da39}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Objects">
       <UniqueIdentifier>{329e3485-f847-4156-b662-4c863bb7b867}</UniqueIdentifier>
     </Filter>
@@ -536,5 +533,8 @@
     <ClInclude Include="CLevelUpUI.h">
       <Filter>UI\LevelUp</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

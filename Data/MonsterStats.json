@@ -12,8 +12,8 @@
             "SizeY": 0.7,
             "CollisionSizeX": 1.0,
             "CollisionSizeY": 1.0,
-            "min_number" : 4,
-            "max_number" : 4,
+            "min_number" : 100,
+            "max_number" : 100,
             "min_distance_from_player" : 0
         },
         {

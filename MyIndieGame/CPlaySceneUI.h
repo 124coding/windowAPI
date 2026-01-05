@@ -27,6 +27,11 @@ private:
 	CUIText* mMoneyTex = nullptr;
 	CUIText* mStageNumTex = nullptr;
 	CUIText* mTimeTex = nullptr;
+	CUIText* mFpsText = nullptr;
+	float mLastTime = 0.0f;
+	float mCurrentTime = 0.0f;
+	int mFrameCount = 0;
+	float mTimeElapsed = 0.0f;
 
 	int mCurCheckLevel = 0;
 

@@ -19,6 +19,12 @@ void CPlaySceneUI::OnCreate()
 	SetWidth(windowWidth);
 	SetHeight(windowHeight);
 
+	mFpsText = new CUIText(SVector2D(), 0.0f, 50.0f);
+	mFpsText->SetColor(Gdiplus::Color::White);
+	mFpsText->SetFontSize(25.0f);
+
+	this->AddChild(mFpsText);
+
 
 	CUIPanel* hudPanel = new CUIPanel(SVector2D(20.0f, 20.0f), 330.0f, 140.0f);
 	this->AddChild(hudPanel);
@@ -140,6 +146,26 @@ void CPlaySceneUI::OnDestroy()
 
 void CPlaySceneUI::OnUpdate(float tDeltaTime)
 {
+	int fps = 0;
+
+	mCurrentTime = GetTickCount64();
+	float deltaTime = (mCurrentTime - mLastTime) / 1000.0f;
+	mLastTime = mCurrentTime;
+
+	mFrameCount++;
+	mTimeElapsed += deltaTime;
+
+	if (mTimeElapsed >= 1.0f) {
+		fps = mFrameCount;
+		mFpsText->SetText(std::to_wstring(fps));
+		mFpsText->SetWidth(mFpsText->CalculateTextSize().Width);
+		mFpsText->SetPos(SVector2D(this->GetWidth() - mFpsText->GetWidth(), 0.0f));
+
+		mFrameCount = 0;
+		mTimeElapsed = 0.0f;
+	}
+
+
 	mMoneyTex->SetText(std::to_wstring(CPlayScene::GetPlayer()->GetComponent<CPlayerScript>()->GetMoney()));
 	mStageNumTex->SetText(std::to_wstring(CPlayScene::GetStageNum() + 1));
 	mTimeTex->SetText(std::to_wstring((int)CMonsterSpawnMgr::GetTime()));
@@ -152,7 +178,7 @@ void CPlaySceneUI::OnUpdate(float tDeltaTime)
 	int x = this->GetWidth() - 75.0f;
 
 	for (int i = 0; i < mUpgradeCheckPanels.size(); i++) {
-		mUpgradeCheckPanels[i]->SetPos(SVector2D(x, 0.0f));
+		mUpgradeCheckPanels[i]->SetPos(SVector2D(x, 50.0f));
 		x -= 75.0f;
 	}
 

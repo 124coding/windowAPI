@@ -107,25 +107,9 @@ void CSpriteRenderer::Render(HDC tHDC)
 		SelectObject(srcDC, oldBm);
 	}
 	else {
-		Gdiplus::ImageAttributes imgAtt = {};
-
-		// 투명화 시킬 픽셀의 색 범위
+		Gdiplus::ImageAttributes imgAtt;
 		imgAtt.SetColorKey(Gdiplus::Color(245, 0, 245), Gdiplus::Color(255, 0, 255));
 
-		Gdiplus::Graphics graphics(tHDC);
-
-		graphics.TranslateTransform(pos.mX, pos.mY);
-		graphics.RotateTransform(rot);
-		if (mbFlipX)
-		{
-			fScaleX *= -1.0f;
-		}
-		graphics.ScaleTransform(fScaleX, fScaleY);
-
-		float originalWidth = mTexture->GetWidth();
-		float originalHeight = mTexture->GetHeight();
-
-		// 행렬에 알파 값에 직접 곱해줌
 		if (mAlphaMultiplier < 1.0f) {
 			Gdiplus::ColorMatrix colorMatrix = {
 				1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
@@ -134,27 +118,39 @@ void CSpriteRenderer::Render(HDC tHDC)
 				0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 				0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
 			};
-
 			colorMatrix.m[3][3] = mAlphaMultiplier;
-
 			imgAtt.SetColorMatrix(&colorMatrix);
+		}
 
-			graphics.DrawImage(mTexture->GetImage(),
-				Gdiplus::Rect(-GetOwner()->GetAnchorPoint().mX, -GetOwner()->GetAnchorPoint().mY,
-					originalWidth, originalHeight),
-				0, 0,
-				originalWidth, originalHeight,
-				Gdiplus::UnitPixel,
-				&imgAtt
-			);
+		Gdiplus::Graphics graphics(tHDC);
+		graphics.TranslateTransform(pos.mX, pos.mY);
+		graphics.RotateTransform(rot);
+
+		if (mbFlipX) {
+			fScaleX *= -1.0f;
 		}
-		else {
-			graphics.DrawImage(mTexture->GetImage(),
-				-GetOwner()->GetAnchorPoint().mX, 
-				-GetOwner()->GetAnchorPoint().mY,
-				originalWidth, 
-				originalHeight
-			);
-		}
+		graphics.ScaleTransform(fScaleX, fScaleY);
+
+		float originalWidth = mTexture->GetBaseWidth();
+		float originalHeight = mTexture->GetBaseHeight();
+
+		float drawWidth = mTexture->GetWidth();
+		float drawHeight = mTexture->GetHeight();
+
+		Gdiplus::RectF destRect(
+			-GetOwner()->GetAnchorPoint().mX,
+			-GetOwner()->GetAnchorPoint().mY,
+			drawWidth,
+			drawHeight
+		);
+
+		graphics.DrawImage(mTexture->GetImage(),
+			destRect,               
+			0.0f, 0.0f,             
+			originalWidth,          
+			originalHeight,         
+			Gdiplus::UnitPixel,     
+			&imgAtt                 
+		);
 	}
 }
