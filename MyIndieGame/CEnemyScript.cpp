@@ -34,9 +34,9 @@ void CEnemyScript::OnUpdate(float tDeltaTime)
 {
 	mTotalTime += tDeltaTime;
 
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 
-	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
+	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
 
 	if (tr->GetVelocity().mX < 0) {
 		sr->SetFlipX(true);
@@ -46,7 +46,7 @@ void CEnemyScript::OnUpdate(float tDeltaTime)
 	}
 
 	if (mAnimator == nullptr) {
-		mAnimator = GetOwner()->GetComponent<CAnimator>();
+		mAnimator = GetOwner()->GetComponent<CAnimator>(eComponentType::Animator);
 	}
 
 	if (mTextureChangeDelay > 0) {
@@ -54,7 +54,7 @@ void CEnemyScript::OnUpdate(float tDeltaTime)
 	}
 
 	if (mTextureChangeDelay < 0) {
-		CSpriteRenderer* thisSr = GetOwner()->GetComponent<CSpriteRenderer>();
+		CSpriteRenderer* thisSr = GetOwner()->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
 		thisSr->SetTexture(mBaseTexture);
 		mTextureChangeDelay = 0.0f;
 	}
@@ -62,7 +62,7 @@ void CEnemyScript::OnUpdate(float tDeltaTime)
 	if (mHP == 0 && mDeadTimeTaken >= 1.0f) {
 		mState = eState::Dead;
 
-		CCollider* cl = GetOwner()->GetComponent<CCollider>();
+		CCollider* cl = GetOwner()->GetComponent<CCollider>(eComponentType::Collider);
 		cl->SetActivate(false);
 
 		// AnchorPoint가 가운데가 아니더라도 가운데를 기준으로 회전시키기 위함
@@ -117,7 +117,7 @@ void CEnemyScript::Render(HDC tHDC)
 void CEnemyScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther)
 {
 	if (tOther->GetOwner()->GetLayerType() == eLayerType::MeleeWeapon || tOther->GetOwner()->GetLayerType() == eLayerType::Bullet) {
-		CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
+		CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>(eComponentType::Script);
 
 		if (plSc->GetMaxHP() > plSc->GetHP()) {
 			int rand = std::rand() % 100;
@@ -127,10 +127,10 @@ void CEnemyScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther)
 			CWeaponScript* wpSc = nullptr;
 			
 			if (tOther->GetOwner()->GetLayerType() == eLayerType::Bullet) {
-				wpSc = tOther->GetOwner()->GetComponent<CBulletScript>()->GetWeapon()->GetComponent<CWeaponScript>();
+				wpSc = tOther->GetOwner()->GetComponent<CBulletScript>(eComponentType::Script)->GetWeapon()->GetComponent<CWeaponScript>(eComponentType::Script);
 			}
 			else {
-				wpSc = tOther->GetOwner()->GetComponent<CWeaponScript>();
+				wpSc = tOther->GetOwner()->GetComponent<CWeaponScript>(eComponentType::Script);
 			}
 			
 			
@@ -138,14 +138,14 @@ void CEnemyScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther)
 
 			if (rand <= lifeSteal + wpSc->GetLifeSteal()) {
 				plSc->IncreaseHP(1);
-				CEffectMgr::ShowEffectText(CPlayScene::GetPlayer()->GetComponent<CTransform>()->GetPos(), std::to_wstring((int)1.0f), Gdiplus::Color::LimeGreen);
+				CEffectMgr::ShowEffectText(CPlayScene::GetPlayer()->GetComponent<CTransform>(eComponentType::Transform)->GetPos(), std::to_wstring((int)1.0f), Gdiplus::Color::LimeGreen);
 			}
 		}
 
 		GameObject* weapon = tOther->GetOwner();
 		DamageByWeapon(weapon);
 
-		CSpriteRenderer* thisSr = GetOwner()->GetComponent<CSpriteRenderer>();
+		CSpriteRenderer* thisSr = GetOwner()->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
 
 		std::wstring collisionName = GetOwner()->GetName() + L"Collision";
 		thisSr->SetTexture(CResourceMgr::Find<CTexture>(collisionName));
@@ -173,8 +173,8 @@ void CEnemyScript::DecreaseHP(int tDecreaseAmount) {
 
 void CEnemyScript::Spawn(float tDeltaTime)
 {
-	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
-	CCollider* cl = GetOwner()->GetComponent<CCollider>();
+	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
+	CCollider* cl = GetOwner()->GetComponent<CCollider>(eComponentType::Collider);
 
 	mBlinkTime -= tDeltaTime;
 
@@ -210,12 +210,12 @@ void CEnemyScript::Death(float tDeltaTime) {
 	
 	mDeadTimeTaken -= tDeltaTime;
 
-	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
+	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
 	if (sr->GetTexture()->GetHBitmap(false) != nullptr || sr->GetTexture()->GetHBitmap(true) != nullptr) {
 		sr->SetGdiplusDraw(true);
 	}
 
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 	float curRot = tr->GetRot();
 	float rotSpeed = 720.0f;
 
@@ -234,22 +234,22 @@ void CEnemyScript::Death(float tDeltaTime) {
 
 void CEnemyScript::DamageByWeapon(GameObject* tWeapon)
 {
-	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
+	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>(eComponentType::Script);
 	CWeaponScript::SDamageInfo dmgInfo = { 0.0f, false };
 
 	if (tWeapon->GetLayerType() == eLayerType::MeleeWeapon) {
-		CWeaponScript* wpSc = tWeapon->GetComponent<CWeaponScript>();
+		CWeaponScript* wpSc = tWeapon->GetComponent<CWeaponScript>(eComponentType::Script);
 		wpSc->SetDamage(wpSc->GetDamage() + plSc->GetMeleeDamage());
 		dmgInfo = wpSc->GetFinalDamage();
 	}
 	else if (tWeapon->GetLayerType() == eLayerType::Bullet) {
-		CBulletScript* blSc = tWeapon->GetComponent<CBulletScript>();
+		CBulletScript* blSc = tWeapon->GetComponent<CBulletScript>(eComponentType::Script);
 		dmgInfo = blSc->GetFinalDamage(plSc->GetRangedDamage());
 	}
 
 	DecreaseHP(dmgInfo.damage);
 
-	SVector2D pos = GetOwner()->GetComponent<CTransform>()->GetPos();
+	SVector2D pos = GetOwner()->GetComponent<CTransform>(eComponentType::Transform)->GetPos();
 
 	CEffectMgr::PlayEffect(L"EnemyHit", pos, GetOwner());
 

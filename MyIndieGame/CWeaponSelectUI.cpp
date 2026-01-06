@@ -28,7 +28,7 @@ void CWeaponSelectUI::OnCreate()
 	SetHeight(windowHeight);
 
 
-	auto it = CDataMgr::GetCharacterDatas().find(CPlayScene::GetPlayer()->GetComponent<CPlayerScript>()->GetStartingCharacterID());
+	auto it = CDataMgr::GetCharacterDatas().find(CPlayScene::GetPlayer()->GetComponent<CPlayerScript>(eComponentType::Script)->GetStartingCharacterID());
 	if (it == CDataMgr::GetCharacterDatas().end()) {
 		return;
 	}
@@ -204,8 +204,8 @@ void CWeaponSelectUI::OnCreate()
 
 		weaponButton->SetEventClick([=]() {
 			CPlayer* pl = CPlayScene::GetPlayer();
-			CPlayerScript* plSc = pl->GetComponent<CPlayerScript>();
-			CWeaponMgr* plWeaponMgr = pl->GetComponent<CWeaponMgr>();
+			CPlayerScript* plSc = pl->GetComponent<CPlayerScript>(eComponentType::Script);
+			CWeaponMgr* plWeaponMgr = pl->GetComponent<CWeaponMgr>(eComponentType::WeaponMgr);
 
 			plSc->SetClothTexture(CResourceMgr::Find<CTexture>(curChar.clothTexture));
 			plSc->SetMouthTexture(CResourceMgr::Find<CTexture>(curChar.mouthTexture));

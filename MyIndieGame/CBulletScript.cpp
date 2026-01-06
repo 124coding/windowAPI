@@ -13,7 +13,7 @@ void CBulletScript::OnDestroy()
 
 void CBulletScript::OnUpdate(float tDeltaTime)
 {
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 
 	if (tr->GetPos().mX < -tileSizeX || tr->GetPos().mX > mapWidth + tileSizeX
 		|| tr->GetPos().mY < - tileSizeY * 2 || tr->GetPos().mY > mapHeight + tileSizeY) {
@@ -43,7 +43,7 @@ void CBulletScript::OnCollisionExit(float tDeltaTime, CCollider* tOther)
 }
 
 CWeaponScript::SDamageInfo CBulletScript::GetFinalDamage(float tRangedDamage) {
-	CWeaponScript* wpSc = mWeapon->GetComponent<CWeaponScript>();
+	CWeaponScript* wpSc = mWeapon->GetComponent<CWeaponScript>(eComponentType::Script);
 	return wpSc->ApplyDamageModifiers(this->mDamage + tRangedDamage);
 }
 

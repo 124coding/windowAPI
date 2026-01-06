@@ -18,7 +18,7 @@ void CRigidbody::OnUpdate(float tDeltaTime)
 
 	mAccelation = mForce / mMass;
 
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 	tr->SetVelocity(tr->GetVelocity() + mAccelation * tDeltaTime);
 
 	if (mbGround) {

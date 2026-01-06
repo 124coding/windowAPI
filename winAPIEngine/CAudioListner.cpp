@@ -20,7 +20,7 @@ void CAudioListner::OnUpdate(float tDeltaTime)
 
 void CAudioListner::OnLateUpdate(float tDeltaTime)
 {
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 
 	SVector2D pos = tr->GetPos();
 	

@@ -23,9 +23,9 @@
 void CEndingUI::OnCreate()
 {
 	CPlayer* pl = CPlayScene::GetPlayer();
-	CPlayerScript* plSc = pl->GetComponent<CPlayerScript>();
-	CItemMgr* plItemMgr = pl->GetComponent<CItemMgr>();
-	CWeaponMgr* plWeaponMgr = pl->GetComponent<CWeaponMgr>();
+	CPlayerScript* plSc = pl->GetComponent<CPlayerScript>(eComponentType::Script);
+	CItemMgr* plItemMgr = pl->GetComponent<CItemMgr>(eComponentType::ItemMgr);
+	CWeaponMgr* plWeaponMgr = pl->GetComponent<CWeaponMgr>(eComponentType::WeaponMgr);
 	std::vector<std::pair<std::wstring, int>>* plItems = &plItemMgr->GetItems();
 	std::vector<CWeapon*>* plWeapons = &plWeaponMgr->GetWeapons();
 
@@ -40,7 +40,7 @@ void CEndingUI::OnCreate()
 	endingTex->SetFontSize(50.0f);
 	endingTex->SetStrokeWidth(2.0f);
 	endingTex->SetOutline(2.0f, Gdiplus::Color::Black);
-	if (CPlayScene::GetStageNum() == 5 && CPlayScene::GetPlayer()->GetComponent<CPlayerScript>()->GetHP() > 0) {
+	if (CPlayScene::GetStageNum() == 5 && CPlayScene::GetPlayer()->GetComponent<CPlayerScript>(eComponentType::Script)->GetHP() > 0) {
 		endingTex->SetText(L"달리기 성공!");
 		endingTex->SetColor(Gdiplus::Color::Green);
 	}
@@ -414,7 +414,7 @@ void CEndingUI::UIClear()
 
 CUIButton* CEndingUI::MakeWeaponButton(std::vector<CWeapon*>* tWeapons, CWeapon* tWeapon, float tX, float tY, bool tRight)
 {
-	CWeaponScript* curSc = tWeapon->GetComponent<CWeaponScript>();
+	CWeaponScript* curSc = tWeapon->GetComponent<CWeaponScript>(eComponentType::Script);
 	auto currentWeapon = CDataMgr::GetWeaponDatas().find(tWeapon->GetID());
 
 	if (currentWeapon == CDataMgr::GetWeaponDatas().end()) return nullptr;

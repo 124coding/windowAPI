@@ -65,9 +65,9 @@ void CMaterialScript::OnCollisionExit(float tDeltaTime, CCollider* tOther)
 
 void CMaterialScript::CarriedPlayer()
 {
-    CTransform* tr = GetOwner()->GetComponent<CTransform>();
-    CTransform* targetTr = CPlayScene::GetPlayer()->GetComponent<CTransform>();
-    CCollider* plCollider = CPlayScene::GetPlayer()->GetComponent<CCollider>();
+    CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
+    CTransform* targetTr = CPlayScene::GetPlayer()->GetComponent<CTransform>(eComponentType::Transform);
+    CCollider* plCollider = CPlayScene::GetPlayer()->GetComponent<CCollider>(eComponentType::Collider);
 
     SVector2D currentVelocity = SVector2D();
 

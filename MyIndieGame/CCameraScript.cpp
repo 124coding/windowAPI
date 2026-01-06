@@ -16,7 +16,7 @@ void CCameraScript::OnDestroy()
 
 void CCameraScript::OnUpdate(float tDeltaTime)
 {
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 
 	SVector2D CurrentVelocity;
 

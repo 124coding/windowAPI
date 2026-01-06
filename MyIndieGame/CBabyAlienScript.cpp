@@ -21,7 +21,7 @@ void CBabyAlienScript::OnUpdate(float tDeltaTime)
 	CEnemyScript::OnUpdate(tDeltaTime);
 
 	if (mState == CEnemyScript::eState::Walk) {
-		CTransform* tr = GetOwner()->GetComponent<CTransform>();
+		CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 		Translate(tr);
 	}
 }
@@ -61,11 +61,11 @@ void CBabyAlienScript::Translate(CTransform* tr)
 		return;
 	}
 	else {
-		CTransform* targetTr = GetTarget()->GetComponent<CTransform>();
+		CTransform* targetTr = GetTarget()->GetComponent<CTransform>(eComponentType::Transform);
 
 		SVector2D currentVelocity = SVector2D();
 		
-		currentVelocity = targetTr->GetPos() + GetTarget()->GetComponent<CCollider>()->GetOffset() - tr->GetPos();
+		currentVelocity = targetTr->GetPos() + GetTarget()->GetComponent<CCollider>(eComponentType::Collider)->GetOffset() - tr->GetPos();
 
 		if (currentVelocity.Length() > 0.0f) {
 			currentVelocity = currentVelocity.Normalize();

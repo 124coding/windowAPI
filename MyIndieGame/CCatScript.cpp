@@ -23,7 +23,7 @@ void CCatScript::OnUpdate(float tDeltaTime)
 	}*/
 
 	if (mAnimator == nullptr) {
-		mAnimator = GetOwner()->GetComponent<CAnimator>();
+		mAnimator = GetOwner()->GetComponent<CAnimator>(eComponentType::Animator);
 	}
 	switch (mState) {
 	case eState::SitDown:
@@ -67,7 +67,7 @@ void CCatScript::SitDown(float tDeltaTime)
 {
 	mTime += tDeltaTime;
 
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 	SVector2D pos = tr->GetPos();
 
 	//SVector2D mousePos = SVector2D();
@@ -97,7 +97,7 @@ void CCatScript::Move(float tDeltaTime)
 {
 	mTime += tDeltaTime;
 
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 	// Translate(tr);
 
 	if (mTime > 2.0f) {

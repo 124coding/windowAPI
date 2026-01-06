@@ -17,8 +17,8 @@ void CCamera::OnDestroy()
 void CCamera::OnUpdate(float tDeltaTime)
 {
 	if (mTarget != nullptr) {
-		CTransform* targetTr = mTarget->GetComponent<CTransform>();
-		CCollider* targetCollider = mTarget->GetComponent<CCollider>();
+		CTransform* targetTr = mTarget->GetComponent<CTransform>(eComponentType::Transform);
+		CCollider* targetCollider = mTarget->GetComponent<CCollider>(eComponentType::Collider);
 
 		mLookPosition = targetTr->GetPos() + targetCollider->GetOffset();
 
@@ -39,7 +39,7 @@ void CCamera::OnUpdate(float tDeltaTime)
 		}
 	}
 	else {
-		CTransform* cameraTr = GetOwner()->GetComponent<CTransform>();
+		CTransform* cameraTr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 		mLookPosition = cameraTr->GetPos();
 	}
 

@@ -33,8 +33,11 @@ void CWeaponMgr::Render(HDC tHDC)
 std::pair<int, CWeapon*> CWeaponMgr::PlusWeapon(eLayerType tType, std::wstring tWeaponId, int tWeaponTier) {
 
 	if (mWeapons.size() >= mWeaponCount) {
+		if (tWeaponTier == 4) {
+			return std::make_pair(-1, nullptr);
+		}
 		for (int i = 0; i < mWeapons.size(); i++) {
-			CWeaponScript* wpSc = mWeapons[i]->GetComponent<CWeaponScript>();
+			CWeaponScript* wpSc = mWeapons[i]->GetComponent<CWeaponScript>(eComponentType::Script);
 			if (mWeapons[i]->GetID() == tWeaponId && wpSc->GetTier() == tWeaponTier) {
 				auto weaponIter = CDataMgr::GetWeaponDatas().find(tWeaponId);
 				if (weaponIter == CDataMgr::GetWeaponDatas().end()) {
@@ -74,7 +77,7 @@ std::pair<int, CWeapon*> CWeaponMgr::PlusWeapon(eLayerType tType, std::wstring t
 	CWeapon* weapon = iter->second();
 	weapon->SetID(tWeaponId);
 
-	CTransform* wpTr = weapon->GetComponent<CTransform>();
+	CTransform* wpTr = weapon->GetComponent<CTransform>(eComponentType::Transform);
 	CSpriteRenderer* wpSr = weapon->AddComponent<CSpriteRenderer>();
 
 	CTexture* wpImg = CResourceMgr::Find<CTexture>(currentWeapon.name);
@@ -84,7 +87,7 @@ std::pair<int, CWeapon*> CWeaponMgr::PlusWeapon(eLayerType tType, std::wstring t
 
 	weapon->OnCreate();
 
-	CWeaponScript* wpSc = weapon->GetComponent<CWeaponScript>();
+	CWeaponScript* wpSc = weapon->GetComponent<CWeaponScript>(eComponentType::Script);
 	wpSc->SetTarget(this->GetOwner());
 
 
@@ -103,7 +106,7 @@ std::pair<int, CWeapon*> CWeaponMgr::PlusWeapon(eLayerType tType, std::wstring t
 		wpCl->SetSize(SVector2D(currentWeapon.collisionSizeX, currentWeapon.collisionSizeY));
 	}
 	else if (tType == eLayerType::RangedWeapon) {
-		CRangedWeaponScript* wpSc = weapon->GetComponent<CRangedWeaponScript>();
+		CRangedWeaponScript* wpSc = weapon->GetComponent<CRangedWeaponScript>(eComponentType::Script);
 		wpSc->SetBullet(SVector2D(currentWeapon.bulletSizeX, currentWeapon.bulletSizeY), SVector2D(currentWeapon.collisionSizeX, currentWeapon.collisionSizeY), currentWeapon.bulletName);
 	}
 
@@ -130,12 +133,12 @@ void CWeaponMgr::ResetWeapons()
 void CWeaponMgr::WeaponsPosition()
 {
 	int count = mWeapons.size();
-	SVector2D targetPos = GetOwner()->GetComponent<CTransform>()->GetPos();
+	SVector2D targetPos = GetOwner()->GetComponent<CTransform>(eComponentType::Transform)->GetPos();
 
 	if (count == 0) return;
 	else if (count == 1) {
-		mWeapons[0]->GetComponent<CTransform>()->SetPos(targetPos);
-		mWeapons[0]->GetComponent<CWeaponScript>()->SetOffset(SVector2D(0.0f, 20.0f));
+		mWeapons[0]->GetComponent<CTransform>(eComponentType::Transform)->SetPos(targetPos);
+		mWeapons[0]->GetComponent<CWeaponScript>(eComponentType::Script)->SetOffset(SVector2D(0.0f, 20.0f));
 	}
 	else {
 		float radius = 60.0f;
@@ -148,7 +151,7 @@ void CWeaponMgr::WeaponsPosition()
 			float offsetX = cosf(angleRad) * radius;
 			float offsetY = sinf(angleRad) * radius;
 
-			mWeapons[i]->GetComponent<CWeaponScript>()->SetOffset(SVector2D(offsetX, offsetY));
+			mWeapons[i]->GetComponent<CWeaponScript>(eComponentType::Script)->SetOffset(SVector2D(offsetX, offsetY));
 		}
 	}
 }
@@ -167,7 +170,7 @@ void CWeaponMgr::ChangeWeaponTier(CWeapon* tWeapon, int tTier)
 		return;
 	}
 
-	CWeaponScript* wpSc = tWeapon->GetComponent<CWeaponScript>();
+	CWeaponScript* wpSc = tWeapon->GetComponent<CWeaponScript>(eComponentType::Script);
 
 	wpSc->SetDamage(currentWeapon.tier[tTier - 1].damage);
 	wpSc->SetDelay(currentWeapon.tier[tTier - 1].delay);

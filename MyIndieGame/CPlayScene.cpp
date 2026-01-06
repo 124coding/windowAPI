@@ -57,16 +57,6 @@ void CPlayScene::OnCreate()
 	CEffectMgr::OnCreate();
 
 
-	/*GameObject* mapOutLine = Instantiate<GameObject>(eLayerType::None);
-
-	CTexture* mapOLImg = CResourceMgr::Find<CTexture>(L"TileOutLine");
-	
-	mapOutLine->SetSize(SVector2D(mapWidth / mapOLImg->GetWidth(), mapHeight / mapOLImg->GetHeight()));
-
-	CSpriteRenderer* mapOLSr = mapOutLine->AddComponent<CSpriteRenderer>();
-	mapOLSr->SetTexture(mapOLImg);*/
-
-
 
 	mBakedMap = Instantiate<GameObject>(eLayerType::BackGround);
 	mBakedMap->AddComponent<CSpriteRenderer>();
@@ -83,94 +73,20 @@ void CPlayScene::OnCreate()
 
 	CTexture* plImg = CResourceMgr::Find<CTexture>(L"PlayerBase");
 
-	CTransform* plTr = mPlayer->GetComponent<CTransform>();
+	CTransform* plTr = mPlayer->GetComponent<CTransform>(eComponentType::Transform);
 	mPlayer->SetSize(SVector2D(0.8f, 0.8f)); 
 	mPlayer->SetAnchorPoint(plImg->GetWidth() / 2, plImg->GetHeight());
 
 	CAnimator* plAnim = mPlayer->AddComponent<CAnimator>();
 
-	CPlayerScript* plSc = mPlayer->GetComponent<CPlayerScript>();
+	CPlayerScript* plSc = mPlayer->GetComponent<CPlayerScript>(eComponentType::Script);
 	
 	plSc->SetBaseTexture(plImg);
 
 	mPlayer->AddComponent<CSpriteRenderer>();
 
-	// Player 외모 변화 체크
-	/*CTexture* rangerEyesImg = CResourceMgr::Find<CTexture>(L"RangerEyes");
-	CTexture* rangerMouthImg = CResourceMgr::Find<CTexture>(L"RangerMouth");
-
-	plSc->SetEyesTexture(rangerEyesImg);
-	plSc->SetMouthTexture(rangerMouthImg);
-
-	plImg->BakedTex(0.0f, 0.0f, plImg->GetWidth(), plImg->GetHeight(), rangerEyesImg->GetImage());
-	plImg->BakedTex(0.0f, 0.0f, plImg->GetWidth(), plImg->GetHeight(), rangerMouthImg->GetImage());*/
-
 	mPlayer->AddComponent<CWeaponMgr>();
 	mPlayer->AddComponent<CItemMgr>();
-
-
-	/*CWeapon* weapon = Instantiate<CWeapon>(eLayerType::MeleeWeapon, SVector2D(plTr->GetPos().mX - 10.0f, plTr->GetPos().mY));
-
-	CTransform* wpTr = weapon->GetComponent<CTransform>();
-	CSpriteRenderer* wpSr = weapon->AddComponent<CSpriteRenderer>();
-
-	weapon->AddComponent<CMeleeWeaponScript>();
-	
-	CBoxCollider2D* wpCl = weapon->AddComponent<CBoxCollider2D>();
-	wpCl->SetSize(SVector2D(0.6f, 0.5f));
-	wpCl->SetActivate(false);
-
-	CTexture* wpImg = CResourceMgr::Find<CTexture>(L"Dagger");
-	weapon->SetSize(SVector2D(0.20f, 0.20f));
-	wpSr->SetTexture(wpImg);
-	weapon->SetAnchorPoint((wpImg->GetWidth() / 2) - 100.0f, wpImg->GetHeight() / 2);
-
-	CMeleeWeaponScript* wpScript = weapon->GetComponent<CMeleeWeaponScript>();
-	wpScript->SetPlayer(mPlayer);*/
-
-	/*CWeapon* weapon = Instantiate<CWeapon>(eLayerType::RangedWeapon, SVector2D(plTr->GetPos().mX - 10.0f, plTr->GetPos().mY));
-
-	CTransform* wpTr = weapon->GetComponent<CTransform>();
-	CSpriteRenderer* wpSr = weapon->AddComponent<CSpriteRenderer>();
-
-	weapon->AddComponent<CRangedWeaponScript>();
-
-	CTexture* wpImg = CResourceMgr::Find<CTexture>(L"Pistol");
-	weapon->SetSize(SVector2D(0.15f, 0.15f));
-	wpSr->SetTexture(wpImg);
-	weapon->SetAnchorPoint((wpImg->GetWidth() / 2) - 100.0f, wpImg->GetHeight() / 2);
-
-	CRangedWeaponScript* wpScript = weapon->GetComponent<CRangedWeaponScript>();
-	wpScript->SetPlayer(mPlayer);*/
-
-
-
-	// CMonsterSpawnMgr::MonsterSpawn<CBabyAlien>("M_001", mPlayer);
-
-
-	/*CBabyAlien* Enemy = Instantiate<CBabyAlien>(eLayerType::Enemy, SVector2D(300.0f, 300.0f));
-
-	CBabyAlienScript* EnemyScript = Enemy->GetComponent<CBabyAlienScript>();
-	EnemyScript->SetTarget(mPlayer);
-	
-	Enemy->AddComponent<CCircleCollider2D>();
-
-	CTexture* babyAlienImg = CResourceMgr::Find<CTexture>(L"BabyAlien");
-
-	CSpriteRenderer* enemySr = Enemy->AddComponent<CSpriteRenderer>();
-	enemySr->SetTexture(babyAlienImg);
-
-	CTransform* babyAlienTr = Enemy->GetComponent<CTransform>();
-
-	Enemy->SetSize(SVector2D(0.05f, 0.05f));
-	Enemy->SetAnchorPoint(babyAlienImg->GetWidth() / 2, babyAlienImg->GetHeight());*/
-
-
-
-	/*CAnimator* EnemyAnim = Enemy->AddComponent<CAnimator>();
-
-	EnemyAnim->CreateAnimationByFolder(tEngine, L"MushroomIdle", L"../resources/Sprites/Mushrooms", SVector2D(), 0.5f);
-	EnemyAnim->PlayAnimation(L"MushroomIdle");*/
 
 	CScene::OnCreate();
 }
@@ -188,10 +104,10 @@ void CPlayScene::OnUpdate(float tDeltaTime)
 	if (mStatUpgrading) return;
 
 	// (WaitTime 어떻게 굴릴 지랑 체력 없을 때랑 시간 다 되었을 때에 대해서)수정 필요
-	if (mPlayer->GetComponent<CPlayerScript>()->GetHP() <= 0) {
+	if (mPlayer->GetComponent<CPlayerScript>(eComponentType::Script)->GetHP() <= 0) {
 		if (CSceneMgr::GetGameObjects(eLayerType::Enemy).size() > 0) {
 			for (auto& enemy : CSceneMgr::GetGameObjects(eLayerType::Enemy)) {
-				enemy->GetComponent<CEnemyScript>()->SetHP(0);
+				enemy->GetComponent<CEnemyScript>(eComponentType::Script)->SetHP(0);
 			}
 		}
 		else if (mWaitTime <= 0.0f) {
@@ -208,7 +124,7 @@ void CPlayScene::OnUpdate(float tDeltaTime)
 		else {
 			if (CSceneMgr::GetGameObjects(eLayerType::Enemy).size() > 0) {
 				for (auto& enemy : CSceneMgr::GetGameObjects(eLayerType::Enemy)) {
-					enemy->GetComponent<CEnemyScript>()->SetHP(0);
+					enemy->GetComponent<CEnemyScript>(eComponentType::Script)->SetHP(0);
 				}
 			}
 			else if (mWaitTime <= 0.0f) {
@@ -217,7 +133,7 @@ void CPlayScene::OnUpdate(float tDeltaTime)
 					GameEnd();
 					return;
 				}
-				if (mPlayer->GetComponent<CPlayerScript>()->GetCurStageLevelUpCount() > 0) {
+				if (mPlayer->GetComponent<CPlayerScript>(eComponentType::Script)->GetCurStageLevelUpCount() > 0) {
 					CUIMgr::Push(eUIType::LevelUpUI);
 					mStatUpgrading = true;
 				}
@@ -257,9 +173,9 @@ void CPlayScene::OnEnter()
 
 	mPlayer->SetState(true);
 
-	CTransform* plTr = mPlayer->GetComponent<CTransform>();
-	CSpriteRenderer* plSr = mPlayer->GetComponent<CSpriteRenderer>();
-	CPlayerScript* plSc = mPlayer->GetComponent<CPlayerScript>();
+	CTransform* plTr = mPlayer->GetComponent<CTransform>(eComponentType::Transform);
+	CSpriteRenderer* plSr = mPlayer->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
+	CPlayerScript* plSc = mPlayer->GetComponent<CPlayerScript>(eComponentType::Script);
 	plSc->SetHP(plSc->GetMaxHP());
 	plSc->SetState(true);
 	plSr->SetGdiplusDraw(false);
@@ -288,7 +204,7 @@ void CPlayScene::OnEnter()
 		plSr->GetTexture()->CreateHBitmapFromGdiPlus(false);
 	}
 
-	CWeaponMgr* plWeaponMgr = mPlayer->GetComponent<CWeaponMgr>();
+	CWeaponMgr* plWeaponMgr = mPlayer->GetComponent<CWeaponMgr>(eComponentType::WeaponMgr);
 	for (auto& weapon : plWeaponMgr->GetWeapons()) {
 		weapon->SetState(true);
 	}
@@ -310,7 +226,7 @@ void CPlayScene::OnExit()
 
 	if (mPlayer != nullptr)
 	{
-		CSpriteRenderer* plSr = mPlayer->GetComponent<CSpriteRenderer>();
+		CSpriteRenderer* plSr = mPlayer->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
 		if (plSr != nullptr)
 		{
 			CTexture* pTex = plSr->GetTexture();
@@ -335,13 +251,13 @@ void CPlayScene::OnExit()
 
 void CPlayScene::StagePass()
 {
-	mPlayer->GetComponent<CTransform>()->SetPos(SVector2D(windowWidth / 2, windowHeight / 2 + 55.0f));
+	mPlayer->GetComponent<CTransform>(eComponentType::Transform)->SetPos(SVector2D(windowWidth / 2, windowHeight / 2 + 55.0f));
 	CSceneMgr::LoadScene(L"ShopScene");
 }
 
 void CPlayScene::GameEnd()
 {
-	mPlayer->GetComponent<CTransform>()->SetPos(SVector2D(windowWidth / 2, windowHeight / 2 + 55.0f));
+	mPlayer->GetComponent<CTransform>(eComponentType::Transform)->SetPos(SVector2D(windowWidth / 2, windowHeight / 2 + 55.0f));
 	CSceneMgr::LoadScene(L"EndingScene");
 }
 
@@ -405,7 +321,7 @@ void CPlayScene::RandomBakedMap()
 	std::wstring tileName = L"Tile" + std::to_wstring(randTile);
 	CTexture* randomMapTex = CResourceMgr::Find<CTexture>(tileName);
 
-	CSpriteRenderer* mBakedMapSr = mBakedMap->GetComponent<CSpriteRenderer>();
+	CSpriteRenderer* mBakedMapSr = mBakedMap->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
 	CTexture* mBakedMapImg = CTexture::Create(L"BakedBG", mapWidth, mapHeight);
 
 	mBakedMapSr->SetTexture(mBakedMapImg);

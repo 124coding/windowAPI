@@ -12,8 +12,8 @@
 #include <Windows.h>
 
 static void ApplyEffect(const std::wstring& tEffectID, const std::vector<CDataMgr::SArg>& args) {
-	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
-	CWeaponMgr* plWpMgr = CPlayScene::GetPlayer()->GetComponent<CWeaponMgr>();
+	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>(eComponentType::Script);
+	CWeaponMgr* plWpMgr = CPlayScene::GetPlayer()->GetComponent<CWeaponMgr>(eComponentType::WeaponMgr);
 
 	auto GetValueStr = [&](int index = 0) -> std::wstring {
 		if (index < args.size()) return args[index].value;

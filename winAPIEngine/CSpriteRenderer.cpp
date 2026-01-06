@@ -34,7 +34,7 @@ void CSpriteRenderer::Render(HDC tHDC)
 		return;
 	}
 
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 	SVector2D pos = tr->GetPos();
 	float rot = tr->GetRot();
 	SVector2D scale = tr->GetScale();

@@ -31,7 +31,7 @@ void CAnimation::Render(HDC tHDC) {
     GameObject* gameObj = mAnimator->GetOwner();
     
 
-    CTransform* tr = gameObj->GetComponent<CTransform>();
+    CTransform* tr = gameObj->GetComponent<CTransform>(eComponentType::Transform);
     SVector2D pos = tr->GetPos();
     float rot = tr->GetRot();
     SVector2D scale = tr->GetScale();

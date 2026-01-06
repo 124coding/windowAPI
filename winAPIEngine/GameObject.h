@@ -50,26 +50,21 @@ public:
 	}
 
 	template <typename T>
-	void RemoveComponent() {
-		T* component = nullptr;
-		for (int i = 0; i < mComponents.size(); i++) {
-			component = dynamic_cast<T*>(mComponents[i]);
-			if (component != nullptr) {
-				SAFE_DELETE(mComponents[i]);
-				break;
-			}
+	void RemoveComponent(eComponentType type) {
+		int index = (int)type;
+
+		if (mComponents[index] != nullptr) {
+			mComponents[index]->OnDestroy();
+			SAFE_DELETE(mComponents[index]);
+			mComponents[index] = nullptr;
 		}
 	}
 
 	template <typename T>
-	T* GetComponent() {
-		T* component = nullptr;
-		for (CComponent* comp : mComponents) {
-			component = dynamic_cast<T*>(comp);
-			if (component) break;
-		}
-
-		return component;
+	T* GetComponent(eComponentType type) {
+		if (mComponents[(UINT)type] != nullptr)
+			return static_cast<T*>(mComponents[(UINT)type]);
+		return nullptr;
 	}
 
 public:

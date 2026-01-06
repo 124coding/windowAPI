@@ -130,7 +130,7 @@ void CMonsterSpawnMgr::MonsterSpawnEvent(GameObject* tTarget) {
 
 void CMonsterSpawnMgr::MonsterSpawn(const std::wstring tMonsterId, GameObject* tTarget, float tMinDistance, float tMaxDistance, bool tIndividual) {
 	// json 파일을 확인하여 개별적으로 스폰하는지 무리를 지어 스폰하는지
-	SVector2D targetPos = tTarget->GetComponent<CTransform>()->GetPos();
+	SVector2D targetPos = tTarget->GetComponent<CTransform>(eComponentType::Transform)->GetPos();
 
 	SVector2D anchorPos = GetRandomPosAroundObject(targetPos, 500.0f, 800.0f);
 
@@ -167,7 +167,7 @@ void CMonsterSpawnMgr::MonsterSpawn(const std::wstring tMonsterId, GameObject* t
 
 		enemy->SetName(currentMonster.name);
 
-		CEnemyScript* enemyScript = enemy->GetComponent<CEnemyScript>();
+		CEnemyScript* enemyScript = enemy->GetComponent<CEnemyScript>(eComponentType::Script);
 		enemyScript->SetTarget(tTarget);
 
 		enemyScript->SetHP(currentMonster.hp + (mStageNum * currentMonster.hpIncreasedEachWave));
@@ -185,7 +185,7 @@ void CMonsterSpawnMgr::MonsterSpawn(const std::wstring tMonsterId, GameObject* t
 
 		sr->GetTexture()->CreateHBitmapFromGdiPlus(true);
 
-		CTransform* enemyTr = enemy->GetComponent<CTransform>();
+		CTransform* enemyTr = enemy->GetComponent<CTransform>(eComponentType::Transform);
 		if(tIndividual) {
 			enemyTr->SetPos(GetRandomPosAroundObject(targetPos, tMinDistance, tMaxDistance));
 		}

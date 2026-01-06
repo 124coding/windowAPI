@@ -72,7 +72,7 @@ void CMeleeWeaponScript::OnCollisionExit(float tDeltaTime, CCollider* tOther)
 
 void CMeleeWeaponScript::CanAttackCheck(std::vector<GameObject*> tEnemies)
 {
-	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
+	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>(eComponentType::Script);
 
 	float range = plSc->GetRange();
 	int attackSpeed = plSc->GetAttackSpeedPercent();
@@ -85,8 +85,8 @@ void CMeleeWeaponScript::CanAttackCheck(std::vector<GameObject*> tEnemies)
 		return;
 	}
 
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
-	CCollider* cl = GetOwner()->GetComponent<CCollider>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
+	CCollider* cl = GetOwner()->GetComponent<CCollider>(eComponentType::Collider);
 
 	float distanceToEnemy = (ObjectCenterPos(GetOwner()) - GetClosedEnemyPos()).Length();
 
@@ -101,7 +101,7 @@ void CMeleeWeaponScript::CanAttackCheck(std::vector<GameObject*> tEnemies)
 void CMeleeWeaponScript::AttackEndCheck()
 {
 	SVector2D targetPos = ObjectCenterPos(GetTarget());
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 
 	SVector2D rangeSize = (GetClosedEnemyPos() - targetPos).Normalize() * GetRange();
 	rangeSize.mX = fabs(rangeSize.mX);
@@ -119,8 +119,8 @@ void CMeleeWeaponScript::AttackEndCheck()
 void CMeleeWeaponScript::BackToPlayer()
 {
 	SVector2D targetPos = ObjectCenterPos(GetTarget());
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
-	CCollider* cl = GetOwner()->GetComponent<CCollider>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
+	CCollider* cl = GetOwner()->GetComponent<CCollider>(eComponentType::Collider);
 
 	SVector2D initialPos = targetPos + GetOffset();
 

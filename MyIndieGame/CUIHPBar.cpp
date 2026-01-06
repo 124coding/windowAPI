@@ -40,7 +40,7 @@ void CUIHPBar::OnDestroy()
 
 void CUIHPBar::OnUpdate(float tDeltaTime)
 {
-    mHpInfo->SetText(std::to_wstring(mPlayer->GetComponent<CPlayerScript>()->GetHP()) + L" / " + std::to_wstring(mPlayer->GetComponent<CPlayerScript>()->GetMaxHP()));
+    mHpInfo->SetText(std::to_wstring(mPlayer->GetComponent<CPlayerScript>(eComponentType::Script)->GetHP()) + L" / " + std::to_wstring(mPlayer->GetComponent<CPlayerScript>(eComponentType::Script)->GetMaxHP()));
     CUIHUD::OnUpdate(tDeltaTime);
 }
 
@@ -51,7 +51,7 @@ void CUIHPBar::OnLateUpdate(float tDeltaTime)
 
 void CUIHPBar::Render(HDC tHDC)
 {
-    float ratio = (float)mPlayer->GetComponent<CPlayerScript>()->GetHP() / mPlayer->GetComponent<CPlayerScript>()->GetMaxHP();
+    float ratio = (float)mPlayer->GetComponent<CPlayerScript>(eComponentType::Script)->GetHP() / mPlayer->GetComponent<CPlayerScript>(eComponentType::Script)->GetMaxHP();
 
     TransparentBlt(tHDC,
         mFinalPos.mX, mFinalPos.mY,

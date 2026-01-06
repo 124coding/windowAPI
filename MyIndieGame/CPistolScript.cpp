@@ -6,7 +6,7 @@
 
 float CPistolScript::GetDamage()
 {
-	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
+	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>(eComponentType::Script);
 
 	float damage = CWeaponScript::GetDamage() + plSc->GetRangedDamage() * 1.0f;
 	return damage;

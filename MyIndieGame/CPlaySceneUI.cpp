@@ -166,11 +166,11 @@ void CPlaySceneUI::OnUpdate(float tDeltaTime)
 	}
 
 
-	mMoneyTex->SetText(std::to_wstring(CPlayScene::GetPlayer()->GetComponent<CPlayerScript>()->GetMoney()));
+	mMoneyTex->SetText(std::to_wstring(CPlayScene::GetPlayer()->GetComponent<CPlayerScript>(eComponentType::Script)->GetMoney()));
 	mStageNumTex->SetText(std::to_wstring(CPlayScene::GetStageNum() + 1));
 	mTimeTex->SetText(std::to_wstring((int)CMonsterSpawnMgr::GetTime()));
 
-	if (mCurCheckLevel < CPlayScene::GetPlayer()->GetComponent<CPlayerScript>()->GetLevel()) {
+	if (mCurCheckLevel < CPlayScene::GetPlayer()->GetComponent<CPlayerScript>(eComponentType::Script)->GetLevel()) {
 		mCurCheckLevel++;
 		MakeUpgradeCheckPanel();
 	}

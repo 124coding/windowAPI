@@ -6,7 +6,7 @@
 
 float CSMGScript::GetDamage()
 {
-	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
+	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>(eComponentType::Script);
 
 	float percent = 0.0f;
 

@@ -30,7 +30,7 @@ void CToolScene::OnCreate()
 	GameObject* mapOutLine = Instantiate<GameObject>(eLayerType::Tile);
 	CTexture* mapOLImg = CResourceMgr::Find<CTexture>(L"TileOutLine");
 
-	CTransform* mapOLTr = mapOutLine->GetComponent<CTransform>();
+	CTransform* mapOLTr = mapOutLine->GetComponent<CTransform>(eComponentType::Transform);
 
 	float aspectRatioX = (float)mapWidth / mapOLImg->GetWidth();
 	float aspectRatioY = (float)mapHeight / mapOLImg->GetHeight();
@@ -174,7 +174,7 @@ void CToolScene::OnExit()
 {
 	CScene::OnExit();
 
-	mainCamera->GetOwner()->RemoveComponent<CCameraScript>();
+	mainCamera->GetOwner()->RemoveComponent<CCameraScript>(eComponentType::Script);
 
 	if (mTileBackBuffer != nullptr) {
 	    mTileBackBuffer->UnLoad();
@@ -212,8 +212,8 @@ void CToolScene::Save()
 	_wfopen_s(&pFile, szFilePath, L"wb");
 
 	for (CTile* t : mTiles) {
-		CTilemapRenderer* tmr = t->GetComponent<CTilemapRenderer>();
-		CTransform* tr = t->GetComponent<CTransform>();
+		CTilemapRenderer* tmr = t->GetComponent<CTilemapRenderer>(eComponentType::TileRenderer);
+		CTransform* tr = t->GetComponent<CTransform>(eComponentType::Transform);
 
 		SVector2D sourceIndex = tmr->GetIndex();
 		SVector2D pos = tr->GetPos();

@@ -15,11 +15,11 @@ public:
 
 	virtual CComponent* Clone() = 0;
 
-	virtual void OnCreate() = 0;
-	virtual void OnDestroy() = 0;
-	virtual void OnUpdate(float tDeltaTime) = 0;
-	virtual void OnLateUpdate(float tDeltaTime) = 0;
-	virtual void Render(HDC tHDC) = 0;
+	virtual void OnCreate() {};
+	virtual void OnDestroy() {};
+	virtual void OnUpdate(float tDeltaTime) {};
+	virtual void OnLateUpdate(float tDeltaTime) {};
+	virtual void Render(HDC tHDC) {};
 
 	void SetOwner(GameObject* tOwner) {
 		mOwner = tOwner;

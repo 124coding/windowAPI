@@ -31,7 +31,7 @@ void CEffectText::OnDestroy() {
 void CEffectText::OnUpdate(float tDeltaTime) {
     CEffect::OnUpdate(tDeltaTime);
 
-    CTransform* tr = this->GetComponent<CTransform>();
+    CTransform* tr = this->GetComponent<CTransform>(eComponentType::Transform);
 
     if (tr->GetPos().mY > mainCamera->CalculatePosition(mStartPos).mY) {
         tr->SetPos(mainCamera->CalculatePosition(mStartPos));
@@ -64,7 +64,7 @@ void CEffectText::OnLateUpdate(float tDeltaTime) {
 void CEffectText::Render(HDC tHDC) {
     CEffect::Render(tHDC);
 
-    CTransform* tr = this->GetComponent<CTransform>();
+    CTransform* tr = this->GetComponent<CTransform>(eComponentType::Transform);
     tr->SetPos(mainCamera->CalculatePosition(mStartPos));
 
     Gdiplus::Graphics graphics(tHDC);
@@ -88,7 +88,7 @@ void CEffectText::Render(HDC tHDC) {
 
 void CEffectText::Reset(SVector2D tPos)
 {
-    CTransform* tr = this->GetComponent<CTransform>();
+    CTransform* tr = this->GetComponent<CTransform>(eComponentType::Transform);
     tr->SetVelocity(SVector2D(0.0f, -200.0f));
     tr->SetPos(mainCamera->CalculatePosition(tPos));
     mStartPos = tPos;
@@ -100,7 +100,7 @@ void CEffectText::Reset(SVector2D tPos)
 
 void CEffectText::Reset(SVector2D tPos, std::wstring tText, Gdiplus::Color tColor)
 {
-    CTransform* tr = this->GetComponent<CTransform>();
+    CTransform* tr = this->GetComponent<CTransform>(eComponentType::Transform);
     tr->SetVelocity(SVector2D(0.0f, -200.0f));
     tr->SetPos(mainCamera->CalculatePosition(tPos));
     mStartPos = tPos;

@@ -39,7 +39,7 @@ void CUIEXPBar::OnDestroy()
 
 void CUIEXPBar::OnUpdate(float tDeltaTime)
 {
-    mLevelInfo->SetText(L"Lv." + std::to_wstring(mPlayer->GetComponent<CPlayerScript>()->GetLevel()));
+    mLevelInfo->SetText(L"Lv." + std::to_wstring(mPlayer->GetComponent<CPlayerScript>(eComponentType::Script)->GetLevel()));
     CUIHUD::OnUpdate(tDeltaTime);
 }
 
@@ -51,7 +51,7 @@ void CUIEXPBar::OnLateUpdate(float tDeltaTime)
 
 void CUIEXPBar::Render(HDC tHDC)
 {
-    float ratio = (float)mPlayer->GetComponent<CPlayerScript>()->GetExp() / mPlayer->GetComponent<CPlayerScript>()->GetNeedLevelUpExp();
+    float ratio = (float)mPlayer->GetComponent<CPlayerScript>(eComponentType::Script)->GetExp() / mPlayer->GetComponent<CPlayerScript>(eComponentType::Script)->GetNeedLevelUpExp();
 
     TransparentBlt(tHDC,
         mFinalPos.mX, mFinalPos.mY,

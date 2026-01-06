@@ -30,7 +30,7 @@ void CAnimatedEffect::Render(HDC tHDC)
 void CAnimatedEffect::Reset(SVector2D tPos)
 {
 	mCurTime = 0.0f;
-	CTransform* tr = this->GetComponent<CTransform>();
+	CTransform* tr = this->GetComponent<CTransform>(eComponentType::Transform);
 	tr->SetPos(mainCamera->CalculatePosition(tPos));
 	mStartPos = tPos;
 

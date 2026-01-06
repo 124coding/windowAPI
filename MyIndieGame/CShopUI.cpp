@@ -22,9 +22,9 @@
 void CShopUI::OnCreate()
 {
 	mPl = CPlayScene::GetPlayer();
-	mPlSc = mPl->GetComponent<CPlayerScript>();
-	mPlItemMgr = mPl->GetComponent<CItemMgr>();
-	mPlWeaponMgr = mPl->GetComponent<CWeaponMgr>();
+	mPlSc = mPl->GetComponent<CPlayerScript>(eComponentType::Script);
+	mPlItemMgr = mPl->GetComponent<CItemMgr>(eComponentType::ItemMgr);
+	mPlWeaponMgr = mPl->GetComponent<CWeaponMgr>(eComponentType::WeaponMgr);
 	mPlItems = &mPlItemMgr->GetItems();
 	mPlWeapons = &mPlWeaponMgr->GetWeapons();
 
@@ -820,7 +820,7 @@ std::pair<CUIPanel*, bool> CShopUI::MakeGoods(int tIdx, float tWidth, float tHei
 				MakeWeaponButton(mPlWeapons, weaponIndex.second, 0.0f, 0.0f);
 			}
 			else {
-				ReSettingWeaponButton(weaponIndex.second->GetComponent<CWeaponScript>(), 
+				ReSettingWeaponButton(weaponIndex.second->GetComponent<CWeaponScript>(eComponentType::Script), 
 					weaponIndex.second, 
 					mHaveWeaponPanel, 
 					mWeapons[weaponIndex.first], 
@@ -1098,7 +1098,7 @@ void CShopUI::ReSettingWeaponButton(CWeaponScript* tWpScript, CWeapon* tCurWp, C
 		for (int i = 0; i < mPlWeapons->size(); i++) {
 
 			if ((*mPlWeapons)[i]->GetID() == tCurWp->GetID() &&
-				(*mPlWeapons)[i]->GetComponent<CWeaponScript>()->GetTier() == tWpScript->GetTier())
+				(*mPlWeapons)[i]->GetComponent<CWeaponScript>(eComponentType::Script)->GetTier() == tWpScript->GetTier())
 			{
 				if (mWeapons[i] != nullptr) {
 					tParPanel->RemoveChild(mWeapons[i]);
@@ -1135,11 +1135,11 @@ void CShopUI::WeaponButtonsReSetting(float tX, float tY, float tOffset, float tM
 	for (auto button : mCombinationButtons) {
 		button->InActive();
 		auto weapon = (*mPlWeapons)[index];
-		CWeaponScript* curSc = weapon->GetComponent<CWeaponScript>();
+		CWeaponScript* curSc = weapon->GetComponent<CWeaponScript>(eComponentType::Script);
 
 		int count = 0;
 		for (int i = 0; i < mPlWeapons->size(); i++) {
-			if ((*mPlWeapons)[i]->GetID() == weapon->GetID() && (*mPlWeapons)[i]->GetComponent<CWeaponScript>()->GetTier() == curSc->GetTier()) count++;
+			if ((*mPlWeapons)[i]->GetID() == weapon->GetID() && (*mPlWeapons)[i]->GetComponent<CWeaponScript>(eComponentType::Script)->GetTier() == curSc->GetTier()) count++;
 
 			if (count >= 2) {
 				button->Active();
@@ -1155,7 +1155,7 @@ CUIButton* CShopUI::MakeWeaponButton(std::vector<CWeapon*>* tWeapons, CWeapon* t
 {
 
 
-	CWeaponScript* curSc = tWeapon->GetComponent<CWeaponScript>();
+	CWeaponScript* curSc = tWeapon->GetComponent<CWeaponScript>(eComponentType::Script);
 	auto currentWeapon = CDataMgr::GetWeaponDatas().find(tWeapon->GetID());
 
 	if (currentWeapon == CDataMgr::GetWeaponDatas().end()) return nullptr;
@@ -1303,7 +1303,7 @@ CUIButton* CShopUI::MakeWeaponButton(std::vector<CWeapon*>* tWeapons, CWeapon* t
 	// 결합은 같은 아이디의 같은 티어의 무기가 2개 이상이라면 활성화 시켜줌
 	int count = 0;
 	for (int i = 0; i < tWeapons->size(); i++) {
-		if ((*tWeapons)[i]->GetID() == tWeapon->GetID() && (*tWeapons)[i]->GetComponent<CWeaponScript>()->GetTier() == curSc->GetTier()) count++;
+		if ((*tWeapons)[i]->GetID() == tWeapon->GetID() && (*tWeapons)[i]->GetComponent<CWeaponScript>(eComponentType::Script)->GetTier() == curSc->GetTier()) count++;
 
 		if (count >= 2) {
 			combinationButton->Active();
@@ -1344,7 +1344,7 @@ CUIButton* CShopUI::MakeWeaponButton(std::vector<CWeapon*>* tWeapons, CWeapon* t
 		weaponDescPanel->InActive();
 
 		for (int i = 0; i < (*tWeapons).size(); i++) {
-			if ((*tWeapons)[i]->GetID() == tWeapon->GetID() && (*tWeapons)[i]->GetComponent<CWeaponScript>()->GetTier() == curSc->GetTier()) {
+			if ((*tWeapons)[i]->GetID() == tWeapon->GetID() && (*tWeapons)[i]->GetComponent<CWeaponScript>(eComponentType::Script)->GetTier() == curSc->GetTier()) {
 				mPlWeaponMgr->RemoveWeapon(i);
 
 				WeaponButtonRemove(i);
@@ -1364,7 +1364,7 @@ CUIButton* CShopUI::MakeWeaponButton(std::vector<CWeapon*>* tWeapons, CWeapon* t
 		curSc->SetTier(curSc->GetTier() + 1);
 
 		for (int i = 0; i < (*tWeapons).size(); i++) {
-			if ((*tWeapons)[i]->GetID() == tWeapon->GetID() && (*tWeapons)[i]->GetComponent<CWeaponScript>()->GetTier() == curSc->GetTier() - 1) {
+			if ((*tWeapons)[i]->GetID() == tWeapon->GetID() && (*tWeapons)[i]->GetComponent<CWeaponScript>(eComponentType::Script)->GetTier() == curSc->GetTier() - 1) {
 				mPlWeaponMgr->RemoveWeapon(i);
 
 				WeaponButtonRemove(i);

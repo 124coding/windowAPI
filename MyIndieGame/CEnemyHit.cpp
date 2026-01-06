@@ -8,7 +8,7 @@ void CEnemyHit::OnCreate()
 
 	mLifeTime = 0.1f;
 
-	CAnimator* anim = this->GetComponent<CAnimator>();
+	CAnimator* anim = this->GetComponent<CAnimator>(eComponentType::Animator);
 	anim->CreateAnimationByFolder(L"EnemyHit", L"../resources/Enemy/EnemyHit", SVector2D(), mLifeTime / 3);
 
 	SetAnchorPoint(128.0f, 128.0f);
@@ -25,8 +25,8 @@ void CEnemyHit::OnUpdate(float tDeltaTime)
 {
 	CAnimatedEffect::OnUpdate(tDeltaTime);
 	if (mOwnerObj != nullptr && mOwnerObj->IsActive()) {
-		CTransform* tr = this->GetComponent<CTransform>();
-		tr->SetPos(mOwnerObj->GetComponent<CTransform>()->GetPos());
+		CTransform* tr = this->GetComponent<CTransform>(eComponentType::Transform);
+		tr->SetPos(mOwnerObj->GetComponent<CTransform>(eComponentType::Transform)->GetPos());
 	}
 }
 
@@ -47,5 +47,5 @@ void CEnemyHit::Reset(SVector2D tPos)
 
 	mLifeTime = 0.1f;
 
-	this->GetComponent<CAnimator>()->PlayAnimation(L"EnemyHit", false);
+	this->GetComponent<CAnimator>(eComponentType::Animator)->PlayAnimation(L"EnemyHit", false);
 }

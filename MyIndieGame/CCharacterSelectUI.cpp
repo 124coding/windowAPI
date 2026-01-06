@@ -48,7 +48,7 @@ void CCharacterSelectUI::OnCreate()
 		});
 
 	backButton->SetEventClick([=]() { 
-		CPlayScene::GetPlayer()->GetComponent<CTransform>()->SetPos(SVector2D(mapWidth / 2, mapHeight / 2 + 55.0f));
+		CPlayScene::GetPlayer()->GetComponent<CTransform>(eComponentType::Transform)->SetPos(SVector2D(mapWidth / 2, mapHeight / 2 + 55.0f));
 
 		CSceneMgr::LoadScene(L"TitleScene");
 		});
@@ -202,7 +202,7 @@ void CCharacterSelectUI::OnCreate()
 			});
 
 		charButton->SetEventClick([=]() {
-			CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
+			CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>(eComponentType::Script);
 
 			plSc->SetStartingCharacterID(character.ID);
 			this->InActive();

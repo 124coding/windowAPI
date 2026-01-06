@@ -21,7 +21,7 @@ void CTitleScene::OnCreate()
 	CTexture* titleMapImg = CResourceMgr::Find<CTexture>(L"TitleMap");
 	titleMap->AddComponent<CSpriteRenderer>();
 
-	CTransform* tlMapTr = titleMap->GetComponent<CTransform>();
+	CTransform* tlMapTr = titleMap->GetComponent<CTransform>(eComponentType::Transform);
 
 	aspectRatioX = (float)windowWidth / 1920;
 	aspectRatioY = (float)windowHeight / 1080;
@@ -29,7 +29,7 @@ void CTitleScene::OnCreate()
 	titleMap->SetSize(SVector2D(aspectRatioX, aspectRatioY));
 	tlMapTr->SetPos(SVector2D((float)(windowWidth) / 2, (float)windowHeight));
 
-	CSpriteRenderer* tlMapSr = titleMap->GetComponent<CSpriteRenderer>();
+	CSpriteRenderer* tlMapSr = titleMap->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
 	titleMap->SetAnchorPoint(titleMapImg->GetWidth() / 2, titleMapImg->GetHeight());
 	tlMapSr->SetTexture(titleMapImg);
 	tlMapSr->GetTexture()->CreateHBitmapFromGdiPlus(true);
@@ -48,15 +48,15 @@ void CTitleScene::OnCreate()
 	CTexture* titleMob1Img = CResourceMgr::Find<CTexture>(L"TitleMob1");
 	titleMob1->AddComponent<CSpriteRenderer>();
 
-	CTransform* tlMob1Tr = titleMob1->GetComponent<CTransform>();
+	CTransform* tlMob1Tr = titleMob1->GetComponent<CTransform>(eComponentType::Transform);
 	titleMob1->SetSize(SVector2D(aspectRatioX, aspectRatioY));
 	tlMob1Tr->SetPos(SVector2D((float)(windowWidth) / 2 - 10.0f, (float)windowHeight));
 
 	titleMob1->AddComponent<CTitleObjectScript>();
 
-	CTitleObjectScript* titleMob1Script = titleMob1->GetComponent<CTitleObjectScript>();
+	CTitleObjectScript* titleMob1Script = titleMob1->GetComponent<CTitleObjectScript>(eComponentType::Script);
 
-	CSpriteRenderer* tlMob1Sr = titleMob1->GetComponent<CSpriteRenderer>();
+	CSpriteRenderer* tlMob1Sr = titleMob1->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
 	titleMob1->SetAnchorPoint(titleMob1Img->GetWidth() / 2, titleMob1Img->GetHeight());
 	tlMob1Sr->SetTexture(titleMob1Img);
 	tlMob1Sr->GetTexture()->CreateHBitmapFromGdiPlus(true);
@@ -74,11 +74,11 @@ void CTitleScene::OnCreate()
 	CTexture* titleMob3Img = CResourceMgr::Find<CTexture>(L"TitleMob3");
 	titleMob3->AddComponent<CSpriteRenderer>();
 
-	CTransform* tlMob3Tr = titleMob3->GetComponent<CTransform>();
+	CTransform* tlMob3Tr = titleMob3->GetComponent<CTransform>(eComponentType::Transform);
 	titleMob3->SetSize(SVector2D(aspectRatioX, aspectRatioY));
 	tlMob3Tr->SetPos(SVector2D((float)(windowWidth) / 2, (float)windowHeight));
 
-	CSpriteRenderer* tlMob3Sr = titleMob3->GetComponent<CSpriteRenderer>();
+	CSpriteRenderer* tlMob3Sr = titleMob3->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
 	titleMob3->SetAnchorPoint(titleMob3Img->GetWidth() / 2, titleMob3Img->GetHeight());
 	tlMob3Sr->SetTexture(titleMob3Img);
 	tlMob3Sr->GetTexture()->CreateHBitmapFromGdiPlus(true);
@@ -94,16 +94,16 @@ void CTitleScene::OnCreate()
 	CTexture* titleMob2Img = CResourceMgr::Find<CTexture>(L"TitleMob2");
 	titleMob2->AddComponent<CSpriteRenderer>();
 
-	CTransform* tlMob2Tr = titleMob2->GetComponent<CTransform>();
+	CTransform* tlMob2Tr = titleMob2->GetComponent<CTransform>(eComponentType::Transform);
 	titleMob2->SetSize(SVector2D(aspectRatioX, aspectRatioY));
 	tlMob2Tr->SetPos(SVector2D((float)(windowWidth) / 2 + 10.0f, (float)windowHeight));
 
 	CTitleObjectScript* mob2OS = titleMob2->AddComponent<CTitleObjectScript>();
 	mob2OS->SetSpeed(-1.0f);
 
-	CTitleObjectScript* titleMob2Script = titleMob2->GetComponent<CTitleObjectScript>();
+	CTitleObjectScript* titleMob2Script = titleMob2->GetComponent<CTitleObjectScript>(eComponentType::Script);
 
-	CSpriteRenderer* tlMob2Sr = titleMob2->GetComponent<CSpriteRenderer>();
+	CSpriteRenderer* tlMob2Sr = titleMob2->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
 	titleMob2->SetAnchorPoint(titleMob2Img->GetWidth() / 2, titleMob2Img->GetHeight());
 	tlMob2Sr->SetTexture(titleMob2Img);
 	tlMob2Sr->GetTexture()->CreateHBitmapFromGdiPlus(true);
@@ -120,14 +120,14 @@ void CTitleScene::OnCreate()
 	CTexture* titleBrotatoImg = CResourceMgr::Find<CTexture>(L"TitleBrotato");
 	titleBrotato->AddComponent<CSpriteRenderer>();
 
-	CTransform* titleBrotatoTr = titleBrotato->GetComponent<CTransform>();
+	CTransform* titleBrotatoTr = titleBrotato->GetComponent<CTransform>(eComponentType::Transform);
 
 	aspectRatioX = (float)windowWidth / titleBrotatoImg->GetWidth();
 	aspectRatioY = (float)windowHeight / titleBrotatoImg->GetHeight();
 
 	titleBrotatoTr->SetPos(SVector2D(windowWidth / 2, 5 * windowHeight / 6));
 
-	CSpriteRenderer* titleBrotatoSr = titleBrotato->GetComponent<CSpriteRenderer>();
+	CSpriteRenderer* titleBrotatoSr = titleBrotato->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
 	titleBrotato->SetSize(SVector2D(0.3f * aspectRatioX, 0.3f * aspectRatioY));
 	titleBrotato->SetAnchorPoint(titleBrotatoImg->GetWidth() / 2, titleBrotatoImg->GetHeight());
 	titleBrotatoSr->SetTexture(titleBrotatoImg);
@@ -148,14 +148,14 @@ void CTitleScene::OnCreate()
 	CTexture* titleLogoImg = CResourceMgr::Find<CTexture>(L"TitleLogo");
 	titleLogo->AddComponent<CSpriteRenderer>();
 
-	CTransform* titleLogoTr = titleLogo->GetComponent<CTransform>();
+	CTransform* titleLogoTr = titleLogo->GetComponent<CTransform>(eComponentType::Transform);
 
 	aspectRatioX = (float)windowWidth / titleLogoImg->GetWidth();
 	aspectRatioY = (float)windowHeight / titleLogoImg->GetHeight();
 
 	titleLogoTr->SetPos(SVector2D(windowWidth / 2, 2 * windowHeight / 5));
 
-	CSpriteRenderer* titleLogoSr = titleLogo->GetComponent<CSpriteRenderer>();
+	CSpriteRenderer* titleLogoSr = titleLogo->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
 	titleLogo->SetSize(SVector2D(aspectRatioX * 0.5f, aspectRatioY * 0.3f));
 	titleLogo->SetAnchorPoint(titleLogoImg->GetWidth() / 2, titleLogoImg->GetHeight());
 	titleLogoSr->SetTexture(titleLogoImg);
@@ -175,11 +175,11 @@ void CTitleScene::OnCreate()
 	CTexture* titleLightImg = CResourceMgr::Find<CTexture>(L"TitleLight");
 	titleLight->AddComponent<CSpriteRenderer>();
 
-	CTransform* tlLightTr = titleLight->GetComponent<CTransform>();
+	CTransform* tlLightTr = titleLight->GetComponent<CTransform>(eComponentType::Transform);
 	titleLight->SetSize(SVector2D((float)(windowWidth) / 1920, (float)windowHeight / 1080));
 	tlLightTr->SetPos(SVector2D((float)(windowWidth) / 2, (float)windowHeight));
 
-	CSpriteRenderer* tlLightSr = titleLight->GetComponent<CSpriteRenderer>();
+	CSpriteRenderer* tlLightSr = titleLight->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
 	titleLight->SetAnchorPoint(titleLightImg->GetWidth() / 2, titleLightImg->GetHeight());
 	tlLightSr->SetTexture(titleLightImg);
 	tlLightSr->GetTexture()->CreateHBitmapFromGdiPlus(true);

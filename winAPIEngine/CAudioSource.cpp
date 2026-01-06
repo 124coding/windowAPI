@@ -18,7 +18,7 @@ void CAudioSource::OnUpdate(float tDeltaTime) {
 }
 
 void CAudioSource::OnLateUpdate(float tDeltaTime) {
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 
 	SVector2D pos = tr->GetPos();
 

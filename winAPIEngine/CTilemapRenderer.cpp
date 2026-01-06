@@ -33,7 +33,7 @@ void CTilemapRenderer::Render(HDC tHDC)
 	if (mTexture == nullptr) {
 		return;
 	}
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 	SVector2D pos = tr->GetPos();
 	float rot = tr->GetRot();
 	SVector2D scale = tr->GetScale();

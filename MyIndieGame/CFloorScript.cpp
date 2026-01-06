@@ -32,15 +32,15 @@ void CFloorScript::Render(HDC tHDC)
 }
 
 void CFloorScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther) {
-	CRigidbody* plRb = tOther->GetOwner()->GetComponent<CRigidbody>();
-	CTransform* plTr = tOther->GetOwner()->GetComponent<CTransform>();
+	CRigidbody* plRb = tOther->GetOwner()->GetComponent<CRigidbody>(eComponentType::Rigidbody);
+	CTransform* plTr = tOther->GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 
 	CCollider* plCol = tOther;
 
-	CRigidbody* floorRb = this->GetOwner()->GetComponent<CRigidbody>();
-	CTransform* floorTr = this->GetOwner()->GetComponent<CTransform>();
+	CRigidbody* floorRb = this->GetOwner()->GetComponent<CRigidbody>(eComponentType::Rigidbody);
+	CTransform* floorTr = this->GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 
-	CCollider* floorCol = this->GetOwner()->GetComponent<CCollider>();
+	CCollider* floorCol = this->GetOwner()->GetComponent<CCollider>(eComponentType::Collider);
 
 
 	float len = fabs(plTr->GetPos().mY - floorTr->GetPos().mY);

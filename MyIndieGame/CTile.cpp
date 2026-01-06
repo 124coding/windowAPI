@@ -41,7 +41,7 @@ void CTile::Render(HDC tHDC)
 
 void CTile::SetIndexPosition(SVector2D tPos)
 {
-	CTransform* tr = GetComponent<CTransform>();
+	CTransform* tr = GetComponent<CTransform>(eComponentType::Transform);
 
 	tPos.mX = tPos.mX * tileSizeX;
 	tPos.mY = tPos.mY * tileSizeY;

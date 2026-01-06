@@ -31,8 +31,8 @@ void CCircleCollider2D::Render(HDC tHDC)
 {
 	CCollider::Render(tHDC);
 
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
-	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
+	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
 	SVector2D pos = tr->GetPos();
 
 	pos = mainCamera->CalculatePosition(pos);

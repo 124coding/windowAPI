@@ -36,7 +36,7 @@ void CPlayerScript::OnUpdate(float tDeltaTime)
 	}
 
 	if (mAnimator == nullptr) {
-		mAnimator = GetOwner()->GetComponent<CAnimator>();
+		mAnimator = GetOwner()->GetComponent<CAnimator>(eComponentType::Animator);
 	}
 	switch (mState) {
 	case eState::Idle:
@@ -58,14 +58,14 @@ void CPlayerScript::OnUpdate(float tDeltaTime)
 
 	if (mState != eState::Dead) {
 		if (mHP == 0) {
-			CWeaponMgr* plWeaponMgr = GetOwner()->GetComponent<CWeaponMgr>();
+			CWeaponMgr* plWeaponMgr = GetOwner()->GetComponent<CWeaponMgr>(eComponentType::WeaponMgr);
 			for (auto& weapon : plWeaponMgr->GetWeapons()) {
 				weapon->SetState(false);
 			}
 			mState = eState::Dead;
 
-			CTransform* tr = GetOwner()->GetComponent<CTransform>();
-			CPlayerScript* sc = GetOwner()->GetComponent<CPlayerScript>();
+			CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
+			CPlayerScript* sc = GetOwner()->GetComponent<CPlayerScript>(eComponentType::Script);
 
 			tr->SetVelocity(SVector2D());
 
@@ -92,7 +92,7 @@ void CPlayerScript::OnUpdate(float tDeltaTime)
 		if (0.1f * mHPRegeneration * mHPRegenTime > 1.0f) {
 			IncreaseHP(1.0f);
 			mHPRegenTime = 0.0f;
-			CEffectMgr::ShowEffectText(GetOwner()->GetComponent<CTransform>()->GetPos(), std::to_wstring((int)1.0f), Gdiplus::Color::LimeGreen);
+			CEffectMgr::ShowEffectText(GetOwner()->GetComponent<CTransform>(eComponentType::Transform)->GetPos(), std::to_wstring((int)1.0f), Gdiplus::Color::LimeGreen);
 		}
 
 		if (!mCanCollideEnemy) {
@@ -135,7 +135,7 @@ void CPlayerScript::Idle()
 
 void CPlayerScript::Move()
 {
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 
 	Translate(tr);
 
@@ -151,7 +151,7 @@ void CPlayerScript::Move()
 void CPlayerScript::Translate(CTransform* tr)
 {
 	SVector2D currentVelocity = SVector2D();
-	CCollider* Cl = GetOwner()->GetComponent<CCollider>();
+	CCollider* Cl = GetOwner()->GetComponent<CCollider>(eComponentType::Collider);
 
 	if (mInputMgr->GetKeyPressed("DoMoveLt") && tr->GetPos().mX + Cl->GetOffset().mX > tileSizeX / 2) {
 		currentVelocity.mX += -1.0f;
@@ -188,7 +188,7 @@ void CPlayerScript::Translate(CTransform* tr)
 
 	tr->SetVelocity(currentVelocity * GetSpeed() * (1 + mSpeedPercent / 100.0f));
 
-	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
+	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
 
 	if (tr->GetVelocity().mX < 0) {
 		sr->SetFlipX(true);
@@ -209,7 +209,7 @@ void CPlayerScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther) {
 				ButtDamageByEnemy(enemy);
 			}
 			else {
-				CEffectMgr::ShowEffectText(GetOwner()->GetComponent<CTransform>()->GetPos(), L"회피", Gdiplus::Color::White);
+				CEffectMgr::ShowEffectText(GetOwner()->GetComponent<CTransform>(eComponentType::Transform)->GetPos(), L"회피", Gdiplus::Color::White);
 			}
 		}
 		else {
@@ -218,14 +218,14 @@ void CPlayerScript::OnCollisionEnter(float tDeltaTime, CCollider* tOther) {
 				ButtDamageByEnemy(enemy);
 			}
 			else {
-				CEffectMgr::ShowEffectText(GetOwner()->GetComponent<CTransform>()->GetPos(), L"회피", Gdiplus::Color::White);
+				CEffectMgr::ShowEffectText(GetOwner()->GetComponent<CTransform>(eComponentType::Transform)->GetPos(), L"회피", Gdiplus::Color::White);
 			}
 		}
 	}
 
 	if (tOther->GetOwner()->GetLayerType() == eLayerType::Material) {
-		this->ChangeMoney(tOther->GetOwner()->GetComponent<CMaterialScript>()->GetMoney() * CMonsterSpawnMgr::GetMoneyMultiple());
-		this->IncreasedExp(tOther->GetOwner()->GetComponent<CMaterialScript>()->GetExp() * CMonsterSpawnMgr::GetExpMultiple());
+		this->ChangeMoney(tOther->GetOwner()->GetComponent<CMaterialScript>(eComponentType::Script)->GetMoney() * CMonsterSpawnMgr::GetMoneyMultiple());
+		this->IncreasedExp(tOther->GetOwner()->GetComponent<CMaterialScript>(eComponentType::Script)->GetExp() * CMonsterSpawnMgr::GetExpMultiple());
 
 		if (this->mExp >= this->mNeedLevelUpExp) {
 			this->mExp -= this->mNeedLevelUpExp;
@@ -251,7 +251,7 @@ void CPlayerScript::OnCollisionStay(float tDeltaTime, CCollider* tOther) {
 			}
 		}
 		else {
-			CEffectMgr::ShowEffectText(GetOwner()->GetComponent<CTransform>()->GetPos(), L"회피", Gdiplus::Color::White);
+			CEffectMgr::ShowEffectText(GetOwner()->GetComponent<CTransform>(eComponentType::Transform)->GetPos(), L"회피", Gdiplus::Color::White);
 		}
 	}
 }
@@ -283,10 +283,10 @@ void CPlayerScript::IncreaseMaxHP(int tIncreaseAmount)
 
 void CPlayerScript::ButtDamageByEnemy(GameObject* tEnemy)
 {
-	float damage = tEnemy->GetComponent<CEnemyScript>()->GetDamage();
+	float damage = tEnemy->GetComponent<CEnemyScript>(eComponentType::Script)->GetDamage();
 	damage = DecreaseDamageBecauseArmor(damage);
 	IncreaseHP(-std::ceil(damage));
-	CEffectMgr::ShowEffectText(GetOwner()->GetComponent<CTransform>()->GetPos(), std::to_wstring((int)std::ceil(damage)), Gdiplus::Color::Red);
+	CEffectMgr::ShowEffectText(GetOwner()->GetComponent<CTransform>(eComponentType::Transform)->GetPos(), std::to_wstring((int)std::ceil(damage)), Gdiplus::Color::Red);
 }
 
 float CPlayerScript::DecreaseDamageBecauseArmor(float tDamage)
@@ -331,8 +331,8 @@ void CPlayerScript::ResetStats()
 }
 
 void CPlayerScript::Death(float tDeltaTime) {
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
-	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
+	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
 	if (tr->GetScale().mX <= 0.0f && tr->GetScale().mY <= 0.0f) return;
 
 	mDeadTimeTaken -= tDeltaTime;
@@ -357,11 +357,11 @@ void CPlayerScript::Death(float tDeltaTime) {
 
 void CPlayerScript::Acquire()
 {
-	CTransform* plTr = GetOwner()->GetComponent<CTransform>();
+	CTransform* plTr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 	for (auto& material : CSceneMgr::GetGameObjects(eLayerType::Material)) {
-		CTransform* materialTr = material->GetComponent<CTransform>();
+		CTransform* materialTr = material->GetComponent<CTransform>(eComponentType::Transform);
 		if ((plTr->GetPos() - materialTr->GetPos()).LengthSq() <= 200.0f * 200.0f) {
-			material->GetComponent<CMaterialScript>()->SetStateFollow();
+			material->GetComponent<CMaterialScript>(eComponentType::Script)->SetStateFollow();
 		}
 	}
 }

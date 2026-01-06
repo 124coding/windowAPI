@@ -19,7 +19,7 @@ void CTitleObjectScript::OnUpdate(float tDeltaTime)
 
 	mRegularVelocity = SVector2D(mSpeed * sin(mTotalTime), 0.0f);
 
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 
 	tr->SetVelocity(mRegularVelocity * 30.0f);
 }

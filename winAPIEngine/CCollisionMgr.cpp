@@ -67,13 +67,13 @@ void CCollisionMgr::LayerCollision(float tDeltaTime, CScene* tScene, eLayerType 
 	for (GameObject* left : lefts) {
 		if (left->IsActive() == false) continue;
 
-		CCollider* leftCollider = left->GetComponent<CCollider>();
+		CCollider* leftCollider = left->GetComponent<CCollider>(eComponentType::Collider);
 		if (leftCollider == nullptr) continue;
 		
 		for (GameObject* right : rights) {
 			if (right->IsActive() == false) continue;
 
-			CCollider* rightCollider = right->GetComponent<CCollider>();
+			CCollider* rightCollider = right->GetComponent<CCollider>(eComponentType::Collider);
 			if (rightCollider == nullptr) continue;
 
 			if (left == right) {
@@ -126,14 +126,10 @@ void CCollisionMgr::ColliderCollision(float tDeltaTime, CCollider* tLeft, CColli
 
 bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 {
-	CTransform* leftTr = tLeft->GetOwner()->GetComponent<CTransform>();
-	CTransform* rightTr = tRight->GetOwner()->GetComponent<CTransform>();
-
-	CSpriteRenderer* leftSr = tLeft->GetOwner()->GetComponent<CSpriteRenderer>();
-	CSpriteRenderer* rightSr = tRight->GetOwner()->GetComponent<CSpriteRenderer>();
+	CTransform* leftTr = tLeft->GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
+	CTransform* rightTr = tRight->GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 
 	SVector2D leftSize = ObjectSize(tLeft->GetOwner()) * tLeft->GetSize();
-
 	SVector2D rightSize = ObjectSize(tRight->GetOwner()) * tRight->GetSize();
 
 	SVector2D leftCenterPos = ObjectCenterPos(tLeft->GetOwner());
@@ -141,18 +137,15 @@ bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 
 	float distanceSq = (leftCenterPos - rightCenterPos).LengthSq();
 
-	// AABB 충돌
-
 	eColliderType leftType = tLeft->GetColliderType();
 	eColliderType rightType = tRight->GetColliderType();
 
 	// 각 오브젝트의 중심을 기준으로
-	// 수정 필요
 	if (leftTr->GetRot() == 0.0f && rightTr->GetRot() == 0.0f) {
 		if (leftType == eColliderType::Rect2D && rightType == eColliderType::Rect2D) {
 			// rect - rect
 			if (fabs(leftCenterPos.mX - rightCenterPos.mX) < fabs(leftSize.mX / 2.0f + rightSize.mX / 2.0f) &&
-				fabs((leftCenterPos.mY - rightCenterPos.mY) < fabs(leftSize.mY / 2.0f + rightSize.mY / 2.0f))) {
+				fabs(leftCenterPos.mY - rightCenterPos.mY) < fabs(leftSize.mY / 2.0f + rightSize.mY / 2.0f)) {
 
 				return true;
 			}
@@ -199,29 +192,66 @@ bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 			}
 		}
 	}
-	// OBB 충돌
 	else {
-
-		SVector2D dist = leftCenterPos.GetDistanceVector(rightCenterPos);
-
-		SVector2D vec[4] = { leftSize.GetWidthVector(leftTr->GetRot()), leftSize.GetHeightVector(leftTr->GetRot()), rightSize.GetWidthVector(rightTr->GetRot()), rightSize.GetHeightVector(rightTr->GetRot()) };
-
-		for (int i = 0; i < 4; i++) {
-			float sum = 0.0f;
-			SVector2D unit = vec[i].Normalize();
-
-			for (int j = 0; j < 4; j++) {
-				sum += (vec[j].Dot(unit) > 0) ? vec[j].Dot(unit) : -vec[j].Dot(unit);
-			}
-
-			float dot = (dist.Dot(unit) > 0) ? dist.Dot(unit) : -dist.Dot(unit);
-
-			if (dot > sum) {
-				return false;
+		if (leftType == eColliderType::Circle2D && rightType == eColliderType::Circle2D) {
+			float radiusSum = (leftSize.mX / 2.0f + rightSize.mX / 2.0f);
+			if (distanceSq <= radiusSum * radiusSum) {
+				return true;
 			}
 		}
+		else if (leftType == eColliderType::Rect2D && rightType == eColliderType::Rect2D) {
+			SVector2D dist = leftCenterPos.GetDistanceVector(rightCenterPos);
 
-		return true;
+			SVector2D vec[4] = { leftSize.GetWidthVector(leftTr->GetRot()), leftSize.GetHeightVector(leftTr->GetRot()), rightSize.GetWidthVector(rightTr->GetRot()), rightSize.GetHeightVector(rightTr->GetRot()) };
+
+			for (int i = 0; i < 4; i++) {
+				float sum = 0.0f;
+				SVector2D unit = vec[i].Normalize();
+
+				for (int j = 0; j < 4; j++) {
+					sum += (vec[j].Dot(unit) > 0) ? vec[j].Dot(unit) : -vec[j].Dot(unit);
+				}
+
+				float dot = (dist.Dot(unit) > 0) ? dist.Dot(unit) : -dist.Dot(unit);
+
+				if (dot > sum) {
+					return false;
+				}
+			}
+			return true;
+		}
+		else {
+			CCollider* rectCol = (leftType == eColliderType::Rect2D) ? tLeft : tRight;
+			CCollider* circleCol = (leftType == eColliderType::Circle2D) ? tLeft : tRight;
+
+			SVector2D rectPos = ObjectCenterPos(rectCol->GetOwner());
+			SVector2D circlePos = ObjectCenterPos(circleCol->GetOwner());
+
+			SVector2D rectHalfSize = (ObjectSize(rectCol->GetOwner()) * rectCol->GetSize()) / 2.0f;
+			float circleRadius = (ObjectSize(circleCol->GetOwner()) * circleCol->GetSize()).mX / 2.0f;
+
+			float rectRot = rectCol->GetOwner()->GetComponent<CTransform>(eComponentType::Transform)->GetRot();
+
+			SVector2D dir = circlePos - rectPos;
+
+			SVector2D rectRight = rectCol->GetSize().GetWidthVector(rectRot).Normalize();
+			SVector2D rectUp = rectCol->GetSize().GetHeightVector(rectRot).Normalize();  
+
+			float localX = dir.Dot(rectRight);
+			float localY = dir.Dot(rectUp);
+
+			float closestX = std::max(-rectHalfSize.mX, std::min(localX, rectHalfSize.mX));
+			float closestY = std::max(-rectHalfSize.mY, std::min(localY, rectHalfSize.mY));
+
+			float distanceX = localX - closestX;
+			float distanceY = localY - closestY;
+
+			float distSq = (distanceX * distanceX) + (distanceY * distanceY);
+
+			if (distSq <= (circleRadius * circleRadius)) {
+				return true;
+			}
+		}
 	}
 
 	return false;

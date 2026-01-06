@@ -42,7 +42,7 @@ static T* Instantiate(eLayerType tType, SVector2D tPosition, CScene* targetScene
 	CLayer* layer = activeScene->GetLayer(tType);
 	layer->AddGameObject(gameObject);
 
-	CTransform* tr = gameObject->GetComponent<CTransform>();
+	CTransform* tr = gameObject->GetComponent<CTransform>(eComponentType::Transform);
 	tr->SetPos(tPosition);
 	tr->SetName(L"TR");
 
@@ -71,15 +71,15 @@ static void DontDestroyOnLoad(GameObject* tObj) {
 }
 
 static SVector2D ObjectSize(GameObject* tObj) {
-	CTransform* tr = tObj->GetComponent<CTransform>();
-	CSpriteRenderer* sr = tObj->GetComponent<CSpriteRenderer>();
+	CTransform* tr = tObj->GetComponent<CTransform>(eComponentType::Transform);
+	CSpriteRenderer* sr = tObj->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
 
 	return SVector2D(tObj->GetSize().mX * sr->GetTexture()->GetWidth(), tObj->GetSize().mY * sr->GetTexture()->GetHeight());
 }
 
 static SVector2D ObjectCenterPos(GameObject* tObj) {
-	CTransform* tr = tObj->GetComponent<CTransform>();
-	CCollider* cl = tObj->GetComponent<CCollider>();
+	CTransform* tr = tObj->GetComponent<CTransform>(eComponentType::Transform);
+	CCollider* cl = tObj->GetComponent<CCollider>(eComponentType::Collider);
 
 	float fCos = cos(DegToRad(tr->GetRot()));
 	float fSin = sin(DegToRad(tr->GetRot()));

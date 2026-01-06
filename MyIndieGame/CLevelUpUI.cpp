@@ -22,7 +22,7 @@ void CLevelUpUI::OnCreate()
 	SetWidth(windowWidth);
 	SetHeight(windowHeight);
 
-	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
+	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>(eComponentType::Script);
 
 	CUIText* levelUp = new CUIText(SVector2D(), windowWidth, windowHeight / 4, L"레벨 업!");
 	levelUp->SetFontSize(50.0f);
@@ -186,7 +186,7 @@ void CLevelUpUI::OnDestroy()
 
 void CLevelUpUI::OnUpdate(float tDeltaTime)
 {
-	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
+	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>(eComponentType::Script);
 
 	mResetTex->SetText(L"초기화 -" + std::to_wstring(mResetCost));
 	mResetTex->SetWidth(mResetTex->CalculateTextSize().Width);
@@ -230,7 +230,7 @@ void CLevelUpUI::UIClear()
 
 std::pair<std::wstring, CUIPanel*> CLevelUpUI::MakeStatUpPanel(float tX, float tY, int tStageNum)
 {
-	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
+	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>(eComponentType::Script);
 	std::pair<int, CDataMgr::SUpgrades> curStat = ChooseRandomUpgradeByStageNum(tStageNum);
 
 	for (auto& id : mStatUpPanels) {
@@ -351,7 +351,7 @@ std::pair<std::wstring, CUIPanel*> CLevelUpUI::MakeStatUpPanel(float tX, float t
 		mResetCost = 1;
 
 		if (plSc->GetCurStageLevelUpCount() <= 0) {
-			CPlayScene::GetPlayer()->GetComponent<CTransform>()->SetPos(SVector2D(windowWidth / 2, windowHeight / 2 + 55.0f));
+			CPlayScene::GetPlayer()->GetComponent<CTransform>(eComponentType::Transform)->SetPos(SVector2D(windowWidth / 2, windowHeight / 2 + 55.0f));
 			ResetLevelUpPanels(CPlayScene::GetStageNum() + 1);
 			CSceneMgr::LoadScene(L"ShopScene");
 		}

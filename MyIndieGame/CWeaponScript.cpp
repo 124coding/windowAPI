@@ -54,7 +54,7 @@ void CWeaponScript::OnCollisionExit(float tDeltaTime, CCollider* tOther)
 void CWeaponScript::SetRotForClosedEnemyWatch(std::vector<GameObject*> tEnemies)
 {
 	GameObject* closedEnemy = nullptr;
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 
 	if (tEnemies.empty()) {
 		mClosedEnemyPos = SVector2D(9999.0f, 9999.0f);
@@ -63,8 +63,8 @@ void CWeaponScript::SetRotForClosedEnemyWatch(std::vector<GameObject*> tEnemies)
 	}
 
 	for (GameObject* enemy : tEnemies) {
-		if (closedEnemy == nullptr || (enemy->GetComponent<CTransform>()->GetPos() - tr->GetPos()).LengthSq() < (closedEnemy->GetComponent<CTransform>()->GetPos() - tr->GetPos()).LengthSq()) {
-			CEnemyScript* enemySc = enemy->GetComponent<CEnemyScript>();
+		if (closedEnemy == nullptr || (enemy->GetComponent<CTransform>(eComponentType::Transform)->GetPos() - tr->GetPos()).LengthSq() < (closedEnemy->GetComponent<CTransform>(eComponentType::Transform)->GetPos() - tr->GetPos()).LengthSq()) {
+			CEnemyScript* enemySc = enemy->GetComponent<CEnemyScript>(eComponentType::Script);
 
 			if (enemySc->GetState() == CEnemyScript::eState::Spawn || enemySc->GetState() == CEnemyScript::eState::Dead) continue;
 			closedEnemy = enemy;
@@ -77,9 +77,9 @@ void CWeaponScript::SetRotForClosedEnemyWatch(std::vector<GameObject*> tEnemies)
 		return;
 	}
 
-	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>();
-	CTransform* enemyTr = closedEnemy->GetComponent<CTransform>();
-	CSpriteRenderer* enemySr = closedEnemy->GetComponent<CSpriteRenderer>();
+	CSpriteRenderer* sr = GetOwner()->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
+	CTransform* enemyTr = closedEnemy->GetComponent<CTransform>(eComponentType::Transform);
+	CSpriteRenderer* enemySr = closedEnemy->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer);
 
 	SVector2D enemySize = ObjectSize(closedEnemy);
 
@@ -104,15 +104,15 @@ void CWeaponScript::SetRotForClosedEnemyWatch(std::vector<GameObject*> tEnemies)
 
 void CWeaponScript::CalculatePosNextToTarget()
 {
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
-	CTransform* plTr = mTarget->GetComponent<CTransform>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
+	CTransform* plTr = mTarget->GetComponent<CTransform>(eComponentType::Transform);
 
 	tr->SetPos(ObjectCenterPos(mTarget) + mOffset);
 }
 
 CWeaponScript::SDamageInfo CWeaponScript::ApplyDamageModifiers(float tBaseDamage)
 {
-	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>();
+	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>(eComponentType::Script);
 
 	int damagePercent = plSc->GetDamagePercent();
 

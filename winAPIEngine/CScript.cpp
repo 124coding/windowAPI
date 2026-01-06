@@ -37,7 +37,7 @@ void CScript::OnCollisionExit(float tDeltaTime, CCollider* tOther) {
 }
 
 void CScript::Bounce() {
-	CTransform* tr = GetOwner()->GetComponent<CTransform>();
+	CTransform* tr = GetOwner()->GetComponent<CTransform>(eComponentType::Transform);
 
 	float bobbingFactor = fabs(sin(mTotalTime * mBobbingSpeed));
 
