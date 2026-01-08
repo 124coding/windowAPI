@@ -71,6 +71,6 @@ void CBabyAlienScript::Translate(CTransform* tr)
 			currentVelocity = currentVelocity.Normalize();
 		}
 
-		tr->SetVelocity(currentVelocity * 50.0f/*dynamic_cast<CBabyAlien*>(GetOwner())->GetSpeed()*/);
+		tr->SetVelocity(currentVelocity * 50.0f);
 	}
 }

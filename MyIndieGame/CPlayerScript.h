@@ -16,6 +16,7 @@ class CWeapon;
 class CPlayerScript : public CScript
 {
 public:
+	// 플레이어 상태 머신 (FSM)
 	enum class eState {
 		Idle,
 		Walk,
@@ -61,20 +62,30 @@ public:
 	void OnLateUpdate(float tDeltaTime) override;
 	void Render(HDC tHDC) override;
 
+	// ==========================================
+	// Collision Events (피격 판정)
+	// ==========================================
+	// 적과 충돌 시 데미지 입음, 아이템 충돌 시 획득 처리
 	void OnCollisionEnter(float tDeltaTime, CCollider* tOther) override;
 	void OnCollisionStay(float tDeltaTime, CCollider* tOther) override;
 	void OnCollisionExit(float tDeltaTime, CCollider* tOther) override;
 
 private:
-	void Idle();
-	void Move();
-	void Translate(CTransform* tr);
-	void ButtDamageByEnemy(GameObject* tEnemy);
-	float DecreaseDamageBecauseArmor(float tDamage);
-	void Death(float tDeltaTime);
-	void Acquire();
+	// ==========================================
+	// Private Helper Methods (FSM Actions)
+	// ==========================================
+	void Idle();	// 대기 상태 로직
+	void Move();	// 키 입력에 따른 이동 로직
+	void Translate(CTransform* tr);		// 실제 좌표 이동 및 화면 밖 제한 처리
+
+	// 피격 및 데미지 공식 적용
+	void ButtDamageByEnemy(GameObject* tEnemy);			// 적과 부딪혔을 때
+	float DecreaseDamageBecauseArmor(float tDamage);	// 방어력에 따른 데미지 감소 계산
+	void Death(float tDeltaTime);	// 사망 처리 및 연출
+	void Acquire();					// 아이템 획득 범위 체크 (자석 기능 등)
 
 public:
+	// 게임 재시작 시 상태 초기화
 	void SetState(bool tPower) {
 		if (tPower) {
 			mState = eState::Idle;
@@ -84,6 +95,7 @@ public:
 		}
 	}
 
+	// 캐릭터 선택창에서 고른 데이터 저장
 	void SetStartingCharacterID(std::wstring tID) {
 		this->mStartingCharacterID = tID;
 	}
@@ -100,9 +112,11 @@ public:
 		return this->mStartWeaponID;
 	}
 
+	// [HP Management]
 	void SetHP(int tHP) {
 		this->mHP = tHP;
 
+		// 오버힐 방지
 		if (this->mHP > mMaxHP) {
 			this->mHP = mMaxHP;
 		}
@@ -124,6 +138,10 @@ public:
 	int GetMaxHP() {
 		return this->mMaxHP;
 	}
+
+	// [Stat Modifier System]
+	// 아이템 효과로 인해 스탯 증가량이 %로 변동될 때 이를 처리하는 시스템
+	// 예: "경험치 획득량 20% 증가" 아이템을 먹으면 IncreaseExp() 호출 시 Multiplier가 적용됨
 
 	void SetHPGeneration(int tAmount) {
 		this->mHPRegeneration = tAmount;
@@ -319,10 +337,13 @@ public:
 		return this->mSpeedPercent;
 	}
 
+	// [Stat Modifier Core Logic]
+	// 특정 스탯(Key)에 대한 퍼센트 보정치를 저장
 	void AddStatModifier(const std::wstring& statName, float percent) {
 		mStatGainModifiers[statName] += percent;
 	}
 
+	// 보정치를 적용한 배율 반환 (기본 1.0f)
 	float GetStatMultiplier(const std::wstring& statName) {
 		if (mStatGainModifiers.find(statName) != mStatGainModifiers.end()) {
 			return 1.0f + (mStatGainModifiers[statName] / 100.0f);
@@ -330,6 +351,7 @@ public:
 		return 1.0f;
 	}
 
+	// 무적 시간(Grace Period) 관리
 	void SetCanCollideEnemy(bool tCanCollideEnemey) {
 		this->mCanCollideEnemy = tCanCollideEnemey;
 	}
@@ -338,9 +360,14 @@ public:
 		return this->mCanCollideEnemy;
 	}
 
+	// 게임 리셋 시 모든 스탯 초기화
 	void ResetStats();
 
 public:
+	// ==========================================
+	// Composite Sprite Rendering (파츠 조합)
+	// ==========================================
+
 	void SetBaseTexture(CTexture* tTexture) {
 		this->mBaseTexture = tTexture;
 	}
@@ -382,12 +409,13 @@ public:
 	}
 
 private:
-	eState mState;
+	eState mState;									// FSM 현재 상태
 	CAnimator* mAnimator;
-	CInputMgr* mInputMgr = CInputMgr::GetInst();
+	CInputMgr* mInputMgr = CInputMgr::GetInst();	// 입력 관리자
 
-	float mDeadTimeTaken = 1.0f;
+	float mDeadTimeTaken = 1.0f;					// 사망 애니메이션 시간
 
+	// [RPG Stats]
 	int mHP;
 	int mMaxHP;
 	int mHPRegeneration;
@@ -410,18 +438,22 @@ private:
 
 	std::map<std::wstring, float> mStatGainModifiers;
 
+	// [Leveling]
 	float mExp;
 	int mLevel;
 	float mNeedLevelUpExp;
 	int mCurStageLevelUpCount;
 	int mMoney;
 
-	float mGracePeriod = 0.2f;
+	// [Collision]
+	float mGracePeriod = 0.2f;		// 피격 후 무적 시간
 	bool mCanCollideEnemy = true;
 
+	// [Character Data]
 	std::wstring mStartingCharacterID = L"";
 	std::wstring mStartWeaponID = L"";
 
+	// [Rendering Parts]
 	CTexture* mBaseTexture = nullptr;
 	CTexture* mEyesTexture = nullptr;
 	CTexture* mMouthTexture = nullptr;

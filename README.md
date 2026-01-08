@@ -19,10 +19,12 @@
 
 #### 1. Component의 모듈화 및 관리
 
+<img width="1000" height="800" alt="Component Diagram" src="https://github.com/user-attachments/assets/2601a9ec-afeb-402b-a5e1-64213a6e63bf" />
+
 - 모든 기능을 CComponent를 상속 받아 구현하고, enum class를 통해 타입을 명확히 구분하여 관리하였습니다.  
 - 게임 오브젝트 내에서 vector를 사용해 컴포넌트들을 관리하며, O(1) 조회 성능을 목표로 인덱스 기반 접근 방식을 채택했습니다.
 
-초기에는 유연성을 위해 GetComponent와 RemoveComponent에 dynamic_cast를 사용했으나, 매 프레임 여러 번 호출되는 GetComponent의 특성상 RTTI(Run-Time Type Information) 비용이 성능 병목이 될 수 있음을 파악하고 이를 해결하기 위해 vector의 인덱스를 Enum과 매핑하여 O(1)의 상수 시간 접근이 가능하도록 구조를 최적화하였습니다.
+초기에는 유연성을 위해 GetComponent와 RemoveComponent에 dynamic_cast를 사용했으나, 매 프레임 여러 번 호출되는 GetComponent의 특성상 매 프레임 빈번하게 호출되는 함수에서 RTTI(Run-Time Type Information) 비용에 의한 오버헤드를 제거하기 위해 vector의 인덱스를 Enum과 매핑하여 O(1)의 상수 시간 접근이 가능하도록 구조를 최적화하였습니다.
 
 <details>
 <summary>Component 클래스</summary>
@@ -131,20 +133,6 @@ T* AddComponent() {
 }
 
 // 컴포넌트 삭제
-// 초기 버전
-// template <typename T>
-// void RemoveComponent() {
-// 	T* component = nullptr;
-// 	for (int i = 0; i < mComponents.size(); i++) {
-// 		component = dynamic_cast<T*>(mComponents[i]);
-// 		if (component != nullptr) {
-// 			SAFE_DELETE(mComponents[i]);
-// 			break;
-// 		}
-// 	}
-// }
-
-// 수정 버전
 template <typename T>
 void RemoveComponent(eComponentType type) {
     int index = (int)type;
@@ -157,19 +145,6 @@ void RemoveComponent(eComponentType type) {
 }
 
 // 컴포넌트 획득
-// 초기 버전
-// template <typename T>
-// T* GetComponent() {
-// 	T* component = nullptr;
-// 	for (CComponent* comp : mComponents) {
-// 		component = dynamic_cast<T*>(comp);
-// 		if (component) break;
-// 	}
-
-// 	return component;
-// }
-
-// 수정 버전
 template <typename T>
 T* GetComponent(eComponentType type) {
 	if (mComponents[(UINT)type] != nullptr)
@@ -263,12 +238,56 @@ void GameObject::Render(HDC tHDC)
 
 </br>
 
-### 2. 충돌 처리 시스템과 레이어 최적화 (Collision System)
-백 개 이상의 오브젝트가 등장하는 로그라이크 장르 특성상, 모든 객체 간의 충돌을 검사하는 이중 루프 방식은 심각한 프레임 저하를 유발합니다. 이를 해결하기 위해 충돌체(Collider) 컴포넌트화와 레이어 필터링(Layer Interaction) 방식을 도입하여 연산 비용을 최소화했습니다.
+### 2. 충돌 처리 최적화: Bitset 행렬과 공간 분할
+수백 개의 투사체와 몬스터가 난무하는 상황에서 $O(N^2)$의 충돌 연산은 치명적입니다. 이를 해결하기 위해 비트 연산 기반의 레이어 필터링과 메모리 최적화된 자료구조를 도입했습니다.
 
 #### 핵심 구현 내용
 
-#### 1. 충돌체(Collider)의 추상화 및 다형성
+#### 1.  std::bitset을 활용한 $O(1)$ 충돌 필터링
+- std::vector나 조건문(if)을 순회하는 대신, std::bitset을 활용하여 충돌 상호작용 매트릭스(Interaction Matrix)를 구현했습니다.  
+- 특정 레이어 간의 충돌 여부를 비트 연산 한 번으로 확인하므로, 객체 수가 늘어나도 필터링 오버헤드가 '0'에 수렴하도록 최적화했습니다.
+
+#### 2. Union을 활용한 충돌 쌍(Pair) ID 최적화
+- 충돌 이벤트를 관리하는 std::unordered_map의 키(Key)를 생성할 때, 문자열이나 구조체를 쓰지 않고 Union을 활용했습니다.
+- 두 개의 UINT32 ID(Left, Right)를 메모리 복사 없이 하나의 UINT64 정수로 변환하여, 해시 맵 조회 속도를 극대화했습니다.
+
+<details> 
+<summary>최적화된 충돌 매니저 핵심 코드</summary> 
+<div markdown="1">
+
+```C++
+
+class CCollisionMgr {
+    // Union을 사용하여 비트 연산 없이 두 개의 32비트 ID를 64비트 키로 병합
+    union CollisionID {
+        struct {
+            UINT32 left;
+            UINT32 right;
+        };
+        UINT64 cId;
+    };
+
+    // 메모리 효율적인 비트셋 매트릭스
+    static std::bitset<(UINT)eLayerType::MAX> mCollisionLayerMtrix[(UINT)eLayerType::MAX];
+};
+
+void CCollisionMgr::ColliderCollision(float tDeltaTime, CCollider* tLeft, CCollider* tRight) {
+    // ...
+    CollisionID id = {};
+    id.left = tLeft->GetID();
+    id.right = tRight->GetID();
+
+    // UINT64 정수형 키를 사용하여 고속 조회
+    auto iter = mCollisionMap.find(id.cId);
+    // ...
+}
+
+```
+</div> 
+</details>
+</br>
+
+#### 3. 충돌체(Collider)의 추상화 및 다형성
 - 모든 충돌체를 CCollider로 추상화하고, 이를 상속받는 CBoxCollider2D(직사각형)와 CCircleCollider2D(원형)을 구현했습니다.  
 - 기본적인 AABB(Axis-Aligned Bounding Box)와 Circle 충돌뿐만 아니라, 회전하는 오브젝트를 정밀하게 판정하기 위해 OBB(Oriented Bounding Box, 분리축 이론) 알고리즘과 Clamping(Closest Point) 기법을 적용하여 Box-Circle 간의 충돌까지 완벽하게 구현했습니다.
 
@@ -429,7 +448,7 @@ bool CCollisionMgr::Intersect(CCollider* tLeft, CCollider* tRight)
 </details>  
 </br>
 
-#### 2. 레이어 기반 충돌 필터링(Layer Interaction Matrix)
+#### 4. 레이어 기반 충돌 필터링(Layer Interaction Matrix)
 - 모든 게임 오브젝트를 Player, Enemy, MeleeWeapon, Bullet 등의 레이어로 분류하였습니다.
 - 각 씬(Scene)에서 충돌이 필요한 레이어 조합만을 미리 지정하여 불필요한 연산은 원천 차단하였습니다.  
 
@@ -520,8 +539,8 @@ void CCollisionMgr::LayerCollision(float tDeltaTime, CScene* tScene, eLayerType 
 
 충돌 체크 시 매번 GetComponent를 호출하는 비용을 줄이기 위해, Scene 단계에서 Collider 컴포넌트를 가진 오브젝트만 별도의 리스트로 캐싱(Caching)하는 최적화 기법도 고려할 수 있습니다. 이 프로젝트에서는 따로 수정하지는 않았습니다.
 
-#### 3. 이벤트 기반 충돌 처리
-- 충돌 발생 시, OnCollisionEnber, OnCollisionStay, OnCollisionExit 이벤트를 발생시켜 이를 각 스크립트에서 함수 오버라이딩하여 독립적으로 로직을 처리하도록 하였습니다.
+#### 5. 이벤트 기반 충돌 처리
+- 충돌 발생 시, OnCollisionEnter, OnCollisionStay, OnCollisionExit 이벤트를 발생시켜 이를 각 스크립트에서 함수 오버라이딩하여 독립적으로 로직을 처리하도록 하였습니다.
 - 이를 통해 충돌 감지 로직과 충돌 후 처리 로직을 완벽하게 분리하였습니다.
   
 <details>
@@ -1061,6 +1080,131 @@ void CTexture::CreateHBitmapFromGdiPlus(bool tbAlpha) {
 
 - 결과 (Result): 씬을 여러 번 오가도 메모리 사용량이 누적되지 않고 일정하게 유지(Stable Memory Footprint)되어, 장시간 플레이 시에도 안정성을 확보했습니다.
 
+### 3. 구조적 안정성: 지연 처리를 통한 크래시 방지
+
+- 문제 상황 (Problem): 게임 로직(OnUpdate) 실행 도중 오브젝트가 파괴(Destroy)되거나 UI가 닫히면서, 순회 중이던 vector나 list의 Iterator가 무효화(Invalidation) 되어 메모리 접근 위반(Crash)이 발생하는 문제가 있었습니다.
+
+- 해결 과정 (Solution): 이벤트 큐(Event Queue) 패턴을 도입하여 삭제 로직을 분리했습니다.
+
+1. OnUpdate 도중에는 mDeleteQueue에 삭제 요청만 등록합니다.
+
+2. 모든 로직 업데이트가 끝난 후, 프레임의 마지막 단계에서 큐를 비우며 실제 메모리 해제와 컨테이너 제거를 일괄 처리합니다.
+
+- 결과 (Result): 객체의 생명주기 관리 로직이 명확해졌으며, 복잡한 상호작용(예: 몬스터가 죽으면서 자신을 때린 투사체를 삭제) 상황에서도 크래시 없는 안정적인 엔진 구동을 확보했습니다.
+
+### 4. 렌더링 최적화: 타일맵 베이킹(Baking)을 통한 드로우 콜 최소화
+- 문제 상황 (Problem): 맵의 크기가 커짐에 따라 바닥을 구성하는 타일 오브젝트가 수백 개 이상으로 늘어났습니다. 이를 매 프레임 개별적으로 렌더링(DrawImage 호출)하다 보니, 오브젝트 순회와 함수 호출 오버헤드(Draw Call)가 발생하여 프레임 드랍의 원인이 되었습니다.
+
+- 해결 과정 (Solution): 타일맵 베이킹(Tilemap Baking) 기법을 도입했습니다.
+
+1. 맵 로딩 시점(OnEnter)에 맵 크기만한 거대한 빈 비트맵을 메모리에 생성합니다.
+
+2. 파일에서 읽어온 수백 개의 타일 정보를 이용해, GDI+ Graphics 객체로 빈 비트맵 위에 타일들을 한 번에 그려 넣습니다(Merge).
+
+3. 인게임 루프(OnUpdate)에서는 수백 개의 타일 객체를 순회하는 대신, 미리 완성된(Baked) 단 한 장의 배경 이미지만 렌더링합니다.
+
+- 결과 (Result): 수백 번 발생하던 타일 렌더링 연산을 단 1회로 줄여 렌더링 부하를 획기적으로 감소시켰으며, 맵 스크롤 시에도 끊김 없는 부드러운 화면 전환을 구현했습니다.
+
+
+<details> 
+<summary>타일맵 베이킹(LoadBakedMap, RandomBakedMap) 코드</summary> 
+<div markdown="1">
+
+```C++
+// [Map Baking] 파일에서 읽어온 타일 정보를 하나의 비트맵으로 병합하여 드로우 콜 최소화
+void CPlayScene::LoadBakedMap(const wchar_t* tPath)
+{
+    FILE* pFile = nullptr;
+    _wfopen_s(&pFile, tPath, L"rb");
+
+    // 1. 맵 전체 크기에 맞는 거대한 빈 텍스처(캔버스) 생성
+    CTexture* mBakedMapImg = CTexture::Create(L"BakedBG", mapWidth, mapHeight);
+    
+    // 2. 텍스처에 그리기 위한 GDI+ Graphics 객체 생성
+    Gdiplus::Graphics graphics(mBakedMapImg->GetImage());
+    CTexture* tileTex = CToolScene::GetMapTileTexture();
+
+    // 3. 파일에서 타일 데이터를 읽어와 캔버스에 '굽기(Bake)'
+    while (true) {
+        int idxX = 0, idxY = 0, posX = 0, posY = 0;
+        
+        if (fread(&idxX, sizeof(int), 1, pFile) == NULL) break;
+		if (fread(&idxY, sizeof(int), 1, pFile) == NULL) break;
+		if (fread(&posX, sizeof(int), 1, pFile) == NULL) break;
+		if (fread(&posY, sizeof(int), 1, pFile) == NULL) break;
+
+        int srcX = idxX * tileSizeX;
+        int srcY = idxY * tileSizeY;
+
+        // 개별 객체 생성 없이, 이미지에 직접 그려 넣음
+        graphics.DrawImage(tileTex->GetImage(), 
+            Gdiplus::Rect(posX, posY, tileSizeX, tileSizeY), 
+            srcX, srcY, tileSizeX, tileSizeY, 
+            Gdiplus::UnitPixel);
+    }
+    fclose(pFile);
+
+    // 4. 외곽선 처리 및 최적화를 위한 HBITMAP 변환
+    OutLineFill(&graphics, tileSizeX, tileSizeY);
+    mBakedMapImg->CreateHBitmapFromGdiPlus(false);
+    
+    // 완성된 배경 텍스처 적용
+    mBakedMap->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer)->SetTexture(mBakedMapImg);
+}
+
+// [Procedural Generation] 런타임에 랜덤 맵 생성 및 베이킹
+void CPlayScene::RandomBakedMap()
+{
+    // 1. 랜덤 타일셋 텍스처 로드
+    int randTile = std::rand() % 5 + 1;
+    std::wstring tileName = L"Tile" + std::to_wstring(randTile);
+    CTexture* randomMapTex = CResourceMgr::Find<CTexture>(tileName);
+
+    // 2. 빈 텍스처 및 Graphics 객체 준비
+    CTexture* mBakedMapImg = CTexture::Create(L"BakedBG", mapWidth, mapHeight);
+    Gdiplus::Graphics graphics(mBakedMapImg->GetImage());
+
+    int tileCountWidth = mapWidth / tileSizeX;
+    int tileCountHeight = mapHeight / tileSizeY;
+
+    // 3. 절차적 생성 알고리즘 (Procedural Logic)
+    for (int i = 0; i < tileCountWidth; i++) {
+        for (int j = 0; j < tileCountHeight; j++) {
+            
+            // 90% 확률로 기본 타일, 10% 확률로 장식 타일 배치
+            int randNum = std::rand() % 10;
+            int srcX = 0, srcY = 0;
+
+            if (randNum > 0) {
+                // 기본 타일 좌표 설정
+                srcX = (tileMapWidth - 1) * tileSizeX;
+                srcY = (tileMapHeight - 1) * tileSizeY;
+            }
+            else {
+                // 장식 타일 랜덤 선택 로직
+                // ... (while문으로 유효한 장식 타일 인덱스 탐색) ...
+            }
+            
+            // 계산된 타일을 캔버스에 그리기
+            graphics.DrawImage(randomMapTex->GetImage(),
+                Gdiplus::Rect(i * tileSizeX, j * tileSizeY, tileSizeX, tileSizeY),
+                srcX, srcY, tileSizeX, tileSizeY,
+                Gdiplus::UnitPixel);
+        }
+    }
+
+    // 4. 마무리 처리 (외곽선 및 HBITMAP 변환)
+    OutLineFill(&graphics, tileSizeX, tileSizeY);
+    mBakedMapImg->CreateHBitmapFromGdiPlus(false);
+    
+    mBakedMap->GetComponent<CSpriteRenderer>(eComponentType::SpriteRenderer)->SetTexture(mBakedMapImg);
+}
+```
+
+</div> 
+</details> 
+</br>
+
 ## 회고
 ### 1. "작동하는 코드"에서 "설계된 아키텍처"로의 전환
 개발 초기에는 빠른 기능 구현에 집중하여 하드코딩을 하기도 했으나, 프로젝트 규모가 커질수록 유지보수가 어려워지는 기술적 부채(Technical Debt)를 경험했습니다. 이를 해결하기 위해 개발 중간에 클래스 다이어그램을 재설계하고 컴포넌트 패턴으로 리팩토링하는 과정을 거쳤습니다. 이 경험을 통해 "좋은 설계가 곧 개발 속도와 직결된다"는 것을 체감했으며, 확장 가능한 엔진 아키텍처를 설계하는 능력을 길렀습니다.
@@ -1074,10 +1218,10 @@ C++ WinAPI 환경에서 직접 엔진을 바닥부터 구현하며, 가비지 �
 ## 마치며
 이번 브로테이토 모작 프로젝트는 단순히 기능을 구현하는 것을 넘어, **"수많은 오브젝트를 어떻게 효율적으로 관리할 것인가"** 에 대한 해답을 찾아가는 과정이었습니다.
 
-컴포넌트 패턴을 통해 객체 지향적인 설계의 유연함을 배웠고,
+- 컴포넌트 패턴을 통해 객체 지향적인 설계의 유연함을 배웠고,
 
-데이터 주도 설계를 통해 기획 데이터와 로직을 분리하는 생산성 높은 파이프라인을 구축했으며,
+- 데이터 주도 설계를 통해 기획 데이터와 로직을 분리하는 생산성 높은 파이프라인을 구축했으며,
 
-FSM과 렌더링 최적화를 통해 실제 게임 플레이가 가능한 수준의 퍼포먼스를 확보했습니다.
+- FSM과 렌더링 최적화를 통해 실제 게임 플레이가 가능한 수준의 퍼포먼스를 확보했습니다.
 
 이 과정에서 마주친 수많은 LNK 오류와 메모리 누수, 프레임 저하 문제를 끈기 있게 해결하며 **"문제를 해결하는 프로그래머"** 로서 한 단계 성장할 수 있었습니다. 앞으로도 더 깊이 있는 최적화와 탄탄한 설계를 고민하는 개발자가 되겠습니다.

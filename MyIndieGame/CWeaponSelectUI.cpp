@@ -35,7 +35,9 @@ void CWeaponSelectUI::OnCreate()
 
 	CDataMgr::SCharacter curChar = it->second;
 
-	// 뒤로가기 버튼
+	// ==========================================
+	// UI Layout - Navigation (뒤로가기)
+	// ==========================================
 	CUIButton* backButton = new CUIButton(SVector2D(windowWidth / 20, windowHeight / 20), 200.0f, 50.0f);
 	backButton->SetBackColor(Gdiplus::Color::Black);
 	backButton->SetCornerRadius(10.0f);
@@ -49,6 +51,7 @@ void CWeaponSelectUI::OnCreate()
 
 	backButton->AddChild(backButtonTex);
 
+	// [Event] Hover 효과
 	backButton->SetEventHover([=]() {
 		backButtonTex->SetColor(Gdiplus::Color::Black);
 		backButton->SetBackColor(Gdiplus::Color::White);
@@ -59,9 +62,13 @@ void CWeaponSelectUI::OnCreate()
 		backButton->SetBackColor(Gdiplus::Color::Black);
 		});
 
+	// [Event] Click - 화면 전환 로직
+	// 현재 UI를 비활성화하고, 캐릭터 선택 UI로 되돌아감
 	backButton->SetEventClick([=]() {
 		this->InActive();
 		CUIMgr::FindUI(eUIType::CharacterSelectUI)->Active();
+
+		// [UI 재사용] 가져왔던 설명 패널을 다시 원주인(CharacterSelectUI)에게 돌려줌
 		mCharDescriptionPanel->Reparent(CUIMgr::FindUI(eUIType::CharacterSelectUI), true);
 		mCharDescriptionPanel->SetPos(SVector2D(this->GetWidth() / 2 - mCharDescriptionPanel->GetWidth() / 2, this->GetHeight() / 7));
 		CUIMgr::ClearUI(eUIType::WeaponSelectUI);
@@ -80,14 +87,19 @@ void CWeaponSelectUI::OnCreate()
 
 	this->AddChild(currentUITex);
 
+	// ==========================================
+	// UI Object Reuse (UI 재사용)
+	// ==========================================
+	// 캐릭터 선택창에서 쓰던 설명 패널을 그대로 가져와서 부모만 변경(Reparent)하여 사용
+	// 불필요한 객체 생성/삭제를 줄이고 UI의 연속성을 줌
 	mCharDescriptionPanel = dynamic_cast<CUIPanel*>(dynamic_cast<CCharacterSelectUI*>(CUIMgr::FindUI(eUIType::CharacterSelectUI))->GetCharDescPanel()->Reparent(this, true));
 
-	// 무기 설명 패널
+	// 무기 상세 정보 패널 생성 (Hover 시 정보 갱신용)
 	CUIPanel* descriptionWeaponPanel = new CUIPanel(SVector2D(), 250.0f, 320.0f);
 
 	descriptionWeaponPanel->SetBackColor(Gdiplus::Color::Black);
 	descriptionWeaponPanel->SetCornerRadius(10.0f);
-	descriptionWeaponPanel->InActive();
+	descriptionWeaponPanel->InActive();	// 평소엔 숨김
 
 	this->AddChild(descriptionWeaponPanel);
 
@@ -123,13 +135,17 @@ void CWeaponSelectUI::OnCreate()
 
 	descriptionWeaponPanel->AddChild(descriptionWeaponTex);
 
+	// ==========================================
+	// Dynamic UI Generation (데이터 기반 UI 생성)
+	// ==========================================
+	// 선택된 캐릭터가 사용 가능한 무기 목록을 순회하며 버튼 동적 생성
 	CUIPanel* weaponSelectPanel = new CUIPanel(SVector2D(this->GetPos().mX, this->GetPos().mY + this->GetHeight() / 2), this->GetWidth(), this->GetHeight() / 2);
 
 	this->AddChild(weaponSelectPanel);
 
 	int x = 30;
 	int y = 100;
-	int i = 1;
+	int i = 1;	// 그리드 배치용 카운터
 
 	// 캐릭터 무기 데이터 가져와서 버튼 만들기
 	for (auto& weapon : curChar.weapons) {
@@ -184,10 +200,12 @@ void CWeaponSelectUI::OnCreate()
 		descriptionStat(L"쿨다운", data.delay, L"s");
 		descriptionStat(L"범위", data.range);
 
-
+		// [Event] 무기 버튼 Hover: 상세 정보 패널 노출 및 위치 조정
 		weaponButton->SetEventHover([=]() {
 			weaponButton->SetBackColor(Gdiplus::Color::White);
 			descriptionWeaponPanel->Active();
+
+			// 툴팁 위치를 동적으로 조정 (캐릭터 패널과 겹치지 않게)
 			mCharDescriptionPanel->SetPos(SVector2D(this->GetWidth() / 2 - mCharDescriptionPanel->GetWidth() - 10, mCharDescriptionPanel->GetPos().mY));
 			descriptionWeaponPanel->SetPos(SVector2D(this->GetWidth() / 2 + 10, mCharDescriptionPanel->GetPos().mY));
 			weaponDescriptionImgPanel->SetBackColor(Gdiplus::Color::Gray);
@@ -202,16 +220,19 @@ void CWeaponSelectUI::OnCreate()
 			weaponButton->SetBackColor(Gdiplus::Color::Gray);
 			});
 
+		// [Event] 무기 선택 완료 (게임 시작)
 		weaponButton->SetEventClick([=]() {
 			CPlayer* pl = CPlayScene::GetPlayer();
 			CPlayerScript* plSc = pl->GetComponent<CPlayerScript>(eComponentType::Script);
 			CWeaponMgr* plWeaponMgr = pl->GetComponent<CWeaponMgr>(eComponentType::WeaponMgr);
 
+			// 1. 캐릭터 외형 적용
 			plSc->SetClothTexture(CResourceMgr::Find<CTexture>(curChar.clothTexture));
 			plSc->SetMouthTexture(CResourceMgr::Find<CTexture>(curChar.mouthTexture));
 			plSc->SetEyesTexture(CResourceMgr::Find<CTexture>(curChar.eyesTexture));
 			plSc->SetHairTexture(CResourceMgr::Find<CTexture>(curChar.hairTexture));
 
+			// 2. 선택한 무기 지급
 			if (curWeapon.ID[0] == L'M') {
 				plWeaponMgr->PlusWeapon(eLayerType::MeleeWeapon, curWeapon.ID, 1);
 			}
@@ -219,15 +240,18 @@ void CWeaponSelectUI::OnCreate()
 				plWeaponMgr->PlusWeapon(eLayerType::RangedWeapon, curWeapon.ID, 1);
 			}
 
+			// 3. 캐릭터 고유 효과(Effect) 적용 (Command Pattern / Dispatcher 활용)
 			for (auto& [ID, args] : curChar.effects) {
 				ApplyEffect(ID, args);
 			}
 
 			plSc->SetStartWeaponID(curWeapon.ID);
 
+			// 4. 인게임 씬 로드
 			CSceneMgr::LoadScene(L"PlayScene");
 			});
 
+		// 그리드 줄바꿈 처리
 		if (i == 11) {
 			y += 85;
 			x = 30;

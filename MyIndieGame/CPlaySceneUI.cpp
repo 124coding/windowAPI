@@ -25,11 +25,11 @@ void CPlaySceneUI::OnCreate()
 
 	this->AddChild(mFpsText);
 
-
+	// 좌측 상단: HP바, EXP바, 돈 표시 패널
 	CUIPanel* hudPanel = new CUIPanel(SVector2D(20.0f, 20.0f), 330.0f, 140.0f);
 	this->AddChild(hudPanel);
 
-
+	// [HP Bar] 배경 -> 게이지 -> 프레임 순서로 적층(Layering)하여 생성
 	CUIHUD* hpHUD = new CUIHUD(SVector2D(), 320.0f, 48.0f);
 	hudPanel->AddChild(hpHUD);
 
@@ -50,7 +50,7 @@ void CPlaySceneUI::OnCreate()
 	
 
 
-
+	// [EXP Bar]
 	CUIHUD* EXPHUD = new CUIHUD(SVector2D(0.0f, 53.0f), 320.0f, 48.0f);
 	hudPanel->AddChild(EXPHUD);
 
@@ -124,6 +124,7 @@ void CPlaySceneUI::Active()
 
 void CPlaySceneUI::InActive()
 {
+	// 씬 전환 시 동적으로 생성된 업그레이드 아이콘들 정리
 	for (int i = 0; i < mUpgradeCheckPanels.size(); ++i)
 	{
 		if (mUpgradeCheckPanels[i] != nullptr)
@@ -146,6 +147,10 @@ void CPlaySceneUI::OnDestroy()
 
 void CPlaySceneUI::OnUpdate(float tDeltaTime)
 {
+	// ==========================================
+	// Performance Monitoring (FPS Calculation)
+	// ==========================================
+	// GetTickCount64를 이용해 1초마다 프레임 수를 측정
 	int fps = 0;
 
 	mCurrentTime = GetTickCount64();
@@ -155,9 +160,11 @@ void CPlaySceneUI::OnUpdate(float tDeltaTime)
 	mFrameCount++;
 	mTimeElapsed += deltaTime;
 
+	// 1초가 경과했을 때 FPS 갱신
 	if (mTimeElapsed >= 1.0f) {
 		fps = mFrameCount;
 		mFpsText->SetText(std::to_wstring(fps));
+		// 우측 상단에 정렬 (Anchor: Top-Right)
 		mFpsText->SetWidth(mFpsText->CalculateTextSize().Width);
 		mFpsText->SetPos(SVector2D(this->GetWidth() - mFpsText->GetWidth(), 0.0f));
 
@@ -165,16 +172,22 @@ void CPlaySceneUI::OnUpdate(float tDeltaTime)
 		mTimeElapsed = 0.0f;
 	}
 
-
+	// ==========================================
+	// Data Binding Update
+	// ==========================================
+	// 플레이어 데이터 -> UI 텍스트 동기화
 	mMoneyTex->SetText(std::to_wstring(CPlayScene::GetPlayer()->GetComponent<CPlayerScript>(eComponentType::Script)->GetMoney()));
 	mStageNumTex->SetText(std::to_wstring(CPlayScene::GetStageNum() + 1));
 	mTimeTex->SetText(std::to_wstring((int)CMonsterSpawnMgr::GetTime()));
 
+	// [Level Up Notification]
+	// 플레이어 레벨이 UI에 표시된 레벨보다 높아지면 (레벨업 감지)
 	if (mCurCheckLevel < CPlayScene::GetPlayer()->GetComponent<CPlayerScript>(eComponentType::Script)->GetLevel()) {
 		mCurCheckLevel++;
 		MakeUpgradeCheckPanel();
 	}
 
+	// 알림 아이콘들 위치 정렬 (우측 -> 좌측 순으로 쌓임)
 	int x = this->GetWidth() - 75.0f;
 
 	for (int i = 0; i < mUpgradeCheckPanels.size(); i++) {
@@ -200,6 +213,7 @@ void CPlaySceneUI::UIClear()
 	CUIBase::UIClear();
 }
 
+// 레벨업 알림 아이콘 생성 (동적 UI)
 CUIPanel* CPlaySceneUI::MakeUpgradeCheckPanel()
 {
 	CUIPanel* upgradeImgPanel = new CUIPanel(SVector2D(), 75.0f, 75.0f);

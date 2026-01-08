@@ -22,6 +22,10 @@
 
 void CEndingUI::OnCreate()
 {
+	// ==========================================
+	// Data Retrieval (최종 데이터 수집)
+	// ==========================================
+	// 게임이 종료된 시점의 플레이어 스탯, 아이템, 무기 정보를 모두 가져옴
 	CPlayer* pl = CPlayScene::GetPlayer();
 	CPlayerScript* plSc = pl->GetComponent<CPlayerScript>(eComponentType::Script);
 	CItemMgr* plItemMgr = pl->GetComponent<CItemMgr>(eComponentType::ItemMgr);
@@ -34,6 +38,10 @@ void CEndingUI::OnCreate()
 	SetWidth(windowWidth);
 	SetHeight(windowHeight);
 
+	// ==========================================
+	// Win / Loss Condition Check
+	// ==========================================
+	// 5스테이지 클리어 & 체력이 0 초과인 경우 승리, 아니면 패배 처리
 	CUIText* endingTex = new CUIText(SVector2D(), this->GetWidth(), 50.0f, L"Test");
 	endingTex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentCenter);
 	endingTex->SetColor(Gdiplus::Color::White);
@@ -50,12 +58,17 @@ void CEndingUI::OnCreate()
 	}
 	this->AddChild(endingTex);
 
+	// 메인 배경 패널
 	CUIPanel* endingMainPanel = new CUIPanel(SVector2D(100.0f, 100.0f), this->GetWidth() - 200.0f, this->GetHeight() - 200.0f);
 	endingMainPanel->SetBackColor(0xFF222222);
 	endingMainPanel->SetCornerRadius(10);
 
 	this->AddChild(endingMainPanel);
 
+	// ==========================================
+	// Statistics Dashboard (최종 스탯 표시)
+	// ==========================================
+	// 좌측 패널에 레벨, 체력, 공격력 등 최종 스탯을 나열
 	CUIPanel* statPanel = new CUIPanel(SVector2D(3.0f, 3.0f), endingMainPanel->GetWidth() / 4, endingMainPanel->GetHeight() - 6.0f);
 	statPanel->SetBackColor(Gdiplus::Color::Black);
 	statPanel->SetCornerRadius(10);
@@ -163,11 +176,15 @@ void CEndingUI::OnCreate()
 	
 	SettingStatTex(plSc->GetSpeedPercent(), speed);
 
-	
+	// ==========================================
+	// Inventory Visualization (최종 빌드 확인)
+	// ==========================================
+	// 우측 패널에 획득한 모든 무기와 아이템 아이콘을 나열
 	CUIPanel* endingItemPanel = new CUIPanel(SVector2D(statPanel->GetPos().mX + statPanel->GetWidth() + 3.0f, 0.0f), endingMainPanel->GetWidth() - (statPanel->GetPos().mX + statPanel->GetWidth() + 3.0f), endingMainPanel->GetHeight());
 
 	endingMainPanel->AddChild(endingItemPanel);
 
+	// [Weapons Display]
 	CUIPanel* weaponsPanel = new CUIPanel(SVector2D(), endingItemPanel->GetWidth(), endingItemPanel->GetHeight() / 3);
 
 	CUIText* weaponTex = new CUIText(SVector2D(20.0f, 20.0f), 0.0f, 40.0f, L"무기");
@@ -178,11 +195,13 @@ void CEndingUI::OnCreate()
 
 	weaponsPanel->AddChild(weaponTex);
 
+	// 무기 목록 순회 및 버튼 생성
 	float x = 20.0f;
 	float y = weaponTex->GetPos().mY + weaponTex->GetHeight() + 10.0f;
 	float offset = 10.0f;
 
 	for (int i = 0; i < plWeapons->size(); i++) {		
+		// 화면 오른쪽 끝에 있는 아이템은 툴팁을 왼쪽으로 띄우기 위한 플래그(right) 설정
 		bool right = false;
 		if (i < 8) {
 			right = true;
@@ -198,6 +217,7 @@ void CEndingUI::OnCreate()
 		}
 	}
 
+	// [Items Display]
 	CUIPanel* itemsPanel = new CUIPanel(SVector2D(0.0f, weaponsPanel->GetHeight()), endingItemPanel->GetWidth(), 2 * endingItemPanel->GetHeight() / 3);
 
 	endingItemPanel->AddChild(itemsPanel);
@@ -220,6 +240,7 @@ void CEndingUI::OnCreate()
 			right = true;
 		}
 
+		// 화면 아래쪽에 있는 아이템은 툴팁을 위쪽으로 띄우기 위한 플래그(up) 설정
 		bool up = false;
 		if (y > 200.0f) {
 			up = true;
@@ -235,11 +256,15 @@ void CEndingUI::OnCreate()
 		}
 	}
 
+	// ==========================================
+	// Navigation Buttons (Game Loop Reset)
+	// ==========================================
 	CUIPanel* buttonPanel = new CUIPanel(SVector2D(), 3 * endingMainPanel->GetWidth() / 4, 40.0f);
 	buttonPanel->SetPos(SVector2D(endingMainPanel->GetPos().mX + endingMainPanel->GetWidth() / 2 - buttonPanel->GetWidth() / 2, endingMainPanel->GetPos().mY + endingMainPanel->GetHeight() + 30.0f));
 
 	this->AddChild(buttonPanel);
 
+	// 1. [Restart Button] 같은 캐릭터/무기로 재시작
 	CUIButton* restartButton = new CUIButton(SVector2D(10.0f, 0.0f), buttonPanel->GetWidth() / 4 - 20.0f, buttonPanel->GetHeight());
 	restartButton->SetBackColor(Gdiplus::Color::Black);
 	restartButton->SetCornerRadius(10);
@@ -263,10 +288,12 @@ void CEndingUI::OnCreate()
 		restartButton->SetBackColor(Gdiplus::Color::Black);
 		});
 	restartButton->SetEventClick([=]() {
+		// 모든 진행 데이터 초기화
 		plSc->ResetStats();
 		plItemMgr->ResetItems();
 		plWeaponMgr->ResetWeapons();
 
+		// 기존 선택했던 캐릭터와 무기 정보 다시 로드 (Soft Reset)
 		auto startChar = CDataMgr::GetCharacterDatas().find(plSc->GetStartingCharacterID());
 		if (startChar == CDataMgr::GetCharacterDatas().end()) {
 			return;
@@ -281,7 +308,7 @@ void CEndingUI::OnCreate()
 		CDataMgr::SWeapon curWeapon = startWeapon->second;
 
 
-
+		// 외형 및 기본 무기 다시 지급
 		plSc->SetClothTexture(CResourceMgr::Find<CTexture>(curChar.clothTexture));
 		plSc->SetMouthTexture(CResourceMgr::Find<CTexture>(curChar.mouthTexture));
 		plSc->SetEyesTexture(CResourceMgr::Find<CTexture>(curChar.eyesTexture));
@@ -294,15 +321,17 @@ void CEndingUI::OnCreate()
 			plWeaponMgr->PlusWeapon(eLayerType::RangedWeapon, curWeapon.ID, 1);
 		}
 
+		// 캐릭터 고유 효과 재적용
 		for (auto& [ID, args] : curChar.effects) {
 			ApplyEffect(ID, args);
 		}
 
+		// 스테이지 초기화 후 플레이 씬으로 이동
 		CPlayScene::ResetStageNum();
 		CSceneMgr::LoadScene(L"PlayScene");
 		});
 
-
+	// 2. [New Run Button] 캐릭터 선택창으로 이동
 	CUIButton* newStartButton = new CUIButton(SVector2D(restartButton->GetPos().mX + restartButton->GetWidth() + 20.0f, 0.0f), buttonPanel->GetWidth() / 4 - 20.0f, buttonPanel->GetHeight());
 	newStartButton->SetBackColor(Gdiplus::Color::Black);
 	newStartButton->SetCornerRadius(10);
@@ -326,18 +355,21 @@ void CEndingUI::OnCreate()
 		newStartButton->SetBackColor(Gdiplus::Color::Black);
 		});
 	newStartButton->SetEventClick([=]() {
+		// 데이터 완전 초기화 (Hard Reset)
 		plSc->ResetStats();
 		plItemMgr->ResetItems();
 		plWeaponMgr->ResetWeapons();
 
+		// 선택 정보도 초기화
 		plSc->SetStartingCharacterID(L"");
 		plSc->SetStartWeaponID(L"");
 
 		CPlayScene::ResetStageNum();
-		CSceneMgr::LoadScene(L"SettingScene");
+		CSceneMgr::LoadScene(L"SettingScene");		// 캐릭터 선택 씬으로 이동
 		});
 
 
+	// 3. [Menu Button] 타이틀 화면으로 이동
 	CUIButton* returnMenuButton = new CUIButton(SVector2D(newStartButton->GetPos().mX + newStartButton->GetWidth() + 20.0f, 0.0f), buttonPanel->GetWidth() / 2 - 20.0f, buttonPanel->GetHeight());
 	returnMenuButton->SetBackColor(Gdiplus::Color::Black);
 	returnMenuButton->SetCornerRadius(10);
@@ -361,6 +393,7 @@ void CEndingUI::OnCreate()
 		returnMenuButton->SetBackColor(Gdiplus::Color::Black);
 		});
 	returnMenuButton->SetEventClick([=]() {
+		// 데이터 완전 초기화
 		plSc->ResetStats();
 		plItemMgr->ResetItems();
 		plWeaponMgr->ResetWeapons();
@@ -370,7 +403,7 @@ void CEndingUI::OnCreate()
 
 		CPlayScene::ResetStageNum();
 
-		CSceneMgr::LoadScene(L"TitleScene");
+		CSceneMgr::LoadScene(L"TitleScene");	// 타이틀 씬으로 이동
 
 		});
 
@@ -412,6 +445,9 @@ void CEndingUI::UIClear()
 	CUIBase::UIClear();
 }
 
+// ==========================================
+// Dynamic UI Factory Methods
+// ==========================================
 CUIButton* CEndingUI::MakeWeaponButton(std::vector<CWeapon*>* tWeapons, CWeapon* tWeapon, float tX, float tY, bool tRight)
 {
 	CWeaponScript* curSc = tWeapon->GetComponent<CWeaponScript>(eComponentType::Script);

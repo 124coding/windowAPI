@@ -21,19 +21,27 @@ public:
 	virtual void UIClear() override;
 
 public:
+	// 레벨업 시 획득한 업그레이드 상황을 보여주는 패널 생성
 	CUIPanel* MakeUpgradeCheckPanel();
 
 private:
-	CUIText* mMoneyTex = nullptr;
-	CUIText* mStageNumTex = nullptr;
-	CUIText* mTimeTex = nullptr;
+	CUIText* mMoneyTex = nullptr;		// 보유 재화 표시
+	CUIText* mStageNumTex = nullptr;	// 현재 웨이브(스테이지) 번호
+	CUIText* mTimeTex = nullptr;		// 남은 시간 타이머
+
+	// ==========================================
+	// Performance Monitoring (FPS Counter)
+	// ==========================================
 	CUIText* mFpsText = nullptr;
 	float mLastTime = 0.0f;
 	float mCurrentTime = 0.0f;
-	int mFrameCount = 0;
-	float mTimeElapsed = 0.0f;
+	int mFrameCount = 0;				// 1초 동안 그려진 프레임 수 누적
+	float mTimeElapsed = 0.0f;			// 경과 시간 누적
 
-	int mCurCheckLevel = 0;
+	// ==========================================
+	// Upgrade Notification UI
+	// ==========================================
+	int mCurCheckLevel = 0;				// 현재 UI에 표시된 레벨 상태
 
 	std::vector<CUIPanel*> mUpgradeCheckPanels;
 };

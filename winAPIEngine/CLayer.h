@@ -28,6 +28,7 @@ public:
 	}
 
 private:
+	// 레이어가 가지는 오브젝트들의 집합
 	std::vector<GameObject*> mGameObjects;
 };
 

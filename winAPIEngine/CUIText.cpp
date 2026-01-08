@@ -38,6 +38,8 @@ void CUIText::Render(HDC tHDC)
     if (mText == L"" && mFragments.empty()) return;
 
 	Gdiplus::Graphics graphics(tHDC);
+
+    // 텍스트 계단 현상 제거 (안티앨리어싱)
 	graphics.SetTextRenderingHint(Gdiplus::TextRenderingHintAntiAlias);
 	graphics.SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
 
@@ -45,21 +47,24 @@ void CUIText::Render(HDC tHDC)
 	int style = mbBold ? Gdiplus::FontStyleBold : Gdiplus::FontStyleRegular;
     Gdiplus::Font font(&fontFamily, mFontSize, style, Gdiplus::UnitPixel);
 
+    // 텍스트 포맷 설정 (영역 밖 클리핑 방지 등)
     Gdiplus::StringFormat format(Gdiplus::StringFormatFlagsNoClip);
     format.SetAlignment(Gdiplus::StringAlignmentNear);
     format.SetLineAlignment(Gdiplus::StringAlignmentNear);
 
+    // 측정 정확도를 높이기 위한 플래그 (공백 포함 계산)
     INT flags = Gdiplus::StringFormat::GenericTypographic()->GetFormatFlags();
     flags |= Gdiplus::StringFormatFlagsMeasureTrailingSpaces;
     format.SetFormatFlags(flags);
 
-    // 텍스트 높이
+    // 1. 기준 줄 높이(Line Height) 측정
     Gdiplus::RectF measureBox;
     Gdiplus::PointF zero(0.0f, 0.0f);
     graphics.MeasureString(L"TestHeight", -1, &font, zero, Gdiplus::StringFormat::GenericTypographic(), &measureBox);
 
     float lineHeight = measureBox.Height;
 
+    // 2. 수직 정렬(Vertical Alignment) 계산
     float totalTextHeight = mCachedLines.size() * lineHeight;
     float startY = (float)mFinalPos.mY;
 
@@ -72,6 +77,7 @@ void CUIText::Render(HDC tHDC)
 
     float currentY = startY;
 
+    // 3. 미리 계산된 라인(Cached Lines)들을 순회하며 렌더링
     for (const auto& line : mCachedLines)
     {
         if (line.frags.empty()) {
@@ -90,10 +96,14 @@ void CUIText::Render(HDC tHDC)
         }
 
         float currentX = startX;
+
+        // 한 줄 내의 텍스트 조각(Fragment)들을 순차적으로 그리기
         for (const auto& frag : line.frags)
         {
             float fragWidth = GetTextWidth(&graphics, &font, frag.text);
 
+            // 외곽선(Outline) 효과를 위해 GraphicsPath 사용
+            // (DrawString은 외곽선을 지원하지 않음)
             Gdiplus::RectF layoutRect(currentX, currentY, 1000.0f, 1000.0f);
             Gdiplus::GraphicsPath path(Gdiplus::FillModeWinding);
 
@@ -134,6 +144,7 @@ void CUIText::UIClear()
 	CUIBase::UIClear();
 }
 
+// 텍스트 변경 시 파싱 및 레이아웃 재계산 수행
 void CUIText::SetText(const std::wstring& tText)
 {
     if (mText == tText) return;
@@ -146,11 +157,12 @@ void CUIText::SetColor(Gdiplus::Color tColor)
 {
     this->mFontColor = tColor;
     if (!mText.empty()) {
-        ParseRichText(mText);
+        ParseRichText(mText);   // 기본 색상이 바뀌었으니 다시 파싱
         UpdateTextLayout();
     }
 }
 
+// 텍스트가 차지하는 실제 크기(너비, 높이) 계산 (UI 자동 크기 조절용)
 Gdiplus::SizeF CUIText::CalculateTextSize()
 {
     if (mText.empty() && mFragments.empty()) return Gdiplus::SizeF(0.0f, 0.0f);
@@ -218,6 +230,7 @@ Gdiplus::SizeF CUIText::CalculateTextSize()
     return Gdiplus::SizeF(maxLineWidth, lineCount * lineHeight);
 }
 
+// 문자열 내의 색상 태그(<c=#RRGGBB>...</c>)를 파싱하여 Fragment로 분리
 void CUIText::ParseRichText(const std::wstring& tText)
 {
     mFragments.clear();
@@ -236,6 +249,7 @@ void CUIText::ParseRichText(const std::wstring& tText)
             break;
         }
 
+        // 태그 앞부분의 일반 텍스트 추가
         if (startPos > 0) {
             mFragments.push_back({ remaining.substr(0, startPos), mFontColor });
         }
@@ -291,6 +305,7 @@ Gdiplus::Color CUIText::HexToColor(const std::wstring& tHex)
     return Gdiplus::Color(colorValue);
 }
 
+// GDI+ MeasureString을 이용한 정밀한 문자열 폭 계산
 float CUIText::GetTextWidth(Gdiplus::Graphics* tGraphics, Gdiplus::Font* tFont, const std::wstring& tText)
 {
     if (tText.empty()) return 0.0f;
@@ -313,6 +328,8 @@ float CUIText::GetTextWidth(Gdiplus::Graphics* tGraphics, Gdiplus::Font* tFont, 
     return boundingBox.Width;
 }
 
+// 텍스트 조각들을 분석하여 '그릴 준비가 된' 라인 정보(mCachedLines)를 생성
+// 매 프레임 호출되지 않고 데이터 변경 시에만 호출됨
 void CUIText::UpdateTextLayout()
 {
     mCachedLines.clear();
@@ -323,7 +340,7 @@ void CUIText::UpdateTextLayout()
     {
         Gdiplus::Graphics graphics(hDC);
 
-        // 폰트 설정
+        // 폰트 및 포맷 설정 (측정용)
         Gdiplus::FontFamily fontFamily(mFont.c_str());
         int style = mbBold ? Gdiplus::FontStyleBold : Gdiplus::FontStyleRegular;
         Gdiplus::Font font(&fontFamily, mFontSize, style, Gdiplus::UnitPixel);
@@ -361,6 +378,7 @@ void CUIText::UpdateTextLayout()
                     // 각 부분마다의 넓이
                     float partWidth = GetTextWidth(&graphics, &font, part);
 
+                    // 현재 줄에 조각 추가 및 길이 누적
                     mCachedLines.back().frags.push_back({ part, frag.color });
                     mCachedLines.back().width += partWidth;
                 }
@@ -380,6 +398,7 @@ void CUIText::UpdateTextLayout()
     ReleaseDC(NULL, hDC);
 }
 
+// 자동 줄바꿈(Word Wrap) 처리를 위한 정적 헬퍼 함수
 std::wstring CUIText::InsertLineBreaks(const std::wstring& tText, float tMaxWidth, const std::wstring& tFontName, float tFontSize, bool tIsBold) {
     if (tText.empty()) return L"";
 
@@ -398,7 +417,7 @@ std::wstring CUIText::InsertLineBreaks(const std::wstring& tText, float tMaxWidt
         format.SetFormatFlags(flags);
 
         std::wstring currentLine = L"";
-        std::wstring visibleLine = L"";
+        std::wstring visibleLine = L"";     // 태그를 제외한 실제 보이는 문자열 (길이 측정용)
 
         float currentWidth = 0.0f;
 
@@ -406,6 +425,7 @@ std::wstring CUIText::InsertLineBreaks(const std::wstring& tText, float tMaxWidt
         for (size_t i = 0; i < tText.length(); ++i) {
             wchar_t c = tText[i];
 
+            // 1. 태그(<...>)는 길이 계산에서 제외하고 그대로 통과
             if (c == L'<') {
                 // 태그가 끝날 때(>)까지 그대로 currentLine에만 추가
                 size_t endTag = tText.find(L'>', i);
@@ -417,6 +437,7 @@ std::wstring CUIText::InsertLineBreaks(const std::wstring& tText, float tMaxWidt
                 }
             }
 
+            // 2. 강제 개행(\n) 처리
             if (c == L'\n') {
                 result += currentLine + c;
                 currentLine = L"";
@@ -427,16 +448,18 @@ std::wstring CUIText::InsertLineBreaks(const std::wstring& tText, float tMaxWidt
             currentLine += c;
             visibleLine += c;
 
+            // 3. 현재 줄의 너비 측정
             Gdiplus::RectF box;
             Gdiplus::PointF origin(0, 0);
             graphics.MeasureString(visibleLine.c_str(), -1, &font, origin, &format, &box);
 
+            // 4. 최대 너비 초과 시 줄바꿈 처리
             if (box.Width > tMaxWidth) {
-                // 마지막 공백(띄어쓰기)을 찾아서 거기서 줄바꿈
+                // 단어 중간이 끊기지 않도록 마지막 공백(띄어쓰기)을 찾음
                 size_t lastSpace = currentLine.find_last_of(L' ');
 
                 if (lastSpace != std::wstring::npos && lastSpace > 0) {
-                    currentLine[lastSpace] = L'\n';
+                    currentLine[lastSpace] = L'\n';     // 공백을 개행으로 교체
 
                     result += currentLine.substr(0, lastSpace + 1);
 
@@ -445,7 +468,7 @@ std::wstring CUIText::InsertLineBreaks(const std::wstring& tText, float tMaxWidt
                     // 단순히 남은 부분으로 다시 시작한다고 가정 (약간의 오차 허용)
                     currentLine = remainder;
 
-                    // 태그를 제거한 순수 텍스트만 visibleLine에 다시 담아야 정확함
+                    // visibleLine도 태그 제거하고 다시 갱신해야 함 (약식 처리)
                     visibleLine = L"";
 
                     for (auto wc : remainder) {

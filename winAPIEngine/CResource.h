@@ -24,7 +24,10 @@ public:
 	}
 
 private:
+	// 해당 자원의 타입
 	const eResourceType mType;
+
+	// 해당 자원 파일의 위치
 	std::wstring mPath; 
 };
 

@@ -45,35 +45,6 @@ void CTitleSceneUI::OnCreate()
 	menuPanel->AddChild(startButton);
 
 
-	/*CUIButton* optionButton = new CUIButton(SVector2D(50.0f, startButton->GetHeight() + 10.0f), menuPanel->GetWidth() / 3, 45.0f);
-
-	optionButton->SetBackColor(Gdiplus::Color::Black);
-	optionButton->SetCornerRadius(10.0f);
-
-	CUIText* optionButtonTex = new CUIText(SVector2D(), optionButton->GetWidth(), optionButton->GetHeight(), L"¿É¼Ç");
-
-	optionButtonTex->SetFont(L"Noto Sans KR Medium");
-	optionButtonTex->SetFontSize(28.0f);
-	optionButtonTex->SetStrokeWidth(1.0f);
-	optionButtonTex->SetColor(Gdiplus::Color::White);
-	optionButtonTex->SetAlign(Gdiplus::StringAlignmentCenter, Gdiplus::StringAlignmentNear);
-
-	optionButton->SetEventHover([=]() {
-		optionButton->SetBackColor(Gdiplus::Color::White);
-		optionButtonTex->SetColor(Gdiplus::Color::Black);
-		});
-	optionButton->SetEventOutHover([=]() {
-		optionButton->SetBackColor(Gdiplus::Color::Black);
-		optionButtonTex->SetColor(Gdiplus::Color::White);
-		});
-	optionButton->SetEventClick([=]() {
-		});
-
-	optionButton->AddChild(optionButtonTex);*/
-
-	// menuPanel->AddChild(optionButton);
-
-
 
 	CUIBase::OnCreate();
 

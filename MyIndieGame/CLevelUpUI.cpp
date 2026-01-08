@@ -33,15 +33,19 @@ void CLevelUpUI::OnCreate()
 
 	this->AddChild(levelUp);
 
-
+	// 메인 선택지 패널
 	mLevelUpMainPanel = new CUIPanel(SVector2D(0.0f, levelUp->GetPos().mY + levelUp->GetHeight()), 3 * windowWidth / 4, 2 * windowHeight / 3);
 	this->AddChild(mLevelUpMainPanel);
 
+	// [Initial Generation] 최초 4개의 보상 선택지 생성
 	float x = 5.0f;
 	float offset = 5.0f;
 
 	for (int i = 0; i < 4; i++) {
+		// Factory Method를 통해 랜덤 보상 UI 생성
 		std::pair<std::wstring, CUIPanel*> statUpPanel = MakeStatUpPanel(x, mLevelUpMainPanel->GetHeight() / 4, CPlayScene::GetStageNum());
+
+		// 중복 보상이 나오면 다시 뽑기 (Retry)
 		if (statUpPanel.first == L"") {
 			i--;
 			continue;
@@ -52,7 +56,7 @@ void CLevelUpUI::OnCreate()
 
 
 
-
+	// [Reroll Button] 리롤 기능
 	mResetButton = new CUIButton(SVector2D(), 0.0f, 50.0f);
 	mResetButton->SetCornerRadius(10);
 	mResetButton->SetBackColor(Gdiplus::Color::Black);
@@ -83,19 +87,21 @@ void CLevelUpUI::OnCreate()
 		mResetTex->SetColor(Gdiplus::Color::White);
 		});
 	mResetButton->SetEventClick([=]() {
+		// 비용 지불 검사
 		if (plSc->GetMoney() > mResetCost) {
 			plSc->ChangeMoney(-mResetCost);
 			mResetCount++;
-			mResetCost *= 2;
+			mResetCost *= 2;	// 비용 증가
 		}
 		else {
 			return;
 		}
+		// 패널 재생성 호출
 		ResetLevelUpPanels(CPlayScene::GetStageNum());
 		});
 
 
-
+	// [Stats Dashboard] 현재 스탯 정보창
 	mStatPanel = new CUIPanel(SVector2D(mLevelUpMainPanel->GetWidth(), mLevelUpMainPanel->GetPos().mY), this->GetWidth() - mLevelUpMainPanel->GetWidth(), 2 * windowHeight / 3);
 	mStatPanel->SetBackColor(0xCC000000);
 	mStatPanel->SetCornerRadius(10);
@@ -114,6 +120,7 @@ void CLevelUpUI::OnCreate()
 
 	float statPosY = (mStatPanel->GetHeight() - 30.0f - (statTex->GetHeight() + statTex->GetPos().mY + 50.0f)) / 12;
 
+	// MakeStat 함수를 사용하여 반복적인 UI 생성 코드 최소화
 	CUIPanel* statMaxHP = MakeStat(mStatPanel->GetWidth(), 30.0f, L"MaxHP", L"최대 체력", mMaxHP);
 	statMaxHP->SetPos(SVector2D(20.0f, statTex->GetHeight() + statTex->GetPos().mY + 50.0f));
 	mStatPanel->AddChild(statMaxHP);
@@ -188,6 +195,7 @@ void CLevelUpUI::OnUpdate(float tDeltaTime)
 {
 	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>(eComponentType::Script);
 
+	// 리롤 버튼 텍스트 실시간 갱신 (비용 변화 반영)
 	mResetTex->SetText(L"초기화 -" + std::to_wstring(mResetCost));
 	mResetTex->SetWidth(mResetTex->CalculateTextSize().Width);
 	mResetTex->SetPos(SVector2D(mResetButton->GetWidth() / 2 - 2 * mResetTex->GetWidth() / 3, 0.0f));
@@ -197,6 +205,7 @@ void CLevelUpUI::OnUpdate(float tDeltaTime)
 	mResetButton->SetWidth(mResetTex->GetWidth() + 60.0f);
 	mResetButton->SetPos(SVector2D(mLevelUpMainPanel->GetWidth() / 2 - mResetButton->GetWidth() / 2, mStatUpPanels[0].second->GetPos().mY + mStatUpPanels[0].second->GetHeight() + 20.0f));
 
+	// 스탯 텍스트 실시간 갱신 (플레이어 데이터 바인딩)
 	SettingStatTex(plSc->GetMaxHP(), mMaxHP);
 	SettingStatTex(plSc->GetHPGeneration(), mHPRegen);
 	SettingStatTex(plSc->GetLifeSteal(), mHPSteal);
@@ -228,17 +237,24 @@ void CLevelUpUI::UIClear()
 	CUIBase::UIClear();
 }
 
+// ==========================================
+// Dynamic UI Factory: 보상 패널 생성
+// ==========================================
 std::pair<std::wstring, CUIPanel*> CLevelUpUI::MakeStatUpPanel(float tX, float tY, int tStageNum)
 {
 	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>(eComponentType::Script);
+
+	// 1. 랜덤 보상 데이터 결정 (알고리즘 호출)
 	std::pair<int, CDataMgr::SUpgrades> curStat = ChooseRandomUpgradeByStageNum(tStageNum);
 
+	// 2. 중복 검사 (이미 화면에 떠있는 보상이면 스킵)
 	for (auto& id : mStatUpPanels) {
 		if (id.first == curStat.second.ID) {
 			return std::make_pair(L"", nullptr);
 		}
 	}
 
+	// 3. 등급(Tier)에 따른 색상 및 텍스트 설정
 	UINT color = 0;
 	std::wstring tierTex = L"";
 
@@ -260,6 +276,7 @@ std::pair<std::wstring, CUIPanel*> CLevelUpUI::MakeStatUpPanel(float tX, float t
 		break;
 	}
 
+	// 4. UI 패널 조립 (이미지, 이름, 설명, 선택 버튼)
 	CUIPanel* statUpPanel = new CUIPanel(SVector2D(tX, tY), mLevelUpMainPanel->GetWidth() / 4.0f - 10.0f, 240.0f);
 	statUpPanel->SetCornerRadius(10);
 	statUpPanel->SetBackColor(Gdiplus::Color::Black);
@@ -341,35 +358,49 @@ std::pair<std::wstring, CUIPanel*> CLevelUpUI::MakeStatUpPanel(float tX, float t
 		chooseButton->SetBackColor(Gdiplus::Color::Gray);
 		chooseText->SetColor(Gdiplus::Color::White);
 		});
+	// [Event] 보상 선택 버튼 클릭
 	chooseButton->SetEventClick([=]() {
+		// 효과 적용 (Dispatcher 호출)
 		std::vector<CDataMgr::SArg> arg;
 		arg.push_back(curStat.second.tiers[curStat.first - 1].arg);
 		ApplyEffect(curStat.second.effectID, arg);
 
+		// 레벨업 대기열 감소
 		plSc->MinusCurStage();
 		CUIMgr::CurHoverNull();
+
+		// 리롤 비용 초기화
 		mResetCost = 1;
 
+		// 모든 레벨업 처리가 끝났으면 상점 씬으로 이동, 아니면 다시 레벨업 창 갱신
 		if (plSc->GetCurStageLevelUpCount() <= 0) {
 			CPlayScene::GetPlayer()->GetComponent<CTransform>(eComponentType::Transform)->SetPos(SVector2D(windowWidth / 2, windowHeight / 2 + 55.0f));
-			ResetLevelUpPanels(CPlayScene::GetStageNum() + 1);
+			ResetLevelUpPanels(CPlayScene::GetStageNum() + 1);	// 다음을 위해 미리 갱신
 			CSceneMgr::LoadScene(L"ShopScene");
 		}
 		else {
-			ResetLevelUpPanels(CPlayScene::GetStageNum());
+			ResetLevelUpPanels(CPlayScene::GetStageNum());	// 남은 레벨업 처리
 		}
 		});
 
 	return std::make_pair(curStat.second.ID, statUpPanel);
 }
 
+// ==========================================
+// 가중치 확률 기반 보상 선택
+// ==========================================
+// 스테이지 진행도(StageNum)에 따라 더 높은 등급(Tier)의 보상이 나올 확률을 동적으로 조정함
 std::pair<int, CDataMgr::SUpgrades> CLevelUpUI::ChooseRandomUpgradeByStageNum(int tStageNum)
 {
+	// 1. 전체 업그레이드 목록 중 하나를 무작위 선택 (Uniform Distribution)
 	int rand = std::rand() % CDataMgr::GetUpgradeDatas().size();
 	auto it = std::next(CDataMgr::GetUpgradeDatas().begin(), rand);
 	
+	// 2. 등급(Rarity) 결정 (Weighted Random Distribution)
 	int rarityRand = std::rand() % 100;
 	int targetTier = 1;
+
+	// 스테이지별 확률 테이블 (밸런싱)
 	switch (tStageNum) {
 	case 0:
 	case 1:
@@ -448,8 +479,12 @@ std::pair<int, CDataMgr::SUpgrades> CLevelUpUI::ChooseRandomUpgradeByStageNum(in
 	return std::make_pair(targetTier, it->second);
 }
 
+// ==========================================
+// UI Refresh Logic (Reroll)
+// ==========================================
 void CLevelUpUI::ResetLevelUpPanels(int tStageNum)
 {
+	// 1. 기존 패널 메모리 해제 및 UI 트리에서 제거
 	for (int i = 0; i < 4; ++i)
 	{
 		if (mStatUpPanels[i].second != nullptr)
@@ -462,13 +497,14 @@ void CLevelUpUI::ResetLevelUpPanels(int tStageNum)
 
 	mStatUpPanels.clear();
 
+	// 2. 새로운 랜덤 보상으로 패널 재생성
 	float x = 5.0f;
 	float offset = 5.0f;
 
 	for (int i = 0; i < 4; i++) {
 		std::pair<std::wstring, CUIPanel*> statUpPanel = MakeStatUpPanel(x, mLevelUpMainPanel->GetHeight() / 4, tStageNum);
 		if (statUpPanel.first == L"") {
-			i--;
+			i--;	// 중복 발생 시 재시도
 			continue;
 		}
 		mStatUpPanels.push_back(statUpPanel);

@@ -24,6 +24,8 @@ private:
 	std::wstring mText = L"";
 
 	Gdiplus::Color mColor;
+
+	// 텍스트 이펙트의 유동성을 위한 중력값
 	float mGravity = 800.0f;
 	float mWaitTime = 1.0f;
 };

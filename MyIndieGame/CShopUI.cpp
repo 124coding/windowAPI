@@ -21,6 +21,10 @@
 
 void CShopUI::OnCreate()
 {
+	// ==========================================
+	// Data Binding Initialization
+	// ==========================================
+	// UI가 참조할 플레이어 데이터 포인터 캐싱
 	mPl = CPlayScene::GetPlayer();
 	mPlSc = mPl->GetComponent<CPlayerScript>(eComponentType::Script);
 	mPlItemMgr = mPl->GetComponent<CItemMgr>(eComponentType::ItemMgr);
@@ -31,7 +35,8 @@ void CShopUI::OnCreate()
 	SetWidth(windowWidth);
 	SetHeight(windowHeight);
 
-	// 상점의 메인이 될 패널
+	// 1. 상점 메인 레이아웃 구성
+	// 화면을 크게 3등분: 상단(타이틀/재화), 좌측(상품목록/인벤토리), 우측(스탯창)
 	mShopMainPanel = new CUIPanel(SVector2D(), 3 * this->GetWidth() / 4, this->GetHeight());
 
 	this->AddChild(mShopMainPanel);
@@ -105,27 +110,30 @@ void CShopUI::OnCreate()
 
 	mShopMainPanel->AddChild(goodsPanel);
 
+	// [Event] 리롤 버튼 클릭 이벤트 (상점 갱신 로직)
 	mResetButton->SetEventClick([=]() {
-
+		// 비용 체크
 		if (mPlSc->GetMoney() > mResetCost) {
 			mPlSc->ChangeMoney(-mResetCost);
 			mResetCount++;
-			mResetCost *= 2;
+			mResetCost *= 2; // 리롤 할 때마다 비용 2배 증가 (로그라이크 밸런싱)
 		}
 		else {
 			return;
 		}
 
+		// 잠금(Lock)된 아이템 보존 처리
 		std::vector<std::pair<CUIPanel*, bool>> lockedItems;
 		lockedItems.reserve(4);
 
 		for (int i = 0; i < 4; ++i)
 		{
-			if (mGoods[i].second == true) {
+			if (mGoods[i].second == true) {	// 잠금 상태인 경우
 				lockedItems.push_back(mGoods[i]);
 			}
 			else
 			{
+				// 잠금되지 않은 상품은 UI 제거 및 메모리 해제
 				if (mGoods[i].first != nullptr)
 				{
 					mGoods[i].first->GetParent()->RemoveChild(mGoods[i].first);
@@ -135,6 +143,7 @@ void CShopUI::OnCreate()
 			}
 		}
 
+		// 상품 목록 초기화 후 잠금 아이템 복구
 		mGoods.clear();
 
 		for (const auto& item : lockedItems)
@@ -152,11 +161,13 @@ void CShopUI::OnCreate()
 		float itemWidth = cellWidth - margin;
 		float itemHeight = 4.0f * panelH / 5.0f;
 
+		// 빈 자리에 새로운 상품(Goods) 채워넣기
 		for (int i = mGoods.size(); i < 4; i++) {
 			mGoods.push_back(MakeGoods(i, itemWidth, itemHeight, CPlayScene::GetStageNum()));
 			goodsPanel->AddChild(mGoods[i].first);
 		}
 
+		// 위치 재정렬 (Locked 아이템 + New 아이템)
 		for (int i = 0; i < 4; i++) {
 			CUIPanel* panel = mGoods[i].first;
 			if (panel == nullptr) continue;
@@ -169,6 +180,7 @@ void CShopUI::OnCreate()
 		
 		});
 
+	// 초기 상품 진열 (첫 로딩 시)
 	for (int i = 0; i < 4; i++) {
 		int itemCount = 4;
 		float panelW = goodsPanel->GetWidth();
@@ -188,7 +200,7 @@ void CShopUI::OnCreate()
 		goodsPanel->AddChild(mGoods[i].first);
 	}
 
-	// 현재 가지고 있는 아이템들을 표시해주는 패널
+	// 3. 보유 아이템 리스트 패널 (Inventory UI)
 	mHaveItemPanel = new CUIPanel(SVector2D(0.0f, goodsPanel->GetPos().mY + goodsPanel->GetHeight()), 2 * goodsPanel->GetWidth() / 3, windowHeight - (goodsPanel->GetHeight() + goodsPanel->GetPos().mY));
 
 	mShopMainPanel->AddChild(mHaveItemPanel);
@@ -207,7 +219,7 @@ void CShopUI::OnCreate()
 	float y = mHaveItemText->GetPos().mY + mHaveItemText->GetHeight() + 20.0f;
 	float offset = 10.0f;
 
-	// 플레이어 아이템 정보에서 가져옴
+	// 플레이어의 실제 아이템 데이터 순회하며 UI 생성
 	for (auto& item : *mPlItems) {
 
 		CUIPanel* itemPanel = MakeItemPanel(item.first, x, y);
@@ -231,7 +243,7 @@ void CShopUI::OnCreate()
 	}
 
 
-	// 현재 가지고 있는 무기들을 보여주는 패널
+	// 4. 보유 무기 리스트 패널 (Weapon Inventory UI)
 	mHaveWeaponPanel = new CUIPanel(SVector2D(mHaveItemPanel->GetWidth(), goodsPanel->GetPos().mY + goodsPanel->GetHeight()), goodsPanel->GetWidth() / 3, windowHeight - (goodsPanel->GetHeight() + goodsPanel->GetPos().mY));
 
 	mShopMainPanel->AddChild(mHaveWeaponPanel);
@@ -256,7 +268,7 @@ void CShopUI::OnCreate()
 	offset = 10.0f;
 
 
-	// 가지고 있는 플레이어 무기 데이터에서 가져옴
+	// 플레이어 무기 데이터 순회하며 버튼 생성 (합성/판매 기능 포함)
 	for (auto& weapon : *mPlWeapons) {
 		CUIButton* weaponButton = MakeWeaponButton(mPlWeapons, weapon, x, y);
 		x += weaponButton->GetWidth() + offset;
@@ -270,7 +282,7 @@ void CShopUI::OnCreate()
 
 
 
-	// 사이드에서 현재 플레이어의 스탯을 보여주기 위한 패널
+	// 5. 우측 사이드 패널 (Stats Dashboard)
 	CUIPanel* shopSidePanel = new CUIPanel(SVector2D(mShopMainPanel->GetWidth(), 0.0f), this->GetWidth() - mShopMainPanel->GetWidth(), this->GetHeight());
 	shopSidePanel->SetPos(SVector2D(mShopMainPanel->GetWidth(), 0.0f));
 
@@ -293,6 +305,7 @@ void CShopUI::OnCreate()
 
 	statPanel->AddChild(statTex);
 
+	// 각 스탯(HP, Damage 등)을 표시할 UI 패널들을 팩토리 함수(MakeStat)로 생성 및 배치
 	CUIPanel* statLevel = MakeStat(statPanel->GetWidth(), 30.0f, L"UpgradeIcon", L"현재 레벨", mLevel);
 	statLevel->SetPos(SVector2D(20.0f, statTex->GetHeight() + statTex->GetPos().mY + 20.0f));
 	statPanel->AddChild(statLevel);
@@ -351,7 +364,7 @@ void CShopUI::OnCreate()
 	statPanel->AddChild(statSpeed);
 
 
-	// 다음 스테이지로 이동하는 이동 버튼
+	// [Next Stage Button] 다음 스테이지 이동
 	CUIButton* nextStageButton = new CUIButton(SVector2D(), statPanel->GetWidth(), 50.0f);
 	nextStageButton->SetCornerRadius(10);
 	nextStageButton->SetBackColor(Gdiplus::Color::Black);
@@ -374,7 +387,9 @@ void CShopUI::OnCreate()
 		nextTex->SetColor(Gdiplus::Color::White);
 		nextStageButton->SetBackColor(Gdiplus::Color::Black);
 		});
+	// [Event] 스테이지 이동 클릭
 	nextStageButton->SetEventClick([=]() {
+		// 현재 상점에 있는 잠금(Lock) 아이템 정보를 저장해두어야 다음 상점에서도 유지됨
 		std::vector<std::pair<CUIPanel*, bool>> lockedItems;
 		lockedItems.reserve(4);
 
@@ -411,6 +426,7 @@ void CShopUI::OnCreate()
 		float itemWidth = cellWidth - margin;
 		float itemHeight = 4.0f * panelH / 5.0f;
 
+		// 다음 스테이지를 위해 상품 목록 갱신 (StageNum + 1)
 		for (int i = mGoods.size(); i < 4; i++) {
 			mGoods.push_back(MakeGoods(i, itemWidth, itemHeight, CPlayScene::GetStageNum() + 1));
 			goodsPanel->AddChild(mGoods[i].first);
@@ -426,6 +442,7 @@ void CShopUI::OnCreate()
 			mGoods[i].first->SetPos(SVector2D(xPos, yPos));
 		}
 
+		// 게임 씬으로 복귀
 		CSceneMgr::LoadScene(L"PlayScene");
 		});
 
@@ -449,6 +466,10 @@ void CShopUI::OnDestroy()
 
 void CShopUI::OnUpdate(float tDeltaTime)
 {
+	// ==========================================
+	// Real-time Data Binding (실시간 데이터 동기화)
+	// ==========================================
+	// 플레이어의 변동된 스탯을 매 프레임 UI 텍스트에 반영
 	mMoneyTex->SetText(std::to_wstring(mPlSc->GetMoney()));
 
 	mResetTex->SetText(L"초기화 -" + std::to_wstring(mResetCost));
@@ -476,6 +497,7 @@ void CShopUI::OnUpdate(float tDeltaTime)
 	SettingStatTex(mPlSc->GetDodge(), mDodge);
 	SettingStatTex(mPlSc->GetSpeedPercent(), mSpeed);
 
+	// 상품 패널 중 비활성화(구매됨)된 것은 제거 처리
 	for (int i = 0; i < mGoods.size(); i++) {
 		if (mGoods[i].first == nullptr) continue;
 
@@ -483,7 +505,7 @@ void CShopUI::OnUpdate(float tDeltaTime)
 			mGoods[i].first->GetParent()->RemoveChild(mGoods[i].first);
 			mGoods[i].first->OnDestroy();
 			SAFE_DELETE(mGoods[i].first);
-			mGoods[i].second = false;
+			mGoods[i].second = false;	// 구매했으므로 잠금 해제
 		}
 	}
 
@@ -505,6 +527,10 @@ void CShopUI::UIClear()
 	CUIBase::UIClear();
 }
 
+// ==========================================
+// UI Factory Method: 상품(Goods) 생성
+// ==========================================
+// 아이템 또는 무기를 랜덤하게 생성하여 상점 슬롯 UI를 만듦
 std::pair<CUIPanel*, bool> CShopUI::MakeGoods(int tIdx, float tWidth, float tHeight, int tStageNum)
 {
 	int rand = std::rand() % 3;
@@ -565,6 +591,7 @@ std::pair<CUIPanel*, bool> CShopUI::MakeGoods(int tIdx, float tWidth, float tHei
 
 	buyButton->AddChild(buyCost);
 
+	// [Random Generation Logic] 스테이지 가중치를 적용한 랜덤 아이템/무기 선택
 	CDataMgr::SItem curItem = CDataMgr::SItem();
 	std::pair<int, CDataMgr::SWeapon> curWeapon = std::make_pair(0, CDataMgr::SWeapon());
 
@@ -593,6 +620,8 @@ std::pair<CUIPanel*, bool> CShopUI::MakeGoods(int tIdx, float tWidth, float tHei
 		goodsNameTex->SetText(curItem.name);
 		goodsTex->SetText(L"아이템");
 
+		// [Rich Text Parsing] 아이템 설명 텍스트 처리
+		// "<c=#FF0000>공격력 +5</c>"와 같은 태그를 파싱하고 변수({0}, {1})를 실제 값으로 치환
 		std::wstring finalDiscription = L"";
 
 		for (auto& [effectID, args] : curItem.effects) {
@@ -744,9 +773,11 @@ std::pair<CUIPanel*, bool> CShopUI::MakeGoods(int tIdx, float tWidth, float tHei
 		buyButton->SetBackColor(Gdiplus::Color::Gray);
 		buyCost->SetColor(Gdiplus::Color::White);
 		});
+	// [Event] 구매 버튼 클릭
 	buyButton->SetEventClick([=]() {
 		if (mPlSc->GetMoney() < cost) return;
 
+		// 아이템 효과 적용 (외형 변경 등)
 		if(curItem.pos == L"Mouth") {
 			mPlSc->SetMouthTexture(CResourceMgr::Find<CTexture>(curItem.name));
 		}
@@ -761,10 +792,12 @@ std::pair<CUIPanel*, bool> CShopUI::MakeGoods(int tIdx, float tWidth, float tHei
 		}
 
 		if (curItem.ID != L"") {
+			// 실제 스탯 적용 (ApplyEffect 디스패처 호출)
 			for (auto effect : curItem.effects) {
 				ApplyEffect(effect.first, effect.second);
 			}
 
+			// 인벤토리(mPlItemMgr)에 추가하고 UI 리스트 갱신
 			int index = mPlItemMgr->PlusItem(curItem.ID);
 			if (index >= mItems.size()) {
 				float x = 20.0f;
@@ -810,12 +843,14 @@ std::pair<CUIPanel*, bool> CShopUI::MakeGoods(int tIdx, float tWidth, float tHei
 				type = eLayerType::RangedWeapon;
 			}
 
+			// 무기 추가 및 합성(PlusWeapon) 시도
 			std::pair<int, CWeapon*> weaponIndex = mPlWeaponMgr->PlusWeapon(type, curWeapon.second.ID, curWeapon.first);
 
 			if (weaponIndex.first == -1) {
 				return;
 			}
 
+			// UI 갱신 (새 무기면 버튼 추가, 합성이면 기존 버튼 업데이트)
 			if (weaponIndex.first >= mWeapons.size()) {
 				MakeWeaponButton(mPlWeapons, weaponIndex.second, 0.0f, 0.0f);
 			}
@@ -829,16 +864,17 @@ std::pair<CUIPanel*, bool> CShopUI::MakeGoods(int tIdx, float tWidth, float tHei
 					mRecycleButtons[weaponIndex.first],
 					mRecycleTexts[weaponIndex.first]);
 			}
-
+			// 버튼 위치 재정렬
 			WeaponButtonsReSetting(20.0f, mHaveWeaponText->GetPos().mY + mHaveWeaponText->GetHeight() + 20.0f, 10.0f, mHaveWeaponPanel->GetWidth());
 		}
 
+		// 구매 완료 처리 (패널 비활성화 -> OnUpdate에서 삭제됨)
 		goodsPanel->InActive();
 
 		mPlSc->ChangeMoney(-cost);
 		});
 
-
+	// [Lock Button] 잠금 기능 (리롤 시 유지)
 	CUIButton* rockButton = new CUIButton(SVector2D(), 60.0f, 40.0f);
 	rockButton->SetPos(SVector2D(goodsPanel->GetWidth() / 2 - rockButton->GetWidth() / 2, goodsPanel->GetHeight() + 30.0f));
 	rockButton->SetBackColor(Gdiplus::Color::Black);
@@ -1021,7 +1057,10 @@ CUIPanel* CShopUI::MakeItemPanel(std::wstring tItemID, float tX, float tY)
 	return itemPanel;
 }
 
-// 결합이 클릭된 버튼의 수정 사항들을 보이기 위한 함수
+// ==========================================
+// UI Update Logic: 무기 버튼 갱신
+// ==========================================
+// 무기 합성(Tier Up)이 일어났을 때 해당 버튼의 UI(색상, 스탯 설명, 판매 가격)를 갱신함
 void CShopUI::ReSettingWeaponButton(CWeaponScript* tWpScript, CWeapon* tCurWp, CUIPanel* tParPanel, CUIButton* tWpButton, CUIText* tDescTex, CUIPanel* tWpImgPanel, CUIButton* tRecycleButton, CUIText* tRecycleTex)
 {
 
@@ -1114,10 +1153,10 @@ void CShopUI::ReSettingWeaponButton(CWeaponScript* tWpScript, CWeapon* tCurWp, C
 	tRecycleTex->SetText(L"재활용 (+" + std::to_wstring(recycleCost) + L")");
 }
 
-// 결합이나 재결합이 클릭되었을 때 모든 무기 버튼들의 수정 사항 (위치, 설명 패널 위치, 결합 버튼 활성화 여부)
+// 무기 목록 재정렬 (Grid Layout Refresh)
 void CShopUI::WeaponButtonsReSetting(float tX, float tY, float tOffset, float tMax)
 {
-
+	// 삭제된 무기로 인해 생긴 빈 공간을 메꾸며 버튼들을 재배치
 	for (int i = 0; i < mWeapons.size(); i++) {
 		mWeapons[i]->SetPos(SVector2D(tX, tY));
 		tX += mWeapons[i]->GetWidth() + tOffset;
@@ -1130,6 +1169,8 @@ void CShopUI::WeaponButtonsReSetting(float tX, float tY, float tOffset, float tM
 		}
 	}
 
+	// [Combination Check] 합성 가능 여부 재검사
+	// 동일한 무기(ID, Tier)가 2개 이상이면 '결합' 버튼 활성화
 	int index = 0;
 
 	for (auto button : mCombinationButtons) {
@@ -1151,6 +1192,7 @@ void CShopUI::WeaponButtonsReSetting(float tX, float tY, float tOffset, float tM
 	}
 }
 
+// 무기 버튼 생성 (인벤토리)
 CUIButton* CShopUI::MakeWeaponButton(std::vector<CWeapon*>* tWeapons, CWeapon* tWeapon, float tX, float tY)
 {
 
@@ -1276,7 +1318,7 @@ CUIButton* CShopUI::MakeWeaponButton(std::vector<CWeapon*>* tWeapons, CWeapon* t
 	weaponDescTex->SetHeight(weaponDescTex->CalculateTextSize().Height);
 
 
-
+	// [Action Button: 결합]
 	CUIButton* combinationButton = new CUIButton(SVector2D(weaponImgPanel->GetPos().mX, weaponDescTex->GetPos().mY + weaponDescTex->GetHeight() + 10.0f), weaponDescPanel->GetWidth() - 20.0f, 20.0f);
 	combinationButton->InActive();
 	combinationButton->SetBackColor(Gdiplus::Color::Gray);
@@ -1371,6 +1413,8 @@ CUIButton* CShopUI::MakeWeaponButton(std::vector<CWeapon*>* tWeapons, CWeapon* t
 				break;
 			}
 		}
+
+		// UI 갱신 (현재 버튼 업그레이드, 재료 버튼 삭제 후 정렬)
 		ReSettingWeaponButton(curSc, tWeapon, mHaveWeaponPanel, weaponButton, weaponDescTex, weaponImgPanel, recycleButton, recycleTex);
 		WeaponButtonsReSetting(20.0f, mHaveWeaponText->GetPos().mY + mHaveWeaponText->GetHeight() + 20.0f, 10.0f, mHaveWeaponPanel->GetWidth());
 		weaponDescPanel->InActive();
@@ -1446,7 +1490,7 @@ CUIButton* CShopUI::MakeWeaponButton(std::vector<CWeapon*>* tWeapons, CWeapon* t
 	return weaponButton;
 }
 
-
+// UI 요소 메모리 해제 및 벡터에서 제거
 void CShopUI::WeaponButtonRemove(int tIndex)
 {
 	if (mWeapons[tIndex] != nullptr) {

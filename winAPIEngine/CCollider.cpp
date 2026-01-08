@@ -25,20 +25,22 @@ void CCollider::Render(HDC tHDC)
 {
 }
 
+// 물리 엔진(CollisionMgr) -> 충돌체(Collider) -> 스크립트(Script) 순서로 호출됨
+// 즉, Collider는 단순히 충돌 사실을 로직 담당자인 Script에게 전달하는 역할
 void CCollider::OnCollisionEnter(float tDeltaTime, CCollider* tOther)
 {
 	CScript* script = GetOwner()->GetComponent<CScript>(eComponentType::Script);
-	script->OnCollisionEnter(tDeltaTime, tOther);
+	if (script) script->OnCollisionEnter(tDeltaTime, tOther);
 }
 
 void CCollider::OnCollisionStay(float tDeltaTime, CCollider* tOther)
 {
 	CScript* script = GetOwner()->GetComponent<CScript>(eComponentType::Script);
-	script->OnCollisionStay(tDeltaTime, tOther);
+	if (script) script->OnCollisionStay(tDeltaTime, tOther);
 }
 
 void CCollider::OnCollisionExit(float tDeltaTime, CCollider* tOther)
 {
 	CScript* script = GetOwner()->GetComponent<CScript>(eComponentType::Script);
-	script->OnCollisionExit(tDeltaTime, tOther);
+	if (script) script->OnCollisionExit(tDeltaTime, tOther);
 }

@@ -46,7 +46,7 @@ void CCharacterSelectUI::OnCreate()
 		backButtonTex->SetColor(Gdiplus::Color::White);
 		backButton->SetBackColor(Gdiplus::Color::Black);
 		});
-
+	// Click 이벤트: 타이틀 화면으로 씬 전환
 	backButton->SetEventClick([=]() { 
 		CPlayScene::GetPlayer()->GetComponent<CTransform>(eComponentType::Transform)->SetPos(SVector2D(mapWidth / 2, mapHeight / 2 + 55.0f));
 
@@ -69,7 +69,11 @@ void CCharacterSelectUI::OnCreate()
 
 
 
-	// 설명 패널
+	// ==========================================
+	// Info Preview Panel (캐릭터 정보 표시 패널)
+	// ==========================================
+	// 캐릭터 버튼에 마우스를 올렸을 때(Hover), 해당 캐릭터의 상세 정보를 보여주는 패널
+	// 중앙에 하나만 생성해두고, 내용은 이벤트에 따라 동적으로 교체함
 	mCharDescriptionPanel = new CUIPanel(SVector2D(), 250.0f, 320.0f);
 
 	mCharDescriptionPanel->SetWidth(250.0f);
@@ -80,6 +84,7 @@ void CCharacterSelectUI::OnCreate()
 
 	this->AddChild(mCharDescriptionPanel);
 
+	// 이미지, 이름, 직업, 설명 텍스트 UI 생성 및 배치
 	CUIPanel* charDescriptionImgPanel = new CUIPanel(SVector2D(10.0f, 10.0f), 75.0f, 75.0f);
 	charDescriptionImgPanel->SetBackColor(Gdiplus::Color::Black);
 	charDescriptionImgPanel->SetCornerRadius(10.0f);
@@ -113,14 +118,18 @@ void CCharacterSelectUI::OnCreate()
 
 	mCharDescriptionPanel->AddChild(descriptionTex);
 
+	// ==========================================
+	// Dynamic Grid Generation (캐릭터 목록 생성)
+	// ==========================================
 	CUIPanel* charSelectPanel = new CUIPanel(SVector2D(this->GetPos().mX, this->GetPos().mY + this->GetHeight() / 2), this->GetWidth(), this->GetHeight() / 2);
 
 	int x = 30;
 	int y = 100;
-	int i = 1;
+	int i = 1;	// 줄바꿈 계산용 인덱스
 
-	// 캐릭터 데이터 가져와서 버튼 만들기
+	// 데이터 매니저의 캐릭터 목록을 순회하며 버튼 동적 생성
 	for (auto& [id, character] : CDataMgr::GetCharacterDatas()) {
+		// 1. 캐릭터 버튼 생성
 		CUIButton* charButton = new CUIButton(SVector2D(x, y), 75.0f, 75.0f);
 		charButton->SetBackColor(Gdiplus::Color::Gray);
 		charButton->SetCornerRadius(10.0f);
@@ -132,6 +141,9 @@ void CCharacterSelectUI::OnCreate()
 
 		charSelectPanel->AddChild(charButton);
 
+		// 2. [Text Parsing] 상세 설명 텍스트 가공
+		// 데이터 원본: "최대 체력 +{0}, 이동 속도 -{1}%"
+		// 목표 형태: "<c=#00FF00>최대 체력 +10</c>, <c=#FF0000>이동 속도 -5%</c>"
 		std::wstring finalDiscription = L"";
 
 		for (auto& [effectID, args] : character.effects) {
@@ -140,10 +152,11 @@ void CCharacterSelectUI::OnCreate()
 				continue;
 			}
 
-			std::wstring rawDesc = it->second.description;
+			std::wstring rawDesc = it->second.description;	// 설명 템플릿 가져오기
 
 			int index = 0;
 
+			// 인자(Args) 순회하며 치환
 			for (auto& arg : args) {
 				std::wstring value = arg.value;
 
@@ -152,6 +165,7 @@ void CCharacterSelectUI::OnCreate()
 					colorStr = arg.color;
 				}
 
+				// 양수 값 앞에 '+' 기호 붙이기 (Green 색상일 경우)
 				if (colorStr == L"#00FF00")
 				{
 					try {
@@ -166,6 +180,7 @@ void CCharacterSelectUI::OnCreate()
 					}
 				}
 
+				// 색상 태그 입히기
 				std::wstring taggedStr = L"<c=" + colorStr + L">" + value + L"</c>";
 
 				// 설명글 치환 ({0} -> 태그 문자열)
@@ -185,8 +200,10 @@ void CCharacterSelectUI::OnCreate()
 			finalDiscription += rawDesc + L"\n";
 		}
 
+		// 자동 줄바꿈 처리 (Word Wrapping)
 		finalDiscription = CUIText::InsertLineBreaks(finalDiscription, mCharDescriptionPanel->GetWidth() - charDescriptionImgPanel->GetPos().mX * 2, L"Noto Sans KR Medium", 15.0f, false);
 
+		// 3. 이벤트 바인딩
 		charButton->SetEventHover([=]() {
 			charButton->SetBackColor(Gdiplus::Color::White);
 			charDescriptionImgPanel->SetBackColor(Gdiplus::Color::Gray);

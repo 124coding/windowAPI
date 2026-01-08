@@ -11,6 +11,7 @@
 
 #include <Windows.h>
 
+// 특정 효과들을 적용시키기 위한 디스패처
 static void ApplyEffect(const std::wstring& tEffectID, const std::vector<CDataMgr::SArg>& args) {
 	CPlayerScript* plSc = CPlayScene::GetPlayer()->GetComponent<CPlayerScript>(eComponentType::Script);
 	CWeaponMgr* plWpMgr = CPlayScene::GetPlayer()->GetComponent<CWeaponMgr>(eComponentType::WeaponMgr);
