@@ -5,7 +5,8 @@
 **개발 기간 & 인원:** 2025/10 ~ 2025/12 (3개월), 1인 개발  
 **핵심 역할:** 게임 엔진 아키텍처 설계, 컴포넌트 시스템 구현, 인게임 로직 전반  
 
-[![Brotato 모작 시연 영상](http://img.youtube.com/vi/tHov3ex_SmQ/0.jpg)](https://www.youtube.com/watch?v=tHov3ex_SmQ)
+![Image](https://github.com/user-attachments/assets/b8d69d29-1c6a-446b-a569-e99868f8bea9)  
+[[Brotato 모작 시연 영상]](https://www.youtube.com/watch?v=tHov3ex_SmQ)
 
 ## 기술적 핵심
 단순히 게임을 구현하는 것을 넘어서 유지보수가 용이하고 확장 가능한 컴포넌트 기반 엔진을 직접 설계해보았습니다.
