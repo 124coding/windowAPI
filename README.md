@@ -624,7 +624,7 @@ void CPlayerScript::OnCollisionExit(float tDeltaTime, CCollider* tOther) {
 </br>
 
 #### 구현 성과
-**1. 성능 최적화:** 이전 방식 대비 연산량을 획기적으로 줄여, 200개 이상의 동적 오브젝트(유닛+투사체)가 난전(Bullet Hell)을 벌이는 상황에서도 90 FPS 이상을 안정적으로 유지했습니다.  
+**1. 성능 최적화:** 이전 방식 대비 연산량을 획기적으로 줄여, 200개 이상의 동적 오브젝트(유닛+투사체)가 난전(Bullet Hell)을 벌이는 상황에서도 60 FPS 이상을 안정적으로 유지했습니다.  
 **2. 로직 분리:** 예를 들어 Enemy가 무기에 부딪히면 Enemy의 체력이 깍인다는 로직을 생각해볼때 EnemyScript의 OnCollisionEnter에만 작성하면 되기에 코드의 응집도를 높였습니다.  
 
 </br>
